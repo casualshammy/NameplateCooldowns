@@ -2,5 +2,9 @@ package-as: NameplateCooldowns
 
 license-output: LICENSE.txt
 
-ignore:
-    - 1.txt # ignore the scripts folder
+manual-changelog:
+    filename: CHANGELOG.html
+    markup-type: html
+
+# ignore:
+#     - 1.txt # ignore the scripts folder
