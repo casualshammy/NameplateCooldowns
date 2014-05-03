@@ -1,0 +1,7 @@
+## Interface: 50400
+## Title: NameplateCooldowns |c50C41F3B[50400 build 14]|r
+## Notes: Shows the cooldowns of an enemy player above their nameplates
+## SavedVariables: NameplateCooldownsDB
+
+localizations.lua
+NameplateCooldowns.lua
