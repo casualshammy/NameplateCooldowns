@@ -1,0 +1,6 @@
+package-as: NameplateCooldowns
+
+license-output: LICENSE.txt
+
+ignore:
+    - 1.txt # ignore the scripts folder
