@@ -388,6 +388,7 @@ local deepcopy;
 
 
 --	todo
+local borderChangedCounter = 0;
 function NCTest()
 	-- charactersDB["Новобранец армии Расколотого Солнца"] = {
 		-- [108194] = 4000000000,
@@ -423,7 +424,6 @@ function NCTest1()
 	print("OnUpdate:", GetFunctionCPUUsage(OnUpdate, true));
 	--print("COMBAT_LOG_EVENT_UNFILTERED:", GetFunctionCPUUsage(COMBAT_LOG_EVENT_UNFILTERED, true));
 end
-local borderChangedCounter = 0;
 
 
 SLASH_NAMEPLATECOOLDOWNS1 = '/nc';
@@ -539,11 +539,6 @@ do
 		icon:SetPoint("TOPLEFT", frame, db.IconXOffset + frame.NCIconsCount * db.IconSize, db.IconYOffset);
 		icon:Hide();
 		frame.NCIconsCount = frame.NCIconsCount + 1;
-		icon.hidden = 1;
-		-- icon.borderIsHidden = 1;
-		-- // todo
-		-- icon.borderState = nil;
-		icon.spellID = 0;
 		tinsert(frame.NCIcons, icon);
 	end
 	
@@ -561,15 +556,8 @@ do
 	end
 	
 	function Nameplate_OnShow(frame)
-		-- for _, value in pairs(frame.NCIcons) do
-			-- if (not value.hidden) then
-				-- value:Hide();
-				-- value.hidden = 1;
-			-- end
-		-- end
 		UpdateUnitNameForNameplate(frame);
 		UpdateOnlyOneNameplate(frame);
-		--	Print(frame:GetName(), frame.NCUnitName);
 		NameplatesVisible[frame] = frame.NCUnitName;
 	end
 	
@@ -643,7 +631,7 @@ do
 						end
 					elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then
 						if (icon.borderState ~= 2) then
-							icon.border:SetVertexColor(0.8, 0, 0.8); -- 0.55, 0, 1
+							icon.border:SetVertexColor(0.55, 0, 1); -- 0.8, 0, 0.8
 							icon.border:Show();
 							icon.borderState = 2;
 							-- // todo
@@ -655,24 +643,15 @@ do
 						-- // todo
 						borderChangedCounter = borderChangedCounter + 1;
 					end
-					-- if (tContains(Interrupts, spellID)) then
-						-- if (icon.borderIsHidden) then
-							-- icon.border:Show();
-							-- icon.borderIsHidden = nil;
-						-- end
-					-- elseif (not icon.borderIsHidden) then
-						-- icon.border:Hide();
-						-- icon.borderIsHidden = 1;
-					-- end
 					local remain = duration - last;
 					if (remain >= 60) then
 						icon.cooldown:SetText(math_ceil(remain/60).."m");
 					else
 						icon.cooldown:SetText(math_ceil(remain));
 					end
-					if (icon.hidden) then
+					if (not icon.shown) then
 						icon:Show();
-						icon.hidden = nil;
+						icon.shown = 1;
 					end
 					counter = counter + 1;
 				end
@@ -680,9 +659,9 @@ do
 		end
 		for k = counter, frame.NCIconsCount do
 			local icon = frame.NCIcons[k];
-			if (not icon.hidden) then
+			if (icon.shown) then
 				icon:Hide();
-				icon.hidden = 1;
+				icon.shown = nil;
 			end
 		end
 	end
@@ -697,11 +676,11 @@ do
 	function OnUpdate()
 		CheckForNewNameplates();
 		local currentTime = GetTime();
-		for frame in pairs(NameplatesVisible) do
-			local name = frame.NCUnitName;
+		for frame, unitName in pairs(NameplatesVisible) do
+			-- local name = frame.NCUnitName;
 			local counter = 1;
-			if (charactersDB[name]) then
-				for index, value in pairs(charactersDB[name]) do
+			if (charactersDB[unitName]) then
+				for index, value in pairs(charactersDB[unitName]) do
 					local duration = CDCache[index];
 					local last = currentTime - value;
 					if (last < duration) then
@@ -727,7 +706,7 @@ do
 							end
 						elseif (index == 42292 or index == 59752 or index == 7744) then -- // I know it's "chinese" coding style, but it's really faster...
 							if (icon.borderState ~= 2) then
-								icon.border:SetVertexColor(0.8, 0, 0.8); -- 0.55, 0, 1
+								icon.border:SetVertexColor(0.55, 0, 1); -- 0.8, 0, 0.8
 								icon.border:Show();
 								icon.borderState = 2;
 								-- // todo
@@ -739,15 +718,6 @@ do
 							-- // todo
 							borderChangedCounter = borderChangedCounter + 1;
 						end
-						-- if (tContains(Interrupts, index)) then
-							-- if (icon.borderIsHidden) then
-								-- icon.border:Show();
-								-- icon.borderIsHidden = nil;
-							-- end
-						-- elseif (not icon.borderIsHidden) then
-							-- icon.border:Hide();
-							-- icon.borderIsHidden = 1;
-						-- end
 						-- // setting text
 						local remain = duration - last;
 						if (remain >= 60) then
@@ -755,32 +725,23 @@ do
 						else
 							icon.cooldown:SetText(math_ceil(remain));
 						end
-						-- local remain = math_ceil(duration - last);
-						-- if (remain ~= icon.remain) then
-							-- if (remain >= 60) then
-								-- icon.cooldown:SetText(math_ceil(remain/60).."m");
-							-- else
-								-- icon.cooldown:SetText(remain);
-							-- end
-							-- icon.remain = remain;
-						-- end
 						-- // show icon if need
-						if (icon.hidden) then
+						if (not icon.shown) then
 							icon:Show();
-							icon.hidden = nil;
+							icon.shown = 1;
 						end
 						counter = counter + 1;
 					else
-						charactersDB[name][index] = nil;
+						charactersDB[unitName][index] = nil;
 						-- // todo
-						Print(name, index);
+						Print(unitName, index);
 					end
 				end
 			end
 			for k = counter, frame.NCIconsCount do
-				if (not frame.NCIcons[k].hidden) then
+				if (frame.NCIcons[k].shown) then
 					frame.NCIcons[k]:Hide();
-					frame.NCIcons[k].hidden = 1;
+					frame.NCIcons[k].shown = nil;
 				end
 			end
 		end
@@ -788,10 +749,9 @@ do
 
 	function OnUpdateTestMode()
 		CheckForNewNameplates();
-		for frame in pairs(NameplatesVisible) do
+		for frame, unitName in pairs(NameplatesVisible) do
 			----  test  ----
-			local name = frame.NCUnitName;
-			local testTable = charactersDB[name];
+			local testTable = charactersDB[unitName];
 			----  test  ----
 			local counter = 1;
 			for i = 1, 2 do
@@ -803,11 +763,6 @@ do
 					icon.texture:SetTexture(TextureCache[42292]);
 					icon.spellID = index;
 				end
-				-- // todo
-				-- if (not icon.borderIsHidden) then
-					-- icon.border:Hide();
-					-- icon.borderIsHidden = 1;
-				-- end
 				if (i == 1) then
 					local n = tonumber(icon.cooldown:GetText());
 					if (n == nil or n <= 0 or n > 30) then
@@ -818,16 +773,16 @@ do
 				else
 					icon.cooldown:SetText("2m");
 				end
-				if (icon.hidden) then
+				if (not icon.shown) then
 					icon:Show();
-					icon.hidden = nil;
+					icon.shown = 1;
 				end
 				counter = counter + 1;
 			end
 			for k = counter, frame.NCIconsCount do
-				if (not frame.NCIcons[k].hidden) then
+				if (frame.NCIcons[k].shown) then
 					frame.NCIcons[k]:Hide();
-					frame.NCIcons[k].hidden = 1;
+					frame.NCIcons[k].shown = nil;
 				end
 			end
 		end
