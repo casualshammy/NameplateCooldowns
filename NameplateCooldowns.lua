@@ -677,11 +677,10 @@ do
 		CheckForNewNameplates();
 		local currentTime = GetTime();
 		for frame, unitName in pairs(NameplatesVisible) do
-			-- local name = frame.NCUnitName;
 			local counter = 1;
 			if (charactersDB[unitName]) then
-				for index, value in pairs(charactersDB[unitName]) do
-					local duration = CDCache[index];
+				for spellID, value in pairs(charactersDB[unitName]) do
+					local duration = CDCache[spellID];
 					local last = currentTime - value;
 					if (last < duration) then
 						-- // allocating icon if need
@@ -691,12 +690,12 @@ do
 						-- // getting reference to icon
 						local icon = frame.NCIcons[counter];
 						-- // setting texture if need
-						if (icon.spellID ~= index) then
-							icon.texture:SetTexture(TextureCache[index]);
-							icon.spellID = index;
+						if (icon.spellID ~= spellID) then
+							icon.texture:SetTexture(TextureCache[spellID]);
+							icon.spellID = spellID;
 						end
 						-- // setting up border if need
-						if (tContains(Interrupts, index)) then
+						if (tContains(Interrupts, spellID)) then
 							if (icon.borderState ~= 1) then
 								icon.border:SetVertexColor(1, 0.35, 0);
 								icon.border:Show();
@@ -704,7 +703,7 @@ do
 								-- // todo
 								borderChangedCounter = borderChangedCounter + 1;
 							end
-						elseif (index == 42292 or index == 59752 or index == 7744) then -- // I know it's "chinese" coding style, but it's really faster...
+						elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then -- // I know it's "chinese" coding style, but it's really faster...
 							if (icon.borderState ~= 2) then
 								icon.border:SetVertexColor(0.55, 0, 1); -- 0.8, 0, 0.8
 								icon.border:Show();
@@ -732,9 +731,7 @@ do
 						end
 						counter = counter + 1;
 					else
-						charactersDB[unitName][index] = nil;
-						-- // todo
-						Print(unitName, index);
+						charactersDB[unitName][spellID] = nil;
 					end
 				end
 			end
