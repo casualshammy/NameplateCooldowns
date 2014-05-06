@@ -388,7 +388,6 @@ local deepcopy;
 
 
 --	todo
-local borderChangedCounter = 0;
 function NCTest()
 	-- charactersDB["Новобранец армии Расколотого Солнца"] = {
 		-- [108194] = 4000000000,
@@ -414,15 +413,6 @@ function NCTest()
 	print("Nameplate_OnShow:", GetFunctionCPUUsage(Nameplate_OnShow, true));
 	print("OnUpdate:", GetFunctionCPUUsage(OnUpdate, true));
 	print("COMBAT_LOG_EVENT_UNFILTERED:", GetFunctionCPUUsage(COMBAT_LOG_EVENT_UNFILTERED, true));
-	print("Border changed:", borderChangedCounter);
-end
-function NCTest1()
-	for i = 1, 100000 do
-		ActualOnUpdate();
-	end
-	--print("Nameplate_OnShow:", GetFunctionCPUUsage(Nameplate_OnShow, true));
-	print("OnUpdate:", GetFunctionCPUUsage(OnUpdate, true));
-	--print("COMBAT_LOG_EVENT_UNFILTERED:", GetFunctionCPUUsage(COMBAT_LOG_EVENT_UNFILTERED, true));
 end
 
 
@@ -599,7 +589,9 @@ do
 		frame.NCIcons = {};
 		frame.NCIconsCount = 0;
 		UpdateUnitNameForNameplate(frame);
-		NameplatesVisible[frame] = frame:IsVisible();
+		if (frame:IsVisible()) then
+			NameplatesVisible[frame] = frame.NCUnitName;
+		end
 		frame:HookScript("OnShow", Nameplate_OnShow);
 		frame:HookScript("OnHide", Nameplate_OnHide);
 	end
@@ -626,22 +618,16 @@ do
 							icon.border:SetVertexColor(1, 0.35, 0);
 							icon.border:Show();
 							icon.borderState = 1;
-							-- // todo
-							borderChangedCounter = borderChangedCounter + 1;
 						end
 					elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then
 						if (icon.borderState ~= 2) then
-							icon.border:SetVertexColor(0.55, 0, 1); -- 0.8, 0, 0.8
+							icon.border:SetVertexColor(0.5, 1, 0);
 							icon.border:Show();
 							icon.borderState = 2;
-							-- // todo
-							borderChangedCounter = borderChangedCounter + 1;
 						end
 					elseif (icon.borderState ~= nil) then
 						icon.border:Hide();
 						icon.borderState = nil;
-						-- // todo
-						borderChangedCounter = borderChangedCounter + 1;
 					end
 					local remain = duration - last;
 					if (remain >= 60) then
@@ -700,22 +686,16 @@ do
 								icon.border:SetVertexColor(1, 0.35, 0);
 								icon.border:Show();
 								icon.borderState = 1;
-								-- // todo
-								borderChangedCounter = borderChangedCounter + 1;
 							end
 						elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then -- // I know it's "chinese" coding style, but it's really faster...
 							if (icon.borderState ~= 2) then
-								icon.border:SetVertexColor(0.55, 0, 1); -- 0.8, 0, 0.8
+								icon.border:SetVertexColor(0.5, 1, 0);
 								icon.border:Show();
 								icon.borderState = 2;
-								-- // todo
-								borderChangedCounter = borderChangedCounter + 1;
 							end
 						elseif (icon.borderState ~= nil) then
 							icon.border:Hide();
 							icon.borderState = nil;
-							-- // todo
-							borderChangedCounter = borderChangedCounter + 1;
 						end
 						-- // setting text
 						local remain = duration - last;
