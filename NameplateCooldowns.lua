@@ -388,6 +388,7 @@ local deepcopy;
 
 
 --	todo
+local cR, cG, cB = 255/255, 215/255, 0/255;
 function NCTest()
 	-- charactersDB["Новобранец армии Расколотого Солнца"] = {
 		-- [108194] = 4000000000,
@@ -621,7 +622,7 @@ do
 						end
 					elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then
 						if (icon.borderState ~= 2) then
-							icon.border:SetVertexColor(0.5, 1, 0);
+							icon.border:SetVertexColor(cR, cG, cB);
 							icon.border:Show();
 							icon.borderState = 2;
 						end
@@ -689,7 +690,7 @@ do
 							end
 						elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then -- // I know it's "chinese" coding style, but it's really faster...
 							if (icon.borderState ~= 2) then
-								icon.border:SetVertexColor(0.5, 1, 0);
+								icon.border:SetVertexColor(cR, cG, cB);	-- // 2/3
 								icon.border:Show();
 								icon.borderState = 2;
 							end
@@ -731,16 +732,17 @@ do
 			local testTable = charactersDB[unitName];
 			----  test  ----
 			local counter = 1;
-			for i = 1, 2 do
+			for i = 1, 3 do
 				if (counter > frame.NCIconsCount) then
 					AllocateIcon(frame);
 				end
 				local icon = frame.NCIcons[counter];
-				if (icon.spellID ~= 42292) then
-					icon.texture:SetTexture(TextureCache[42292]);
-					icon.spellID = index;
+				local spellID = (i == 1 and 42292) or (i == 2 and 2139) or (i == 3 and 108194);
+				if (icon.spellID ~= spellID) then
+					icon.texture:SetTexture((spellID == 42292 and TextureCache[42292]) or select(3, GetSpellInfo(spellID)));
+					icon.spellID = spellID;
 				end
-				if (i == 1) then
+				if (i ~= 1) then
 					local n = tonumber(icon.cooldown:GetText());
 					if (n == nil or n <= 0 or n > 30) then
 						icon.cooldown:SetText("30");
@@ -749,6 +751,23 @@ do
 					end
 				else
 					icon.cooldown:SetText("2m");
+				end
+				-- // setting up border if need
+				if (tContains(Interrupts, spellID)) then
+					if (icon.borderState ~= 1) then
+						icon.border:SetVertexColor(1, 0.35, 0);
+						icon.border:Show();
+						icon.borderState = 1;
+					end
+				elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then -- // I know it's "chinese" coding style, but it's really faster...
+					if (icon.borderState ~= 2) then
+						icon.border:SetVertexColor(cR, cG, cB);
+						icon.border:Show();
+						icon.borderState = 2;
+					end
+				elseif (icon.borderState ~= nil) then
+					icon.border:Hide();
+					icon.borderState = nil;
 				end
 				if (not icon.shown) then
 					icon:Show();
