@@ -386,37 +386,6 @@ local GUICreateButton;
 local Print;
 local deepcopy;
 
-
---	todo
-local cR, cG, cB = 255/255, 215/255, 0/255;
-function NCTest()
-	-- charactersDB["Новобранец армии Расколотого Солнца"] = {
-		-- [108194] = 4000000000,
-		-- [47528] = 4000000000,
-		-- [47476] = 4000000000,
-		-- [48707] = 4000000000,
-		-- [49576] = 4000000000,
-	-- };
-	-- charactersDB["Стрелок из армии Расколотого Солнца"] = {
-		-- [108194] = 4000000000,
-		-- [47528] = 4000000000,
-		-- [47476] = 4000000000,
-		-- [48707] = 4000000000,
-		-- [49576] = 4000000000,
-	-- };
-	-- charactersDB["Шкивокрут Ваффель"] = {
-		-- [108194] = 4000000000,
-		-- [47528] = 4000000000,
-		-- [47476] = 4000000000,
-		-- [48707] = 4000000000,
-		-- [49576] = 4000000000,
-	-- };
-	print("Nameplate_OnShow:", GetFunctionCPUUsage(Nameplate_OnShow, true));
-	print("OnUpdate:", GetFunctionCPUUsage(OnUpdate, true));
-	print("COMBAT_LOG_EVENT_UNFILTERED:", GetFunctionCPUUsage(COMBAT_LOG_EVENT_UNFILTERED, true));
-end
-
-
 SLASH_NAMEPLATECOOLDOWNS1 = '/nc';
 function SlashCmdList.NAMEPLATECOOLDOWNS(msg, editBox)
     ShowGUI();
@@ -622,7 +591,7 @@ do
 						end
 					elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then
 						if (icon.borderState ~= 2) then
-							icon.border:SetVertexColor(cR, cG, cB);
+							icon.border:SetVertexColor(1, 0.843, 0);
 							icon.border:Show();
 							icon.borderState = 2;
 						end
@@ -690,7 +659,7 @@ do
 							end
 						elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then -- // I know it's "chinese" coding style, but it's really faster...
 							if (icon.borderState ~= 2) then
-								icon.border:SetVertexColor(cR, cG, cB);	-- // 2/3
+								icon.border:SetVertexColor(1, 0.843, 0);	-- // 2/3
 								icon.border:Show();
 								icon.borderState = 2;
 							end
@@ -761,7 +730,7 @@ do
 					end
 				elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then -- // I know it's "chinese" coding style, but it's really faster...
 					if (icon.borderState ~= 2) then
-						icon.border:SetVertexColor(cR, cG, cB);
+						icon.border:SetVertexColor(1, 0.843, 0);
 						icon.border:Show();
 						icon.borderState = 2;
 					end
