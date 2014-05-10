@@ -1,5 +1,5 @@
 ﻿local locales = {
-	["enGB"] = {
+	["enUS"] = {
 		["Click on icon to enable/disable tracking"] = "Click on icon to enable/disable tracking",
 		["Copy other profile to current profile:"] = "Copy other profile to current profile:",
 		["Current profile: [%s]"] = "Current profile: [%s]",
@@ -109,25 +109,44 @@
 		["Unknown spell: %s"] = "Sort inconnu : %s", -- Needs review
 		["Value must be a number"] = "La valeur doit être un nombre", -- Needs review
 	},
+	["esES"] = {
+		["Click on icon to enable/disable tracking"] = "Haz click para activar/desactivar seguimiento", -- Needs review
+		Copy = "Copiar", -- Needs review
+		["Copy other profile to current profile:"] = "Copiar otro perfil al perfil actual:", -- Needs review
+		["Current profile: [%s]"] = "Perfil actual:[%s]", -- Needs review
+		["Data from '%s' has been successfully copied to '%s'"] = "Data from '%s' has been successfully copied to '%s'", -- Requires localization
+		Delete = "Borrar", -- Needs review
+		["Delete profile:"] = "Borrar perfil:", -- Needs review
+		["Disable test mode"] = "Desactivar Modo Test", -- Needs review
+		["Enable test mode (need at least one visible nameplate)"] = "Modo test Activado\r\n(necesitas por lo menos un nameplate visible)", -- Needs review
+		General = "General", -- Needs review
+		["Icon size"] = "Tamaño del icono", -- Needs review
+		["Icon X-coord offset"] = "Icon X-coord offset", -- Requires localization
+		["Icon Y-coord offset"] = "Icon Y-coord offset", -- Requires localization
+		MISC = "Misc", -- Needs review
+		["New spell has been added: %s"] = "Añadido un nuevo hechizo: %s", -- Needs review
+		["Options are not available in combat!"] = "Las opciones no estan disponibles en combate!", -- Needs review
+		Profiles = "Perfiles", -- Needs review
+		["Profile '%s' has been successfully deleted"] = "Perfil\"%s\" ha sido borrado con exito", -- Needs review
+		["Unknown spell: %s"] = "Hechizo desconocido: %s", -- Needs review
+		["Value must be a number"] = "El valor debe ser numerico", -- Needs review
+	},
 	
 	["koKR"] = {},
 	["zhCN"] = {},
 	["zhTW"] = {},
 	["ptBR"] = {},
 	["itIT"] = {},
-	["esES"] = {},
 };
 
-locales["koKR"] = locales["enGB"];
-locales["zhCN"] = locales["enGB"];
-locales["zhTW"] = locales["enGB"];
-locales["ptBR"] = locales["enGB"];
-locales["itIT"] = locales["enGB"];
-locales["esES"] = locales["enGB"];
-locales["enUS"] = locales["enGB"];
+locales["koKR"] = locales["enUS"];
+locales["zhCN"] = locales["enUS"];
+locales["zhTW"] = locales["enUS"];
+locales["ptBR"] = locales["enUS"];
+locales["itIT"] = locales["enUS"];
 
 --			Test
--- locales["ruRU"] = locales["frFR"];
+-- locales["ruRU"] = locales["esES"];
 
 local localizedClasses = {};
 FillLocalizedClassList(localizedClasses);
