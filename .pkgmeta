@@ -15,4 +15,4 @@ externals:
         tag: latest
 	
 # ignore:
-#     - 1.txt # ignore the scripts folder
+#        - 1.txt # ignore the scripts folder
