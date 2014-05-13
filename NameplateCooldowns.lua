@@ -1,4 +1,9 @@
-﻿local addonName, addonTable = ...;
+﻿------------------------------
+-- TODO
+-- 1. delete .NCUnitName field
+------------------------------
+
+local addonName, addonTable = ...;
 local L = addonTable.L;
 
 local CDs = {
@@ -332,10 +337,7 @@ local TidyPlates;
 local ActualOnUpdate;
 local WorldFrameNumChildren = 0;
 local LocalPlayerFullName = UnitName("player").." - "..GetRealmName();
-local cooldownFrameBorder = "Interface\\AddOns\\NameplateCooldowns\\media\\CooldownFrameBorder.tga";
-local cooldownFrameFont = "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf";
-local smudgeTexture = "Interface\\AddOns\\NameplateCooldowns\\media\\Smudge.tga";
-local GUIBorderTexture = "Interface\\AddOns\\NameplateCooldowns\\media\\Border";
+local teen_bold = "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf";
 
 local _G = _G;
 local pairs = pairs;
@@ -490,9 +492,9 @@ do
 		icon.cooldown = icon:CreateFontString(nil, "OVERLAY");
 		icon.cooldown:SetTextColor(0.7, 1, 0);
 		icon.cooldown:SetAllPoints(icon);
-		icon.cooldown:SetFont(cooldownFrameFont, math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
+		icon.cooldown:SetFont(teen_bold, math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
 		icon.border = icon:CreateTexture(nil, "OVERLAY");
-		icon.border:SetTexture(cooldownFrameBorder);
+		icon.border:SetTexture("Interface\\AddOns\\NameplateCooldowns\\media\\CooldownFrameBorder.tga");
 		icon.border:SetVertexColor(1, 0.35, 0);
 		icon.border:SetAllPoints(icon);
 		icon.border:Hide();
@@ -509,7 +511,7 @@ do
 				icon:SetWidth(db.IconSize);
 				icon:SetHeight(db.IconSize);
 				icon:SetPoint("TOPLEFT", frame, db.IconXOffset + counter * db.IconSize, db.IconYOffset);
-				icon.cooldown:SetFont(cooldownFrameFont, math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
+				icon.cooldown:SetFont(teen_bold, math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
 				counter = counter + 1;
 			end
 		end
@@ -1104,8 +1106,8 @@ do
 		scrollAreaBackground:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 120, -60);
 		scrollAreaBackground:SetPoint("BOTTOMRIGHT", GUIFrame, "BOTTOMRIGHT", -30, 15);
 		scrollAreaBackground:SetBackdrop({
-			bgFile = smudgeTexture,
-			edgeFile = GUIBorderTexture,
+			bgFile = "Interface\\AddOns\\NameplateCooldowns\\media\\Smudge.tga",
+			edgeFile = "Interface\\AddOns\\NameplateCooldowns\\media\\Border",
 			tile = true, edgeSize = 3, tileSize = 1,
 			insets = { left = 3, right = 3, top = 3, bottom = 3 }
 		});
