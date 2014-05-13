@@ -1,6 +1,8 @@
 ﻿------------------------------
--- TODO
--- 1. delete .NCUnitName field
+------------ TODO ------------
+------------------------------
+-- 1. Delete .NCUnitName field
+-- 2. Fix warrior's shared CDs
 ------------------------------
 
 local addonName, addonTable = ...;
@@ -387,6 +389,35 @@ local GUICreateButton;
 
 local Print;
 local deepcopy;
+
+-- // todo
+function NCTest()
+	-- charactersDB["Новобранец армии Расколотого Солнца"] = {
+		-- [108194] = 4000000000,
+		-- [47528] = 4000000000,
+		-- [47476] = 4000000000,
+		-- [48707] = 4000000000,
+		-- [49576] = 4000000000,
+	-- };
+	-- charactersDB["Стрелок из армии Расколотого Солнца"] = {
+		-- [108194] = 4000000000,
+		-- [47528] = 4000000000,
+		-- [47476] = 4000000000,
+		-- [48707] = 4000000000,
+		-- [49576] = 4000000000,
+	-- };
+	-- charactersDB["Шкивокрут Ваффель"] = {
+		-- [108194] = 4000000000,
+		-- [47528] = 4000000000,
+		-- [47476] = 4000000000,
+		-- [48707] = 4000000000,
+		-- [49576] = 4000000000,
+	-- };
+	print("Nameplate_OnShow:", GetFunctionCPUUsage(Nameplate_OnShow, true));
+	print("OnUpdate:", GetFunctionCPUUsage(OnUpdate, true));
+	print("COMBAT_LOG_EVENT_UNFILTERED:", GetFunctionCPUUsage(COMBAT_LOG_EVENT_UNFILTERED, true));
+end
+
 
 SLASH_NAMEPLATECOOLDOWNS1 = '/nc';
 function SlashCmdList.NAMEPLATECOOLDOWNS(msg, editBox)
@@ -789,6 +820,7 @@ do
 					end
 				end
 			end
+			-- // resets
 			if (spellID == 11958 or spellID == 14185 or spellID == 108285) then	-- // I know it's "chinese" style, but it's really faster than tContains
 				if (eventType == "SPELL_CAST_SUCCESS") then
 					local Name = string_match(srcName, "[%P]+");
@@ -797,6 +829,38 @@ do
 							charactersDB[Name][v] = nil;
 						end
 					end
+					for frame, charName in pairs(NameplatesVisible) do
+						if (charName == Name) then
+							UpdateOnlyOneNameplate(frame);
+							break;
+						end
+					end
+				end
+			-- // warrior interrups fix
+			elseif (spellID == 6552) then
+				if (CDCache[102060] and eventType == "SPELL_CAST_SUCCESS") then
+					local Name = string_match(srcName, "[%P]+");
+					if (not charactersDB[Name]) then
+						charactersDB[Name] = {};
+					end
+					if ((charactersDB[Name][102060] and charactersDB[Name][102060] < 15) or not charactersDB[Name][102060]) then
+						charactersDB[Name][102060] = GetTime() + 25;
+						for frame, charName in pairs(NameplatesVisible) do
+							if (charName == Name) then
+								UpdateOnlyOneNameplate(frame);
+								break;
+							end
+						end
+					end
+				end
+			-- // warrior interrups fix
+			elseif (spellID == 102060) then
+				if (CDCache[6552] and eventType == "SPELL_CAST_SUCCESS") then
+					local Name = string_match(srcName, "[%P]+");
+					if (not charactersDB[Name]) then
+						charactersDB[Name] = {};
+					end
+					charactersDB[Name][6552] = GetTime();
 					for frame, charName in pairs(NameplatesVisible) do
 						if (charName == Name) then
 							UpdateOnlyOneNameplate(frame);
