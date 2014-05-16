@@ -1,8 +1,7 @@
 ﻿------------------------------
 ------------ TODO ------------
 ------------------------------
--- 1. Delete .NCUnitName field
--- 2. Fix warrior's shared CDs
+-- 1. Fix warrior's shared CDs
 ------------------------------
 
 local addonName, addonTable = ...;
@@ -363,7 +362,7 @@ local AllocateIcon;
 local ReallocateAllIcons;
 local Nameplate_OnShow;
 local Nameplate_OnHide;
-local UpdateUnitNameForNameplate;
+local GetUnitNameForNameplate;
 local CheckForNewNameplates;
 local FindNewNameplate;
 local InitializeFrame;
@@ -413,7 +412,8 @@ function NCTest()
 		-- [48707] = 4000000000,
 		-- [49576] = 4000000000,
 	-- };
-	print("Nameplate_OnShow:", GetFunctionCPUUsage(Nameplate_OnShow, true));
+	local usage1, calls1 = GetFunctionCPUUsage(Nameplate_OnShow, true);
+	print("Nameplate_OnShow:", usage1, calls1, math_ceil(usage1*1000/(calls1 == 0 and 1 or calls1)).."µs/call");
 	print("OnUpdate:", GetFunctionCPUUsage(OnUpdate, true));
 	print("COMBAT_LOG_EVENT_UNFILTERED:", GetFunctionCPUUsage(COMBAT_LOG_EVENT_UNFILTERED, true));
 end
@@ -549,22 +549,24 @@ do
 	end
 	
 	function Nameplate_OnShow(frame)
-		UpdateUnitNameForNameplate(frame);
-		UpdateOnlyOneNameplate(frame);
-		NameplatesVisible[frame] = frame.NCUnitName;
+		local unitName = GetUnitNameForNameplate(frame);
+		UpdateOnlyOneNameplate(frame, unitName);
+		NameplatesVisible[frame] = unitName;
+		-- // todo
+		Print("Nameplate_OnShow", NameplatesVisible[frame]);
 	end
 	
 	function Nameplate_OnHide(frame)
 		NameplatesVisible[frame] = nil;
 	end
 	
-	function UpdateUnitNameForNameplate(f)
+	function GetUnitNameForNameplate(f)
 		if (TidyPlates or not gUI3MoP) then
 			local _, nameplateChild = f:GetChildren();
 			local name = nameplateChild:GetRegions();
-			f.NCUnitName = string_gsub(name:GetText(), '%s%(%*%)','');
+			return string_gsub(name:GetText(), '%s%(%*%)', '');
 		else
-			f.NCUnitName = string_gsub(f.name:GetText(), '%s%(%*%)','');
+			return string_gsub(f.name:GetText(), '%s%(%*%)', '');
 		end
 	end
 	
@@ -590,17 +592,19 @@ do
 	function InitializeFrame(frame)
 		Nameplates[frame] = true;
 		frame.NCIcons = {};
-		frame.NCIconsCount = 0;
-		UpdateUnitNameForNameplate(frame);
+		frame.NCIconsCount = 0;	-- // it's faster than #frame.NCIcons
 		if (frame:IsVisible()) then
-			NameplatesVisible[frame] = frame.NCUnitName;
+			local unitName = GetUnitNameForNameplate(frame);
+			UpdateOnlyOneNameplate(frame, unitName);
+			NameplatesVisible[frame] = unitName;
+			-- // todo
+			Print("InitializeFrame", NameplatesVisible[frame]);
 		end
 		frame:HookScript("OnShow", Nameplate_OnShow);
 		frame:HookScript("OnHide", Nameplate_OnHide);
 	end
 
-	function UpdateOnlyOneNameplate(frame)
-		local name = frame.NCUnitName;
+	function UpdateOnlyOneNameplate(frame, name)
 		local counter = 1;
 		if (charactersDB[name]) then
 			local currentTime = GetTime();
@@ -690,7 +694,7 @@ do
 								icon.border:Show();
 								icon.borderState = 1;
 							end
-						elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then -- // I know it's "chinese" coding style, but it's really faster...
+						elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then -- // I know it's "chinese" coding style, but it's really faster than table lookup
 							if (icon.borderState ~= 2) then
 								icon.border:SetVertexColor(1, 0.843, 0);	-- // 2/3
 								icon.border:Show();
@@ -761,7 +765,7 @@ do
 						icon.border:Show();
 						icon.borderState = 1;
 					end
-				elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then -- // I know it's "chinese" coding style, but it's really faster...
+				elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then -- // I know it's "chinese" coding style, but it's really faster than table lookup
 					if (icon.borderState ~= 2) then
 						icon.border:SetVertexColor(1, 0.843, 0);
 						icon.border:Show();
@@ -814,14 +818,14 @@ do
 					charactersDB[Name][spellID] = GetTime();
 					for frame, charName in pairs(NameplatesVisible) do
 						if (charName == Name) then
-							UpdateOnlyOneNameplate(frame);
+							UpdateOnlyOneNameplate(frame, charName);
 							break;
 						end
 					end
 				end
 			end
 			-- // resets
-			if (spellID == 11958 or spellID == 14185 or spellID == 108285) then	-- // I know it's "chinese" style, but it's really faster than tContains
+			if (spellID == 11958 or spellID == 14185 or spellID == 108285) then	-- // I know it's "chinese" style, but it's really faster than table lookup
 				if (eventType == "SPELL_CAST_SUCCESS") then
 					local Name = string_match(srcName, "[%P]+");
 					if (charactersDB[Name]) then
@@ -831,29 +835,29 @@ do
 					end
 					for frame, charName in pairs(NameplatesVisible) do
 						if (charName == Name) then
-							UpdateOnlyOneNameplate(frame);
+							UpdateOnlyOneNameplate(frame, charName);
 							break;
 						end
 					end
 				end
 			-- // warrior interrups fix
-			elseif (spellID == 6552) then
-				if (CDCache[102060] and eventType == "SPELL_CAST_SUCCESS") then
-					local Name = string_match(srcName, "[%P]+");
-					if (not charactersDB[Name]) then
-						charactersDB[Name] = {};
-					end
-					if ((charactersDB[Name][102060] and charactersDB[Name][102060] < 15) or not charactersDB[Name][102060]) then
-						charactersDB[Name][102060] = GetTime() + 25;
-						for frame, charName in pairs(NameplatesVisible) do
-							if (charName == Name) then
-								UpdateOnlyOneNameplate(frame);
-								break;
-							end
-						end
-					end
-				end
-			-- // warrior interrups fix
+			-- elseif (spellID == 6552) then
+				-- if (CDCache[102060] and eventType == "SPELL_CAST_SUCCESS") then
+					-- local Name = string_match(srcName, "[%P]+");
+					-- if (not charactersDB[Name]) then
+						-- charactersDB[Name] = {};
+					-- end
+					-- if (charactersDB[Name][102060] and GetTime() - charactersDB[Name][102060] < 15) then
+						-- charactersDB[Name][102060] = GetTime() + 25;
+						-- for frame, charName in pairs(NameplatesVisible) do
+							-- if (charName == Name) then
+								-- UpdateOnlyOneNameplate(frame, charName);
+								-- break;
+							-- end
+						-- end
+					-- end
+				-- end
+			-- // let's start cd of spellid:6552 if warrior use spellid:102060
 			elseif (spellID == 102060) then
 				if (CDCache[6552] and eventType == "SPELL_CAST_SUCCESS") then
 					local Name = string_match(srcName, "[%P]+");
@@ -863,7 +867,7 @@ do
 					charactersDB[Name][6552] = GetTime();
 					for frame, charName in pairs(NameplatesVisible) do
 						if (charName == Name) then
-							UpdateOnlyOneNameplate(frame);
+							UpdateOnlyOneNameplate(frame, charName);
 							break;
 						end
 					end
