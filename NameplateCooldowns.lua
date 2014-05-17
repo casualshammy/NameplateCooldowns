@@ -1,7 +1,7 @@
 ﻿------------------------------
 ------------ TODO ------------
 ------------------------------
--- 1. Fix warrior's shared CDs
+-- 
 ------------------------------
 
 local addonName, addonTable = ...;
@@ -552,8 +552,6 @@ do
 		local unitName = GetUnitNameForNameplate(frame);
 		UpdateOnlyOneNameplate(frame, unitName);
 		NameplatesVisible[frame] = unitName;
-		-- // todo
-		Print("Nameplate_OnShow", NameplatesVisible[frame]);
 	end
 	
 	function Nameplate_OnHide(frame)
@@ -594,11 +592,7 @@ do
 		frame.NCIcons = {};
 		frame.NCIconsCount = 0;	-- // it's faster than #frame.NCIcons
 		if (frame:IsVisible()) then
-			local unitName = GetUnitNameForNameplate(frame);
-			UpdateOnlyOneNameplate(frame, unitName);
-			NameplatesVisible[frame] = unitName;
-			-- // todo
-			Print("InitializeFrame", NameplatesVisible[frame]);
+			Nameplate_OnShow(frame);
 		end
 		frame:HookScript("OnShow", Nameplate_OnShow);
 		frame:HookScript("OnHide", Nameplate_OnHide);
@@ -832,33 +826,15 @@ do
 						for _, v in pairs(Resets[spellID]) do
 							charactersDB[Name][v] = nil;
 						end
-					end
-					for frame, charName in pairs(NameplatesVisible) do
-						if (charName == Name) then
-							UpdateOnlyOneNameplate(frame, charName);
-							break;
+						for frame, charName in pairs(NameplatesVisible) do
+							if (charName == Name) then
+								UpdateOnlyOneNameplate(frame, charName);
+								break;
+							end
 						end
 					end
 				end
-			-- // warrior interrups fix
-			-- elseif (spellID == 6552) then
-				-- if (CDCache[102060] and eventType == "SPELL_CAST_SUCCESS") then
-					-- local Name = string_match(srcName, "[%P]+");
-					-- if (not charactersDB[Name]) then
-						-- charactersDB[Name] = {};
-					-- end
-					-- if (charactersDB[Name][102060] and GetTime() - charactersDB[Name][102060] < 15) then
-						-- charactersDB[Name][102060] = GetTime() + 25;
-						-- for frame, charName in pairs(NameplatesVisible) do
-							-- if (charName == Name) then
-								-- UpdateOnlyOneNameplate(frame, charName);
-								-- break;
-							-- end
-						-- end
-					-- end
-				-- end
-			-- // let's start cd of spellid:6552 if warrior use spellid:102060
-			elseif (spellID == 102060) then
+			elseif (spellID == 102060) then	-- // let's start cd of spellid:6552 if warrior have used spellid:102060
 				if (CDCache[6552] and eventType == "SPELL_CAST_SUCCESS") then
 					local Name = string_match(srcName, "[%P]+");
 					if (not charactersDB[Name]) then
