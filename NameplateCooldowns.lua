@@ -389,36 +389,6 @@ local GUICreateButton;
 local Print;
 local deepcopy;
 
--- // todo
-function NCTest()
-	-- charactersDB["Новобранец армии Расколотого Солнца"] = {
-		-- [108194] = 4000000000,
-		-- [47528] = 4000000000,
-		-- [47476] = 4000000000,
-		-- [48707] = 4000000000,
-		-- [49576] = 4000000000,
-	-- };
-	-- charactersDB["Стрелок из армии Расколотого Солнца"] = {
-		-- [108194] = 4000000000,
-		-- [47528] = 4000000000,
-		-- [47476] = 4000000000,
-		-- [48707] = 4000000000,
-		-- [49576] = 4000000000,
-	-- };
-	-- charactersDB["Шкивокрут Ваффель"] = {
-		-- [108194] = 4000000000,
-		-- [47528] = 4000000000,
-		-- [47476] = 4000000000,
-		-- [48707] = 4000000000,
-		-- [49576] = 4000000000,
-	-- };
-	local usage1, calls1 = GetFunctionCPUUsage(Nameplate_OnShow, true);
-	print("Nameplate_OnShow:", usage1, calls1, math_ceil(usage1*1000/(calls1 == 0 and 1 or calls1)).."µs/call");
-	print("OnUpdate:", GetFunctionCPUUsage(OnUpdate, true));
-	print("COMBAT_LOG_EVENT_UNFILTERED:", GetFunctionCPUUsage(COMBAT_LOG_EVENT_UNFILTERED, true));
-end
-
-
 SLASH_NAMEPLATECOOLDOWNS1 = '/nc';
 function SlashCmdList.NAMEPLATECOOLDOWNS(msg, editBox)
     ShowGUI();
