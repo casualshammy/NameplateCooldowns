@@ -219,6 +219,9 @@ local CDs = {
 		[19236] = 120,				--"Desperate Prayer",
 		[724] = 180,				--"Lightwell",
 		[62618] = 180,				--"Power Word: Barrier",
+		[142723] = 600,				-- Void Shift (shadow),
+		[108968] = 300,				-- Void Shift (holy/dc),
+		[47788] = 180,				-- Guardian Spirit
 	},
 	[L["ROGUE"]] = {
 		[2094] = 90,				--"Blind",
