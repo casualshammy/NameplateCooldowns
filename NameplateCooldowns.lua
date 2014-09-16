@@ -34,8 +34,8 @@ local CDs = {
 	[L["HUNTER"]] = {
 		[19386] = 45,				--"Wyvern Sting",
 		[19263] = 180,				--"Deterrence",
-		[19503] = 30,				--"Scatter Shot",
-		[34490] = 24,				--"Silencing Shot",
+		
+		
 		[147362] = 24,				--"Counter Shot"
 		[120697] = 90,				--"Lynx Rush",
 		[120679] = 30,				--"Dire Beast",
@@ -49,26 +49,26 @@ local CDs = {
 		[19574] = 60,				--"Bestial Wrath",
 		[61685] = 25,				--"Charge",
 		[50519] = 60,				--"Sonic Blast",
-		[50245] = 40,				--"Pin",
+		
 		[50433] = 10,				--"Ankle Crack",
-		[26090] = 30,				--"Pummel",
-		[50541] = 60, 				--"Clench",
-		[91644] = 60,				--"Snatch",
-		[54706] = 40,				--"Vemom Web Spray",
-		[4167] = 40,				--"Web",
-		[50274] = 12,				--"Spore Cloud",
+		
+		
+		
+		
+		
+		
 		[90355] = 360,				--"Ancient Hysteria",
-		[90314] = 25,				--"Tailspin",
-		[50318] = 60,				--"Serenity Dust",
+		
+		
 		[90361] = 40,				--"Spirit Mend",
-		[50285] = 40, 				--"Dust Cloud",
-		[90327] = 40,				--"Lock Jaw",
-		[90337] = 60,				--"Bad Manner",
+		
+		
+		
 		[55709] = 480,				--"Heart of the Phoenix",
-		[53476] = 30,				--"Intervene",
+		
 		[53480] = 60,				--"Roar of Sacrifice",
 		[53478] = 360,				--"Last Stand",
-		[53517] = 180,				--"Roar of Recovery",
+		
 	},
 	[L["WARLOCK"]] = {
 		[6789] = 45,				--"Death Coil",
@@ -79,9 +79,7 @@ local CDs = {
 		[108359] = 120,				--"Dark Regeneration",
 		[108416] = 60,				--"Sacrificial Pact",
 		[30283] = 30,				--"Shadowfury",
-		[6229] = 30,				--"Shadow Ward",
 		[48020] = 30,				--"Demonic Circle: Teleport",
-		[91711] = 30,				--"Nether Ward",
 		[104773] = 120,				-- Unending Resolve
 	
 		[19647] = 24,				--"Spell Lock",
@@ -133,8 +131,8 @@ local CDs = {
 	[L["DRUID"]] = {
 		[78675] = 60,				--"Solar Beam",
 		[5211] = 50,				--"Bash",
-		[80964] = 15,				--"Skull Bash",
-		[80965] = 15,				--"Skull Bash",
+		
+		
 		[132469] = 30,				-- Тайфун
 		[124974] = 90,				--"Nature's Vigil",
 		[102359] = 30,				--"Mass Entanglement",
@@ -150,10 +148,9 @@ local CDs = {
 		[22570] = 10,				--"Maim",
 		[18562] = 15,				--"Swiftmend",
 		[48505] = 90,				--"Starfall",
-		[16689] = 60, 				--"Nature's Grasp",
+		
 		[740] = 480,				--"Tranquility",
 		[78674] = 15,				--"Starsurge",
-		[29166] = 180,				--"Innervate",
 	},
 	[L["MONK"]] = {
 		[116705] = 15, 				--Spear Hand Strike (interrupt)
@@ -166,7 +163,7 @@ local CDs = {
 		[115310] = 180,				--"Revival",
 		[122278] = 90, 				--"Dampen Harm",
 		[122783] = 90,				--"Diffuse Magic",
-		[117368] = 60,				--"Grapple Weapon",
+		
 		[116844] = 45,				--"Ring of Peace",
 		[116849] = 120,				--"Life Cocoon",
 		[137562] = 120,				--"Nimble Brew",
@@ -174,7 +171,7 @@ local CDs = {
 		[101545] = 25,				--"Flying Serpent Kick",
 		[116841] = 30,				--"Tiger's Lust",
 		[113656] = 25,				--"Fists of Fury",
-		[122057] = 35,				--"Clash",
+		
 	},
 	[L["PALADIN"]] = {
 		[853] = 60,					--"Hammer of Justice" (stun)
@@ -189,9 +186,9 @@ local CDs = {
 		[633] = 600,				--"Lay on Hands",
 		[1022] = 300,				--"Hand of Protection",
 		[498] = 60,					--"Divine Protection",
-		[54428] = 120,				--"Divine Plea",
+		
 		[6940] = 120,				--"Hand of Sacrifice",
-		[86669] = 180,				--"Guardian of Ancient Kings(Holy)",
+		
 		[31842] = 180,				--"Divine Favor",
 		[31821] = 180,				--"Devotion Aura",
 		[20066] = 15,				--"Repentance",
@@ -204,23 +201,23 @@ local CDs = {
 		[47585] = 105,				--"Dispersion",
 		[33206] = 180,				--"Pain Suppression",
 		[108920] = 30,				-- Void Tendrils
-		[108921] = 45,				-- Ментальный демон
+		
 		[112833] = 30,				-- Призрачный облик
 		[123040] = 60,				--"Mindbender",
-		[89485] = 45,				--"Inner Focus",
+		
 		[10060] = 120,				--"Power Infusion",
 		[88625] = 30,				--"Holy Word: Chastise",
 		[586] = 30,					--"Fade",
 		[112833] = 30,				--"Spectral Guise",
 		[6346] = 120,				--"Fear Ward",
-		[64901] = 360,				--"Hymn of Hope",
+		
 		[64843] = 180,				--"Divine Hymn",
 		[73325] = 90,				--"Leap of Faith",
 		[19236] = 120,				--"Desperate Prayer",
 		[724] = 180,				--"Lightwell",
 		[62618] = 180,				--"Power Word: Barrier",
-		[142723] = 600,				-- Void Shift (shadow),
-		[108968] = 300,				-- Void Shift (holy/dc),
+		
+		
 		[47788] = 180,				-- Guardian Spirit
 	},
 	[L["ROGUE"]] = {
@@ -228,14 +225,14 @@ local CDs = {
 		[1766] = 13,				--"Kick",
 		[31224] = 60,				--"Cloak of Shadows",
 		[1856] = 120,				-- Исчезновение
-		[121471] = 180,				--"Shadow Blades",
+		
 		[1776] = 10,				--"Gouge",
 		[2983] = 60,				--"Sprint",
 		[14185] = 300,				--"Preparation",
 		[36554] = 20,				--"Shadowstep",
 		[5277] = 120,				--"Evasion",
 		[408] = 20,					--"Kidney Shot",
-		[51722] = 60,				--"Dismantle",
+		
 		[76577] = 180,				--"Smoke Bomb",
 		[51690] = 120,				--"Killing Spree",
 		[51713] = 60, 				--"Shadow Dance",
@@ -255,7 +252,6 @@ local CDs = {
 		[32182] = 300,				--"Heroism",
 		[2825] = 300,				--"Bloodlust",
 		[51533] = 120,				--"Feral Spirit",
-		[16190] = 180,				--"Mana Tide Totem",
 		[30823] = 60,				--"Shamanistic Rage",
 		[2484] = 30,				--"Earthbind Totem",
 		[79206] = 120,				--"Spiritwalker's Grace",
@@ -274,7 +270,7 @@ local CDs = {
 		[107574] = 180,				--"Avatar",
 		[12292] = 60, 				--"Bloodbath",
 		[86346] = 20,				--"Colossus Smash",
-		[676] = 60,					--"Disarm",
+		
 		[5246] = 90,				--"Intimidating Shout",
 		[871] = 180,				--"Shield Wall",	
 		[118038] = 120,				--"Die by the Sword",
@@ -291,7 +287,6 @@ local Interrupts = {
 	47528,	-- Mind Freeze
 	80964,	-- Skull Bash (bear)
 	80965,	-- Skull Bash (cat)
-	34490,	-- Silencing Shot
 	2139,	-- Counterspell
 	96231,	-- Rebuke
 	15487,	-- Silence
@@ -404,6 +399,14 @@ do
 
 	function OnStartup()
 		InitializeDB();
+		-- remove non-existent spells
+		for _, k in pairs(CDs) do
+			for spellID in pairs(k) do
+				if (GetSpellLink(spellID) == nil) then
+					db.CDsTable[spellID] = nil;
+				end
+			end
+		end
 		for _, k in pairs(CDs) do
 			for spellID in pairs(k) do
 				if (db.CDsTable[spellID] == nil) then
