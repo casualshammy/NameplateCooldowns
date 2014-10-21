@@ -331,8 +331,8 @@ local NameplatesVisible = {};
 local GUIFrame;
 local EventFrame;
 local db;
-local gUI3MoP;
-local TidyPlates;
+local gUI3MoP = false;
+local TidyPlates = false;
 local ActualOnUpdate;
 local WorldFrameNumChildren = 0;
 local LocalPlayerFullName = UnitName("player").." - "..GetRealmName();
@@ -439,11 +439,17 @@ do
 
 	function CheckForAnotherAddons()
 		for i = 1, GetNumAddOns() do
-			local name, _, _, enabled = GetAddOnInfo(i);
-			if (name == "gUI-v3" and enabled) then
-				gUI3MoP = 1;
-			elseif (name == "TidyPlates" and enabled) then
-				TidyPlates = 1;
+			local name = GetAddOnInfo(i);
+			if (name == "gUI-v3") then
+				local enabled = GetAddOnEnableState(UnitName("player"), i) > 0;
+				if (enabled) then
+					gUI3MoP = true;
+				end
+			elseif (name == "TidyPlates") then
+				local enabled = GetAddOnEnableState(UnitName("player"), i) > 0;
+				if (enabled) then
+					TidyPlates = true;
+				end
 			end
 		end
 	end
