@@ -1174,7 +1174,7 @@ do
 			spellItem.Text = spellItem:CreateFontString(nil, "OVERLAY");
 			spellItem.Text:SetFont("Fonts\\FRIZQT__.TTF", 12, nil);
 			spellItem.Text:SetPoint("LEFT", 22, 0);
-			spellItem.Text:SetText(n.."  (ID: "..tostring(spellID)..")");
+			spellItem.Text:SetText(n); -- // .."  (ID: "..tostring(spellID)..")"
 			spellItem:EnableMouse(true);
 			
 			spellItem:SetScript("OnEnter", function(self, ...)
