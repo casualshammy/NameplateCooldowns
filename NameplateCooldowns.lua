@@ -544,9 +544,9 @@ do
 		if (TidyPlates or not gUI3MoP) then
 			local _, nameplateChild = f:GetChildren();
 			local name = nameplateChild:GetRegions();
-			return string_gsub(name:GetText(), '%(%*%)', '');
+			return string_gsub(name:GetText(), '%s?%(%*%)', '');
 		else
-			return string_gsub(f.name:GetText(), '%(%*%)', '');
+			return string_gsub(f.name:GetText(), '%s?%(%*%)', '');
 		end
 	end
 	
