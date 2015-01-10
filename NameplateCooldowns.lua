@@ -433,7 +433,7 @@ do
 
 	function InitializeDB()
 		if (NameplateCooldownsDB[LocalPlayerFullName] == nil) then
-			NameplateCooldownsDB[LocalPlayerFullName] = { CDsTable = {}, IconSize = 26, IconXOffset = 0, IconYOffset = 30 };
+			NameplateCooldownsDB[LocalPlayerFullName] = { CDsTable = {}, IconSize = 26, IconXOffset = 0, IconYOffset = 30, FullOpacityAlways = false };
 		end
 		db = NameplateCooldownsDB[LocalPlayerFullName];
 	end
@@ -498,7 +498,7 @@ end
 do
 
 	function AllocateIcon(frame)
-		local icon = CreateFrame("frame", nil, frame);
+		local icon = CreateFrame("frame", nil, db.FullOpacityAlways and WorldFrame or frame);
 		icon:SetWidth(db.IconSize);
 		icon:SetHeight(db.IconSize);
 		icon.texture = icon:CreateTexture(nil, "BORDER");
@@ -539,6 +539,12 @@ do
 	
 	function Nameplate_OnHide(frame)
 		NameplatesVisible[frame] = nil;
+		if (db.FullOpacityAlways) then
+			for index, icon in pairs(frame.NCIcons) do
+				icon:Hide();
+				icon.shown = nil;
+			end
+		end
 	end
 	
 	function GetUnitNameForNameplate(f)
@@ -842,6 +848,25 @@ end
 -------------------------------------------------------------------------------------------------
 do
 
+	local function GUICreateCheckBox(x, y, text, func, publicName)
+		local checkBox = CreateFrame("CheckButton", publicName, GUIFrame);
+		checkBox:SetHeight(20);
+		checkBox:SetWidth(20);
+		checkBox:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", x, y);
+		checkBox:SetNormalTexture("Interface\\Buttons\\UI-CheckBox-Up");
+		checkBox:SetPushedTexture("Interface\\Buttons\\UI-CheckBox-Down");
+		checkBox:SetHighlightTexture("Interface\\Buttons\\UI-CheckBox-Highlight");
+		checkBox:SetDisabledCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled");
+		checkBox:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check");
+		checkBox.Text = checkBox:CreateFontString(nil, "OVERLAY", "GameFontNormal");
+		checkBox.Text:SetPoint("LEFT", 20, 0);
+		checkBox.Text:SetText(text);
+		checkBox:EnableMouse(true);
+		checkBox:SetScript("OnClick", func);
+		checkBox:Hide();
+		return checkBox;
+	end
+
 	function ShowGUI()
 		if (not InCombatLockdown()) then
 			if (not GUIFrame) then
@@ -1060,6 +1085,12 @@ do
 		sliderIconYOffset.lowtext:SetText("-100");
 		sliderIconYOffset.hightext:SetText("100");
 		table.insert(GUIFrame.Categories[index], sliderIconYOffset);
+		
+		local checkBoxFullOpacityAlways = GUICreateCheckBox(130, -240, L["Display CD icons at full opacity (ReloadUI is required)"], function(this)
+			db.FullOpacityAlways = this:GetChecked();
+		end, "NC_GUI_General_CheckBoxFullOpacityAlways");
+		checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways);
+		table.insert(GUIFrame.Categories[index], checkBoxFullOpacityAlways);
 	end
 	
 	function GUICategory_2(index, value)

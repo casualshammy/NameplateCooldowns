@@ -20,6 +20,7 @@
 		["Value must be a number"] = "Value must be a number",
 		["Copy"] = "Copy",
 		["Delete"] = "Delete",
+		["Display CD icons at full opacity (ReloadUI is required)"] = "Display CD icons at full opacity (ReloadUI is required)",
 	},
 	["deDE"] = {
 		["Click on icon to enable/disable tracking"] = "Auf das icon klicken um die Anzeige umzuschalten",
@@ -42,6 +43,7 @@
 		["Profile '%s' has been successfully deleted"] = "Profil '%s' wurde erfolgreich gelöscht.",
 		["Unknown spell: %s"] = "Unbekannter Zauber: %s",
 		["Value must be a number"] = "Der Wert muss eine Zahl sein.",
+		["Display CD icons at full opacity (ReloadUI is required)"] = "Display CD icons at full opacity (ReloadUI is required)",
 	},
 	["ruRU"] = {
 		["Click on icon to enable/disable tracking"] = "Нажмите на иконку чтобы вкл/выкл отслеживание",
@@ -64,6 +66,7 @@
 		["Value must be a number"] = "Значение должно быть числом",
 		["Copy"] = "Скопировать",
 		["Delete"] = "Удалить",
+		["Display CD icons at full opacity (ReloadUI is required)"] = "Display CD icons at full opacity (ReloadUI is required)",
 	},
 	["esMX"] = {
 		["Click on icon to enable/disable tracking"] = "Click sobre el icono para habilitar/desactivar el hechizo.", -- Needs review
@@ -86,6 +89,7 @@
 		["Profile '%s' has been successfully deleted"] = "El perfil '%s' ha sido eliminado.", -- Needs review
 		["Unknown spell: %s"] = "Hechizo desconocido: %s", -- Needs review
 		["Value must be a number"] = "El valor debe ser un numero", -- Needs review
+		["Display CD icons at full opacity (ReloadUI is required)"] = "Display CD icons at full opacity (ReloadUI is required)",
 	},
 	["frFR"] = {
 		["Click on icon to enable/disable tracking"] = "Cliquez sur l'icone pour activer/désactiver le suivi", -- Needs review
@@ -108,6 +112,7 @@
 		["Profile '%s' has been successfully deleted"] = "Le profile '%s' a été effacé.", -- Needs review
 		["Unknown spell: %s"] = "Sort inconnu : %s", -- Needs review
 		["Value must be a number"] = "La valeur doit être un nombre", -- Needs review
+		["Display CD icons at full opacity (ReloadUI is required)"] = "Display CD icons at full opacity (ReloadUI is required)",
 	},
 	["esES"] = {
 		["Click on icon to enable/disable tracking"] = "Haz click para activar/desactivar seguimiento", -- Needs review
@@ -130,6 +135,7 @@
 		["Profile '%s' has been successfully deleted"] = "Perfil\"%s\" ha sido borrado con exito", -- Needs review
 		["Unknown spell: %s"] = "Hechizo desconocido: %s", -- Needs review
 		["Value must be a number"] = "El valor debe ser numerico", -- Needs review
+		["Display CD icons at full opacity (ReloadUI is required)"] = "Display CD icons at full opacity (ReloadUI is required)",
 	},
 	
 	["koKR"] = {},
