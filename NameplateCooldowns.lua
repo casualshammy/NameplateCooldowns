@@ -34,8 +34,6 @@ local CDs = {
 	[L["HUNTER"]] = {
 		[19386] = 45,				--"Wyvern Sting",
 		[19263] = 180,				--"Deterrence",
-		
-		
 		[147362] = 24,				--"Counter Shot"
 		[120697] = 90,				--"Lynx Rush",
 		[120679] = 30,				--"Dire Beast",
@@ -50,26 +48,12 @@ local CDs = {
 		[19574] = 60,				--"Bestial Wrath",
 		[61685] = 25,				--"Charge",
 		[50519] = 60,				--"Sonic Blast",
-		
 		[50433] = 10,				--"Ankle Crack",
-		
-		
-		
-		
-		
-		
 		[90355] = 360,				--"Ancient Hysteria",
-		
-		
 		[90361] = 40,				--"Spirit Mend",
-		
-		
-		
 		[55709] = 480,				--"Heart of the Phoenix",
-		
 		[53480] = 60,				--"Roar of Sacrifice",
 		[53478] = 360,				--"Last Stand",
-		
 	},
 	[L["WARLOCK"]] = {
 		[6789] = 45,				--"Death Coil",
@@ -82,7 +66,6 @@ local CDs = {
 		[30283] = 30,				--"Shadowfury",
 		[48020] = 30,				--"Demonic Circle: Teleport",
 		[104773] = 120,				-- Unending Resolve
-	
 		[19647] = 24,				--"Spell Lock",
 		[7812] = 60,				--"Sacrifice",
 		[89766] = 30,				--"Axe Toss"
@@ -109,7 +92,6 @@ local CDs = {
 		[11129] = 45,				--"Combustion",
 		[31661] = 20,				--"Dragon's Breath",
 		[1953] = 15,				-- Blink
-	
 		[33395] = 25,				--"Freeze",
 },
 	[L["DEATHKNIGHT"]] = {
@@ -133,7 +115,6 @@ local CDs = {
 		[78675] = 60,				--"Solar Beam",
 		[5211] = 50,				--"Bash",
 		[106839] = 15,				-- Skull Bash
-		
 		[132469] = 30,				-- Тайфун
 		[124974] = 90,				--"Nature's Vigil",
 		[102359] = 30,				--"Mass Entanglement",
@@ -149,7 +130,6 @@ local CDs = {
 		[22570] = 10,				--"Maim",
 		[18562] = 15,				--"Swiftmend",
 		[48505] = 90,				--"Starfall",
-		
 		[740] = 480,				--"Tranquility",
 		[78674] = 15,				--"Starsurge",
 	},
@@ -164,7 +144,6 @@ local CDs = {
 		[115310] = 180,				--"Revival",
 		[122278] = 90, 				--"Dampen Harm",
 		[122783] = 90,				--"Diffuse Magic",
-		
 		[116844] = 45,				--"Ring of Peace",
 		[116849] = 120,				--"Life Cocoon",
 		[137562] = 120,				--"Nimble Brew",
@@ -172,7 +151,6 @@ local CDs = {
 		[101545] = 25,				--"Flying Serpent Kick",
 		[116841] = 30,				--"Tiger's Lust",
 		[113656] = 25,				--"Fists of Fury",
-		
 	},
 	[L["PALADIN"]] = {
 		[853] = 60,					--"Hammer of Justice" (stun)
@@ -187,9 +165,7 @@ local CDs = {
 		[633] = 600,				--"Lay on Hands",
 		[1022] = 300,				--"Hand of Protection",
 		[498] = 60,					--"Divine Protection",
-		
 		[6940] = 120,				--"Hand of Sacrifice",
-		
 		[31842] = 180,				--"Divine Favor",
 		[31821] = 180,				--"Devotion Aura",
 		[20066] = 15,				--"Repentance",
@@ -202,23 +178,18 @@ local CDs = {
 		[47585] = 105,				--"Dispersion",
 		[33206] = 180,				--"Pain Suppression",
 		[108920] = 30,				-- Void Tendrils
-		
 		[112833] = 30,				-- Призрачный облик
 		[123040] = 60,				--"Mindbender",
-		
 		[10060] = 120,				--"Power Infusion",
 		[88625] = 30,				--"Holy Word: Chastise",
 		[586] = 30,					--"Fade",
 		[112833] = 30,				--"Spectral Guise",
 		[6346] = 120,				--"Fear Ward",
-		
 		[64843] = 180,				--"Divine Hymn",
 		[73325] = 90,				--"Leap of Faith",
 		[19236] = 120,				--"Desperate Prayer",
 		[724] = 180,				--"Lightwell",
 		[62618] = 180,				--"Power Word: Barrier",
-		
-		
 		[47788] = 180,				-- Guardian Spirit
 	},
 	[L["ROGUE"]] = {
@@ -226,14 +197,12 @@ local CDs = {
 		[1766] = 13,				--"Kick",
 		[31224] = 60,				--"Cloak of Shadows",
 		[1856] = 120,				-- Исчезновение
-		
 		[1776] = 10,				--"Gouge",
 		[2983] = 60,				--"Sprint",
 		[14185] = 300,				--"Preparation",
 		[36554] = 20,				--"Shadowstep",
 		[5277] = 120,				--"Evasion",
 		[408] = 20,					--"Kidney Shot",
-		
 		[76577] = 180,				--"Smoke Bomb",
 		[51690] = 120,				--"Killing Spree",
 		[51713] = 60, 				--"Shadow Dance",
@@ -271,7 +240,6 @@ local CDs = {
 		[107574] = 180,				--"Avatar",
 		[12292] = 60, 				--"Bloodbath",
 		[86346] = 20,				--"Colossus Smash",
-		
 		[5246] = 90,				--"Intimidating Shout",
 		[871] = 180,				--"Shield Wall",	
 		[118038] = 120,				--"Die by the Sword",
@@ -645,7 +613,7 @@ do
 end
 
 -------------------------------------------------------------------------------------------------
------ OnUpdate's
+----- OnUpdates
 -------------------------------------------------------------------------------------------------
 do
 
