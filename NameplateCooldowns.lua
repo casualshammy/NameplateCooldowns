@@ -1,7 +1,9 @@
 ﻿------------------------------
 ------------ TODO ------------
 ------------------------------
--- 
+-- 1. Implement borders option
+-- 2. Custom icons sorting?
+-- 3. Delete gUI3 support
 ------------------------------
 
 local addonName, addonTable = ...;
@@ -299,10 +301,10 @@ local Nameplates = {};
 local NameplatesVisible = {};
 local GUIFrame;
 local EventFrame;
+local TestFrame;
 local db;
 local gUI3MoP = false;
 local TidyPlates = false;
-local ActualOnUpdate;
 local WorldFrameNumChildren = 0;
 local LocalPlayerFullName = UnitName("player").." - "..GetRealmName();
 local teen_bold = "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf";
@@ -334,12 +336,16 @@ local CheckForNewNameplates;
 local FindNewNameplate;
 local InitializeFrame;
 local UpdateOnlyOneNameplate;
+local HideCDIcon;
+local ShowCDIcon;
 
 local OnUpdate;
-local OnUpdateTestMode;
 
 local PLAYER_ENTERING_WORLD;
 local COMBAT_LOG_EVENT_UNFILTERED;
+
+local EnableTestMode;
+local DisableTestMode;
 
 local ShowGUI;
 local InitializeGUI;
@@ -386,11 +392,10 @@ do
 		end
 		RebuildCache();
 		CheckForAnotherAddons();
-		ActualOnUpdate = OnUpdate;
 		EventFrame:SetScript("OnUpdate", function(self, elapsed)
 			ElapsedTimer = ElapsedTimer + elapsed;
 			if (ElapsedTimer >= 1) then
-				ActualOnUpdate();				
+				OnUpdate();				
 				ElapsedTimer = 0;
 			end
 		end);
@@ -466,24 +471,48 @@ end
 do
 
 	function AllocateIcon(frame)
-		local icon = CreateFrame("frame", nil, db.FullOpacityAlways and WorldFrame or frame);
-		icon:SetWidth(db.IconSize);
-		icon:SetHeight(db.IconSize);
-		icon.texture = icon:CreateTexture(nil, "BORDER");
-		icon.texture:SetAllPoints(icon);
-		icon.cooldown = icon:CreateFontString(nil, "OVERLAY");
-		icon.cooldown:SetTextColor(0.7, 1, 0);
-		icon.cooldown:SetAllPoints(icon);
-		icon.cooldown:SetFont(teen_bold, math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
-		icon.border = icon:CreateTexture(nil, "OVERLAY");
-		icon.border:SetTexture("Interface\\AddOns\\NameplateCooldowns\\media\\CooldownFrameBorder.tga");
-		icon.border:SetVertexColor(1, 0.35, 0);
-		icon.border:SetAllPoints(icon);
-		icon.border:Hide();
-		icon:SetPoint("TOPLEFT", frame, db.IconXOffset + frame.NCIconsCount * db.IconSize, db.IconYOffset);
-		icon:Hide();
+		if (not frame.NCFrame) then
+			frame.NCFrame = CreateFrame("frame", nil, db.FullOpacityAlways and WorldFrame or frame);
+			frame.NCFrame:SetWidth(db.IconSize);
+			frame.NCFrame:SetHeight(db.IconSize);
+			frame.NCFrame:SetPoint("TOPLEFT", frame, db.IconXOffset, db.IconYOffset);
+			frame.NCFrame:Show();
+		end
+		local texture = frame.NCFrame:CreateTexture(nil, "BORDER");
+		texture:SetPoint("LEFT", frame.NCFrame, frame.NCIconsCount * db.IconSize, 0);
+		texture:SetWidth(db.IconSize);
+		texture:SetHeight(db.IconSize);
+		texture:Hide();
+		texture.cooldown = frame.NCFrame:CreateFontString(nil, "OVERLAY");
+		texture.cooldown:SetTextColor(0.7, 1, 0);
+		texture.cooldown:SetAllPoints(texture);
+		texture.cooldown:SetFont(teen_bold, math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
+		texture.border = frame.NCFrame:CreateTexture(nil, "OVERLAY");
+		texture.border:SetTexture("Interface\\AddOns\\NameplateCooldowns\\media\\CooldownFrameBorder.tga");
+		texture.border:SetVertexColor(1, 0.35, 0);
+		texture.border:SetAllPoints(texture);
+		texture.border:Hide();
 		frame.NCIconsCount = frame.NCIconsCount + 1;
-		tinsert(frame.NCIcons, icon);
+		tinsert(frame.NCIcons, texture);
+	
+		-- local icon = CreateFrame("frame", nil, db.FullOpacityAlways and WorldFrame or frame);
+		-- icon:SetWidth(db.IconSize);
+		-- icon:SetHeight(db.IconSize);
+		-- icon.texture = icon:CreateTexture(nil, "BORDER");
+		-- icon.texture:SetAllPoints(icon);
+		-- icon.cooldown = icon:CreateFontString(nil, "OVERLAY");
+		-- icon.cooldown:SetTextColor(0.7, 1, 0);
+		-- icon.cooldown:SetAllPoints(icon);
+		-- icon.cooldown:SetFont(teen_bold, math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
+		-- icon.border = icon:CreateTexture(nil, "OVERLAY");
+		-- icon.border:SetTexture("Interface\\AddOns\\NameplateCooldowns\\media\\CooldownFrameBorder.tga");
+		-- icon.border:SetVertexColor(1, 0.35, 0);
+		-- icon.border:SetAllPoints(icon);
+		-- icon.border:Hide();
+		-- icon:SetPoint("TOPLEFT", frame, db.IconXOffset + frame.NCIconsCount * db.IconSize, db.IconYOffset);
+		-- icon:Hide();
+		-- frame.NCIconsCount = frame.NCIconsCount + 1;
+		-- tinsert(frame.NCIcons, icon);
 	end
 	
 	function ReallocateAllIcons()
@@ -503,15 +532,21 @@ do
 		local unitName = GetUnitNameForNameplate(frame);
 		UpdateOnlyOneNameplate(frame, unitName);
 		NameplatesVisible[frame] = unitName;
+		if (db.FullOpacityAlways and frame.NCFrame) then
+			frame.NCFrame:Show();
+			-- for index, icon in pairs(frame.NCIcons) do
+				-- HideCDIcon(icon);
+			-- end
+		end
 	end
 	
 	function Nameplate_OnHide(frame)
 		NameplatesVisible[frame] = nil;
-		if (db.FullOpacityAlways) then
-			for index, icon in pairs(frame.NCIcons) do
-				icon:Hide();
-				icon.shown = nil;
-			end
+		if (db.FullOpacityAlways and frame.NCFrame) then
+			frame.NCFrame:Hide();
+			-- for index, icon in pairs(frame.NCIcons) do
+				-- HideCDIcon(icon);
+			-- end
 		end
 	end
 	
@@ -568,7 +603,7 @@ do
 					end
 					local icon = frame.NCIcons[counter];
 					if (icon.spellID ~= spellID) then
-						icon.texture:SetTexture(TextureCache[spellID]);
+						icon:SetTexture(TextureCache[spellID]);
 						icon.spellID = spellID;
 					end
 					if (tContains(Interrupts, spellID)) then
@@ -594,8 +629,7 @@ do
 						icon.cooldown:SetText(math_ceil(remain));
 					end
 					if (not icon.shown) then
-						icon:Show();
-						icon.shown = 1;
+						ShowCDIcon(icon);
 					end
 					counter = counter + 1;
 				end
@@ -604,10 +638,34 @@ do
 		for k = counter, frame.NCIconsCount do
 			local icon = frame.NCIcons[k];
 			if (icon.shown) then
-				icon:Hide();
-				icon.shown = nil;
+				HideCDIcon(icon);
 			end
 		end
+	end
+	
+	NC = function()
+		local usage1, calls1 = GetFunctionCPUUsage(HideCDIcon, true);
+		print("HideCDIcon:", usage1, calls1, math_ceil(usage1*1000/(calls1 == 0 and 1 or calls1)).."µs/call");
+		
+		local usage2, calls2 = GetFunctionCPUUsage(ShowCDIcon, true);
+		print("ShowCDIcon:", usage2, calls2, math_ceil(usage2*1000/(calls2 == 0 and 1 or calls2)).."µs/call");
+		
+		local usage3, calls3 = GetFunctionCPUUsage(OnUpdate, true);
+		print("OnUpdate:", usage3, calls3, math_ceil(usage3*1000/(calls3 == 0 and 1 or calls3)).."µs/call");
+	end
+		
+	function HideCDIcon(icon)
+		icon.border:Hide();
+		icon.borderState = nil;
+		icon.cooldown:Hide();
+		icon:Hide();
+		icon.shown = false;
+	end
+	
+	function ShowCDIcon(icon)
+		icon.cooldown:Show();
+		icon:Show();
+		icon.shown = true;
 	end
 	
 end
@@ -635,7 +693,7 @@ do
 						local icon = frame.NCIcons[counter];
 						-- // setting texture if need
 						if (icon.spellID ~= spellID) then
-							icon.texture:SetTexture(TextureCache[spellID]);
+							icon:SetTexture(TextureCache[spellID]);
 							icon.spellID = spellID;
 						end
 						-- // setting up border if need
@@ -664,8 +722,7 @@ do
 						end
 						-- // show icon if need
 						if (not icon.shown) then
-							icon:Show();
-							icon.shown = 1;
+							ShowCDIcon(icon);
 						end
 						counter = counter + 1;
 					else
@@ -675,72 +732,12 @@ do
 			end
 			for k = counter, frame.NCIconsCount do
 				if (frame.NCIcons[k].shown) then
-					frame.NCIcons[k]:Hide();
-					frame.NCIcons[k].shown = nil;
+					HideCDIcon(frame.NCIcons[k]);
 				end
 			end
 		end
 	end
-
-	function OnUpdateTestMode()
-		CheckForNewNameplates();
-		for frame, unitName in pairs(NameplatesVisible) do
-			----  test  ----
-			local testTable = charactersDB[unitName];
-			----  test  ----
-			local counter = 1;
-			for i = 1, 3 do
-				if (counter > frame.NCIconsCount) then
-					AllocateIcon(frame);
-				end
-				local icon = frame.NCIcons[counter];
-				local spellID = (i == 1 and 42292) or (i == 2 and 2139) or (i == 3 and 108194);
-				if (icon.spellID ~= spellID) then
-					icon.texture:SetTexture((spellID == 42292 and TextureCache[42292]) or select(3, GetSpellInfo(spellID)));
-					icon.spellID = spellID;
-				end
-				if (i ~= 1) then
-					local n = tonumber(icon.cooldown:GetText());
-					if (n == nil or n <= 0 or n > 30) then
-						icon.cooldown:SetText("30");
-					else
-						icon.cooldown:SetText(tostring(n - 1));
-					end
-				else
-					icon.cooldown:SetText("2m");
-				end
-				-- // setting up border if need
-				if (tContains(Interrupts, spellID)) then
-					if (icon.borderState ~= 1) then
-						icon.border:SetVertexColor(1, 0.35, 0);
-						icon.border:Show();
-						icon.borderState = 1;
-					end
-				elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then -- // I know it's "chinese" coding style, but it's really faster than table lookup
-					if (icon.borderState ~= 2) then
-						icon.border:SetVertexColor(1, 0.843, 0);
-						icon.border:Show();
-						icon.borderState = 2;
-					end
-				elseif (icon.borderState ~= nil) then
-					icon.border:Hide();
-					icon.borderState = nil;
-				end
-				if (not icon.shown) then
-					icon:Show();
-					icon.shown = 1;
-				end
-				counter = counter + 1;
-			end
-			for k = counter, frame.NCIconsCount do
-				if (frame.NCIcons[k].shown) then
-					frame.NCIcons[k]:Hide();
-					frame.NCIcons[k].shown = nil;
-				end
-			end
-		end
-	end
-
+	
 end
 
 -------------------------------------------------------------------------------------------------
@@ -809,6 +806,58 @@ do
 		end
 	end
 
+end
+
+-------------------------------------------------------------------------------------------------
+----- Test mode
+-------------------------------------------------------------------------------------------------
+do
+
+	local _t = 0;
+	local _charactersDB;
+	local _spellIDs = {2139, 108194};
+	
+	local function refreshCDs()
+		local cTime = GetTime();
+		for _, unitName in pairs(NameplatesVisible) do
+			if (not charactersDB[unitName]) then
+				charactersDB[unitName] = {};
+			end
+			charactersDB[unitName][42292] = cTime; -- // 2m test
+			for _, spellID in pairs(_spellIDs) do
+				if (not charactersDB[unitName][spellID]) then
+					charactersDB[unitName][spellID] = cTime;
+				else
+					if (cTime - charactersDB[unitName][spellID] > CDCache[spellID]) then
+						charactersDB[unitName][spellID] = cTime;
+					end
+				end
+			end
+		end
+	end
+	
+	function EnableTestMode()
+		_charactersDB = deepcopy(charactersDB);
+		if (not TestFrame) then
+			TestFrame = CreateFrame("frame");
+		end
+		TestFrame:SetScript("OnUpdate", function(self, elapsed)
+			_t = _t + elapsed;
+			if (_t >= 1) then
+				refreshCDs();
+				_t = 0;
+			end
+		end);
+		refreshCDs(); 	-- // for instant start
+		OnUpdate();		-- // for instant start
+	end
+	
+	function DisableTestMode()
+		TestFrame:SetScript("OnUpdate", nil);
+		charactersDB = deepcopy(_charactersDB);
+		OnUpdate();		-- // for instant start
+	end
+	
 end
 
 -------------------------------------------------------------------------------------------------
@@ -943,13 +992,11 @@ do
 		buttonSwitchTestMode:SetHeight(40);
 		buttonSwitchTestMode:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 130, -40);
 		buttonSwitchTestMode:SetScript("OnClick", function(self, ...)
-			if (self.Text:GetText() == L["Enable test mode (need at least one visible nameplate)"]) then
-				ActualOnUpdate = OnUpdateTestMode;
-				ActualOnUpdate();
+			if (not TestFrame or not TestFrame:GetScript("OnUpdate")) then
+				EnableTestMode();
 				self.Text:SetText(L["Disable test mode"]);
 			else
-				ActualOnUpdate = OnUpdate;
-				ActualOnUpdate();
+				DisableTestMode();
 				self.Text:SetText(L["Enable test mode (need at least one visible nameplate)"]);
 			end
 		end);

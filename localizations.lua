@@ -66,7 +66,7 @@
 		["Value must be a number"] = "Значение должно быть числом",
 		["Copy"] = "Скопировать",
 		["Delete"] = "Удалить",
-		["Display CD icons at full opacity (ReloadUI is required)"] = "Display CD icons at full opacity (ReloadUI is required)",
+		["Display CD icons at full opacity (ReloadUI is required)"] = "Always display CD icons at full opacity (ReloadUI is needed)",
 	},
 	["esMX"] = {
 		["Click on icon to enable/disable tracking"] = "Click sobre el icono para habilitar/desactivar el hechizo.", -- Needs review
