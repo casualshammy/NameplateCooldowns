@@ -1,12 +1,11 @@
 ﻿------------------------------
 ------------ TODO ------------
 ------------------------------
--- 1. Implement borders option
--- 2. Custom icons sorting?
--- 3. Delete gUI3 support
+-- Custom icons sorting?
+-- Delete gUI3 support
 ------------------------------
 
-local addonName, addonTable = ...;
+local _, addonTable = ...;
 local L = addonTable.L;
 
 local CDs = {
@@ -307,7 +306,7 @@ local gUI3MoP = false;
 local TidyPlates = false;
 local WorldFrameNumChildren = 0;
 local LocalPlayerFullName = UnitName("player").." - "..GetRealmName();
-local teen_bold = "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf";
+local font = "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf";
 
 local _G = _G;
 local pairs = pairs;
@@ -406,7 +405,22 @@ do
 
 	function InitializeDB()
 		if (NameplateCooldownsDB[LocalPlayerFullName] == nil) then
-			NameplateCooldownsDB[LocalPlayerFullName] = { CDsTable = {}, IconSize = 26, IconXOffset = 0, IconYOffset = 30, FullOpacityAlways = false };
+			NameplateCooldownsDB[LocalPlayerFullName] = { CDsTable = {}, IconSize = 26, IconXOffset = 0, IconYOffset = 30 };
+		end
+		if (NameplateCooldownsDB[LocalPlayerFullName].FullOpacityAlways == nil) then
+			NameplateCooldownsDB[LocalPlayerFullName].FullOpacityAlways = false;
+		end
+		if (NameplateCooldownsDB[LocalPlayerFullName].ShowBorderTrinkets == nil) then
+			NameplateCooldownsDB[LocalPlayerFullName].ShowBorderTrinkets = true;
+		end
+		if (NameplateCooldownsDB[LocalPlayerFullName].ShowBorderInterrupts == nil) then
+			NameplateCooldownsDB[LocalPlayerFullName].ShowBorderInterrupts = true;
+		end
+		if (NameplateCooldownsDB[LocalPlayerFullName].BorderInterruptsColor == nil) then
+			NameplateCooldownsDB[LocalPlayerFullName].BorderInterruptsColor = {1, 0.35, 0};
+		end
+		if (NameplateCooldownsDB[LocalPlayerFullName].BorderTrinketsColor == nil) then
+			NameplateCooldownsDB[LocalPlayerFullName].BorderTrinketsColor = {1, 0.843, 0};
 		end
 		db = NameplateCooldownsDB[LocalPlayerFullName];
 	end
@@ -486,7 +500,7 @@ do
 		texture.cooldown = frame.NCFrame:CreateFontString(nil, "OVERLAY");
 		texture.cooldown:SetTextColor(0.7, 1, 0);
 		texture.cooldown:SetAllPoints(texture);
-		texture.cooldown:SetFont(teen_bold, math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
+		texture.cooldown:SetFont(font, math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
 		texture.border = frame.NCFrame:CreateTexture(nil, "OVERLAY");
 		texture.border:SetTexture("Interface\\AddOns\\NameplateCooldowns\\media\\CooldownFrameBorder.tga");
 		texture.border:SetVertexColor(1, 0.35, 0);
@@ -494,37 +508,27 @@ do
 		texture.border:Hide();
 		frame.NCIconsCount = frame.NCIconsCount + 1;
 		tinsert(frame.NCIcons, texture);
-	
-		-- local icon = CreateFrame("frame", nil, db.FullOpacityAlways and WorldFrame or frame);
-		-- icon:SetWidth(db.IconSize);
-		-- icon:SetHeight(db.IconSize);
-		-- icon.texture = icon:CreateTexture(nil, "BORDER");
-		-- icon.texture:SetAllPoints(icon);
-		-- icon.cooldown = icon:CreateFontString(nil, "OVERLAY");
-		-- icon.cooldown:SetTextColor(0.7, 1, 0);
-		-- icon.cooldown:SetAllPoints(icon);
-		-- icon.cooldown:SetFont(teen_bold, math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
-		-- icon.border = icon:CreateTexture(nil, "OVERLAY");
-		-- icon.border:SetTexture("Interface\\AddOns\\NameplateCooldowns\\media\\CooldownFrameBorder.tga");
-		-- icon.border:SetVertexColor(1, 0.35, 0);
-		-- icon.border:SetAllPoints(icon);
-		-- icon.border:Hide();
-		-- icon:SetPoint("TOPLEFT", frame, db.IconXOffset + frame.NCIconsCount * db.IconSize, db.IconYOffset);
-		-- icon:Hide();
-		-- frame.NCIconsCount = frame.NCIconsCount + 1;
-		-- tinsert(frame.NCIcons, icon);
 	end
 	
-	function ReallocateAllIcons()
+	function ReallocateAllIcons(clearSpells)
 		for frame in pairs(Nameplates) do
-			local counter = 0;
-			for _, icon in pairs(frame.NCIcons) do
-				icon:SetWidth(db.IconSize);
-				icon:SetHeight(db.IconSize);
-				icon:SetPoint("TOPLEFT", frame, db.IconXOffset + counter * db.IconSize, db.IconYOffset);
-				icon.cooldown:SetFont(teen_bold, math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
-				counter = counter + 1;
+			if (frame.NCFrame) then
+				frame.NCFrame:SetPoint("TOPLEFT", frame, db.IconXOffset, db.IconYOffset);
+				local counter = 0;
+				for _, icon in pairs(frame.NCIcons) do
+					icon:SetWidth(db.IconSize);
+					icon:SetHeight(db.IconSize);
+					icon:SetPoint("LEFT", frame.NCFrame, counter * db.IconSize, 0);
+					icon.cooldown:SetFont(font, math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
+					if (clearSpells) then
+						HideCDIcon(icon);
+					end
+					counter = counter + 1;
+				end
 			end
+		end
+		if (clearSpells) then
+			OnUpdate();
 		end
 	end
 	
@@ -605,22 +609,22 @@ do
 					if (icon.spellID ~= spellID) then
 						icon:SetTexture(TextureCache[spellID]);
 						icon.spellID = spellID;
-					end
-					if (tContains(Interrupts, spellID)) then
-						if (icon.borderState ~= 1) then
-							icon.border:SetVertexColor(1, 0.35, 0);
-							icon.border:Show();
-							icon.borderState = 1;
+						if (db.ShowBorderInterrupts and tContains(Interrupts, spellID)) then
+							if (icon.borderState ~= 1) then
+								icon.border:SetVertexColor(unpack(db.BorderInterruptsColor));
+								icon.border:Show();
+								icon.borderState = 1;
+							end
+						elseif (db.ShowBorderTrinkets and (spellID == 42292 or spellID == 59752 or spellID == 7744)) then
+							if (icon.borderState ~= 2) then
+								icon.border:SetVertexColor(unpack(db.BorderTrinketsColor));
+								icon.border:Show();
+								icon.borderState = 2;
+							end
+						elseif (icon.borderState ~= nil) then
+							icon.border:Hide();
+							icon.borderState = nil;
 						end
-					elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then
-						if (icon.borderState ~= 2) then
-							icon.border:SetVertexColor(1, 0.843, 0);
-							icon.border:Show();
-							icon.borderState = 2;
-						end
-					elseif (icon.borderState ~= nil) then
-						icon.border:Hide();
-						icon.borderState = nil;
 					end
 					local remain = duration - last;
 					if (remain >= 60) then
@@ -643,6 +647,7 @@ do
 		end
 	end
 	
+	-- // todo: delete this function
 	NC = function()
 		local usage1, calls1 = GetFunctionCPUUsage(HideCDIcon, true);
 		print("HideCDIcon:", usage1, calls1, math_ceil(usage1*1000/(calls1 == 0 and 1 or calls1)).."µs/call");
@@ -653,13 +658,14 @@ do
 		local usage3, calls3 = GetFunctionCPUUsage(OnUpdate, true);
 		print("OnUpdate:", usage3, calls3, math_ceil(usage3*1000/(calls3 == 0 and 1 or calls3)).."µs/call");
 	end
-		
+	
 	function HideCDIcon(icon)
 		icon.border:Hide();
 		icon.borderState = nil;
 		icon.cooldown:Hide();
 		icon:Hide();
 		icon.shown = false;
+		icon.spellID = 0;
 	end
 	
 	function ShowCDIcon(icon)
@@ -695,23 +701,23 @@ do
 						if (icon.spellID ~= spellID) then
 							icon:SetTexture(TextureCache[spellID]);
 							icon.spellID = spellID;
-						end
-						-- // setting up border if need
-						if (tContains(Interrupts, spellID)) then
-							if (icon.borderState ~= 1) then
-								icon.border:SetVertexColor(1, 0.35, 0);
-								icon.border:Show();
-								icon.borderState = 1;
+							-- // trinkets and interrupts border
+							if (db.ShowBorderInterrupts and tContains(Interrupts, spellID)) then
+								if (icon.borderState ~= 1) then
+									icon.border:SetVertexColor(unpack(db.BorderInterruptsColor)); -- // 1, 0.35, 0
+									icon.border:Show();
+									icon.borderState = 1;
+								end
+							elseif (db.ShowBorderTrinkets and (spellID == 42292 or spellID == 59752 or spellID == 7744)) then
+								if (icon.borderState ~= 2) then
+									icon.border:SetVertexColor(unpack(db.BorderTrinketsColor)); -- // 1, 0.843, 0
+									icon.border:Show();
+									icon.borderState = 2;
+								end
+							elseif (icon.borderState ~= nil) then
+								icon.border:Hide();
+								icon.borderState = nil;
 							end
-						elseif (spellID == 42292 or spellID == 59752 or spellID == 7744) then -- // I know it's "chinese" coding style, but it's really faster than table lookup
-							if (icon.borderState ~= 2) then
-								icon.border:SetVertexColor(1, 0.843, 0);	-- // 2/3
-								icon.border:Show();
-								icon.borderState = 2;
-							end
-						elseif (icon.borderState ~= nil) then
-							icon.border:Hide();
-							icon.borderState = nil;
 						end
 						-- // setting text
 						local remain = duration - last;
@@ -815,7 +821,7 @@ do
 
 	local _t = 0;
 	local _charactersDB;
-	local _spellIDs = {2139, 108194};
+	local _spellIDs = {2139, 108194, 100};
 	
 	local function refreshCDs()
 		local cTime = GetTime();
@@ -843,7 +849,7 @@ do
 		end
 		TestFrame:SetScript("OnUpdate", function(self, elapsed)
 			_t = _t + elapsed;
-			if (_t >= 1) then
+			if (_t >= 2) then
 				refreshCDs();
 				_t = 0;
 			end
@@ -881,6 +887,48 @@ do
 		checkBox:EnableMouse(true);
 		checkBox:SetScript("OnClick", func);
 		checkBox:Hide();
+		return checkBox;
+	end
+	
+	local function GUICreateCheckBoxWithColorPicker(publicName, x, y, text, checkedChangedCallback)
+		local checkBox = GUICreateCheckBox(x, y, text, checkedChangedCallback, publicName);
+		checkBox.Text:SetPoint("LEFT", 40, 0);
+		
+		checkBox.ColorButton = CreateFrame("Button", nil, checkBox);
+		checkBox.ColorButton:SetPoint("LEFT", 19, 0);
+		checkBox.ColorButton:SetWidth(20);
+		checkBox.ColorButton:SetHeight(20);
+		checkBox.ColorButton:Hide();
+
+		checkBox.ColorButton:EnableMouse(true);
+
+		checkBox.ColorButton.colorSwatch = checkBox.ColorButton:CreateTexture(nil, "OVERLAY");
+		checkBox.ColorButton.colorSwatch:SetWidth(19);
+		checkBox.ColorButton.colorSwatch:SetHeight(19);
+		checkBox.ColorButton.colorSwatch:SetTexture("Interface\\ChatFrame\\ChatFrameColorSwatch");
+		checkBox.ColorButton.colorSwatch:SetPoint("LEFT");
+		checkBox.ColorButton.SetColor = checkBox.ColorButton.colorSwatch.SetVertexColor;
+
+		checkBox.ColorButton.texture = checkBox.ColorButton:CreateTexture(nil, "BACKGROUND");
+		checkBox.ColorButton.texture:SetWidth(16);
+		checkBox.ColorButton.texture:SetHeight(16);
+		checkBox.ColorButton.texture:SetTexture(1, 1, 1);
+		checkBox.ColorButton.texture:SetPoint("CENTER", checkBox.ColorButton.colorSwatch);
+		checkBox.ColorButton.texture:Show();
+
+		checkBox.ColorButton.checkers = checkBox.ColorButton:CreateTexture(nil, "BACKGROUND");
+		checkBox.ColorButton.checkers:SetWidth(14);
+		checkBox.ColorButton.checkers:SetHeight(14);
+		checkBox.ColorButton.checkers:SetTexture("Tileset\\Generic\\Checkers");
+		checkBox.ColorButton.checkers:SetTexCoord(.25, 0, 0.5, .25);
+		checkBox.ColorButton.checkers:SetDesaturated(true);
+		checkBox.ColorButton.checkers:SetVertexColor(1, 1, 1, 0.75);
+		checkBox.ColorButton.checkers:SetPoint("CENTER", checkBox.ColorButton.colorSwatch);
+		checkBox.ColorButton.checkers:Show();
+		
+		checkBox:HookScript("OnShow", function(self) self.ColorButton:Show(); end);
+		checkBox:HookScript("OnHide", function(self) self.ColorButton:Hide(); end);
+		
 		return checkBox;
 	end
 
@@ -1010,7 +1058,7 @@ do
 		sliderIconSize.slider:SetScript("OnValueChanged", function(self, value)
 			sliderIconSize.editbox:SetText(tostring(math_ceil(value)));
 			db.IconSize = math_ceil(value);
-			ReallocateAllIcons();
+			ReallocateAllIcons(false);
 		end);
 		sliderIconSize.editbox:SetText(tostring(db.IconSize));
 		sliderIconSize.editbox:SetScript("OnEnterPressed", function(self, value)
@@ -1043,7 +1091,7 @@ do
 		sliderIconXOffset.slider:SetScript("OnValueChanged", function(self, value)
 			sliderIconXOffset.editbox:SetText(tostring(math_ceil(value)));
 			db.IconXOffset = math_ceil(value);
-			ReallocateAllIcons();
+			ReallocateAllIcons(false);
 		end);
 		sliderIconXOffset.editbox:SetText(tostring(db.IconXOffset));
 		sliderIconXOffset.editbox:SetScript("OnEnterPressed", function(self, value)
@@ -1076,7 +1124,7 @@ do
 		sliderIconYOffset.slider:SetScript("OnValueChanged", function(self, value)
 			sliderIconYOffset.editbox:SetText(tostring(math_ceil(value)));
 			db.IconYOffset = math_ceil(value);
-			ReallocateAllIcons();
+			ReallocateAllIcons(false);
 		end);
 		sliderIconYOffset.editbox:SetText(tostring(db.IconYOffset));
 		sliderIconYOffset.editbox:SetScript("OnEnterPressed", function(self, value)
@@ -1106,6 +1154,62 @@ do
 		end, "NC_GUI_General_CheckBoxFullOpacityAlways");
 		checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways);
 		table.insert(GUIFrame.Categories[index], checkBoxFullOpacityAlways);
+		
+		-- // todo: localization
+		local checkBoxBorderTrinkets = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderTrinkets", 130, -270, "Show border around trinkets", function(this)
+			db.ShowBorderTrinkets = this:GetChecked();
+			ReallocateAllIcons(true);
+		end);
+		checkBoxBorderTrinkets:SetChecked(db.ShowBorderTrinkets);
+		checkBoxBorderTrinkets.ColorButton.colorSwatch:SetVertexColor(unpack(db.BorderTrinketsColor));
+		checkBoxBorderTrinkets.ColorButton:SetScript("OnClick", function()
+			ColorPickerFrame:Hide();
+			local function callback(restore)
+				local r, g, b;
+				if (restore) then
+					r, g, b = unpack(restore);
+				else
+					r, g, b = ColorPickerFrame:GetColorRGB();
+				end
+				db.BorderTrinketsColor = {r, g, b};
+				checkBoxBorderTrinkets.ColorButton.colorSwatch:SetVertexColor(unpack(db.BorderTrinketsColor));
+				ReallocateAllIcons(true);
+			end
+			ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = callback, callback, callback;
+			ColorPickerFrame:SetColorRGB(unpack(db.BorderTrinketsColor));
+			ColorPickerFrame.hasOpacity = false;
+			ColorPickerFrame.previousValues = { unpack(db.BorderTrinketsColor) };
+			ColorPickerFrame:Show();
+		end);
+		table.insert(GUIFrame.Categories[index], checkBoxBorderTrinkets);
+		
+		-- // todo: localization
+		local checkBoxBorderInterrupts = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderInterrupts", 130, -300, "Show border around interrupts", function(this)
+			db.ShowBorderInterrupts = this:GetChecked();
+			ReallocateAllIcons(true);
+		end);
+		checkBoxBorderInterrupts:SetChecked(db.ShowBorderInterrupts);
+		checkBoxBorderInterrupts.ColorButton.colorSwatch:SetVertexColor(unpack(db.BorderInterruptsColor));
+		checkBoxBorderInterrupts.ColorButton:SetScript("OnClick", function()
+			ColorPickerFrame:Hide();
+			local function callback(restore)
+				local r, g, b;
+				if (restore) then
+					r, g, b = unpack(restore);
+				else
+					r, g, b = ColorPickerFrame:GetColorRGB();
+				end
+				db.BorderInterruptsColor = {r, g, b};
+				checkBoxBorderInterrupts.ColorButton.colorSwatch:SetVertexColor(unpack(db.BorderInterruptsColor));
+				ReallocateAllIcons(true);
+			end
+			ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = callback, callback, callback;
+			ColorPickerFrame:SetColorRGB(unpack(db.BorderInterruptsColor));
+			ColorPickerFrame.hasOpacity = false;
+			ColorPickerFrame.previousValues = { unpack(db.BorderInterruptsColor) };
+			ColorPickerFrame:Show();
+		end);
+		table.insert(GUIFrame.Categories[index], checkBoxBorderInterrupts);
 	end
 	
 	function GUICategory_2(index, value)
