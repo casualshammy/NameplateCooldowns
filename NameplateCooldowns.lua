@@ -2,7 +2,7 @@
 ------------ TODO ------------
 ------------------------------
 -- Custom icons sorting?
--- Delete gUI3 support
+-- Find universal font for options window
 ------------------------------
 
 local _, addonTable = ...;
@@ -302,8 +302,6 @@ local GUIFrame;
 local EventFrame;
 local TestFrame;
 local db;
-local gUI3MoP = false;
-local TidyPlates = false;
 local WorldFrameNumChildren = 0;
 local LocalPlayerFullName = UnitName("player").." - "..GetRealmName();
 local font = "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf";
@@ -322,7 +320,6 @@ local math_ceil = ceil;
 
 local OnStartup;
 local InitializeDB;
-local CheckForAnotherAddons;
 local RebuildCache;
 local AddButtonToBlizzOptions;
 
@@ -390,7 +387,6 @@ do
 			end
 		end
 		RebuildCache();
-		CheckForAnotherAddons();
 		EventFrame:SetScript("OnUpdate", function(self, elapsed)
 			ElapsedTimer = ElapsedTimer + elapsed;
 			if (ElapsedTimer >= 1) then
@@ -423,23 +419,6 @@ do
 			NameplateCooldownsDB[LocalPlayerFullName].BorderTrinketsColor = {1, 0.843, 0};
 		end
 		db = NameplateCooldownsDB[LocalPlayerFullName];
-	end
-
-	function CheckForAnotherAddons()
-		for i = 1, GetNumAddOns() do
-			local name = GetAddOnInfo(i);
-			if (name == "gUI-v3") then
-				local enabled = GetAddOnEnableState(UnitName("player"), i) > 0;
-				if (enabled) then
-					gUI3MoP = true;
-				end
-			elseif (name == "TidyPlates") then
-				local enabled = GetAddOnEnableState(UnitName("player"), i) > 0;
-				if (enabled) then
-					TidyPlates = true;
-				end
-			end
-		end
 	end
 	
 	function RebuildCache()
@@ -555,13 +534,9 @@ do
 	end
 	
 	function GetUnitNameForNameplate(f)
-		if (TidyPlates or not gUI3MoP) then
-			local _, nameplateChild = f:GetChildren();
-			local name = nameplateChild:GetRegions();
-			return string_gsub(name:GetText(), '%s?%(%*%)', '');
-		else
-			return string_gsub(f.name:GetText(), '%s?%(%*%)', '');
-		end
+		local _, nameplateChild = f:GetChildren();
+		local name = nameplateChild:GetRegions();
+		return string_gsub(name:GetText(), '%s?%(%*%)', '');
 	end
 	
 	function CheckForNewNameplates()
@@ -1149,14 +1124,13 @@ do
 		sliderIconYOffset.hightext:SetText("100");
 		table.insert(GUIFrame.Categories[index], sliderIconYOffset);
 		
-		local checkBoxFullOpacityAlways = GUICreateCheckBox(130, -240, L["Display CD icons at full opacity (ReloadUI is required)"], function(this)
+		local checkBoxFullOpacityAlways = GUICreateCheckBox(130, -240, L["Always display CD icons at full opacity (ReloadUI is needed)"], function(this)
 			db.FullOpacityAlways = this:GetChecked();
 		end, "NC_GUI_General_CheckBoxFullOpacityAlways");
 		checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways);
 		table.insert(GUIFrame.Categories[index], checkBoxFullOpacityAlways);
 		
-		-- // todo: localization
-		local checkBoxBorderTrinkets = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderTrinkets", 130, -270, "Show border around trinkets", function(this)
+		local checkBoxBorderTrinkets = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderTrinkets", 130, -270, L["Show border around trinkets"], function(this)
 			db.ShowBorderTrinkets = this:GetChecked();
 			ReallocateAllIcons(true);
 		end);
@@ -1183,8 +1157,7 @@ do
 		end);
 		table.insert(GUIFrame.Categories[index], checkBoxBorderTrinkets);
 		
-		-- // todo: localization
-		local checkBoxBorderInterrupts = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderInterrupts", 130, -300, "Show border around interrupts", function(this)
+		local checkBoxBorderInterrupts = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderInterrupts", 130, -300, L["Show border around interrupts"], function(this)
 			db.ShowBorderInterrupts = this:GetChecked();
 			ReallocateAllIcons(true);
 		end);
