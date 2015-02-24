@@ -2,7 +2,6 @@
 ------------ TODO ------------
 ------------------------------
 -- Custom icons sorting?
--- Find universal font for options window
 ------------------------------
 
 local _, addonTable = ...;
@@ -358,11 +357,6 @@ local GUICreateButton;
 local Print;
 local deepcopy;
 
-SLASH_NAMEPLATECOOLDOWNS1 = '/nc';
-function SlashCmdList.NAMEPLATECOOLDOWNS(msg, editBox)
-    ShowGUI();
-end
-
 -------------------------------------------------------------------------------------------------
 ----- Initialize
 -------------------------------------------------------------------------------------------------
@@ -396,6 +390,10 @@ do
 		end);
 		EventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 		AddButtonToBlizzOptions();
+		SLASH_NAMEPLATECOOLDOWNS1 = '/nc';
+		SlashCmdList["NAMEPLATECOOLDOWNS"] = function(msg, editBox)
+			ShowGUI();
+		end
 		OnStartup = nil;
 	end
 
@@ -623,16 +621,16 @@ do
 	end
 	
 	-- // todo: delete this function
-	NC = function()
-		local usage1, calls1 = GetFunctionCPUUsage(HideCDIcon, true);
-		print("HideCDIcon:", usage1, calls1, math_ceil(usage1*1000/(calls1 == 0 and 1 or calls1)).."µs/call");
+	-- NC = function()
+		-- local usage1, calls1 = GetFunctionCPUUsage(HideCDIcon, true);
+		-- print("HideCDIcon:", usage1, calls1, math_ceil(usage1*1000/(calls1 == 0 and 1 or calls1)).."µs/call");
 		
-		local usage2, calls2 = GetFunctionCPUUsage(ShowCDIcon, true);
-		print("ShowCDIcon:", usage2, calls2, math_ceil(usage2*1000/(calls2 == 0 and 1 or calls2)).."µs/call");
+		-- local usage2, calls2 = GetFunctionCPUUsage(ShowCDIcon, true);
+		-- print("ShowCDIcon:", usage2, calls2, math_ceil(usage2*1000/(calls2 == 0 and 1 or calls2)).."µs/call");
 		
-		local usage3, calls3 = GetFunctionCPUUsage(OnUpdate, true);
-		print("OnUpdate:", usage3, calls3, math_ceil(usage3*1000/(calls3 == 0 and 1 or calls3)).."µs/call");
-	end
+		-- local usage3, calls3 = GetFunctionCPUUsage(OnUpdate, true);
+		-- print("OnUpdate:", usage3, calls3, math_ceil(usage3*1000/(calls3 == 0 and 1 or calls3)).."µs/call");
+	-- end
 	
 	function HideCDIcon(icon)
 		icon.border:Hide();
@@ -932,7 +930,7 @@ do
 			edgeSize = 16,
 			insets = { left = 3, right = 3, top = 3, bottom = 3 } 
 		});
-		GUIFrame:SetBackdropColor(0.1,0.22,0.35,1);
+		GUIFrame:SetBackdropColor(0.25, 0.24, 0.32, 1);
 		GUIFrame:SetBackdropBorderColor(0.1,0.1,0.1,1);
 		GUIFrame:EnableMouse(1);
 		GUIFrame:SetMovable(1);
@@ -1261,7 +1259,8 @@ do
 			tile = true, edgeSize = 3, tileSize = 1,
 			insets = { left = 3, right = 3, top = 3, bottom = 3 }
 		});
-		scrollAreaBackground:SetBackdropColor(0.1, 0.22, 0.35, 0.8)
+		local bRed, bGreen, bBlue = GUIFrame:GetBackdropColor();
+		scrollAreaBackground:SetBackdropColor(bRed, bGreen, bBlue, 0.8)
 		scrollAreaBackground:SetBackdropBorderColor(0.3, 0.3, 0.5, 1);
 		scrollAreaBackground:Hide();
 		table.insert(GUIFrame.Categories[index], scrollAreaBackground);

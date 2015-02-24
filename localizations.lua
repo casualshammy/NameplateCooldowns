@@ -291,5 +291,5 @@ for _, localeTable in pairs(locales) do
 	end
 end
 
-local addonName, addonTable = ...;
+local _, addonTable = ...;
 addonTable.L = locales[GetLocale()];
