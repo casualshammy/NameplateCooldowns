@@ -250,6 +250,7 @@ local CDs = {
 		[12975] = 180,				--"Last Stand",
 		[114028] = 60,				-- Mass Spell Reflection
 		[18499] = 30,				-- Berserker Rage
+		[107570] = 30,				-- Storm Bolt
 	},
 };
 local Interrupts = {
