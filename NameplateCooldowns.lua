@@ -1060,7 +1060,7 @@ do
 		local sliderIconXOffset = GUICreateSlider(GUIFrame, 130, -170, 155, "NC_GUIGeneralSliderIconXOffset");
 		sliderIconXOffset.label:SetText(L["Icon X-coord offset"]);
 		sliderIconXOffset.slider:SetValueStep(1);
-		sliderIconXOffset.slider:SetMinMaxValues(-100, 100);
+		sliderIconXOffset.slider:SetMinMaxValues(-200, 200);
 		sliderIconXOffset.slider:SetValue(db.IconXOffset);
 		sliderIconXOffset.slider:SetScript("OnValueChanged", function(self, value)
 			sliderIconXOffset.editbox:SetText(tostring(math_ceil(value)));
@@ -1075,25 +1075,25 @@ do
 					sliderIconXOffset.editbox:SetText(tostring(db.IconXOffset));
 					Print(L["Value must be a number"]);
 				else
-					if (v > 100) then
-						v = 100;
+					if (v > 200) then
+						v = 200;
 					end
-					if (v < -100) then
-						v = -100;
+					if (v < -200) then
+						v = -200;
 					end
 					sliderIconXOffset.slider:SetValue(v);
 				end
 				sliderIconXOffset.editbox:ClearFocus();
 			end
 		end);
-		sliderIconXOffset.lowtext:SetText("-100");
-		sliderIconXOffset.hightext:SetText("100");
+		sliderIconXOffset.lowtext:SetText("-200");
+		sliderIconXOffset.hightext:SetText("200");
 		table.insert(GUIFrame.Categories[index], sliderIconXOffset);
 		
 		local sliderIconYOffset = GUICreateSlider(GUIFrame, 315, -170, 155, "NC_GUIGeneralSliderIconYOffset");
 		sliderIconYOffset.label:SetText(L["Icon Y-coord offset"]);
 		sliderIconYOffset.slider:SetValueStep(1);
-		sliderIconYOffset.slider:SetMinMaxValues(-100, 100);
+		sliderIconYOffset.slider:SetMinMaxValues(-200, 200);
 		sliderIconYOffset.slider:SetValue(db.IconYOffset);
 		sliderIconYOffset.slider:SetScript("OnValueChanged", function(self, value)
 			sliderIconYOffset.editbox:SetText(tostring(math_ceil(value)));
@@ -1108,19 +1108,19 @@ do
 					sliderIconYOffset.editbox:SetText(tostring(db.IconYOffset));
 					Print(L["Value must be a number"]);
 				else
-					if (v > 100) then
-						v = 100;
+					if (v > 200) then
+						v = 200;
 					end
-					if (v < -100) then
-						v = -100;
+					if (v < -200) then
+						v = -200;
 					end
 					sliderIconYOffset.slider:SetValue(v);
 				end
 				sliderIconYOffset.editbox:ClearFocus();
 			end
 		end);
-		sliderIconYOffset.lowtext:SetText("-100");
-		sliderIconYOffset.hightext:SetText("100");
+		sliderIconYOffset.lowtext:SetText("-200");
+		sliderIconYOffset.hightext:SetText("200");
 		table.insert(GUIFrame.Categories[index], sliderIconYOffset);
 		
 		local checkBoxFullOpacityAlways = GUICreateCheckBox(130, -240, L["Always display CD icons at full opacity (ReloadUI is needed)"], function(this)
