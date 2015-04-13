@@ -110,6 +110,7 @@ local CDs = {
 		[49206] = 180,				--"Summon Gargoyle",
 		[48792] = 180,				--"Icebound Fortitude",
 		[48743] = 120,				--"Death Pact",
+		[77606] = 60,				-- Dark Simulacrum
 	},
 	[L["DRUID"]] = {
 		[78675] = 60,				--"Solar Beam",
