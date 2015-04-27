@@ -321,7 +321,6 @@ local math_ceil = ceil;
 
 local OnStartup;
 local InitializeDB;
-local RebuildCache;
 local AddButtonToBlizzOptions;
 
 local AllocateIcon;
@@ -364,6 +363,22 @@ local deepcopy;
 -------------------------------------------------------------------------------------------------
 do
 
+	local function PopulateCaches()
+		wipe(CDCache);			-- // not really need this
+		wipe(TextureCache);		-- // not really need this
+		for _, k in pairs(CDs) do
+			for spellID, timeInSec in pairs(k) do
+				CDCache[spellID] = timeInSec;
+				TextureCache[spellID] = select(3, GetSpellInfo(spellID));
+			end
+		end
+		if (UnitFactionGroup("player") == "Alliance") then
+			TextureCache[42292] = "Interface\\Icons\\INV_Jewelry_TrinketPVP_01";
+		else
+			TextureCache[42292] = "Interface\\Icons\\INV_Jewelry_TrinketPVP_02";
+		end
+	end
+
 	function OnStartup()
 		InitializeDB();
 		-- remove non-existent spells
@@ -382,7 +397,7 @@ do
 				end
 			end
 		end
-		RebuildCache();
+		PopulateCaches();
 		EventFrame:SetScript("OnUpdate", function(self, elapsed)
 			ElapsedTimer = ElapsedTimer + elapsed;
 			if (ElapsedTimer >= 1) then
@@ -401,43 +416,25 @@ do
 
 	function InitializeDB()
 		if (NameplateCooldownsDB[LocalPlayerFullName] == nil) then
-			NameplateCooldownsDB[LocalPlayerFullName] = { CDsTable = {}, IconSize = 26, IconXOffset = 0, IconYOffset = 30 };
+			NameplateCooldownsDB[LocalPlayerFullName] = { };
 		end
-		if (NameplateCooldownsDB[LocalPlayerFullName].FullOpacityAlways == nil) then
-			NameplateCooldownsDB[LocalPlayerFullName].FullOpacityAlways = false;
-		end
-		if (NameplateCooldownsDB[LocalPlayerFullName].ShowBorderTrinkets == nil) then
-			NameplateCooldownsDB[LocalPlayerFullName].ShowBorderTrinkets = true;
-		end
-		if (NameplateCooldownsDB[LocalPlayerFullName].ShowBorderInterrupts == nil) then
-			NameplateCooldownsDB[LocalPlayerFullName].ShowBorderInterrupts = true;
-		end
-		if (NameplateCooldownsDB[LocalPlayerFullName].BorderInterruptsColor == nil) then
-			NameplateCooldownsDB[LocalPlayerFullName].BorderInterruptsColor = {1, 0.35, 0};
-		end
-		if (NameplateCooldownsDB[LocalPlayerFullName].BorderTrinketsColor == nil) then
-			NameplateCooldownsDB[LocalPlayerFullName].BorderTrinketsColor = {1, 0.843, 0};
-		end
-		db = NameplateCooldownsDB[LocalPlayerFullName];
-	end
-	
-	function RebuildCache()
-		wipe(CDCache);
-		wipe(TextureCache);
-		wipe(charactersDB);
-		for _, k in pairs(CDs) do
-			for spellID, timeInSec in pairs(k) do
-				if (db.CDsTable[spellID] == true) then
-					CDCache[spellID] = timeInSec;
-					TextureCache[spellID] = select(3, GetSpellInfo(spellID));
-				end
+		local defaults = {
+			CDsTable = { },
+			IconSize = 26,
+			IconXOffset = 0,
+			IconYOffset = 30,
+			FullOpacityAlways = false,
+			ShowBorderTrinkets = true,
+			ShowBorderInterrupts = true,
+			BorderInterruptsColor = {1, 0.35, 0},
+			BorderTrinketsColor = {1, 0.843, 0},
+		};
+		for key, value in pairs(defaults) do
+			if (NameplateCooldownsDB[LocalPlayerFullName][key] == nil) then
+				NameplateCooldownsDB[LocalPlayerFullName][key] = value;
 			end
 		end
-		if (UnitFactionGroup("player") == "Alliance") then
-			TextureCache[42292] = "Interface\\Icons\\INV_Jewelry_TrinketPVP_01";
-		else
-			TextureCache[42292] = "Interface\\Icons\\INV_Jewelry_TrinketPVP_02";
-		end
+		db = NameplateCooldownsDB[LocalPlayerFullName];
 	end
 	
 	function AddButtonToBlizzOptions()
@@ -1299,7 +1296,7 @@ do
 			spellItem.Text = spellItem:CreateFontString(nil, "OVERLAY");
 			spellItem.Text:SetFont("Fonts\\FRIZQT__.TTF", 12, nil);
 			spellItem.Text:SetPoint("LEFT", 22, 0);
-			spellItem.Text:SetText(n); -- // .."  (ID: "..tostring(spellID)..")"
+			spellItem.Text:SetText(n);
 			spellItem:EnableMouse(true);
 			
 			spellItem:SetScript("OnEnter", function(self, ...)
@@ -1318,7 +1315,6 @@ do
 					db.CDsTable[spellID] = true;
 					self.tex:SetAlpha(1.0);
 				end
-				RebuildCache();
 			end)
 			if (db.CDsTable[spellID] == true) then
 				spellItem.tex:SetAlpha(1.0);
