@@ -306,6 +306,7 @@ local db;
 local WorldFrameNumChildren = 0;
 local LocalPlayerFullName = UnitName("player").." - "..GetRealmName();
 local font = "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf";
+local TestSpellIDs = {2139, 108194, 100};
 
 local _G = _G;
 local pairs = pairs;
@@ -321,6 +322,7 @@ local math_ceil = ceil;
 
 local OnStartup;
 local InitializeDB;
+local RebuildCache;
 local AddButtonToBlizzOptions;
 
 local AllocateIcon;
@@ -363,22 +365,6 @@ local deepcopy;
 -------------------------------------------------------------------------------------------------
 do
 
-	local function PopulateCaches()
-		wipe(CDCache);			-- // not really need this
-		wipe(TextureCache);		-- // not really need this
-		for _, k in pairs(CDs) do
-			for spellID, timeInSec in pairs(k) do
-				CDCache[spellID] = timeInSec;
-				TextureCache[spellID] = select(3, GetSpellInfo(spellID));
-			end
-		end
-		if (UnitFactionGroup("player") == "Alliance") then
-			TextureCache[42292] = "Interface\\Icons\\INV_Jewelry_TrinketPVP_01";
-		else
-			TextureCache[42292] = "Interface\\Icons\\INV_Jewelry_TrinketPVP_02";
-		end
-	end
-
 	function OnStartup()
 		InitializeDB();
 		-- remove non-existent spells
@@ -397,7 +383,7 @@ do
 				end
 			end
 		end
-		PopulateCaches();
+		RebuildCache();
 		EventFrame:SetScript("OnUpdate", function(self, elapsed)
 			ElapsedTimer = ElapsedTimer + elapsed;
 			if (ElapsedTimer >= 1) then
@@ -435,6 +421,25 @@ do
 			end
 		end
 		db = NameplateCooldownsDB[LocalPlayerFullName];
+	end
+	
+	function RebuildCache()
+		wipe(CDCache);
+		wipe(TextureCache);
+		wipe(charactersDB);
+		for _, k in pairs(CDs) do
+			for spellID, timeInSec in pairs(k) do
+				if (db.CDsTable[spellID] == true or tContains(TestSpellIDs, spellID)) then
+					CDCache[spellID] = timeInSec;
+					TextureCache[spellID] = select(3, GetSpellInfo(spellID));
+				end
+			end
+		end
+		if (UnitFactionGroup("player") == "Alliance") then
+			TextureCache[42292] = "Interface\\Icons\\INV_Jewelry_TrinketPVP_01";
+		else
+			TextureCache[42292] = "Interface\\Icons\\INV_Jewelry_TrinketPVP_02";
+		end
 	end
 	
 	function AddButtonToBlizzOptions()
@@ -793,7 +798,6 @@ do
 
 	local _t = 0;
 	local _charactersDB;
-	local _spellIDs = {2139, 108194, 100};
 	
 	local function refreshCDs()
 		local cTime = GetTime();
@@ -802,7 +806,7 @@ do
 				charactersDB[unitName] = {};
 			end
 			charactersDB[unitName][42292] = cTime; -- // 2m test
-			for _, spellID in pairs(_spellIDs) do
+			for _, spellID in pairs(TestSpellIDs) do
 				if (not charactersDB[unitName][spellID]) then
 					charactersDB[unitName][spellID] = cTime;
 				else
@@ -1296,7 +1300,7 @@ do
 			spellItem.Text = spellItem:CreateFontString(nil, "OVERLAY");
 			spellItem.Text:SetFont("Fonts\\FRIZQT__.TTF", 12, nil);
 			spellItem.Text:SetPoint("LEFT", 22, 0);
-			spellItem.Text:SetText(n);
+			spellItem.Text:SetText(n); -- // .."  (ID: "..tostring(spellID)..")"
 			spellItem:EnableMouse(true);
 			
 			spellItem:SetScript("OnEnter", function(self, ...)
@@ -1315,6 +1319,7 @@ do
 					db.CDsTable[spellID] = true;
 					self.tex:SetAlpha(1.0);
 				end
+				RebuildCache();
 			end)
 			if (db.CDsTable[spellID] == true) then
 				spellItem.tex:SetAlpha(1.0);
