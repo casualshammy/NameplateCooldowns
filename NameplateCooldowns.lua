@@ -93,7 +93,7 @@ local CDs = {
 		[31661] = 20,				--"Dragon's Breath",
 		[1953] = 15,				-- Blink
 		[33395] = 25,				--"Freeze",
-},
+	},
 	[L["DEATHKNIGHT"]] = {
 		[47476] = 60,				--"Strangulate",
 		[108194] = 30,				-- Asphyxiate
@@ -133,6 +133,7 @@ local CDs = {
 		[48505] = 90,				--"Starfall",
 		[740] = 480,				--"Tranquility",
 		[78674] = 15,				--"Starsurge",
+		[102543] = 180,				-- Incarnation: King of the Jungle
 	},
 	[L["MONK"]] = {
 		[116705] = 15, 				--Spear Hand Strike (interrupt)
@@ -294,7 +295,8 @@ local Resets = {
 
 NameplateCooldownsDB = {};
 local charactersDB = {};
-local CDCache = {};
+local CDTimeCache = {};
+local CDEnabledCache = {};
 local TextureCache = {};
 local ElapsedTimer = 0;
 local Nameplates = {};
@@ -306,7 +308,6 @@ local db;
 local WorldFrameNumChildren = 0;
 local LocalPlayerFullName = UnitName("player").." - "..GetRealmName();
 local font = "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf";
-local TestSpellIDs = {2139, 108194, 100};
 
 local _G = _G;
 local pairs = pairs;
@@ -322,7 +323,6 @@ local math_ceil = ceil;
 
 local OnStartup;
 local InitializeDB;
-local RebuildCache;
 local AddButtonToBlizzOptions;
 
 local AllocateIcon;
@@ -367,7 +367,7 @@ do
 
 	function OnStartup()
 		InitializeDB();
-		-- remove non-existent spells
+		-- // remove non-existent spells
 		for _, k in pairs(CDs) do
 			for spellID in pairs(k) do
 				if (GetSpellLink(spellID) == nil) then
@@ -383,7 +383,17 @@ do
 				end
 			end
 		end
-		RebuildCache();
+		-- // cache initialisation
+		for _, k in pairs(CDs) do
+			for spellID, timeInSec in pairs(k) do
+				if (db.CDsTable[spellID] == true) then
+					CDEnabledCache[spellID] = true;
+				end
+				CDTimeCache[spellID] = timeInSec;
+				TextureCache[spellID] = select(3, GetSpellInfo(spellID));
+			end
+		end
+		-- // starting OnUpdate()
 		EventFrame:SetScript("OnUpdate", function(self, elapsed)
 			ElapsedTimer = ElapsedTimer + elapsed;
 			if (ElapsedTimer >= 1) then
@@ -391,6 +401,7 @@ do
 				ElapsedTimer = 0;
 			end
 		end);
+		-- // starting COMBAT_LOG_EVENT_UNFILTERED()
 		EventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 		AddButtonToBlizzOptions();
 		SLASH_NAMEPLATECOOLDOWNS1 = '/nc';
@@ -422,26 +433,7 @@ do
 		end
 		db = NameplateCooldownsDB[LocalPlayerFullName];
 	end
-	
-	function RebuildCache()
-		wipe(CDCache);
-		wipe(TextureCache);
-		wipe(charactersDB);
-		for _, k in pairs(CDs) do
-			for spellID, timeInSec in pairs(k) do
-				if (db.CDsTable[spellID] == true or tContains(TestSpellIDs, spellID)) then
-					CDCache[spellID] = timeInSec;
-					TextureCache[spellID] = select(3, GetSpellInfo(spellID));
-				end
-			end
-		end
-		if (UnitFactionGroup("player") == "Alliance") then
-			TextureCache[42292] = "Interface\\Icons\\INV_Jewelry_TrinketPVP_01";
-		else
-			TextureCache[42292] = "Interface\\Icons\\INV_Jewelry_TrinketPVP_02";
-		end
-	end
-	
+		
 	function AddButtonToBlizzOptions()
 		local frame = CreateFrame("Frame", "NC_BlizzOptionsFrame", UIParent);
 		frame.name = "NameplateCooldowns";
@@ -519,9 +511,6 @@ do
 		NameplatesVisible[frame] = unitName;
 		if (db.FullOpacityAlways and frame.NCFrame) then
 			frame.NCFrame:Show();
-			-- for index, icon in pairs(frame.NCIcons) do
-				-- HideCDIcon(icon);
-			-- end
 		end
 	end
 	
@@ -529,9 +518,6 @@ do
 		NameplatesVisible[frame] = nil;
 		if (db.FullOpacityAlways and frame.NCFrame) then
 			frame.NCFrame:Hide();
-			-- for index, icon in pairs(frame.NCIcons) do
-				-- HideCDIcon(icon);
-			-- end
 		end
 	end
 	
@@ -576,7 +562,7 @@ do
 		if (charactersDB[name]) then
 			local currentTime = GetTime();
 			for spellID, lastTimeUsed in pairs(charactersDB[name]) do
-				local duration = CDCache[spellID];
+				local duration = CDTimeCache[spellID];
 				local last = currentTime - lastTimeUsed;
 				if (last < duration) then
 					if (counter > frame.NCIconsCount) then
@@ -623,19 +609,7 @@ do
 			end
 		end
 	end
-	
-	-- // todo: delete this function
-	-- NC = function()
-		-- local usage1, calls1 = GetFunctionCPUUsage(HideCDIcon, true);
-		-- print("HideCDIcon:", usage1, calls1, math_ceil(usage1*1000/(calls1 == 0 and 1 or calls1)).."µs/call");
 		
-		-- local usage2, calls2 = GetFunctionCPUUsage(ShowCDIcon, true);
-		-- print("ShowCDIcon:", usage2, calls2, math_ceil(usage2*1000/(calls2 == 0 and 1 or calls2)).."µs/call");
-		
-		-- local usage3, calls3 = GetFunctionCPUUsage(OnUpdate, true);
-		-- print("OnUpdate:", usage3, calls3, math_ceil(usage3*1000/(calls3 == 0 and 1 or calls3)).."µs/call");
-	-- end
-	
 	function HideCDIcon(icon)
 		icon.border:Hide();
 		icon.borderState = nil;
@@ -665,7 +639,7 @@ do
 			local counter = 1;
 			if (charactersDB[unitName]) then
 				for spellID, value in pairs(charactersDB[unitName]) do
-					local duration = CDCache[spellID];
+					local duration = CDTimeCache[spellID];
 					local last = currentTime - value;
 					if (last < duration) then
 						-- // allocating icon if need
@@ -681,13 +655,13 @@ do
 							-- // trinkets and interrupts border
 							if (db.ShowBorderInterrupts and tContains(Interrupts, spellID)) then
 								if (icon.borderState ~= 1) then
-									icon.border:SetVertexColor(unpack(db.BorderInterruptsColor)); -- // 1, 0.35, 0
+									icon.border:SetVertexColor(unpack(db.BorderInterruptsColor));
 									icon.border:Show();
 									icon.borderState = 1;
 								end
 							elseif (db.ShowBorderTrinkets and (spellID == 42292 or spellID == 59752 or spellID == 7744)) then
 								if (icon.borderState ~= 2) then
-									icon.border:SetVertexColor(unpack(db.BorderTrinketsColor)); -- // 1, 0.843, 0
+									icon.border:SetVertexColor(unpack(db.BorderTrinketsColor));
 									icon.border:Show();
 									icon.borderState = 2;
 								end
@@ -740,7 +714,7 @@ do
 	function COMBAT_LOG_EVENT_UNFILTERED(...)
 		local _, eventType, _, _, srcName, srcFlags, _, _, _, _, _, spellID = ...;
 		if (bit_band(srcFlags, COMBATLOG_OBJECT_IS_HOSTILE) ~= 0) then
-			if (CDCache[spellID]) then
+			if (CDEnabledCache[spellID]) then
 				if (eventType == "SPELL_CAST_SUCCESS" or eventType == "SPELL_AURA_APPLIED" or eventType == "SPELL_MISSED" or eventType == "SPELL_SUMMON") then
 					local Name = string_match(srcName, "[%P]+");
 					if (not charactersDB[Name]) then
@@ -772,7 +746,7 @@ do
 					end
 				end
 			elseif (spellID == 102060) then	-- // let's start cd of spellid:6552 if warrior have used spellid:102060
-				if (CDCache[6552] and eventType == "SPELL_CAST_SUCCESS") then
+				if (CDEnabledCache[6552] and eventType == "SPELL_CAST_SUCCESS") then
 					local Name = string_match(srcName, "[%P]+");
 					if (not charactersDB[Name]) then
 						charactersDB[Name] = {};
@@ -798,6 +772,7 @@ do
 
 	local _t = 0;
 	local _charactersDB;
+	local _spellIDs = {2139, 108194, 100};
 	
 	local function refreshCDs()
 		local cTime = GetTime();
@@ -806,11 +781,11 @@ do
 				charactersDB[unitName] = {};
 			end
 			charactersDB[unitName][42292] = cTime; -- // 2m test
-			for _, spellID in pairs(TestSpellIDs) do
+			for _, spellID in pairs(_spellIDs) do
 				if (not charactersDB[unitName][spellID]) then
 					charactersDB[unitName][spellID] = cTime;
 				else
-					if (cTime - charactersDB[unitName][spellID] > CDCache[spellID]) then
+					if (cTime - charactersDB[unitName][spellID] > CDTimeCache[spellID]) then
 						charactersDB[unitName][spellID] = cTime;
 					end
 				end
@@ -1300,7 +1275,7 @@ do
 			spellItem.Text = spellItem:CreateFontString(nil, "OVERLAY");
 			spellItem.Text:SetFont("Fonts\\FRIZQT__.TTF", 12, nil);
 			spellItem.Text:SetPoint("LEFT", 22, 0);
-			spellItem.Text:SetText(n); -- // .."  (ID: "..tostring(spellID)..")"
+			spellItem.Text:SetText(n);
 			spellItem:EnableMouse(true);
 			
 			spellItem:SetScript("OnEnter", function(self, ...)
@@ -1314,12 +1289,13 @@ do
 			spellItem:SetScript("OnClick", function(self, ...)
 				if (self.tex:GetAlpha() > 0.5) then
 					db.CDsTable[spellID] = false;
+					CDEnabledCache[spellID] = nil;
 					self.tex:SetAlpha(0.3);
 				else
 					db.CDsTable[spellID] = true;
+					CDEnabledCache[spellID] = true;
 					self.tex:SetAlpha(1.0);
 				end
-				RebuildCache();
 			end)
 			if (db.CDsTable[spellID] == true) then
 				spellItem.tex:SetAlpha(1.0);
