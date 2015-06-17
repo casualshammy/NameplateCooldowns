@@ -393,6 +393,11 @@ do
 				TextureCache[spellID] = select(3, GetSpellInfo(spellID));
 			end
 		end
+		if (UnitFactionGroup("player") == "Alliance") then
+			TextureCache[42292] = "Interface\\Icons\\INV_Jewelry_TrinketPVP_01";
+		else
+			TextureCache[42292] = "Interface\\Icons\\INV_Jewelry_TrinketPVP_02";
+		end
 		-- // starting OnUpdate()
 		EventFrame:SetScript("OnUpdate", function(self, elapsed)
 			ElapsedTimer = ElapsedTimer + elapsed;
