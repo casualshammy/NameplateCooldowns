@@ -2,6 +2,7 @@
 ------------ TODO ------------
 ------------------------------
 -- Custom icons sorting?
+-- More advanced profile manager
 ------------------------------
 
 local _, addonTable = ...;
@@ -375,6 +376,7 @@ do
 				end
 			end
 		end
+		-- // add new spells to user's db
 		for _, k in pairs(CDs) do
 			for spellID in pairs(k) do
 				if (db.CDsTable[spellID] == nil) then
@@ -1228,6 +1230,39 @@ do
 			end
 		end);
 		table.insert(GUIFrame.Categories[index], buttonDeleteProfile);
+		
+		
+		-- /////////////////////////
+		
+		-- local editboxNewProfile = CreateFrame("EditBox", "NC_GUIProfilesEditboxNewProfile", GUIFrame)
+		-- editboxNewProfile:SetAutoFocus(false);
+		-- editboxNewProfile:SetFont("Fonts\\FRIZQT__.TTF", 12, nil);
+		-- editboxNewProfile:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 135, -162);
+		-- editboxNewProfile:SetHeight(24);
+		-- editboxNewProfile:SetWidth(230);
+		-- editboxNewProfile:SetJustifyH("LEFT");
+		-- editboxNewProfile:EnableMouse(true);
+		-- editboxNewProfile:SetBackdrop({
+			-- bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
+			-- edgeFile = "Interface\\ChatFrame\\ChatFrameBackground",
+			-- tile = true, edgeSize = 1, tileSize = 5,
+		-- });
+		-- editboxNewProfile:SetBackdropColor(0, 0, 0, 0.5)
+		-- editboxNewProfile:SetBackdropBorderColor(0.3, 0.3, 0.30, 0.80)
+		-- editboxNewProfile:SetScript("OnEscapePressed", function() editboxNewProfile:ClearFocus(); end);
+		-- table.insert(GUIFrame.Categories[index], editboxNewProfile);
+		
+		-- local buttonNewProfile = GUICreateButton("NC_GUIProfilesButtonNewProfile", GUIFrame, "Add"); -- // todo: localize
+		-- buttonNewProfile:SetWidth(90);
+		-- buttonNewProfile:SetHeight(24);
+		-- buttonNewProfile:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 380, -162);
+		-- buttonNewProfile:SetScript("OnClick", function(self, ...)
+			
+		-- end);
+		-- table.insert(GUIFrame.Categories[index], buttonNewProfile);
+		
+		-- /////////////////////////
+		
 		
 		RebuildDropdowns();
 	end
