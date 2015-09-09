@@ -135,6 +135,7 @@ local CDs = {
 		[740] = 480,				--"Tranquility",
 		[78674] = 15,				--"Starsurge",
 		[102543] = 180,				-- Incarnation: King of the Jungle
+		[102560] = 180,				-- Incarnation: Chosen of Elune
 	},
 	[L["MONK"]] = {
 		[116705] = 15, 				--Spear Hand Strike (interrupt)
