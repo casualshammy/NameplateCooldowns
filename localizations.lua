@@ -25,8 +25,8 @@
 		["Value must be a number"] = "Value must be a number",
 	},
 	["deDE"] = {
-		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Always display CD icons at full opacity (ReloadUI is needed)", -- Requires localization
-		["Click on icon to enable/disable tracking"] = "Auf das icon klicken um die Anzeige umzuschalten",
+		["Always display CD icons at full opacity (ReloadUI is needed)"] = "CD-Symbole immer mit voller Deckkraft anzeigen (UI neu laden erforderlich)",
+		["Click on icon to enable/disable tracking"] = "Auf das Symbol klicken, um die Anzeige umzuschalten",
 		Copy = "Kopieren",
 		["Copy other profile to current profile:"] = "Kopiere ein anderes Profil zu dem aktuellen:",
 		["Current profile: [%s]"] = "Aktuelles Profil: [%s]",
@@ -34,7 +34,8 @@
 		Delete = "Löschen",
 		["Delete profile:"] = "Profil löschen:",
 		["Disable test mode"] = "Testmodus deaktivieren",
-		["Enable test mode (need at least one visible nameplate)"] = "Testmodus aktivieren\r\n(es muss mindestens eine Namensplatte sichtbar sein)",
+		["Enable test mode (need at least one visible nameplate)"] = [=[Testmodus aktivieren
+	(es muss mindestens eine Namensplakette sichtbar sein)]=],
 		General = "Allgemein",
 		["Icon size"] = "Symbolgröße ",
 		["Icon X-coord offset"] = "X-Position des Symbols",
@@ -44,13 +45,14 @@
 		["Options are not available in combat!"] = "Einstellungen sind nicht im Kampf verfügbar",
 		Profiles = "Profile",
 		["Profile '%s' has been successfully deleted"] = "Profil '%s' wurde erfolgreich gelöscht.",
-		["Show border around interrupts"] = "Show border around interrupts", -- Requires localization
-		["Show border around trinkets"] = "Show border around trinkets", -- Requires localization
+		["Show border around interrupts"] = "Rahmen um Unterbrechungen anzeigen",
+		["Show border around trinkets"] = "Rahmen um Schmuckstücke anzeigen",
 		["Unknown spell: %s"] = "Unbekannter Zauber: %s",
 		["Value must be a number"] = "Der Wert muss eine Zahl sein.",
 	},
 	["ruRU"] = {
-		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Иконки заклинаний всегда полностью непрозрачны\r\n(Необходима перезагрузка интерфейса)",
+		["Always display CD icons at full opacity (ReloadUI is needed)"] = [=[Иконки заклинаний всегда полностью непрозрачны
+	(Необходима перезагрузка интерфейса)]=],
 		["Click on icon to enable/disable tracking"] = "Нажмите на иконку чтобы вкл/выкл отслеживание",
 		Copy = "Скопировать",
 		["Copy other profile to current profile:"] = "Скопировать другой профиль в текущий:",
@@ -69,13 +71,13 @@
 		["Options are not available in combat!"] = "Настройки недоступны, пока идет бой!",
 		Profiles = "Профили",
 		["Profile '%s' has been successfully deleted"] = "Профиль '%s' успешно удален",
-		["Show border around interrupts"] = "Show border around interrupts", -- Requires localization
-		["Show border around trinkets"] = "Show border around trinkets", -- Requires localization
+		["Show border around interrupts"] = "Показывать контур вокруг прерываний",
+		["Show border around trinkets"] = "Показывать контур вокруг тринкетов",
 		["Unknown spell: %s"] = "Неизвестное заклинание: %s",
 		["Value must be a number"] = "Значение должно быть числом",
 	},
 	["esMX"] = {
-		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Always display CD icons at full opacity (ReloadUI is needed)", -- Requires localization
+		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Mostrar siempre iconos con opacidad completa (Se requiere recargar UI)", -- Needs review
 		["Click on icon to enable/disable tracking"] = "Click sobre el icono para habilitar/desactivar el hechizo.", -- Needs review
 		Copy = "Copiar", -- Needs review
 		["Copy other profile to current profile:"] = "Copiar otro perfil al actual:", -- Needs review
@@ -84,7 +86,7 @@
 		Delete = "Borrar", -- Needs review
 		["Delete profile:"] = "Borrar perfil:", -- Needs review
 		["Disable test mode"] = "Desactivar modo de prueba.", -- Needs review
-		["Enable test mode (need at least one visible nameplate)"] = "Habilitar modo de prueba\r\n(se necesitar tener una placa de nombre visible).", -- Needs review
+		["Enable test mode (need at least one visible nameplate)"] = "Habilitar modo de prueba\\r\\n(se necesitar tener una placa de nombre visible).", -- Needs review
 		General = "General", -- Needs review
 		["Icon size"] = "Tamaño del icono", -- Needs review
 		["Icon X-coord offset"] = "Coordenada X de los iconos", -- Needs review
@@ -94,8 +96,8 @@
 		["Options are not available in combat!"] = "Configuración no disponible durante el combate!", -- Needs review
 		Profiles = "Perfiles", -- Needs review
 		["Profile '%s' has been successfully deleted"] = "El perfil '%s' ha sido eliminado.", -- Needs review
-		["Show border around interrupts"] = "Show border around interrupts", -- Requires localization
-		["Show border around trinkets"] = "Show border around trinkets", -- Requires localization
+		["Show border around interrupts"] = "Mostrar borde en interrupciones ", -- Needs review
+		["Show border around trinkets"] = "Mostrar borde en albalorios", -- Needs review
 		["Unknown spell: %s"] = "Hechizo desconocido: %s", -- Needs review
 		["Value must be a number"] = "El valor debe ser un numero", -- Needs review
 	},
@@ -109,7 +111,7 @@
 		Delete = "Effacer",
 		["Delete profile:"] = "Effacer le profile :",
 		["Disable test mode"] = "Éteindre le mode test",
-		["Enable test mode (need at least one visible nameplate)"] = "Allumer le mode test\r\n(nécessite au moins une étiquette de nom visible)",
+		["Enable test mode (need at least one visible nameplate)"] = "Allumer le mode test ( nécessite au moins une étiquette de nom visible)",
 		General = "Général",
 		["Icon size"] = "Taille de l'icone",
 		["Icon X-coord offset"] = "Icon X-coord offset", -- Needs review
@@ -134,7 +136,8 @@
 		Delete = "Borrar", -- Needs review
 		["Delete profile:"] = "Borrar perfil:", -- Needs review
 		["Disable test mode"] = "Desactivar Modo Test", -- Needs review
-		["Enable test mode (need at least one visible nameplate)"] = "Modo test Activado\r\n(necesitas por lo menos un nameplate visible)", -- Needs review
+		["Enable test mode (need at least one visible nameplate)"] = [=[Modo test Activado
+	(necesitas por lo menos un nameplate visible)]=], -- Needs review
 		General = "General", -- Needs review
 		["Icon size"] = "Tamaño del icono", -- Needs review
 		["Icon X-coord offset"] = "Compensacion de coordenada X del icono", -- Needs review
@@ -176,28 +179,28 @@
 	},
 	["zhCN"] = {
 		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Always display CD icons at full opacity (ReloadUI is needed)", -- Requires localization
-		["Click on icon to enable/disable tracking"] = [=[点击图标启用/禁用跟踪]=], -- Needs review
+		["Click on icon to enable/disable tracking"] = "点击图标启用/禁用跟踪", -- Needs review
 		Copy = "复制", -- Needs review
-		["Copy other profile to current profile:"] = [=[复制其他配置文件至当前配置文件：]=], -- Needs review
-		["Current profile: [%s]"] = "当前配置文件： [ ％ S]", -- Needs review
-		["Data from '%s' has been successfully copied to '%s'"] = [=[从' ％s'的数据已被成功复制到“％s ”]=], -- Needs review
+		["Copy other profile to current profile:"] = "复制其他配置文件至当前配置文件：", -- Needs review
+		["Current profile: [%s]"] = "当前配置文件： [%s]", -- Needs review
+		["Data from '%s' has been successfully copied to '%s'"] = "从' %s'的数据已被成功复制到“%s”", -- Needs review
 		Delete = "删除", -- Needs review
 		["Delete profile:"] = "删除配置文件", -- Needs review
 		["Disable test mode"] = "关闭测试模式", -- Needs review
-		["Enable test mode (need at least one visible nameplate)"] = [=[启用测试模式（至少需要一个可见的姓名板）]=], -- Needs review
+		["Enable test mode (need at least one visible nameplate)"] = "启用测试模式（至少需要一个可见的姓名板）", -- Needs review
 		General = "综合", -- Needs review
 		["Icon size"] = "图标大小", -- Needs review
-		["Icon X-coord offset"] = [=[图标的X坐标偏移]=], -- Needs review
-		["Icon Y-coord offset"] = [=[图标的y坐标偏移]=], -- Needs review
+		["Icon X-coord offset"] = "图标的X坐标偏移", -- Needs review
+		["Icon Y-coord offset"] = "图标的y坐标偏移", -- Needs review
 		MISC = "杂项", -- Needs review
-		["New spell has been added: %s"] = [=[新的法术已添加]=], -- Needs review
+		["New spell has been added: %s"] = "New spell has been added: %s", -- Needs review
 		["Options are not available in combat!"] = "选项不可用在战斗！", -- Needs review
 		Profiles = "Profiles", -- Needs review
-		["Profile '%s' has been successfully deleted"] = "已删除配置文件", -- Needs review
+		["Profile '%s' has been successfully deleted"] = "Profile '%s' has been successfully deleted", -- Needs review
 		["Show border around interrupts"] = "Show border around interrupts", -- Requires localization
 		["Show border around trinkets"] = "Show border around trinkets", -- Requires localization
-		["Unknown spell: %s"] = "未知的法术： ％s", -- Needs review
-		["Value must be a number"] = [=[值必须是数字]=], -- Needs review
+		["Unknown spell: %s"] = "未知的法术： %s", -- Needs review
+		["Value must be a number"] = "值必须是数字", -- Needs review
 	},
 	["zhTW"] = {
 		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Always display CD icons at full opacity (ReloadUI is needed)", -- Requires localization
@@ -234,7 +237,7 @@
 		Delete = "Deletar", -- Needs review
 		["Delete profile:"] = "Deletar perfil", -- Needs review
 		["Disable test mode"] = "Desativar modo de teste", -- Needs review
-		["Enable test mode (need at least one visible nameplate)"] = "Ativar modo de teste\r\n(é necessário ao menos um nameplate visível) ", -- Needs review
+		["Enable test mode (need at least one visible nameplate)"] = "Ativar modo de teste (é necessário ao menos um nameplate visível) ", -- Needs review
 		General = "Geral", -- Needs review
 		["Icon size"] = "Tamanho do ícone", -- Needs review
 		["Icon X-coord offset"] = "Coordenada X do Ícone", -- Needs review
@@ -250,7 +253,8 @@
 		["Value must be a number"] = "Valor precisa ser um numero", -- Needs review
 	},
 	["itIT"] = {
-		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Visualizza le icone dei CD con l'opacità al 100%\r\n(è necessario ricaricare l'interfaccia utente)", -- Needs review
+		["Always display CD icons at full opacity (ReloadUI is needed)"] = [=[Visualizza le icone dei CD con l'opacità al 100%
+	(è necessario ricaricare l'interfaccia utente)]=], -- Needs review
 		["Click on icon to enable/disable tracking"] = "Clicca sull'icona per abilita/disabilitare il monitoraggio", -- Needs review
 		Copy = "Copia", -- Needs review
 		["Copy other profile to current profile:"] = "Copia un altro profilo nel profilo corrente", -- Needs review
@@ -259,7 +263,7 @@
 		Delete = "Elimina", -- Needs review
 		["Delete profile:"] = "Elimina profilo:", -- Needs review
 		["Disable test mode"] = "Disabilita la modalità di test", -- Needs review
-		["Enable test mode (need at least one visible nameplate)"] = "Abilita la modalità di test\r\n(è necessario visualizzare almeno un nameplate)", -- Needs review
+		["Enable test mode (need at least one visible nameplate)"] = "Abilita la modalità di test (è necessario visualizzare almeno un nameplate)", -- Needs review
 		General = "Generale", -- Needs review
 		["Icon size"] = "Grandezza delle icone", -- Needs review
 		["Icon X-coord offset"] = "Coordinate di Offset X dell'icona", -- Needs review
