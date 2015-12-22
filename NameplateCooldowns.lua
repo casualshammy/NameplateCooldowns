@@ -1180,7 +1180,7 @@ do
 		
 		local dropdownFont = CreateFrame("Frame", "NC_GUI_General_DropdownFont", GUIFrame, "UIDropDownMenuTemplate");
 		UIDropDownMenu_SetWidth(dropdownFont, 150);
-		dropdownFont:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 165, -310);
+		dropdownFont:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 116, -310);
 		local info = {};
 		dropdownFont.initialize = function()
 			wipe(info);
@@ -1197,10 +1197,9 @@ do
 			end
 		end
 		NC_GUI_General_DropdownFontText:SetText(db.Font);
-		dropdownFont.text = dropdownFont:CreateFontString("NC_GUI_General_DropdownFontNoteText", "ARTWORK", "GameFontNormal");
-		dropdownFont.text:SetPoint("RIGHT", dropdownFont, "LEFT", 0, 2);
-		-- // todo
-		dropdownFont.text:SetText("Font:");
+		dropdownFont.text = dropdownFont:CreateFontString("NC_GUI_General_DropdownFontNoteText", "ARTWORK", "GameFontNormalSmall");
+		dropdownFont.text:SetPoint("LEFT", 20, 15);
+		dropdownFont.text:SetText(L["Font:"]);
 		table.insert(GUIFrame.Categories[index], dropdownFont);
 	end
 	

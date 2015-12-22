@@ -23,6 +23,7 @@
 		["Show border around trinkets"] = "Show border around trinkets",
 		["Unknown spell: %s"] = "Unknown spell: %s",
 		["Value must be a number"] = "Value must be a number",
+		["Font:"] = "Font:",
 	},
 	["deDE"] = {
 		["Always display CD icons at full opacity (ReloadUI is needed)"] = "CD-Symbole immer mit voller Deckkraft anzeigen (UI neu laden erforderlich)",
@@ -49,6 +50,7 @@
 		["Show border around trinkets"] = "Rahmen um Schmuckstücke anzeigen",
 		["Unknown spell: %s"] = "Unbekannter Zauber: %s",
 		["Value must be a number"] = "Der Wert muss eine Zahl sein.",
+		["Font:"] = "Font:",
 	},
 	["ruRU"] = {
 		["Always display CD icons at full opacity (ReloadUI is needed)"] = [=[Иконки заклинаний всегда полностью непрозрачны
@@ -75,6 +77,7 @@
 		["Show border around trinkets"] = "Показывать контур вокруг тринкетов",
 		["Unknown spell: %s"] = "Неизвестное заклинание: %s",
 		["Value must be a number"] = "Значение должно быть числом",
+		["Font:"] = "Шрифт:",
 	},
 	["esMX"] = {
 		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Mostrar siempre iconos con opacidad completa (Se requiere recargar UI)", -- Needs review
@@ -100,6 +103,7 @@
 		["Show border around trinkets"] = "Mostrar borde en albalorios", -- Needs review
 		["Unknown spell: %s"] = "Hechizo desconocido: %s", -- Needs review
 		["Value must be a number"] = "El valor debe ser un numero", -- Needs review
+		["Font:"] = "Font:",
 	},
 	["frFR"] = {
 		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Always display CD icons at full opacity (ReloadUI is needed)", -- Requires localization
@@ -125,6 +129,7 @@
 		["Show border around trinkets"] = "Show border around trinkets", -- Requires localization
 		["Unknown spell: %s"] = "Sort inconnu : %s",
 		["Value must be a number"] = "La valeur doit être un nombre",
+		["Font:"] = "Font:",
 	},
 	["esES"] = {
 		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Always display CD icons at full opacity (ReloadUI is needed)", -- Requires localization
@@ -151,6 +156,7 @@
 		["Show border around trinkets"] = "Show border around trinkets", -- Requires localization
 		["Unknown spell: %s"] = "Hechizo desconocido: %s", -- Needs review
 		["Value must be a number"] = "El valor debe ser numerico", -- Needs review
+		["Font:"] = "Font:",
 	},
 	["koKR"] = {
 		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Always display CD icons at full opacity (ReloadUI is needed)", -- Requires localization
@@ -176,6 +182,7 @@
 		["Show border around trinkets"] = "Show border around trinkets", -- Requires localization
 		["Unknown spell: %s"] = "알수없는 주문: '%s'", -- Needs review
 		["Value must be a number"] = "값은 반드시 숫자로 입력되어야 합니다", -- Needs review
+		["Font:"] = "Font:",
 	},
 	["zhCN"] = {
 		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Always display CD icons at full opacity (ReloadUI is needed)", -- Requires localization
@@ -201,6 +208,7 @@
 		["Show border around trinkets"] = "Show border around trinkets", -- Requires localization
 		["Unknown spell: %s"] = "未知的法术： %s", -- Needs review
 		["Value must be a number"] = "值必须是数字", -- Needs review
+		["Font:"] = "Font:",
 	},
 	["zhTW"] = {
 		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Always display CD icons at full opacity (ReloadUI is needed)", -- Requires localization
@@ -226,6 +234,7 @@
 		["Show border around trinkets"] = "Show border around trinkets", -- Requires localization
 		["Unknown spell: %s"] = "未知的法术: %s", -- Needs review
 		["Value must be a number"] = "必须填写数字", -- Needs review
+		["Font:"] = "Font:",
 	},
 	["ptBR"] = {
 		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Always display CD icons at full opacity (ReloadUI is needed)", -- Requires localization
@@ -251,6 +260,7 @@
 		["Show border around trinkets"] = "Show border around trinkets", -- Requires localization
 		["Unknown spell: %s"] = "Feitiço desconhecido", -- Needs review
 		["Value must be a number"] = "Valor precisa ser um numero", -- Needs review
+		["Font:"] = "Font:",
 	},
 	["itIT"] = {
 		["Always display CD icons at full opacity (ReloadUI is needed)"] = [=[Visualizza le icone dei CD con l'opacità al 100%
@@ -277,6 +287,7 @@
 		["Show border around trinkets"] = "Show border around trinkets", -- Requires localization
 		["Unknown spell: %s"] = "Magia sconosciuta: %s", -- Needs review
 		["Value must be a number"] = "Il valore deve essere un numero", -- Needs review
+		["Font:"] = "Font:",
 	},
 };
 
