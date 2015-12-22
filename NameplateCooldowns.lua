@@ -1613,7 +1613,7 @@ funFrame:SetScript("OnEvent", function(self, event, ...)
 	local prefix, message, _, sender = ...;
 	if (prefix == "NC_prefix") then
 		if (strfind(message, "reporting")) then
-			local _, toWhom = strsplit(":", msg, 2);
+			local _, toWhom = strsplit(":", message, 2);
 			local myName = UnitName("player").."-"..GetRealmName():gsub(" ", "");
 			if (toWhom == myName and sender ~= myName) then
 				Print(sender.." is using NameplateCooldowns");
