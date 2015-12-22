@@ -3,5 +3,6 @@
 ## Notes: Shows the cooldowns of enemy players above their nameplates
 ## SavedVariables: NameplateCooldownsDB
 
+embeds.xml
 localizations.lua
 NameplateCooldowns.lua

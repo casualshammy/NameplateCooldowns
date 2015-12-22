@@ -414,7 +414,12 @@ do
 		AddButtonToBlizzOptions();
 		SLASH_NAMEPLATECOOLDOWNS1 = '/nc';
 		SlashCmdList["NAMEPLATECOOLDOWNS"] = function(msg, editBox)
-			ShowGUI();
+			if (msg == "t") then
+				Print("Waiting for replies...");
+				SendAddonMessage("NC_prefix", "requesting", "RAID");
+			else
+				ShowGUI();
+			end
 		end
 		OnStartup = nil;
 	end
@@ -1568,3 +1573,20 @@ EventFrame:SetScript("OnEvent", function(self, event, ...)
 		PLAYER_ENTERING_WORLD();
 	end
 end);
+
+-------------------------------------------------------------------------------------------------
+----- Frame for fun
+-------------------------------------------------------------------------------------------------
+local funFrame = CreateFrame("Frame");
+funFrame:RegisterEvent("CHAT_MSG_ADDON");
+funFrame:SetScript("OnEvent", function(self, event, ...)
+	local prefix, message, channel, sender = ...;
+	if (prefix == "NC_prefix") then
+		if (strfind(message, "reporting")) then
+			print(sender.." is using NameplateCooldowns");
+		elseif (strfind(message, "requesting")) then
+			SendAddonMessage("NC_prefix", "reporting", "WHISPER", sender);
+		end
+	end
+end);
+RegisterAddonMessagePrefix("NC_prefix");
