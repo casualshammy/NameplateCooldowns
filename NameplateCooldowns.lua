@@ -295,6 +295,8 @@ local Resets = {
 	},
 };
 
+local SML = LibStub("LibSharedMedia-3.0");
+
 NameplateCooldownsDB = {};
 local charactersDB = {};
 local CDTimeCache = {};
@@ -401,6 +403,8 @@ do
 		else
 			TextureCache[42292] = "Interface\\Icons\\INV_Jewelry_TrinketPVP_02";
 		end
+		-- // Fonts
+		SML:Register("font", "NC_TeenBold", "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf", 255);
 		-- // starting OnUpdate()
 		EventFrame:SetScript("OnUpdate", function(self, elapsed)
 			ElapsedTimer = ElapsedTimer + elapsed;
@@ -438,6 +442,7 @@ do
 			ShowBorderInterrupts = true,
 			BorderInterruptsColor = {1, 0.35, 0},
 			BorderTrinketsColor = {1, 0.843, 0},
+			Font = "NC_TeenBold",
 		};
 		for key, value in pairs(defaults) do
 			if (NameplateCooldownsDB[LocalPlayerFullName][key] == nil) then
@@ -486,7 +491,7 @@ do
 		texture.cooldown = frame.NCFrame:CreateFontString(nil, "OVERLAY");
 		texture.cooldown:SetTextColor(0.7, 1, 0);
 		texture.cooldown:SetAllPoints(texture);
-		texture.cooldown:SetFont(font, math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
+		texture.cooldown:SetFont(SML:Fetch("font", db.Font), math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
 		texture.border = frame.NCFrame:CreateTexture(nil, "OVERLAY");
 		texture.border:SetTexture("Interface\\AddOns\\NameplateCooldowns\\media\\CooldownFrameBorder.tga");
 		texture.border:SetVertexColor(1, 0.35, 0);
@@ -505,7 +510,7 @@ do
 					icon:SetWidth(db.IconSize);
 					icon:SetHeight(db.IconSize);
 					icon:SetPoint("LEFT", frame.NCFrame, counter * db.IconSize, 0);
-					icon.cooldown:SetFont(font, math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
+					icon.cooldown:SetFont(SML:Fetch("font", db.Font), math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
 					if (clearSpells) then
 						HideCDIcon(icon);
 					end
@@ -1014,7 +1019,7 @@ do
 		end);
 		table.insert(GUIFrame.Categories[index], buttonSwitchTestMode);
 		
-		local sliderIconSize = GUICreateSlider(GUIFrame, 130, -100, 340, "NC_GUIGeneralSliderIconSize");
+		local sliderIconSize = GUICreateSlider(GUIFrame, 130, -90, 340, "NC_GUIGeneralSliderIconSize");
 		sliderIconSize.label:SetText(L["Icon size"]);
 		sliderIconSize.slider:SetValueStep(1);
 		sliderIconSize.slider:SetMinMaxValues(1, 50);
@@ -1047,7 +1052,7 @@ do
 		sliderIconSize.hightext:SetText("50");
 		table.insert(GUIFrame.Categories[index], sliderIconSize);
 		
-		local sliderIconXOffset = GUICreateSlider(GUIFrame, 130, -170, 155, "NC_GUIGeneralSliderIconXOffset");
+		local sliderIconXOffset = GUICreateSlider(GUIFrame, 130, -150, 155, "NC_GUIGeneralSliderIconXOffset");
 		sliderIconXOffset.label:SetText(L["Icon X-coord offset"]);
 		sliderIconXOffset.slider:SetValueStep(1);
 		sliderIconXOffset.slider:SetMinMaxValues(-200, 200);
@@ -1080,7 +1085,7 @@ do
 		sliderIconXOffset.hightext:SetText("200");
 		table.insert(GUIFrame.Categories[index], sliderIconXOffset);
 		
-		local sliderIconYOffset = GUICreateSlider(GUIFrame, 315, -170, 155, "NC_GUIGeneralSliderIconYOffset");
+		local sliderIconYOffset = GUICreateSlider(GUIFrame, 315, -150, 155, "NC_GUIGeneralSliderIconYOffset");
 		sliderIconYOffset.label:SetText(L["Icon Y-coord offset"]);
 		sliderIconYOffset.slider:SetValueStep(1);
 		sliderIconYOffset.slider:SetMinMaxValues(-200, 200);
@@ -1113,13 +1118,13 @@ do
 		sliderIconYOffset.hightext:SetText("200");
 		table.insert(GUIFrame.Categories[index], sliderIconYOffset);
 		
-		local checkBoxFullOpacityAlways = GUICreateCheckBox(130, -240, L["Always display CD icons at full opacity (ReloadUI is needed)"], function(this)
+		local checkBoxFullOpacityAlways = GUICreateCheckBox(130, -220, L["Always display CD icons at full opacity (ReloadUI is needed)"], function(this)
 			db.FullOpacityAlways = this:GetChecked();
 		end, "NC_GUI_General_CheckBoxFullOpacityAlways");
 		checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways);
 		table.insert(GUIFrame.Categories[index], checkBoxFullOpacityAlways);
 		
-		local checkBoxBorderTrinkets = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderTrinkets", 130, -270, L["Show border around trinkets"], function(this)
+		local checkBoxBorderTrinkets = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderTrinkets", 130, -250, L["Show border around trinkets"], function(this)
 			db.ShowBorderTrinkets = this:GetChecked();
 			ReallocateAllIcons(true);
 		end);
@@ -1146,7 +1151,7 @@ do
 		end);
 		table.insert(GUIFrame.Categories[index], checkBoxBorderTrinkets);
 		
-		local checkBoxBorderInterrupts = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderInterrupts", 130, -300, L["Show border around interrupts"], function(this)
+		local checkBoxBorderInterrupts = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderInterrupts", 130, -280, L["Show border around interrupts"], function(this)
 			db.ShowBorderInterrupts = this:GetChecked();
 			ReallocateAllIcons(true);
 		end);
@@ -1172,6 +1177,31 @@ do
 			ColorPickerFrame:Show();
 		end);
 		table.insert(GUIFrame.Categories[index], checkBoxBorderInterrupts);
+		
+		local dropdownFont = CreateFrame("Frame", "NC_GUI_General_DropdownFont", GUIFrame, "UIDropDownMenuTemplate");
+		UIDropDownMenu_SetWidth(dropdownFont, 150);
+		dropdownFont:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 165, -310);
+		local info = {};
+		dropdownFont.initialize = function()
+			wipe(info);
+			for idx, font in next, LibStub("LibSharedMedia-3.0"):List("font") do
+				info.text = font;
+				info.value = font;
+				info.func = function(self)
+					db.Font = self.value;
+					ReallocateAllIcons(false);
+					NC_GUI_General_DropdownFontText:SetText(self:GetText());
+				end
+				info.checked = font == db.Font;
+				UIDropDownMenu_AddButton(info);
+			end
+		end
+		NC_GUI_General_DropdownFontText:SetText(db.Font);
+		dropdownFont.text = dropdownFont:CreateFontString("NC_GUI_General_DropdownFontNoteText", "ARTWORK", "GameFontNormal");
+		dropdownFont.text:SetPoint("RIGHT", dropdownFont, "LEFT", 0, 2);
+		-- // todo
+		dropdownFont.text:SetText("Font:");
+		table.insert(GUIFrame.Categories[index], dropdownFont);
 	end
 	
 	function GUICategory_2(index, value)
