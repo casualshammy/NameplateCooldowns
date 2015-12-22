@@ -420,7 +420,7 @@ do
 		SlashCmdList["NAMEPLATECOOLDOWNS"] = function(msg, editBox)
 			if (msg == "t") then
 				Print("Waiting for replies...");
-				SendAddonMessage("NC_prefix", "requesting", "RAID");
+				SendAddonMessage("NC_prefix", "requesting", IsInGroup(2) and "INSTANCE_CHAT" or "RAID");
 			else
 				ShowGUI();
 			end
@@ -1610,12 +1610,16 @@ end);
 local funFrame = CreateFrame("Frame");
 funFrame:RegisterEvent("CHAT_MSG_ADDON");
 funFrame:SetScript("OnEvent", function(self, event, ...)
-	local prefix, message, channel, sender = ...;
+	local prefix, message, _, sender = ...;
 	if (prefix == "NC_prefix") then
 		if (strfind(message, "reporting")) then
-			print(sender.." is using NameplateCooldowns");
+			local _, toWhom = strsplit(":", msg, 2);
+			local myName = UnitName("player").."-"..GetRealmName():gsub(" ", "");
+			if (toWhom == myName and sender ~= myName) then
+				Print(sender.." is using NameplateCooldowns");
+			end
 		elseif (strfind(message, "requesting")) then
-			SendAddonMessage("NC_prefix", "reporting", "WHISPER", sender);
+			SendAddonMessage("NC_prefix", "reporting:"..sender, IsInGroup(2) and "INSTANCE_CHAT" or "RAID");
 		end
 	end
 end);
