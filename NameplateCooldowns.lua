@@ -211,6 +211,7 @@ local CDs = {
 		[51690] = 120,				--"Killing Spree",
 		[51713] = 60, 				--"Shadow Dance",
 		[79140] = 120,				--"Vendetta",
+		[13750] = 180,				-- Adrenaline Rush
 	},
 	[L["SHAMAN"]] = {
 		[8177] = 25,				--"Grounding Totem",
@@ -233,6 +234,9 @@ local CDs = {
 		[16188] = 90,				--"Ancestral Swiftness",
 		[108273] =	60,				-- Windwalk Totem
 		[108285] = 	180,			-- Call of the Elements
+		[114050] = 180,				-- Elemental Ascendance
+		[114051] = 180,				-- Enhancement Ascendance
+		[114052] = 180,				-- Restoration Ascendance
 	},
 	[L["WARRIOR"]] = {
 		[102060] = 40,				--"Разрушительный крик"
@@ -296,6 +300,7 @@ local Resets = {
 };
 
 local SML = LibStub("LibSharedMedia-3.0");
+SML:Register("font", "NC_TeenBold", "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf", 255);
 
 NameplateCooldownsDB = {};
 local charactersDB = {};
@@ -311,7 +316,6 @@ local TestFrame;
 local db;
 local WorldFrameNumChildren = 0;
 local LocalPlayerFullName = UnitName("player").." - "..GetRealmName();
-local font = "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf";
 
 local _G = _G;
 local pairs = pairs;
@@ -403,8 +407,6 @@ do
 		else
 			TextureCache[42292] = "Interface\\Icons\\INV_Jewelry_TrinketPVP_02";
 		end
-		-- // Fonts
-		SML:Register("font", "NC_TeenBold", "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf", 255);
 		-- // starting OnUpdate()
 		EventFrame:SetScript("OnUpdate", function(self, elapsed)
 			ElapsedTimer = ElapsedTimer + elapsed;
@@ -1611,13 +1613,13 @@ funFrame:RegisterEvent("CHAT_MSG_ADDON");
 funFrame:SetScript("OnEvent", function(self, event, ...)
 	local prefix, message, _, sender = ...;
 	if (prefix == "NC_prefix") then
-		if (strfind(message, "reporting")) then
+		if (string_find(message, "reporting")) then
 			local _, toWhom = strsplit(":", message, 2);
-			local myName = UnitName("player").."-"..GetRealmName():gsub(" ", "");
+			local myName = UnitName("player").."-"..GetRealmName():string_gsub(" ", "");
 			if (toWhom == myName and sender ~= myName) then
-				Print(sender.." is using NameplateCooldowns");
+				Print(sender.." is using NC");
 			end
-		elseif (strfind(message, "requesting")) then
+		elseif (string_find(message, "requesting")) then
 			SendAddonMessage("NC_prefix", "reporting:"..sender, IsInGroup(2) and "INSTANCE_CHAT" or "RAID");
 		end
 	end
