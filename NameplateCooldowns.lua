@@ -1615,7 +1615,7 @@ funFrame:SetScript("OnEvent", function(self, event, ...)
 	if (prefix == "NC_prefix") then
 		if (string_find(message, "reporting")) then
 			local _, toWhom = strsplit(":", message, 2);
-			local myName = UnitName("player").."-"..GetRealmName():string_gsub(" ", "");
+			local myName = UnitName("player").."-"..string_gsub(GetRealmName(), " ", "");
 			if (toWhom == myName and sender ~= myName) then
 				Print(sender.." is using NC");
 			end
