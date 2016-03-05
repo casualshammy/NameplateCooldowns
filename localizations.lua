@@ -26,8 +26,8 @@
 		["Font:"] = "Font:",
 	},
 	["deDE"] = {
-		["Always display CD icons at full opacity (ReloadUI is needed)"] = "CD-Symbole immer mit voller Deckkraft anzeigen (UI neu laden erforderlich)",
-		["Click on icon to enable/disable tracking"] = "Auf das Symbol klicken, um die Anzeige umzuschalten",
+		["Always display CD icons at full opacity (ReloadUI is needed)"] = "CD-Symbole immer mit voller Deckkraft anzeigen (UI neu laden erf.)",
+		["Click on icon to enable/disable tracking"] = "Klicke auf das Symbol, um die Verfolgung ein-/auszuschalten",
 		Copy = "Kopieren",
 		["Copy other profile to current profile:"] = "Kopiere ein anderes Profil zu dem aktuellen:",
 		["Current profile: [%s]"] = "Aktuelles Profil: [%s]",
@@ -35,8 +35,8 @@
 		Delete = "Löschen",
 		["Delete profile:"] = "Profil löschen:",
 		["Disable test mode"] = "Testmodus deaktivieren",
-		["Enable test mode (need at least one visible nameplate)"] = [=[Testmodus aktivieren
-	(es muss mindestens eine Namensplakette sichtbar sein)]=],
+		["Enable test mode (need at least one visible nameplate)"] = "Testmodus aktivieren\r\n(es muss mindestens eine Namensplakette sichtbar sein)", -- Needs review
+		["Font:"] = "Schriftart:",
 		General = "Allgemein",
 		["Icon size"] = "Symbolgröße ",
 		["Icon X-coord offset"] = "X-Position des Symbols",
@@ -50,11 +50,9 @@
 		["Show border around trinkets"] = "Rahmen um Schmuckstücke anzeigen",
 		["Unknown spell: %s"] = "Unbekannter Zauber: %s",
 		["Value must be a number"] = "Der Wert muss eine Zahl sein.",
-		["Font:"] = "Font:",
 	},
 	["ruRU"] = {
-		["Always display CD icons at full opacity (ReloadUI is needed)"] = [=[Иконки заклинаний всегда полностью непрозрачны
-	(Необходима перезагрузка интерфейса)]=],
+		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Иконки заклинаний всегда полностью непрозрачны\r\n(Необходима перезагрузка интерфейса)",
 		["Click on icon to enable/disable tracking"] = "Нажмите на иконку чтобы вкл/выкл отслеживание",
 		Copy = "Скопировать",
 		["Copy other profile to current profile:"] = "Скопировать другой профиль в текущий:",
@@ -89,7 +87,7 @@
 		Delete = "Borrar", -- Needs review
 		["Delete profile:"] = "Borrar perfil:", -- Needs review
 		["Disable test mode"] = "Desactivar modo de prueba.", -- Needs review
-		["Enable test mode (need at least one visible nameplate)"] = "Habilitar modo de prueba\\r\\n(se necesitar tener una placa de nombre visible).", -- Needs review
+		["Enable test mode (need at least one visible nameplate)"] = "Habilitar modo de prueba\r\n(se necesitar tener una placa de nombre visible).", -- Needs review
 		General = "General", -- Needs review
 		["Icon size"] = "Tamaño del icono", -- Needs review
 		["Icon X-coord offset"] = "Coordenada X de los iconos", -- Needs review
@@ -141,8 +139,7 @@
 		Delete = "Borrar", -- Needs review
 		["Delete profile:"] = "Borrar perfil:", -- Needs review
 		["Disable test mode"] = "Desactivar Modo Test", -- Needs review
-		["Enable test mode (need at least one visible nameplate)"] = [=[Modo test Activado
-	(necesitas por lo menos un nameplate visible)]=], -- Needs review
+		["Enable test mode (need at least one visible nameplate)"] = "Modo test Activado\r\n(necesitas por lo menos un nameplate visible)", -- Needs review
 		General = "General", -- Needs review
 		["Icon size"] = "Tamaño del icono", -- Needs review
 		["Icon X-coord offset"] = "Compensacion de coordenada X del icono", -- Needs review
@@ -263,8 +260,7 @@
 		["Font:"] = "Font:",
 	},
 	["itIT"] = {
-		["Always display CD icons at full opacity (ReloadUI is needed)"] = [=[Visualizza le icone dei CD con l'opacità al 100%
-	(è necessario ricaricare l'interfaccia utente)]=], -- Needs review
+		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Visualizza le icone dei CD con l'opacità al 100%\r\n(è necessario ricaricare l'interfaccia utente)", -- Needs review
 		["Click on icon to enable/disable tracking"] = "Clicca sull'icona per abilita/disabilitare il monitoraggio", -- Needs review
 		Copy = "Copia", -- Needs review
 		["Copy other profile to current profile:"] = "Copia un altro profilo nel profilo corrente", -- Needs review
@@ -296,7 +292,7 @@ locales["zhCN"] = locales["enUS"];
 locales["zhTW"] = locales["enUS"];
 
 --			Test
--- locales["ruRU"] = locales["frFR"];
+-- locales["ruRU"] = locales["deDE"];
 
 local localizedClasses = {};
 FillLocalizedClassList(localizedClasses);
