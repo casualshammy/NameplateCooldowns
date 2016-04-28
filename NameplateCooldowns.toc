@@ -5,4 +5,5 @@
 
 embeds.xml
 localizations.lua
+spells.lua
 NameplateCooldowns.lua
