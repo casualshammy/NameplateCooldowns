@@ -220,6 +220,26 @@ addonTable.CDs = {
 		[18499] = 30,				-- Berserker Rage
 		[107570] = 30,				-- Storm Bolt
 	},
+	[L["DEMONHUNTER"]] = { -- // OK
+		[198589] = 60,					-- // Blur
+		[179057] = 60,					-- // Chaos Nova
+		[183752] = 15,					-- // Consume Magic
+		[196718] = 180,					-- // Darkness
+		[191427] = 300,					-- // Metamorphosis
+		[188501] = 30,					-- // Spectral Sight
+		[218256] = 20,					-- // Empower Wards
+		[187827] = 180,					-- // Metamorphosis
+		[202138] = 120,					-- // Sigil of Chains
+		[207684] = 60,					-- // Sigil of Misery
+		[202137] = 60,					-- // Sigil of Silence
+		[211048] = 120,					-- // Chaos Blades
+		[211881] = 35,					-- // Fel Eruption
+		[206491] = 120,					-- // Nemesis
+		[207810] = 120,					-- // Nether Bond
+		[196555] = 90,					-- // Netherwalk
+		[205629] = 30,					-- // Demonic Trample
+		[205604] = 60,					-- // Reverse Magic
+	},
 };
 
 addonTable.Interrupts = {
@@ -236,6 +256,7 @@ addonTable.Interrupts = {
 	147362,	-- Counter Shot
 	116705, -- Spear Hand Strike
 	115781,	-- Optical Blast
+	183752,	-- Consume Magic
 };
 
 addonTable.Resets = {

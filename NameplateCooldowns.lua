@@ -47,8 +47,6 @@ local AddButtonToBlizzOptions;
 
 local AllocateIcon;
 local ReallocateAllIcons;
-local Nameplate_OnHide;
-local GetUnitNameForNameplate;
 local InitializeFrame;
 local UpdateOnlyOneNameplate;
 local HideCDIcon;
@@ -239,22 +237,6 @@ do
 		if (clearSpells) then
 			OnUpdate();
 		end
-	end
-		
-	function Nameplate_OnHide(frame)
-		NameplatesVisible[frame] = nil;
-		if (db.FullOpacityAlways and frame.NCFrame) then
-			frame.NCFrame:Hide();
-		end
-	end
-	
-	function GetUnitNameForNameplate(f)
-		local unitID = f.namePlateUnitToken;
-		print("GetUnitNameForNameplate0:", unitID);
-		local name = UnitName(unitID);
-		name = string_gsub(name, '%s?%(%*%)', '');
-		print("GetUnitNameForNameplate1:", unitID, name);
-		return name;
 	end
 	
 	function UpdateOnlyOneNameplate(frame, name)
@@ -685,7 +667,7 @@ do
 		GUIFrame.Categories = {};
 		GUIFrame.SpellIcons = {};
 		
-		for index, value in pairs({L["General"], L["Profiles"], L["WARRIOR"], L["DRUID"], L["PRIEST"], L["MAGE"], L["MONK"], L["HUNTER"], L["PALADIN"], L["ROGUE"], L["DEATHKNIGHT"], L["WARLOCK"], L["SHAMAN"], L["MISC"]}) do
+		for index, value in pairs({L["General"], L["Profiles"], L["WARRIOR"], L["DRUID"], L["PRIEST"], L["MAGE"], L["MONK"], L["HUNTER"], L["PALADIN"], L["ROGUE"], L["DEATHKNIGHT"], L["WARLOCK"], L["SHAMAN"], L["DEMONHUNTER"], L["MISC"]}) do
 			local b = CreateGUICategory();
 			b.index = index;
 			b.text:SetText(value);
