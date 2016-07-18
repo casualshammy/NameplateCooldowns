@@ -29,19 +29,13 @@ addonTable.CDs = {
 		[19386] = 45,				--"Wyvern Sting",
 		[19263] = 180,				--"Deterrence",
 		[147362] = 24,				--"Counter Shot"
-		[120697] = 90,				--"Lynx Rush",
 		[120679] = 30,				--"Dire Beast",
 		[109248] = 45,				--"Binding Shot",
-		[1499] = 15,				--"Freezing Trap",
-		[60192] = 12,				--"Freezing Trap (launcher)",
 		[82726] = 30,				--"Fervor",
 		[3045] = 180,				--"Rapid Fire",
-		[53351] = 10,				--"Kill Shot",
 		[53271] = 45, 				--"Master's Call",
-		[51753] = 60,				--"Camouflage",
 		[19574] = 60,				--"Bestial Wrath",
 		[61685] = 25,				--"Charge",
-		[50519] = 60,				--"Sonic Blast",
 		[50433] = 10,				--"Ankle Crack",
 		[90355] = 360,				--"Ancient Hysteria",
 		[90361] = 40,				--"Spirit Mend",
@@ -52,9 +46,6 @@ addonTable.CDs = {
 	[L["WARLOCK"]] = {
 		[6789] = 45,				--"Death Coil",
 		[5484] = 40,				--"Howl of Terror",
-		[111397] = 30,				--"Blood Horror",
-		[110913] = 180,				--"Dark Bargain",
-		[108482] = 60,				--"Unbound Will",
 		[108359] = 120,				--"Dark Regeneration",
 		[108416] = 60,				--"Sacrificial Pact",
 		[30283] = 30,				--"Shadowfury",
@@ -70,8 +61,6 @@ addonTable.CDs = {
 		[2139] = 22,				--"Counterspell",
 		[45438] = 300,				--"Ice Block",
 		[110959] = 90,				--"Greater Invisibility",
-		[102051] = 20,				--"Frostjaw",
-		[44572] = 30,				--"Deep Freeze",
 		[11958] = 180,				--"Cold Snap",	
 		[12042] = 90,				--"Arcane Power",		
 		[12051] = 120,				--"Evocation", 
@@ -82,8 +71,6 @@ addonTable.CDs = {
 		[66] = 300,					--"Invisibility",
 		[113724] = 45,				--"Ring of Frost",
 		[80353] = 300, 				--"Time Warp",
-		[12043] = 90,				--"Presence of Mind",
-		[11129] = 45,				--"Combustion",
 		[31661] = 20,				--"Dragon's Breath",
 		[1953] = 15,				-- Blink
 		[33395] = 25,				--"Freeze",
@@ -94,11 +81,9 @@ addonTable.CDs = {
 		[48707] = 45,				--"Anti-Magic Shell",
 		[49576] = 25,				--"Death Grip",	
 		[47528] = 13,				--"Mind Freeze",
-		[108200] = 60,				--"Remorseless Winter",
 		[108201] = 120,				--"Desecrated Ground",
 		[108199] = 60,				--"Gorefiend's Grasp",
 		[49039] = 120,				--"Lichborne",
-		[49222] = 60,				--"Bone Shield",
 		[51271] = 60,				--"Pillar of Frost",
 		[51052] = 120,				--"Anti-Magic Zone",
 		[49206] = 180,				--"Summon Gargoyle",
@@ -116,15 +101,12 @@ addonTable.CDs = {
 		[99] = 30,					--"Disorienting Roar",
 		[102280] = 30,				--"Displacer Beast",
 		[22812] = 60,				--"Barkskin",
-		[132158] = 60,				--"Nature's Swiftness",
 		[33891] = 180,				--"Tree of Life",
 		[16979] = 15,				--"Wild Charge - Bear",
 		[49376] = 15,				--"Wild Charge - Cat",
 		[61336] = 180,				--"Survival Instincts",
-		[50334] = 180,				--"Berserk",
 		[22570] = 10,				--"Maim",
 		[18562] = 15,				--"Swiftmend",
-		[48505] = 90,				--"Starfall",
 		[740] = 480,				--"Tranquility",
 		[78674] = 15,				--"Starsurge",
 		[102543] = 180,				-- Incarnation: King of the Jungle
@@ -143,7 +125,6 @@ addonTable.CDs = {
 		[122783] = 90,				--"Diffuse Magic",
 		[116844] = 45,				--"Ring of Peace",
 		[116849] = 120,				--"Life Cocoon",
-		[137562] = 120,				--"Nimble Brew",
 		[122470] = 90,				--"Touch of Karma",
 		[101545] = 25,				--"Flying Serpent Kick",
 		[116841] = 30,				--"Tiger's Lust",
@@ -152,7 +133,6 @@ addonTable.CDs = {
 	[L["PALADIN"]] = {
 		[853] = 60,					--"Hammer of Justice" (stun)
 		[115750] = 120,				--Blinding Light (blind (sic!))
-		[105593] = 30,				-- Fist of Justice
 		[96231] = 15,				--"Rebuke",
 		[642] = 300,				--"Divine Shield",
 		[85499] = 45,				--"Speed of Light",
@@ -174,18 +154,15 @@ addonTable.CDs = {
 		[15487] = 45,				--"Silence",
 		[47585] = 105,				--"Dispersion",
 		[33206] = 180,				--"Pain Suppression",
-		[108920] = 30,				-- Void Tendrils
 		[112833] = 30,				-- Призрачный облик
 		[123040] = 60,				--"Mindbender",
 		[10060] = 120,				--"Power Infusion",
 		[88625] = 30,				--"Holy Word: Chastise",
 		[586] = 30,					--"Fade",
 		[112833] = 30,				--"Spectral Guise",
-		[6346] = 120,				--"Fear Ward",
 		[64843] = 180,				--"Divine Hymn",
 		[73325] = 90,				--"Leap of Faith",
 		[19236] = 120,				--"Desperate Prayer",
-		[724] = 180,				--"Lightwell",
 		[62618] = 180,				--"Power Word: Barrier",
 		[47788] = 180,				-- Guardian Spirit
 	},
@@ -196,35 +173,28 @@ addonTable.CDs = {
 		[1856] = 120,				-- Исчезновение
 		[1776] = 10,				--"Gouge",
 		[2983] = 60,				--"Sprint",
-		[14185] = 300,				--"Preparation",
 		[36554] = 20,				--"Shadowstep",
 		[5277] = 120,				--"Evasion",
 		[408] = 20,					--"Kidney Shot",
 		[76577] = 180,				--"Smoke Bomb",
 		[51690] = 120,				--"Killing Spree",
-		[51713] = 60, 				--"Shadow Dance",
 		[79140] = 120,				--"Vendetta",
 		[13750] = 180,				-- Adrenaline Rush
 	},
 	[L["SHAMAN"]] = {
-		[8177] = 25,				--"Grounding Totem",
 		[57994] = 12,				--"Wind Shear",
 		[51490] = 35,				--"Thunderstorm",
 		[51485] = 30,				--"Earthbind Totem",
-		[8143] = 60,				--"Tremor Totem",
 		[51514] = 35,				--"Hex",
-		[108269] = 45,				--"Capacitor Totem",
 		[108270] = 60,				--"Stone Bulwark Totem",
 		[108280] = 180,				--"Healing Tide Totem",
 		[98008] = 180,				--"Spirit Link Totem",
 		[32182] = 300,				--"Heroism",
 		[2825] = 300,				--"Bloodlust",
 		[51533] = 120,				--"Feral Spirit",
-		[30823] = 60,				--"Shamanistic Rage",
 		[2484] = 30,				--"Earthbind Totem",
 		[79206] = 120,				--"Spiritwalker's Grace",
 		[16166] = 90,				--"Elemental Mastery",
-		[16188] = 90,				--"Ancestral Swiftness",
 		[108273] =	60,				-- Windwalk Totem
 		[108285] = 	180,			-- Call of the Elements
 		[114050] = 180,				-- Elemental Ascendance
@@ -232,7 +202,6 @@ addonTable.CDs = {
 		[114052] = 180,				-- Restoration Ascendance
 	},
 	[L["WARRIOR"]] = {
-		[102060] = 40,				--"Разрушительный крик"
 		[100] = 12,					--"Charge",
 		[6552] = 15,				--"Pummel",
 		[23920] = 20,				--"Spell Reflection",
@@ -240,13 +209,11 @@ addonTable.CDs = {
 		[46968] = 40,				--"Shockwave",
 		[107574] = 180,				--"Avatar",
 		[12292] = 60, 				--"Bloodbath",
-		[86346] = 20,				--"Colossus Smash",
 		[5246] = 90,				--"Intimidating Shout",
 		[871] = 180,				--"Shield Wall",	
 		[118038] = 120,				--"Die by the Sword",
 		[1719] = 180,				--"Recklessness",
 		[3411] = 30,				--"Intervene",
-		[64382] = 300,				--"Shattering Throw",
 		[6544] = 30,				--"Heroic Leap",
 		[12975] = 180,				--"Last Stand",
 		[114028] = 60,				-- Mass Spell Reflection
@@ -265,7 +232,6 @@ addonTable.Interrupts = {
 	1766,	-- Kick
 	57994,	-- Wind Shear
 	6552,	-- Pummel
-	102060,	-- Disrupting Shout
 	24259,	-- Spell Lock
 	147362,	-- Counter Shot
 	116705, -- Spear Hand Strike
@@ -278,17 +244,8 @@ addonTable.Resets = {
 		122,		-- Frost Nova
 		120,		-- Cone of Cold
 	},
-	[14185] = {
-		2983,		-- Sprint
-		1856,		-- Vanish
-		5277,		-- Evasion
-		51722,		-- Dismantle
-	},
 	[108285] = {
-		108269,		-- Capacitor Totem
-		8177,		-- Grounding Totem
 		51485,		-- Earthgrab Totem
-		8143,		-- Tremor Totem
 		108270,		-- Stone Bulwark Totem
 		108273,		-- Windwalk Totem
 	},
