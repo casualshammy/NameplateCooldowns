@@ -47,11 +47,8 @@ local AddButtonToBlizzOptions;
 
 local AllocateIcon;
 local ReallocateAllIcons;
-local Nameplate_OnShow;
 local Nameplate_OnHide;
 local GetUnitNameForNameplate;
-local CheckForNewNameplates;
-local FindNewNameplate;
 local InitializeFrame;
 local UpdateOnlyOneNameplate;
 local HideCDIcon;
@@ -61,6 +58,8 @@ local OnUpdate;
 
 local PLAYER_ENTERING_WORLD;
 local COMBAT_LOG_EVENT_UNFILTERED;
+local NAME_PLATE_UNIT_ADDED;
+local NAME_PLATE_UNIT_REMOVED;
 
 local EnableTestMode;
 local DisableTestMode;
@@ -88,17 +87,20 @@ do
 	function OnStartup()
 		InitializeDB();
 		-- // remove non-existent spells
+		local badSkills = {};
 		for _, k in pairs(CDs) do
 			for spellID in pairs(k) do
 				if (GetSpellLink(spellID) == nil) then
 					db.CDsTable[spellID] = nil;
+					table.insert(badSkills, spellID);
+					Print("This spell doesn't exist -->> "..spellID);
 				end
 			end
 		end
 		-- // add new spells to user's db
 		for _, k in pairs(CDs) do
 			for spellID in pairs(k) do
-				if (db.CDsTable[spellID] == nil) then
+				if (db.CDsTable[spellID] == nil and not tContains(badSkills, spellID)) then
 					db.CDsTable[spellID] = true;
 					Print(format(L["New spell has been added: %s"], GetSpellLink(spellID)));
 				end
@@ -127,8 +129,10 @@ do
 				ElapsedTimer = 0;
 			end
 		end);
-		-- // starting COMBAT_LOG_EVENT_UNFILTERED()
+		-- // starting listening for events
 		EventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+		EventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED");
+		EventFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
 		AddButtonToBlizzOptions();
 		SLASH_NAMEPLATECOOLDOWNS1 = '/nc';
 		SlashCmdList["NAMEPLATECOOLDOWNS"] = function(msg, editBox)
@@ -236,16 +240,7 @@ do
 			OnUpdate();
 		end
 	end
-	
-	function Nameplate_OnShow(frame)
-		local unitName = GetUnitNameForNameplate(frame);
-		UpdateOnlyOneNameplate(frame, unitName);
-		NameplatesVisible[frame] = unitName;
-		if (db.FullOpacityAlways and frame.NCFrame) then
-			frame.NCFrame:Show();
-		end
-	end
-	
+		
 	function Nameplate_OnHide(frame)
 		NameplatesVisible[frame] = nil;
 		if (db.FullOpacityAlways and frame.NCFrame) then
@@ -254,41 +249,14 @@ do
 	end
 	
 	function GetUnitNameForNameplate(f)
-		local _, nameplateChild = f:GetChildren();
-		local name = nameplateChild:GetRegions();
-		return string_gsub(name:GetText(), '%s?%(%*%)', '');
+		local unitID = f.namePlateUnitToken;
+		print("GetUnitNameForNameplate0:", unitID);
+		local name = UnitName(unitID);
+		name = string_gsub(name, '%s?%(%*%)', '');
+		print("GetUnitNameForNameplate1:", unitID, name);
+		return name;
 	end
 	
-	function CheckForNewNameplates()
-		local numChildren = WorldFrame:GetNumChildren();
-		if (numChildren ~= WorldFrameNumChildren) then
-			WorldFrameNumChildren = numChildren;
-			FindNewNameplate(WorldFrame:GetChildren());
-		end
-	end
-	
-	function FindNewNameplate(frame, ...)
-		if (not frame) then
-			return;
-		end
-		local frameName = frame:GetName();
-		if (frameName and string_find(frameName, "NamePlate") and not Nameplates[frame]) then
-			InitializeFrame(frame);
-		end
-		FindNewNameplate(...);
-	end
-	
-	function InitializeFrame(frame)
-		Nameplates[frame] = true;
-		frame.NCIcons = {};
-		frame.NCIconsCount = 0;	-- // it's faster than #frame.NCIcons
-		if (frame:IsVisible()) then
-			Nameplate_OnShow(frame);
-		end
-		frame:HookScript("OnShow", Nameplate_OnShow);
-		frame:HookScript("OnHide", Nameplate_OnHide);
-	end
-
 	function UpdateOnlyOneNameplate(frame, name)
 		local counter = 1;
 		if (charactersDB[name]) then
@@ -365,7 +333,6 @@ end
 do
 
 	function OnUpdate()
-		CheckForNewNameplates();
 		local currentTime = GetTime();
 		for frame, unitName in pairs(NameplatesVisible) do
 			local counter = 1;
@@ -495,6 +462,34 @@ do
 		end
 	end
 
+	function NAME_PLATE_UNIT_ADDED(...)
+		local unitID = ...;
+		local nameplate = C_NamePlate.GetNamePlateForUnit(unitID);
+		local unitName = UnitName(unitID);
+		NameplatesVisible[nameplate] = unitName;
+		if (not Nameplates[nameplate]) then
+			nameplate.NCIcons = {};
+			nameplate.NCIconsCount = 0;	-- // it's faster than #nameplate.NCIcons
+			Nameplates[nameplate] = true;
+			-- // print("NAME_PLATE_UNIT_ADDED: frame is not initialized!", unitID);
+		end
+		UpdateOnlyOneNameplate(nameplate, unitName);
+		if (db.FullOpacityAlways and nameplate.NCFrame) then
+			nameplate.NCFrame:Show();
+		end
+		--print("NAME_PLATE_UNIT_ADDED: ", unitID, nameplate, UnitName(unitID));
+	end
+	
+	function NAME_PLATE_UNIT_REMOVED(...)
+		local unitID = ...;
+		local nameplate = C_NamePlate.GetNamePlateForUnit(unitID);
+		NameplatesVisible[nameplate] = nil;
+		if (db.FullOpacityAlways and nameplate.NCFrame) then
+			nameplate.NCFrame:Hide();
+		end
+		--print("NAME_PLATE_UNIT_REMOVED: ", unitID, nameplate, UnitName(unitID));
+	end
+	
 end
 
 -------------------------------------------------------------------------------------------------
@@ -684,7 +679,6 @@ do
 		closeButton.text:SetText("X");
 		
 		local scrollFramesTipText = GUIFrame:CreateFontString("NC_GUIScrollFramesTipText", "OVERLAY", "GameFontNormal");
-		scrollFramesTipText:SetFont("Fonts\\FRIZQT__.TTF", 12, nil);
 		scrollFramesTipText:SetPoint("CENTER", GUIFrame, "LEFT", 300, 130);
 		scrollFramesTipText:SetText(L["Click on icon to enable/disable tracking"]);
 		
@@ -919,7 +913,6 @@ do
 	
 	function GUICategory_2(index, value)
 		local textProfilesCurrentProfile = GUIFrame:CreateFontString("NC_GUIProfilesTextCurrentProfile", "OVERLAY", "GameFontNormal");
-		textProfilesCurrentProfile:SetFont("Fonts\\FRIZQT__.TTF", 12, nil);
 		textProfilesCurrentProfile:SetPoint("CENTER", GUIFrame, "LEFT", 300, 130);
 		textProfilesCurrentProfile:SetText(format(L["Current profile: [%s]"], LocalPlayerFullName));
 		table.insert(GUIFrame.Categories[index], textProfilesCurrentProfile);
@@ -1061,8 +1054,7 @@ do
 			spellItem.tex:SetWidth(20);
 			spellItem.tex:SetTexture(icon);
 			
-			spellItem.Text = spellItem:CreateFontString(nil, "OVERLAY");
-			spellItem.Text:SetFont("Fonts\\FRIZQT__.TTF", 12, nil);
+			spellItem.Text = spellItem:CreateFontString(nil, "OVERLAY", "GameFontNormal");
 			spellItem.Text:SetPoint("LEFT", 22, 0);
 			spellItem.Text:SetText(n);
 			spellItem:EnableMouse(true);
@@ -1180,7 +1172,6 @@ do
 		frame:SetPoint("TOPLEFT", x, y);
 
 		frame.label = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-		frame.label:SetFont("Fonts\\FRIZQT__.TTF", 12, nil);
 		frame.label:SetPoint("TOPLEFT");
 		frame.label:SetPoint("TOPRIGHT");
 		frame.label:SetJustifyH("CENTER");
@@ -1233,29 +1224,29 @@ do
 		button.Background = button:CreateTexture(nil, "BORDER");
 		button.Background:SetPoint("TOPLEFT", 1, -1);
 		button.Background:SetPoint("BOTTOMRIGHT", -1, 1);
-		button.Background:SetTexture(0, 0, 0, 1);
+		button.Background:SetColorTexture(0, 0, 0, 1);
 
 		button.Border = button:CreateTexture(nil, "BACKGROUND");
 		button.Border:SetPoint("TOPLEFT", 0, 0);
 		button.Border:SetPoint("BOTTOMRIGHT", 0, 0);
-		button.Border:SetTexture(unpack({0.73, 0.26, 0.21, 1}));
+		button.Border:SetColorTexture(unpack({0.73, 0.26, 0.21, 1}));
 
 		button.Normal = button:CreateTexture(nil, "ARTWORK");
 		button.Normal:SetPoint("TOPLEFT", 2, -2);
 		button.Normal:SetPoint("BOTTOMRIGHT", -2, 2);
-		button.Normal:SetTexture(unpack({0.38, 0, 0, 1}));
+		button.Normal:SetColorTexture(unpack({0.38, 0, 0, 1}));
 		button:SetNormalTexture(button.Normal);
 
 		button.Disabled = button:CreateTexture(nil, "OVERLAY");
 		button.Disabled:SetPoint("TOPLEFT", 3, -3);
 		button.Disabled:SetPoint("BOTTOMRIGHT", -3, 3);
-		button.Disabled:SetTexture(0.6, 0.6, 0.6, 0.2);
+		button.Disabled:SetColorTexture(0.6, 0.6, 0.6, 0.2);
 		button:SetDisabledTexture(button.Disabled);
 
 		button.Highlight = button:CreateTexture(nil, "OVERLAY");
 		button.Highlight:SetPoint("TOPLEFT", 3, -3);
 		button.Highlight:SetPoint("BOTTOMRIGHT", -3, 3);
-		button.Highlight:SetTexture(0.6, 0.6, 0.6, 0.2);
+		button.Highlight:SetColorTexture(0.6, 0.6, 0.6, 0.2);
 		button:SetHighlightTexture(button.Highlight);
 
 		button.Text = button:CreateFontString(publicName.."Text", "OVERLAY", "GameFontNormal");
@@ -1312,8 +1303,12 @@ EventFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
 EventFrame:SetScript("OnEvent", function(self, event, ...)
 	if (event == "COMBAT_LOG_EVENT_UNFILTERED") then
 		COMBAT_LOG_EVENT_UNFILTERED(...);
-	else
+	elseif (event == "PLAYER_ENTERING_WORLD") then
 		PLAYER_ENTERING_WORLD();
+	elseif (event == "NAME_PLATE_UNIT_ADDED") then
+		NAME_PLATE_UNIT_ADDED(...);
+	elseif (event == "NAME_PLATE_UNIT_REMOVED") then
+		NAME_PLATE_UNIT_REMOVED(...);
 	end
 end);
 
