@@ -78,7 +78,7 @@ addonTable.CDs = {
 		[1953] = 15,				-- Blink
 		[33395] = 25,				--"Freeze",
 	},
-	[L["DEATHKNIGHT"]] = {
+	[L["DEATHKNIGHT"]] = { -- // OK
 		[47476] = 60,				--"Strangulate",
 		[108194] = 45,				-- Asphyxiate
 		[48707] = 60,				--"Anti-Magic Shell",
