@@ -1,6 +1,6 @@
 local _, addonTable = ...;
 local L = addonTable.L;
-
+-- // DO-NOT-FORGET: SolarBeam - 30sec; DH's sigils - 40%; Druid's tranq - 60sec;
 addonTable.CDs = {
 	[L["MISC"]] = {
 		[28730] = 120,				--"Arcane Torrent",
@@ -103,26 +103,30 @@ addonTable.CDs = {
 		[207319] = 60,				-- // Corpse Shield
 		[207349] = 180,				-- // Dark Arbiter
 	},
-	[L["DRUID"]] = {
-		[78675] = 60,				--"Solar Beam",
-		[5211] = 50,				--"Bash",
-		[106839] = 15,				-- Skull Bash
-		[132469] = 30,				-- Тайфун
-		[124974] = 90,				--"Nature's Vigil",
-		[102359] = 30,				--"Mass Entanglement",
-		[99] = 30,					--"Disorienting Roar",
-		[102280] = 30,				--"Displacer Beast",
-		[22812] = 60,				--"Barkskin",
-		[33891] = 180,				--"Tree of Life",
-		[16979] = 15,				--"Wild Charge - Bear",
-		[49376] = 15,				--"Wild Charge - Cat",
-		[61336] = 180,				--"Survival Instincts",
-		[22570] = 10,				--"Maim",
-		[18562] = 15,				--"Swiftmend",
-		[740] = 480,				--"Tranquility",
-		[78674] = 15,				--"Starsurge",
-		[102543] = 180,				-- Incarnation: King of the Jungle
-		[102560] = 180,				-- Incarnation: Chosen of Elune
+	[L["DRUID"]] = { -- // OK
+		[1850] = 180,				-- // Dash
+		[20484] = 600,				-- // Rebirth
+		[200851] = 90,				-- // Rage of the Sleeper
+		[208253] = 90,				-- // Essence of G'Hanir
+		[209749] = 30,				-- // Faerie Swarm
+		[202246] = 15,				-- // Overrun
+		[22812] = 60,				-- // Barkskin
+		[194223] = 180,				-- // Celestial Alignment
+		[78675] = 30,				-- // Solar Beam
+		[106951] = 180,				-- // Berserk
+		[22570] = 10,				-- // Maim
+		[61336] = 180,				-- // Survival Instincts x2
+		[5217] = 30,				-- // Tiger's Fury
+		[102342] = 90,				-- // Ironbark
+		[740] = 120,				-- // Tranquility
+		[102793] = 60,				-- // Ursol's Vortex
+		[205636] = 60,				-- // Force of Nature
+		[102560] = 180,				-- // Incarnation: Chosen of Elune
+		[108238] = 120,				-- // Renewal
+		[102543] = 180,				-- // Incarnation: King of the Jungle
+		[102558] = 180,				-- // Incarnation: Guardian of Ursoc
+		[33891] = 180,				-- // Incarnation: Tree of Life
+		[106839] = 15,				-- // Skull Bash
 	},
 	[L["MONK"]] = {
 		[116705] = 15, 				--Spear Hand Strike (interrupt)
@@ -241,9 +245,9 @@ addonTable.CDs = {
 		[188501] = 30,					-- // Spectral Sight
 		[218256] = 20,					-- // Empower Wards
 		[187827] = 180,					-- // Metamorphosis
-		[202138] = 120,					-- // Sigil of Chains
-		[207684] = 60,					-- // Sigil of Misery
-		[202137] = 60,					-- // Sigil of Silence
+		[202138] = 72,					-- // Sigil of Chains
+		[207684] = 36,					-- // Sigil of Misery
+		[202137] = 36,					-- // Sigil of Silence
 		[211048] = 120,					-- // Chaos Blades
 		[211881] = 35,					-- // Fel Eruption
 		[206491] = 120,					-- // Nemesis
@@ -251,6 +255,8 @@ addonTable.CDs = {
 		[196555] = 90,					-- // Netherwalk
 		[205629] = 30,					-- // Demonic Trample
 		[205604] = 60,					-- // Reverse Magic
+		[206803] = 60,					-- // Rain from Above
+		[205630] = 90,					-- // Illidan's Grasp
 	},
 };
 
