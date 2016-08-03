@@ -1,6 +1,6 @@
 local _, addonTable = ...;
 local L = addonTable.L;
--- // DO-NOT-FORGET: SolarBeam - 30sec; DH's sigils - 40%; Druid's tranq - 60sec;
+-- // DO-NOT-FORGET: SolarBeam - 30sec; DH's sigils - 40%; Druid's tranq - 60sec; Hunter's freezing trap - 15%;
 addonTable.CDs = {
 	[L["MISC"]] = {
 		[28730] = 120,				--"Arcane Torrent",
@@ -28,23 +28,28 @@ addonTable.CDs = {
 		[214027] = 60,				-- // Адаптация
 		[208683] = 120,				-- // Медальон гладиатора
 	},
-	[L["HUNTER"]] = {
-		[19386] = 45,				--"Wyvern Sting",
-		[19263] = 180,				--"Deterrence",
-		[147362] = 24,				--"Counter Shot"
-		[120679] = 30,				--"Dire Beast",
-		[109248] = 45,				--"Binding Shot",
-		[82726] = 30,				--"Fervor",
-		[3045] = 180,				--"Rapid Fire",
-		[53271] = 45, 				--"Master's Call",
-		[19574] = 60,				--"Bestial Wrath",
-		[61685] = 25,				--"Charge",
-		[50433] = 10,				--"Ankle Crack",
-		[90355] = 360,				--"Ancient Hysteria",
-		[90361] = 40,				--"Spirit Mend",
-		[55709] = 480,				--"Heart of the Phoenix",
-		[53480] = 60,				--"Roar of Sacrifice",
-		[53478] = 360,				--"Last Stand",
+	[L["HUNTER"]] = { -- // OK
+		[186257] = 180,					-- // Aspect of the Cheetah
+		[186265] = 180,					-- // Aspect of the Turtle
+		[205691] = 120,					-- // Dire Beast: Basilisk
+		[209789] = 30,					-- // Freezing Arrow
+		[213691] = 20,					-- // Scatter Shot
+		[53271] = 45,					-- // Master's Call
+		[19574] = 90,					-- // Bestial Wrath
+		[147362] = 24,					-- // Counter Shot
+		[781] = 20,						-- // Disengage
+		[109304] = 120,					-- // Exhilaration
+		[186387] = 30,					-- // Bursting Shot
+		[193526] = 180,					-- // Trueshot
+		[186289] = 120,					-- // Aspect of the Eagle
+		[187650] = 25,					-- // Freezing Trap - 15%
+		[187707] = 15,					-- // Muzzle
+		[109248] = 45,					-- // Binding Shot
+		[19577] = 60,					-- // Intimidation
+		[19386] = 45,					-- // Wyvern Sting
+		[199483] = 60,					-- // Camouflage
+		[200108] = 60,					-- // Ranger's Net
+		[201078] = 90,					-- // Snake Hunter
 	},
 	[L["WARLOCK"]] = {
 		[6789] = 45,				--"Death Coil",
@@ -275,6 +280,7 @@ addonTable.Interrupts = {
 	116705, -- Spear Hand Strike
 	115781,	-- Optical Blast
 	183752,	-- Consume Magic
+	187707, -- // Muzzle
 };
 
 addonTable.Resets = {
