@@ -1,6 +1,7 @@
 local _, addonTable = ...;
 local L = addonTable.L;
--- // DO-NOT-FORGET: SolarBeam - 30sec; DH's sigils - 40%; Druid's tranq - 60sec; Hunter's freezing trap - 15%;
+-- // DO-NOT-FORGET: SolarBeam - 30sec; DH's sigils - 40%; Druid's tranq - 60sec; Hunter's freezing trap - 15%; Mage's Greater Invisibility - 45sec; Mage's Displacement - 6sec
+-- // Monk's Life Cocoon - 90sec; Monk's Zen Meditation - 50%
 addonTable.CDs = {
 	[L["MISC"]] = {
 		[28730] = 120,				--"Arcane Torrent",
@@ -65,23 +66,24 @@ addonTable.CDs = {
 		[89751] = 45,				--"Felstorm",
 		[115781] = 24,				-- Optical Blast
 	},
-	[L["MAGE"]] = {
-		[2139] = 22,				--"Counterspell",
-		[45438] = 300,				--"Ice Block",
-		[110959] = 90,				--"Greater Invisibility",
-		[11958] = 180,				--"Cold Snap",	
-		[12042] = 90,				--"Arcane Power",		
-		[12051] = 120,				--"Evocation", 
-		[122] = 25,					--"Frost Nova",	
-		[11426] = 25,				--"Ice Barrier", 
-		[12472] = 180,				--"Icy Veins",
-		[55342] = 180,				--"Mirror Image", 
-		[66] = 300,					--"Invisibility",
-		[113724] = 45,				--"Ring of Frost",
-		[80353] = 300, 				--"Time Warp",
-		[31661] = 20,				--"Dragon's Breath",
-		[1953] = 15,				-- Blink
-		[33395] = 25,				--"Freeze",
+	[L["MAGE"]] = { -- // OK
+		[122] = 30,					-- // Frost Nova
+		[1953] = 15,				-- // Blink
+		[11426] = 25,				-- // Ice Barrier
+		[45438] = 300,				-- // Ice Block
+		[2139] = 24,				-- // Counterspell
+		[12042] = 90,				-- // Arcane Power
+		[195676] = 24,				-- // Displacement
+		[12051] = 90,				-- // Evocation
+		[110959] = 75,				-- // Greater Invisibility
+		[190319] = 120,				-- // Combustion
+		[31661] = 20,				-- // Dragon's Breath
+		[66] = 300,					-- // Invisibility
+		[84714] = 60,				-- // Frozen Orb
+		[12472] = 180,				-- // Icy Veins
+		[31687] = 60,				-- // Summon Water Elemental
+		[157980] = 25,				-- // Supernova
+		[157997] = 25,				-- // Ice Nova
 	},
 	[L["DEATHKNIGHT"]] = { -- // OK
 		[47476] = 60,				--"Strangulate",
@@ -133,23 +135,28 @@ addonTable.CDs = {
 		[33891] = 180,				-- // Incarnation: Tree of Life
 		[106839] = 15,				-- // Skull Bash
 	},
-	[L["MONK"]] = {
-		[116705] = 15, 				--Spear Hand Strike (interrupt)
-		[115078] = 15, 				--Paralysis
-		[119381] = 45, 				--Leg Sweep (mass stun)
-		[123904] = 180,				--"Invoke Xuen, the White Tiger",
-		[101643] = 45,				--"Transcendence",
-		[119996] = 25,				--"Transcendence: Transfer",
-		[115176] = 180,				--"Zen Meditation",
-		[115310] = 180,				--"Revival",
-		[122278] = 90, 				--"Dampen Harm",
-		[122783] = 90,				--"Diffuse Magic",
-		[116844] = 45,				--"Ring of Peace",
-		[116849] = 120,				--"Life Cocoon",
-		[122470] = 90,				--"Touch of Karma",
-		[101545] = 25,				--"Flying Serpent Kick",
-		[116841] = 30,				--"Tiger's Lust",
-		[113656] = 25,				--"Fists of Fury",
+	[L["MONK"]] = { -- // OK
+		[202162] = 45,			-- // Guard
+		[202370] = 60,			-- // Mighty Ox Kick
+		[201318] = 90,			-- // Fortifying Elixir
+		[201325] = 180,			-- // Zen Meditation
+		[216113] = 45,			-- // Way of the Crane
+		[115181] = 15,			-- // Breath of Fire
+		[115203] = 420,			-- // Fortifying Brew
+		[116705] = 15,			-- // Spear Hand Strike
+		[115176] = 150,			-- // Zen Meditation
+		[137639] = 90,			-- // Storm, Earth, and Fire
+		[115080] = 60,			-- // Touch of Death
+		[122470] = 90,			-- // Touch of Karma
+		[116849] = 90,			-- // Life Cocoon
+		[115310] = 180,			-- // Revival
+		[132578] = 180,			-- // Invoke Niuzao, the Black Ox	
+		[123904] = 180,			-- // Invoke Xuen, the White Tiger
+		[198664] = 180,			-- // Invoke Chi-Ji, the Red Crane
+		[198898] = 30,			-- // Song of Chi-Ji
+		[115078] = 15,			-- // Paralysis
+		[119996] = 25,			-- // Transcendence: Transfer
+		[152173] = 90,			-- // Serenity
 	},
 	[L["PALADIN"]] = {
 		[853] = 60,					--"Hammer of Justice" (stun)
@@ -284,14 +291,12 @@ addonTable.Interrupts = {
 };
 
 addonTable.Resets = {
-	[11958] = {
-		45438,		-- Ice Block
-		122,		-- Frost Nova
-		120,		-- Cone of Cold
-	},
 	[108285] = {
 		51485,		-- Earthgrab Totem
 		108270,		-- Stone Bulwark Totem
 		108273,		-- Windwalk Totem
+	},
+	[195676] = {	-- // Displacement
+		1953,			-- // Blink
 	},
 };
