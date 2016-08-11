@@ -10,6 +10,7 @@ local L = addonTable.L;
 local CDs = addonTable.CDs;
 local Interrupts = addonTable.Interrupts;
 local Resets = addonTable.Resets;
+local Trinkets = addonTable.Trinkets;
 
 local SML = LibStub("LibSharedMedia-3.0");
 SML:Register("font", "NC_TeenBold", "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf", 255);
@@ -260,7 +261,7 @@ do
 								icon.border:Show();
 								icon.borderState = 1;
 							end
-						elseif (db.ShowBorderTrinkets and (spellID == 42292 or spellID == 59752 or spellID == 7744)) then
+						elseif (db.ShowBorderTrinkets and tContains(Trinkets, spellID)) then
 							if (icon.borderState ~= 2) then
 								icon.border:SetVertexColor(unpack(db.BorderTrinketsColor));
 								icon.border:Show();
@@ -340,7 +341,7 @@ do
 									icon.border:Show();
 									icon.borderState = 1;
 								end
-							elseif (db.ShowBorderTrinkets and (spellID == 42292 or spellID == 59752 or spellID == 7744)) then
+							elseif (db.ShowBorderTrinkets and tContains(Trinkets, spellID)) then
 								if (icon.borderState ~= 2) then
 									icon.border:SetVertexColor(unpack(db.BorderTrinketsColor));
 									icon.border:Show();
