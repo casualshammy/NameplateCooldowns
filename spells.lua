@@ -1,7 +1,7 @@
 local _, addonTable = ...;
 local L = addonTable.L;
 -- // DO-NOT-FORGET: SolarBeam - 30sec; DH's sigils - 40%; Druid's tranq - 60sec; Hunter's freezing trap - 15%; Mage's Greater Invisibility - 45sec; Mage's Displacement - 6sec
--- // Monk's Life Cocoon - 90sec; Monk's Zen Meditation - 50%
+-- // Monk's Life Cocoon - 90sec; Monk's Zen Meditation - 50%; Pala's divine shield, Благословение защиты, Жертвенное благословение -50%;Благословение защиты-10%;Ревностный защитник-10sec
 addonTable.CDs = {
 	[L["MISC"]] = {
 		[28730] = 120,				--"Arcane Torrent",
@@ -52,19 +52,24 @@ addonTable.CDs = {
 		[200108] = 60,					-- // Ranger's Net
 		[201078] = 90,					-- // Snake Hunter
 	},
-	[L["WARLOCK"]] = {
-		[6789] = 45,				--"Death Coil",
+	[L["WARLOCK"]] = { -- // OKSOGOOD
+		[48020] = 30,				-- // Demonic Circle: Teleport
+		[6789] = 45,				-- // Mortal Coil
 		[5484] = 40,				--"Howl of Terror",
 		[108359] = 120,				--"Dark Regeneration",
-		[108416] = 60,				--"Sacrificial Pact",
+		[108416] = 60,				-- // Dark Pact
 		[30283] = 30,				--"Shadowfury",
-		[48020] = 30,				--"Demonic Circle: Teleport",
-		[104773] = 120,				-- Unending Resolve
+		[104773] = 150,				-- Unending Resolve [-30sec]
 		[19647] = 24,				--"Spell Lock",
 		[7812] = 60,				--"Sacrifice",
 		[89766] = 30,				--"Axe Toss"
 		[89751] = 45,				--"Felstorm",
 		[115781] = 24,				-- Optical Blast
+		[212295] = 45,				-- // Nether Ward
+		[1122] = 60,				-- // Summon Infernal [-120sec]
+		[18540] = 180,				-- // Summon Doomguard
+		[212459] = 90,				-- // Call Fel Lord
+		[212284] = 45,				-- // Firestone
 	},
 	[L["MAGE"]] = { -- // OK
 		[122] = 30,					-- // Frost Nova
@@ -158,23 +163,30 @@ addonTable.CDs = {
 		[119996] = 25,			-- // Transcendence: Transfer
 		[152173] = 90,			-- // Serenity
 	},
-	[L["PALADIN"]] = {
-		[853] = 60,					--"Hammer of Justice" (stun)
-		[115750] = 120,				--Blinding Light (blind (sic!))
-		[96231] = 15,				--"Rebuke",
-		[642] = 300,				--"Divine Shield",
-		[85499] = 45,				--"Speed of Light",
-		[1044] = 25,				--"Hand of Freedom",
-		[31884] = 180,				--"Avenging Wrath",
-		[31935] = 15,				--"Avenger's Shield",
-		[633] = 600,				--"Lay on Hands",
-		[1022] = 300,				--"Hand of Protection",
-		[498] = 60,					--"Divine Protection",
-		[6940] = 120,				--"Hand of Sacrifice",
-		[31842] = 180,				--"Divine Favor",
-		[31821] = 180,				--"Devotion Aura",
-		[20066] = 15,				--"Repentance",
-		[31850] = 180,				--"Ardent Defender",
+	[L["PALADIN"]] = { -- // OKSOGOOD
+		[642] = 150,			-- // Божественный щит
+		[1044] = 25,			-- // Благословенная свобода
+		[633] = 600,			-- // Возложение рук
+		[216331] = 60,			-- // Рыцарь-мститель
+		[228049] = 180,			-- // Страж забытой королевы
+		[210256] = 25,			-- // Благословение святилища
+		[1022] = 135,			-- // Благословение защиты
+		[31821] = 180,			-- // Владение аурами
+		[498] = 60,				-- // Божественная защита
+		[31842] = 120,			-- // Гнев карателя
+		[6940] = 75,			-- // Жертвенное благословение
+		[853] = 60,				-- // Молот правосудия
+		[190784] = 45,			-- // Божественный скакун
+		[31884] = 120,			-- // Гнев карателя
+		[86659] = 300,			-- // Защитник древних королей
+		[31850] = 110,			-- // Ревностный защитник
+		[96231] = 15,			-- // Укор
+		[31884] = 120,			-- // Гнев карателя
+		[105809] = 90,			-- // Святой каратель
+		[204018] = 180,			-- // Благословение защиты от заклинаний
+		[204150] = 300,			-- // Эгида Света
+		[205191] = 60,			-- // Око за око
+		[224668] = 120,			-- // Священная война
 	},
 	[L["PRIEST"]] = {
 		[64044] = 45,				--"Psychic Horror",
