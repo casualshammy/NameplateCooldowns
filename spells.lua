@@ -188,23 +188,28 @@ addonTable.CDs = {
 		[205191] = 60,			-- // Око за око
 		[224668] = 120,			-- // Священная война
 	},
-	[L["PRIEST"]] = {
+	[L["PRIEST"]] = { -- // OKSOGOOD
 		[64044] = 45,				--"Psychic Horror",
-		[8122] = 30,				--"Psychic Scream",
+		[8122] = 30,				--"Psychic Scream", [-30sec]
 		[15487] = 45,				--"Silence",
-		[47585] = 105,				--"Dispersion",
-		[33206] = 180,				--"Pain Suppression",
+		[47585] = 120,				--"Dispersion",
+		[33206] = 210,				--"Pain Suppression", [-30sec]
 		[112833] = 30,				-- Призрачный облик
 		[123040] = 60,				--"Mindbender",
 		[10060] = 120,				--"Power Infusion",
-		[88625] = 30,				--"Holy Word: Chastise",
+		[88625] = 60,				--"Holy Word: Chastise",
 		[586] = 30,					--"Fade",
 		[112833] = 30,				--"Spectral Guise",
 		[64843] = 180,				--"Divine Hymn",
 		[73325] = 90,				--"Leap of Faith",
-		[19236] = 120,				--"Desperate Prayer",
-		[62618] = 180,				--"Power Word: Barrier",
-		[47788] = 180,				-- Guardian Spirit
+		[19236] = 90,				--"Desperate Prayer",
+		[62618] = 120,				--"Power Word: Barrier", [-60sec]
+		[47788] = 96,				-- Guardian Spirit [-60%] [max=120sec]
+		[215769] = 300,				-- // Дух воздаяния
+		[108968] = 300,				-- // Вхождение в Бездну
+		[213602] = 30,				-- // Улучшенный уход в тень
+		[205369] = 30,				-- // Мыслебомба
+		[204263] = 60,				-- // Сияющая мощь
 	},
 	[L["ROGUE"]] = {
 		[2094] = 90,				--"Blind",
