@@ -235,25 +235,36 @@ addonTable.CDs = {
 		[199804] = 20,				-- // Промеж глаз
 		[121471] = 180,				-- // Теневые клинки
 	},
-	[L["SHAMAN"]] = {
+	[L["SHAMAN"]] = { -- // OKSOGOOD
 		[57994] = 12,				--"Wind Shear",
-		[51490] = 35,				--"Thunderstorm",
+		[51490] = 45,				--"Thunderstorm",
 		[51485] = 30,				--"Earthbind Totem",
-		[51514] = 35,				--"Hex",
-		[108270] = 60,				--"Stone Bulwark Totem",
 		[108280] = 180,				--"Healing Tide Totem",
 		[98008] = 180,				--"Spirit Link Totem",
 		[32182] = 300,				--"Heroism",
 		[2825] = 300,				--"Bloodlust",
 		[51533] = 120,				--"Feral Spirit",
-		[2484] = 30,				--"Earthbind Totem",
-		[79206] = 120,				--"Spiritwalker's Grace",
-		[16166] = 90,				--"Elemental Mastery",
-		[108273] =	60,				-- Windwalk Totem
-		[108285] = 	180,			-- Call of the Elements
+		[79206] = 60,				--"Spiritwalker's Grace", [-60sec]
+		[16166] = 120,				--"Elemental Mastery",
 		[114050] = 180,				-- Elemental Ascendance
 		[114051] = 180,				-- Enhancement Ascendance
 		[114052] = 180,				-- Restoration Ascendance
+		[108271] = 90,				-- // Астральный сдвиг
+		[51514] = 10,				--"Hex", [-20sec]
+		[210873] = 10,				-- // Hex [-20sec]
+		[211004] = 10,				-- // Hex [-20sec]
+		[211010] = 10,				-- // Hex [-20sec]
+		[211015] = 10,				-- // Hex [-20sec]
+		[210918] = 45,				-- // Астральный облик
+		[204293] = 60,				-- // Духовная связь
+		[204437] = 30,				-- // Молния-лассо
+		[204336] = 30,				-- // Тотем заземления
+		[204331] = 45,				-- // Тотем контрудара
+		[192063] = 15,				-- // Порыв ветра
+		[196884] = 30,				-- // Свирепый выпад
+		[196932] = 30,				-- // Тотем вуду
+		[192058] = 45,				-- // Тотем выброса тока
+		[207399] = 300,				-- // Тотем защиты Предков
 	},
 	[L["WARRIOR"]] = {
 		[100] = 12,					--"Charge",
@@ -317,11 +328,6 @@ addonTable.Interrupts = {
 };
 
 addonTable.Resets = {
-	[108285] = {
-		51485,		-- Earthgrab Totem
-		108270,		-- Stone Bulwark Totem
-		108273,		-- Windwalk Totem
-	},
 	[195676] = {	-- // Displacement
 		1953,			-- // Blink
 	},
