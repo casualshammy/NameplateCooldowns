@@ -1,11 +1,4 @@
-﻿------------------------------
------------- TODO ------------
-------------------------------
--- Custom icons sorting?
--- More advanced profile manager
-------------------------------
-
-local _, addonTable = ...;
+﻿local _, addonTable = ...;
 local L = addonTable.L;
 local CDs = addonTable.CDs;
 local Interrupts = addonTable.Interrupts;
@@ -23,60 +16,30 @@ local TextureCache = {};
 local ElapsedTimer = 0;
 local Nameplates = {};
 local NameplatesVisible = {};
-local GUIFrame;
-local EventFrame;
-local TestFrame;
-local db;
 local WorldFrameNumChildren = 0;
 local LocalPlayerFullName = UnitName("player").." - "..GetRealmName();
+local GUIFrame, EventFrame, TestFrame, db;
 
-local _G = _G;
-local pairs = pairs;
-local select = select;
-local WorldFrame = WorldFrame;
-local string_match = strmatch;
-local string_gsub = gsub;
-local string_find = strfind;
-local bit_band = bit.band;
-local GetTime = GetTime;
-local tContains = tContains;
-local math_ceil = ceil;
+local _G, pairs, select, WorldFrame, string_match, string_gsub, string_find, bit_band, GetTime, table_contains_value, math_ceil =
+	  _G, pairs, select, WorldFrame, strmatch,	   gsub,		strfind,	 bit.band, GetTime, tContains,			  ceil;
 
-local OnStartup;
-local InitializeDB;
-local AddButtonToBlizzOptions;
-
-local AllocateIcon;
-local ReallocateAllIcons;
-local InitializeFrame;
-local UpdateOnlyOneNameplate;
-local HideCDIcon;
-local ShowCDIcon;
-
+local OnStartup, InitializeDB, AddButtonToBlizzOptions;
+local AllocateIcon, ReallocateAllIcons, InitializeFrame, UpdateOnlyOneNameplate, Nameplate_SetBorder, Nameplate_SetCooldown, Nameplate_SortAuras, HideCDIcon, ShowCDIcon;
 local OnUpdate;
+local PLAYER_ENTERING_WORLD, COMBAT_LOG_EVENT_UNFILTERED, NAME_PLATE_UNIT_ADDED, NAME_PLATE_UNIT_REMOVED;
+local EnableTestMode, DisableTestMode;
+local ShowGUI, InitializeGUI, GUICategory_1, GUICategory_2, GUICategory_Other, OnGUICategoryClick, ShowGUICategory, RebuildDropdowns, CreateGUICategory, GUICreateSlider, GUICreateButton;
+local Print, deepcopy, table_contains_key;
 
-local PLAYER_ENTERING_WORLD;
-local COMBAT_LOG_EVENT_UNFILTERED;
-local NAME_PLATE_UNIT_ADDED;
-local NAME_PLATE_UNIT_REMOVED;
-
-local EnableTestMode;
-local DisableTestMode;
-
-local ShowGUI;
-local InitializeGUI;
-local GUICategory_1;
-local GUICategory_2;
-local GUICategory_Other;
-local OnGUICategoryClick;
-local ShowGUICategory;
-local RebuildDropdowns;
-local CreateGUICategory;
-local GUICreateSlider;
-local GUICreateButton;
-
-local Print;
-local deepcopy;
+-- // consts: you should not change existing values
+local CONST_SORT_MODES = { "none", "trinket-interrupt-other", "interrupt-trinket-other", "trinket-other", "interrupt-other" };
+local CONST_SORT_MODES_L = {
+	[CONST_SORT_MODES[1]] = "none",
+	[CONST_SORT_MODES[2]] = "trinkets, then interrupts, then other spells",
+	[CONST_SORT_MODES[3]] = "interrupts, then trinkets, then other spells",
+	[CONST_SORT_MODES[4]] = "trinkets, then other spells",
+	[CONST_SORT_MODES[5]] = "interrupts, then other spells",
+};
 
 -------------------------------------------------------------------------------------------------
 ----- Initialize
@@ -99,7 +62,7 @@ do
 		-- // add new spells to user's db
 		for _, k in pairs(CDs) do
 			for spellID in pairs(k) do
-				if (db.CDsTable[spellID] == nil and not tContains(badSkills, spellID)) then
+				if (db.CDsTable[spellID] == nil and not table_contains_value(badSkills, spellID)) then
 					db.CDsTable[spellID] = true;
 					Print(format(L["New spell has been added: %s"], GetSpellLink(spellID)));
 				end
@@ -160,6 +123,7 @@ do
 			BorderInterruptsColor = {1, 0.35, 0},
 			BorderTrinketsColor = {1, 0.843, 0},
 			Font = "NC_TeenBold",
+			IconSortMode = CONST_SORT_MODES[1],
 		};
 		for key, value in pairs(defaults) do
 			if (NameplateCooldownsDB[LocalPlayerFullName][key] == nil) then
@@ -244,10 +208,10 @@ do
 		local counter = 1;
 		if (charactersDB[name]) then
 			local currentTime = GetTime();
-			for spellID, lastTimeUsed in pairs(charactersDB[name]) do
-				local duration = CDTimeCache[spellID];
-				local last = currentTime - lastTimeUsed;
-				if (last < duration) then
+			local sortedCDs = Nameplate_SortAuras(charactersDB[name]);
+			for _, spellInfo in pairs(sortedCDs) do
+				local spellID = spellInfo.spellID;
+				if (spellInfo.expires > currentTime) then
 					if (counter > frame.NCIconsCount) then
 						AllocateIcon(frame);
 					end
@@ -255,33 +219,16 @@ do
 					if (icon.spellID ~= spellID) then
 						icon:SetTexture(TextureCache[spellID]);
 						icon.spellID = spellID;
-						if (db.ShowBorderInterrupts and tContains(Interrupts, spellID)) then
-							if (icon.borderState ~= 1) then
-								icon.border:SetVertexColor(unpack(db.BorderInterruptsColor));
-								icon.border:Show();
-								icon.borderState = 1;
-							end
-						elseif (db.ShowBorderTrinkets and tContains(Trinkets, spellID)) then
-							if (icon.borderState ~= 2) then
-								icon.border:SetVertexColor(unpack(db.BorderTrinketsColor));
-								icon.border:Show();
-								icon.borderState = 2;
-							end
-						elseif (icon.borderState ~= nil) then
-							icon.border:Hide();
-							icon.borderState = nil;
-						end
+						Nameplate_SetBorder(icon, spellID);
 					end
-					local remain = duration - last;
-					if (remain >= 60) then
-						icon.cooldown:SetText(math_ceil(remain/60).."m");
-					else
-						icon.cooldown:SetText(math_ceil(remain));
-					end
+					local remain = spellInfo.expires - currentTime;
+					Nameplate_SetCooldown(icon, remain)
 					if (not icon.shown) then
 						ShowCDIcon(icon);
 					end
 					counter = counter + 1;
+				else
+					charactersDB[name][spellID] = nil;
 				end
 			end
 		end
@@ -292,7 +239,119 @@ do
 			end
 		end
 	end
-		
+	
+	function Nameplate_SetBorder(icon, spellID)
+		if (db.ShowBorderInterrupts and table_contains_value(Interrupts, spellID)) then
+			if (icon.borderState ~= 1) then
+				icon.border:SetVertexColor(unpack(db.BorderInterruptsColor));
+				icon.border:Show();
+				icon.borderState = 1;
+			end
+		elseif (db.ShowBorderTrinkets and table_contains_value(Trinkets, spellID)) then
+			if (icon.borderState ~= 2) then
+				icon.border:SetVertexColor(unpack(db.BorderTrinketsColor));
+				icon.border:Show();
+				icon.borderState = 2;
+			end
+		elseif (icon.borderState ~= nil) then
+			icon.border:Hide();
+			icon.borderState = nil;
+		end
+	end
+	
+	function Nameplate_SetCooldown(icon, remain)
+		if (remain >= 60) then
+			icon.cooldown:SetText(math_ceil(remain/60).."m");
+		else
+			icon.cooldown:SetText(math_ceil(remain));
+		end
+	end
+	
+	function Nameplate_SortAuras(cds)
+		local t = { };
+		for spellID, spellInfo in pairs(cds) do
+			if (spellID ~= nil) then
+				table.insert(t, spellInfo);
+			end
+		end
+		if (db.IconSortMode == CONST_SORT_MODES[1]) then
+			-- // do nothing
+		elseif (db.IconSortMode == CONST_SORT_MODES[2]) then
+			table.sort(t, function(item1, item2)
+				if (table_contains_value(Trinkets, item1.spellID)) then
+					if (table_contains_value(Trinkets, item2.spellID)) then
+						return item1.expires < item2.expires;
+					else
+						return true;
+					end
+				elseif (table_contains_value(Trinkets, item2.spellID)) then
+					return false;
+				elseif (table_contains_value(Interrupts, item1.spellID)) then
+					if (table_contains_value(Interrupts, item2.spellID)) then
+						return item1.expires < item2.expires;
+					else
+						return true;
+					end
+				elseif (table_contains_value(Interrupts, item2.spellID)) then
+					return false;
+				else
+					return item1.expires < item2.expires;
+				end
+			end);
+		elseif (db.IconSortMode == CONST_SORT_MODES[3]) then
+			table.sort(t, function(item1, item2)
+				if (table_contains_value(Interrupts, item1.spellID)) then
+					if (table_contains_value(Interrupts, item2.spellID)) then
+						return item1.expires < item2.expires;
+					else
+						return true;
+					end
+				elseif (table_contains_value(Interrupts, item2.spellID)) then
+					return false;
+				elseif (table_contains_value(Trinkets, item1.spellID)) then
+					if (table_contains_value(Trinkets, item2.spellID)) then
+						return item1.expires < item2.expires;
+					else
+						return true;
+					end
+				elseif (table_contains_value(Trinkets, item2.spellID)) then
+					return false;
+				else
+					return item1.expires < item2.expires;
+				end
+			end);
+		elseif (db.IconSortMode == CONST_SORT_MODES[4]) then
+			table.sort(t, function(item1, item2)
+				if (table_contains_value(Trinkets, item1.spellID)) then
+					if (table_contains_value(Trinkets, item2.spellID)) then
+						return item1.expires < item2.expires;
+					else
+						return true;
+					end
+				elseif (table_contains_value(Trinkets, item2.spellID)) then
+					return false;
+				else
+					return item1.expires < item2.expires;
+				end
+			end);
+		elseif (db.IconSortMode == CONST_SORT_MODES[5]) then
+			table.sort(t, function(item1, item2)
+				if (table_contains_value(Interrupts, item1.spellID)) then
+					if (table_contains_value(Interrupts, item2.spellID)) then
+						return item1.expires < item2.expires;
+					else
+						return true;
+					end
+				elseif (table_contains_value(Interrupts, item2.spellID)) then
+					return false;
+				else
+					return item1.expires < item2.expires;
+				end
+			end);
+		end
+		return t;
+	end
+	
 	function HideCDIcon(icon)
 		icon.border:Hide();
 		icon.borderState = nil;
@@ -316,64 +375,8 @@ end
 do
 
 	function OnUpdate()
-		local currentTime = GetTime();
 		for frame, unitName in pairs(NameplatesVisible) do
-			local counter = 1;
-			if (charactersDB[unitName]) then
-				for spellID, value in pairs(charactersDB[unitName]) do
-					local duration = CDTimeCache[spellID];
-					local last = currentTime - value;
-					if (last < duration) then
-						-- // allocating icon if need
-						if (counter > frame.NCIconsCount) then
-							AllocateIcon(frame);
-						end
-						-- // getting reference to icon
-						local icon = frame.NCIcons[counter];
-						-- // setting texture if need
-						if (icon.spellID ~= spellID) then
-							icon:SetTexture(TextureCache[spellID]);
-							icon.spellID = spellID;
-							-- // trinkets and interrupts border
-							if (db.ShowBorderInterrupts and tContains(Interrupts, spellID)) then
-								if (icon.borderState ~= 1) then
-									icon.border:SetVertexColor(unpack(db.BorderInterruptsColor));
-									icon.border:Show();
-									icon.borderState = 1;
-								end
-							elseif (db.ShowBorderTrinkets and tContains(Trinkets, spellID)) then
-								if (icon.borderState ~= 2) then
-									icon.border:SetVertexColor(unpack(db.BorderTrinketsColor));
-									icon.border:Show();
-									icon.borderState = 2;
-								end
-							elseif (icon.borderState ~= nil) then
-								icon.border:Hide();
-								icon.borderState = nil;
-							end
-						end
-						-- // setting text
-						local remain = duration - last;
-						if (remain >= 60) then
-							icon.cooldown:SetText(math_ceil(remain/60).."m");
-						else
-							icon.cooldown:SetText(math_ceil(remain));
-						end
-						-- // show icon if need
-						if (not icon.shown) then
-							ShowCDIcon(icon);
-						end
-						counter = counter + 1;
-					else
-						charactersDB[unitName][spellID] = nil;
-					end
-				end
-			end
-			for k = counter, frame.NCIconsCount do
-				if (frame.NCIcons[k].shown) then
-					HideCDIcon(frame.NCIcons[k]);
-				end
-			end
+			UpdateOnlyOneNameplate(frame, unitName);
 		end
 	end
 	
@@ -394,6 +397,7 @@ do
 	end
 	
 	function COMBAT_LOG_EVENT_UNFILTERED(...)
+		local cTime = GetTime();
 		local _, eventType, _, _, srcName, srcFlags, _, _, _, _, _, spellID = ...;
 		if (bit_band(srcFlags, COMBATLOG_OBJECT_IS_HOSTILE) ~= 0) then
 			if (CDEnabledCache[spellID]) then
@@ -402,7 +406,9 @@ do
 					if (not charactersDB[Name]) then
 						charactersDB[Name] = {};
 					end
-					charactersDB[Name][spellID] = GetTime();
+					local duration = CDTimeCache[spellID];
+					local expires = cTime + duration;
+					charactersDB[Name][spellID] = { ["spellID"] = spellID, ["duration"] = duration, ["expires"] = expires };
 					for frame, charName in pairs(NameplatesVisible) do
 						if (charName == Name) then
 							UpdateOnlyOneNameplate(frame, charName);
@@ -412,7 +418,7 @@ do
 				end
 			end
 			-- // resets
-			if (spellID == 11958 or spellID == 14185 or spellID == 108285) then	-- // I know it's "chinese" style, but it's really faster than table lookup
+			if (table_contains_key(Resets, spellID)) then
 				if (eventType == "SPELL_CAST_SUCCESS") then
 					local Name = string_match(srcName, "[%P]+");
 					if (charactersDB[Name]) then
@@ -433,7 +439,9 @@ do
 					if (not charactersDB[Name]) then
 						charactersDB[Name] = {};
 					end
-					charactersDB[Name][6552] = GetTime();
+					local duration = CDTimeCache[6552];
+					local expires = cTime + duration;
+					charactersDB[Name][6552] = { ["spellID"] = 6552, ["duration"] = duration, ["expires"] = expires };
 					for frame, charName in pairs(NameplatesVisible) do
 						if (charName == Name) then
 							UpdateOnlyOneNameplate(frame, charName);
@@ -454,13 +462,11 @@ do
 			nameplate.NCIcons = {};
 			nameplate.NCIconsCount = 0;	-- // it's faster than #nameplate.NCIcons
 			Nameplates[nameplate] = true;
-			-- // print("NAME_PLATE_UNIT_ADDED: frame is not initialized!", unitID);
 		end
 		UpdateOnlyOneNameplate(nameplate, unitName);
 		if (db.FullOpacityAlways and nameplate.NCFrame) then
 			nameplate.NCFrame:Show();
 		end
-		--print("NAME_PLATE_UNIT_ADDED: ", unitID, nameplate, UnitName(unitID));
 	end
 	
 	function NAME_PLATE_UNIT_REMOVED(...)
@@ -470,7 +476,6 @@ do
 		if (db.FullOpacityAlways and nameplate.NCFrame) then
 			nameplate.NCFrame:Hide();
 		end
-		--print("NAME_PLATE_UNIT_REMOVED: ", unitID, nameplate, UnitName(unitID));
 	end
 	
 end
@@ -490,13 +495,13 @@ do
 			if (not charactersDB[unitName]) then
 				charactersDB[unitName] = {};
 			end
-			charactersDB[unitName][42292] = cTime; -- // 2m test
+			charactersDB[unitName][42292] = { ["spellID"] = 42292, ["duration"] = CDTimeCache[42292], ["expires"] = cTime + CDTimeCache[42292] }; -- // 2m test
 			for _, spellID in pairs(_spellIDs) do
 				if (not charactersDB[unitName][spellID]) then
-					charactersDB[unitName][spellID] = cTime;
+					charactersDB[unitName][spellID] = { ["spellID"] = spellID, ["duration"] = CDTimeCache[spellID], ["expires"] = cTime + CDTimeCache[spellID] };
 				else
-					if (cTime - charactersDB[unitName][spellID] > CDTimeCache[spellID]) then
-						charactersDB[unitName][spellID] = cTime;
+					if (cTime - charactersDB[unitName][spellID]["expires"] > 0) then
+						charactersDB[unitName][spellID] = { ["spellID"] = spellID, ["duration"] = CDTimeCache[spellID], ["expires"] = cTime + CDTimeCache[spellID] };
 					end
 				end
 			end
@@ -698,7 +703,7 @@ do
 		local buttonSwitchTestMode = GUICreateButton("NC_GUIGeneralButtonSwitchTestMode", GUIFrame, L["Enable test mode (need at least one visible nameplate)"]);
 		buttonSwitchTestMode:SetWidth(340);
 		buttonSwitchTestMode:SetHeight(40);
-		buttonSwitchTestMode:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 130, -40);
+		buttonSwitchTestMode:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 130, -20);
 		buttonSwitchTestMode:SetScript("OnClick", function(self, ...)
 			if (not TestFrame or not TestFrame:GetScript("OnUpdate")) then
 				EnableTestMode();
@@ -710,7 +715,7 @@ do
 		end);
 		table.insert(GUIFrame.Categories[index], buttonSwitchTestMode);
 		
-		local sliderIconSize = GUICreateSlider(GUIFrame, 130, -90, 340, "NC_GUIGeneralSliderIconSize");
+		local sliderIconSize = GUICreateSlider(GUIFrame, 130, -70, 340, "NC_GUIGeneralSliderIconSize");
 		sliderIconSize.label:SetText(L["Icon size"]);
 		sliderIconSize.slider:SetValueStep(1);
 		sliderIconSize.slider:SetMinMaxValues(1, 50);
@@ -743,7 +748,7 @@ do
 		sliderIconSize.hightext:SetText("50");
 		table.insert(GUIFrame.Categories[index], sliderIconSize);
 		
-		local sliderIconXOffset = GUICreateSlider(GUIFrame, 130, -150, 155, "NC_GUIGeneralSliderIconXOffset");
+		local sliderIconXOffset = GUICreateSlider(GUIFrame, 130, -125, 155, "NC_GUIGeneralSliderIconXOffset");
 		sliderIconXOffset.label:SetText(L["Icon X-coord offset"]);
 		sliderIconXOffset.slider:SetValueStep(1);
 		sliderIconXOffset.slider:SetMinMaxValues(-200, 200);
@@ -776,7 +781,7 @@ do
 		sliderIconXOffset.hightext:SetText("200");
 		table.insert(GUIFrame.Categories[index], sliderIconXOffset);
 		
-		local sliderIconYOffset = GUICreateSlider(GUIFrame, 315, -150, 155, "NC_GUIGeneralSliderIconYOffset");
+		local sliderIconYOffset = GUICreateSlider(GUIFrame, 315, -125, 155, "NC_GUIGeneralSliderIconYOffset");
 		sliderIconYOffset.label:SetText(L["Icon Y-coord offset"]);
 		sliderIconYOffset.slider:SetValueStep(1);
 		sliderIconYOffset.slider:SetMinMaxValues(-200, 200);
@@ -809,13 +814,13 @@ do
 		sliderIconYOffset.hightext:SetText("200");
 		table.insert(GUIFrame.Categories[index], sliderIconYOffset);
 		
-		local checkBoxFullOpacityAlways = GUICreateCheckBox(130, -220, L["Always display CD icons at full opacity (ReloadUI is needed)"], function(this)
+		local checkBoxFullOpacityAlways = GUICreateCheckBox(130, -195, L["Always display CD icons at full opacity (ReloadUI is needed)"], function(this)
 			db.FullOpacityAlways = this:GetChecked();
 		end, "NC_GUI_General_CheckBoxFullOpacityAlways");
 		checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways);
 		table.insert(GUIFrame.Categories[index], checkBoxFullOpacityAlways);
 		
-		local checkBoxBorderTrinkets = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderTrinkets", 130, -250, L["Show border around trinkets"], function(this)
+		local checkBoxBorderTrinkets = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderTrinkets", 130, -225, L["Show border around trinkets"], function(this)
 			db.ShowBorderTrinkets = this:GetChecked();
 			ReallocateAllIcons(true);
 		end);
@@ -842,7 +847,7 @@ do
 		end);
 		table.insert(GUIFrame.Categories[index], checkBoxBorderTrinkets);
 		
-		local checkBoxBorderInterrupts = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderInterrupts", 130, -280, L["Show border around interrupts"], function(this)
+		local checkBoxBorderInterrupts = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderInterrupts", 130, -245, L["Show border around interrupts"], function(this)
 			db.ShowBorderInterrupts = this:GetChecked();
 			ReallocateAllIcons(true);
 		end);
@@ -869,8 +874,31 @@ do
 		end);
 		table.insert(GUIFrame.Categories[index], checkBoxBorderInterrupts);
 		
+		local dropdownIconSortMode = CreateFrame("Frame", "NC.GUI.General.DropdownIconSortMode", GUIFrame, "UIDropDownMenuTemplate");
+		UIDropDownMenu_SetWidth(dropdownIconSortMode, 300);
+		dropdownIconSortMode:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 116, -275);
+		local info = {};
+		dropdownIconSortMode.initialize = function()
+			wipe(info);
+			for _, sortMode in pairs(CONST_SORT_MODES) do
+				info.text = CONST_SORT_MODES_L[sortMode];
+				info.value = sortMode;
+				info.func = function(self)
+					db.IconSortMode = self.value;
+					_G[dropdownIconSortMode:GetName().."Text"]:SetText(self:GetText());
+				end
+				info.checked = (db.IconSortMode == info.value);
+				UIDropDownMenu_AddButton(info);
+			end
+		end
+		_G[dropdownIconSortMode:GetName().."Text"]:SetText(CONST_SORT_MODES_L[db.IconSortMode]);
+		dropdownIconSortMode.text = dropdownIconSortMode:CreateFontString("NC.GUI.General.DropdownIconSortMode.Label", "ARTWORK", "GameFontNormalSmall");
+		dropdownIconSortMode.text:SetPoint("LEFT", 20, 15);
+		dropdownIconSortMode.text:SetText("Sort mode:"); -- // todo:localize
+		table.insert(GUIFrame.Categories[index], dropdownIconSortMode);
+		
 		local dropdownFont = CreateFrame("Frame", "NC_GUI_General_DropdownFont", GUIFrame, "UIDropDownMenuTemplate");
-		UIDropDownMenu_SetWidth(dropdownFont, 150);
+		UIDropDownMenu_SetWidth(dropdownFont, 300);
 		dropdownFont:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 116, -310);
 		local info = {};
 		dropdownFont.initialize = function()
@@ -1274,6 +1302,15 @@ do
 			return setmetatable(new_table, getmetatable(object))
 		end
 		return _copy(object)
+	end
+	
+	function table_contains_key(t, key)
+		for index in pairs(t) do
+			if (index == key) then
+				return true;
+			end
+		end
+		return false;
 	end
 	
 end
