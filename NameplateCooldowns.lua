@@ -87,7 +87,7 @@ do
 		EventFrame:SetScript("OnUpdate", function(self, elapsed)
 			ElapsedTimer = ElapsedTimer + elapsed;
 			if (ElapsedTimer >= 1) then
-				OnUpdate();				
+				OnUpdate();
 				ElapsedTimer = 0;
 			end
 		end);
@@ -98,7 +98,7 @@ do
 		AddButtonToBlizzOptions();
 		SLASH_NAMEPLATECOOLDOWNS1 = '/nc';
 		SlashCmdList["NAMEPLATECOOLDOWNS"] = function(msg, editBox)
-			if (msg == "t") then
+			if (msg == "t" or msg == "ver") then
 				Print("Waiting for replies...");
 				SendAddonMessage("NC_prefix", "requesting", IsInGroup(2) and "INSTANCE_CHAT" or "RAID");
 			else
