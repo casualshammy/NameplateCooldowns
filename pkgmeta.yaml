@@ -7,7 +7,7 @@ manual-changelog:
     markup-type: html
 
 enable-nolib-creation: no
-	
+    
 externals:
     libs/LibStub:
         url: https://repos.wowace.com/wow/libstub/trunk
