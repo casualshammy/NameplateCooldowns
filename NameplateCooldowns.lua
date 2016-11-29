@@ -99,8 +99,16 @@ do
 		SLASH_NAMEPLATECOOLDOWNS1 = '/nc';
 		SlashCmdList["NAMEPLATECOOLDOWNS"] = function(msg, editBox)
 			if (msg == "t" or msg == "ver") then
-				Print("Waiting for replies...");
-				SendAddonMessage("NC_prefix", "requesting", IsInGroup(2) and "INSTANCE_CHAT" or "RAID");
+				local c = UNKNOWN;
+				if (IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) then
+					c = "INSTANCE_CHAT";
+				elseif (IsInRaid()) then
+					c = "RAID";
+				else
+					c = "GUILD";
+				end
+				Print("Waiting for replies from " .. c);
+				SendAddonMessage("NC_prefix", "requesting", c);
 			else
 				ShowGUI();
 			end
@@ -1338,7 +1346,7 @@ end);
 local funFrame = CreateFrame("Frame");
 funFrame:RegisterEvent("CHAT_MSG_ADDON");
 funFrame:SetScript("OnEvent", function(self, event, ...)
-	local prefix, message, _, sender = ...;
+	local prefix, message, channel, sender = ...;
 	if (prefix == "NC_prefix") then
 		if (string_find(message, "reporting")) then
 			local _, toWhom = strsplit(":", message, 2);
@@ -1347,7 +1355,7 @@ funFrame:SetScript("OnEvent", function(self, event, ...)
 				Print(sender.." is using NC");
 			end
 		elseif (string_find(message, "requesting")) then
-			SendAddonMessage("NC_prefix", "reporting:"..sender, IsInGroup(2) and "INSTANCE_CHAT" or "RAID");
+			SendAddonMessage("NC_prefix", "reporting:"..sender, channel);
 		end
 	end
 end);
