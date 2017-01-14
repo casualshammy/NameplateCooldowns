@@ -12,7 +12,24 @@ NameplateCooldownsDB = {};
 local charactersDB = {};
 local CDTimeCache = {};
 local CDEnabledCache = {};
-local TextureCache = {};
+local SpellTextureByID = setmetatable({}, {
+	__index = function(t, key)
+		local texture;
+		if (key == 42292) then
+			if (UnitFactionGroup("player") == "Alliance") then
+				texture = "Interface\\Icons\\INV_Jewelry_TrinketPVP_01";
+			else
+				texture = "Interface\\Icons\\INV_Jewelry_TrinketPVP_02";
+			end
+		elseif (key == 200166) then
+			texture = 1247262;
+		else
+			texture = GetSpellTexture(key);
+		end
+		t[key] = texture;
+		return texture;
+	end
+});
 local ElapsedTimer = 0;
 local Nameplates = {};
 local NameplatesVisible = {};
@@ -75,13 +92,7 @@ do
 					CDEnabledCache[spellID] = true;
 				end
 				CDTimeCache[spellID] = timeInSec;
-				TextureCache[spellID] = select(3, GetSpellInfo(spellID));
 			end
-		end
-		if (UnitFactionGroup("player") == "Alliance") then
-			TextureCache[42292] = "Interface\\Icons\\INV_Jewelry_TrinketPVP_01";
-		else
-			TextureCache[42292] = "Interface\\Icons\\INV_Jewelry_TrinketPVP_02";
 		end
 		-- // starting OnUpdate()
 		EventFrame:SetScript("OnUpdate", function(self, elapsed)
@@ -225,7 +236,7 @@ do
 					end
 					local icon = frame.NCIcons[counter];
 					if (icon.spellID ~= spellID) then
-						icon:SetTexture(TextureCache[spellID]);
+						icon:SetTexture(SpellTextureByID[spellID]);
 						icon.spellID = spellID;
 						Nameplate_SetBorder(icon, spellID);
 					end

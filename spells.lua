@@ -298,6 +298,7 @@ addonTable.CDs = {
 		[183752] = 15,					-- // Consume Magic
 		[196718] = 180,					-- // Darkness
 		[191427] = 300,					-- // Metamorphosis
+		[200166] = 300,					-- // Metamorphosis (leap) (custom icon)
 		[188501] = 30,					-- // Spectral Sight
 		[218256] = 20,					-- // Empower Wards
 		[187827] = 180,					-- // Metamorphosis
@@ -313,6 +314,7 @@ addonTable.CDs = {
 		[205604] = 60,					-- // Reverse Magic
 		[206803] = 60,					-- // Rain from Above
 		[205630] = 90,					-- // Illidan's Grasp
+		[206650] = 45,					-- // Глаз Леотераса
 	},
 };
 
