@@ -50,7 +50,7 @@ addonTable.CDs = {
 		[19386] = 45,					-- // Wyvern Sting
 		[199483] = 60,					-- // Camouflage
 		[200108] = 60,					-- // Ranger's Net
-		[201078] = 90,					-- // Snake Hunter
+		[201078] = 120,					-- // Snake Hunter
 	},
 	[L["WARLOCK"]] = { -- // OKSOGOOD
 		[48020] = 30,				-- // Demonic Circle: Teleport
@@ -89,6 +89,7 @@ addonTable.CDs = {
 		[31687] = 60,				-- // Summon Water Elemental
 		[157980] = 25,				-- // Supernova
 		[157997] = 25,				-- // Ice Nova
+		[235219] = 300,				-- // Cold Snap
 	},
 	[L["DEATHKNIGHT"]] = { -- // OK
 		[47476] = 60,				--"Strangulate",
@@ -97,7 +98,7 @@ addonTable.CDs = {
 		[49576] = 25,				--"Death Grip",	
 		[47528] = 15,				--"Mind Freeze",
 		[108201] = 120,				--"Desecrated Ground",
-		[108199] = 180,				--"Gorefiend's Grasp",
+		[108199] = 90,				--"Gorefiend's Grasp", (talent: Tightening Grasp)
 		[49039] = 120,				--"Lichborne",
 		[51271] = 60,				--"Pillar of Frost",
 		[51052] = 120,				--"Anti-Magic Zone",
@@ -113,7 +114,7 @@ addonTable.CDs = {
 		[219809] = 60,				-- // Tombstone
 		[207167] = 60, 				-- // Blinding Sleet
 		[207319] = 60,				-- // Corpse Shield
-		[207349] = 180,				-- // Dark Arbiter
+		[207349] = 120,				-- // Dark Arbiter
 	},
 	[L["DRUID"]] = { -- // OK
 		[1850] = 180,				-- // Dash
@@ -134,7 +135,7 @@ addonTable.CDs = {
 		[102793] = 60,				-- // Ursol's Vortex
 		[205636] = 60,				-- // Force of Nature
 		[102560] = 180,				-- // Incarnation: Chosen of Elune
-		[108238] = 120,				-- // Renewal
+		[108238] = 90,				-- // Renewal
 		[102543] = 180,				-- // Incarnation: King of the Jungle
 		[102558] = 180,				-- // Incarnation: Guardian of Ursoc
 		[33891] = 180,				-- // Incarnation: Tree of Life
@@ -147,7 +148,7 @@ addonTable.CDs = {
 		[201325] = 180,			-- // Zen Meditation
 		[216113] = 45,			-- // Way of the Crane
 		[115181] = 15,			-- // Breath of Fire
-		[115203] = 420,			-- // Fortifying Brew
+		[115203] = 210,			-- // Fortifying Brew
 		[116705] = 15,			-- // Spear Hand Strike
 		[115176] = 150,			-- // Zen Meditation
 		[137639] = 90,			-- // Storm, Earth, and Fire
@@ -158,13 +159,15 @@ addonTable.CDs = {
 		[132578] = 180,			-- // Invoke Niuzao, the Black Ox	
 		[123904] = 180,			-- // Invoke Xuen, the White Tiger
 		[198664] = 180,			-- // Invoke Chi-Ji, the Red Crane
-		[198898] = 30,			-- // Song of Chi-Ji
+		[198898] = 15,			-- // Song of Chi-Ji
 		[115078] = 15,			-- // Paralysis
 		[119996] = 25,			-- // Transcendence: Transfer
 		[152173] = 90,			-- // Serenity
+		[122278] = 120,			-- // Dampen Harm
+		[122783] = 90,			-- // Diffuse Magic
 	},
 	[L["PALADIN"]] = { -- // OKSOGOOD
-		[642] = 150,			-- // Божественный щит
+		[642] = 240,			-- // Божественный щит
 		[1044] = 25,			-- // Благословенная свобода
 		[633] = 600,			-- // Возложение рук
 		[216331] = 60,			-- // Рыцарь-мститель
@@ -184,7 +187,7 @@ addonTable.CDs = {
 		[31884] = 120,			-- // Гнев карателя
 		[105809] = 90,			-- // Святой каратель
 		[204018] = 180,			-- // Благословение защиты от заклинаний
-		[204150] = 300,			-- // Эгида Света
+		[204150] = 180,			-- // Эгида Света
 		[205191] = 60,			-- // Око за око
 		[224668] = 120,			-- // Священная война
 	},
@@ -201,15 +204,15 @@ addonTable.CDs = {
 		[586] = 30,					--"Fade",
 		[112833] = 30,				--"Spectral Guise",
 		[64843] = 180,				--"Divine Hymn",
-		[73325] = 90,				--"Leap of Faith",
+		[73325] = 45,				--"Leap of Faith",
 		[19236] = 90,				--"Desperate Prayer",
 		[62618] = 120,				--"Power Word: Barrier", [-60sec]
-		[47788] = 96,				-- Guardian Spirit [-60%] [max=120sec]
+		[47788] = 60,				-- Guardian Spirit [-60%] [max=120sec]
 		[215769] = 300,				-- // Дух воздаяния
 		[108968] = 300,				-- // Вхождение в Бездну
 		[213602] = 30,				-- // Улучшенный уход в тень
 		[205369] = 30,				-- // Мыслебомба
-		[204263] = 60,				-- // Сияющая мощь
+		[204263] = 45,				-- // Сияющая мощь
 	},
 	[L["ROGUE"]] = { -- // OKSOGOOD
 		[2094] = 120,				--"Blind",
@@ -227,7 +230,7 @@ addonTable.CDs = {
 		[13750] = 150,				-- Adrenaline Rush [-30sec]
 		[195457] = 30,				-- // Абордажный крюк
 		[199743] = 20,				-- // Парламентер
-		[31230] = 120,				-- // Обман смерти
+		[31230] = 360,				-- // Обман смерти
 		[207777] = 45,				-- // Долой оружие
 		[207736] = 120,				-- // Дуэль в тенях
 		[212182] = 180,				-- // Дымовая шашка
@@ -256,7 +259,6 @@ addonTable.CDs = {
 		[211010] = 10,				-- // Hex [-20sec]
 		[211015] = 10,				-- // Hex [-20sec]
 		[210918] = 45,				-- // Астральный облик
-		[204293] = 60,				-- // Духовная связь
 		[204437] = 30,				-- // Молния-лассо
 		[204336] = 30,				-- // Тотем заземления
 		[204331] = 45,				-- // Тотем контрудара
@@ -270,7 +272,7 @@ addonTable.CDs = {
 		[100] = 17,					--"Charge", [-3sec (talent)]
 		[6552] = 15,				--"Pummel",
 		[23920] = 25,				--"Spell Reflection",
-		[46924] = 90,				--"Bladestorm",
+		[46924] = 60,				--"Bladestorm",
 		[46968] = 40,				--"Shockwave",
 		[107574] = 90,				--"Avatar",
 		[12292] = 30, 				--"Bloodbath",
@@ -287,33 +289,34 @@ addonTable.CDs = {
 		[198758] = 17,				-- // Intercept [-3sec (talent)]
 		[216890] = 25,				-- // Spell Reflection
 		[213915] = 30,				-- // Mass Spell Reflection
-		[227847] = 90,				-- // Bladestorm
+		[227847] = 60,				-- // Bladestorm
 		[184364] = 120,				-- // Enraged Regeneration
 		[198304] = 17,				-- // Intercept [-3sec (talent)]
 		[206572] = 20,				-- // Dragon Charge
+		[236077] = 30,				-- // Disarm
 	},
 	[L["DEMONHUNTER"]] = { -- // OK
 		[198589] = 60,					-- // Blur
 		[179057] = 60,					-- // Chaos Nova
 		[183752] = 15,					-- // Consume Magic
 		[196718] = 180,					-- // Darkness
-		[191427] = 300,					-- // Metamorphosis
-		[200166] = 300,					-- // Metamorphosis (leap) (custom icon)
+		[191427] = 180,					-- // Metamorphosis
+		[200166] = 180,					-- // Metamorphosis (leap) (custom icon)
 		[188501] = 30,					-- // Spectral Sight
 		[218256] = 20,					-- // Empower Wards
 		[187827] = 180,					-- // Metamorphosis
-		[202138] = 72,					-- // Sigil of Chains
+		[202138] = 54,					-- // Sigil of Chains
 		[207684] = 36,					-- // Sigil of Misery
 		[202137] = 36,					-- // Sigil of Silence
 		[211048] = 120,					-- // Chaos Blades
-		[211881] = 35,					-- // Fel Eruption
+		[211881] = 30,					-- // Fel Eruption
 		[206491] = 120,					-- // Nemesis
 		[207810] = 120,					-- // Nether Bond
-		[196555] = 90,					-- // Netherwalk
+		[196555] = 120,					-- // Netherwalk
 		[205629] = 30,					-- // Demonic Trample
 		[205604] = 60,					-- // Reverse Magic
 		[206803] = 60,					-- // Rain from Above
-		[205630] = 90,					-- // Illidan's Grasp
+		[205630] = 60,					-- // Illidan's Grasp
 		[206650] = 45,					-- // Глаз Леотераса
 	},
 };
@@ -339,6 +342,12 @@ addonTable.Interrupts = {
 addonTable.Resets = {
 	[195676] = {	-- // Displacement
 		1953,			-- // Blink
+	},
+	[235219] = {	-- // Cold Snap
+		122,			-- // Frost Nova
+		120,			-- // Cone of Cold
+		11426,			-- // Ice Barrier
+		45438,			-- // Ice Block
 	},
 };
 
