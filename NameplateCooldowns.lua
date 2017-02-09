@@ -1066,13 +1066,19 @@ do
 		scrollAreaChildFrame:SetWidth(288);
 		scrollAreaChildFrame:SetHeight(288);
 		
-		local iterator = 1;
+		local spells = { };
 		for spellID in pairs(CDs[value]) do
-			local n, _, icon = GetSpellInfo(spellID);
-			if (not n) then
+			local spellName, _, spellIcon = GetSpellInfo(spellID);
+			if (spellName ~= nil) then
+				table.insert(spells, { ["spellID"] = spellID, ["spellName"] = spellName, ["spellIcon"] = spellIcon });
+			else
 				Print(format(L["Unknown spell: %s"], spellID));
 			end
-			
+		end
+		table.sort(spells, function(item1, item2) return item1.spellName < item2.spellName end);
+		
+		local iterator = 1;
+		for _, spellInfo in pairs(spells) do
 			local spellItem = CreateFrame("button", nil, scrollAreaChildFrame, "SecureActionButtonTemplate");
 			spellItem:SetHeight(20);
 			spellItem:SetWidth(20);
@@ -1082,16 +1088,16 @@ do
 			spellItem.tex:SetAllPoints(spellItem);
 			spellItem.tex:SetHeight(20);
 			spellItem.tex:SetWidth(20);
-			spellItem.tex:SetTexture(icon);
+			spellItem.tex:SetTexture(spellInfo.spellIcon);
 			
 			spellItem.Text = spellItem:CreateFontString(nil, "OVERLAY", "GameFontNormal");
 			spellItem.Text:SetPoint("LEFT", 22, 0);
-			spellItem.Text:SetText(n);
+			spellItem.Text:SetText(spellInfo.spellName);
 			spellItem:EnableMouse(true);
 			
 			spellItem:SetScript("OnEnter", function(self, ...)
 				GameTooltip:SetOwner(spellItem, "ANCHOR_TOPRIGHT");
-				GameTooltip:SetSpellByID(spellID);
+				GameTooltip:SetSpellByID(spellInfo.spellID);
 				GameTooltip:Show();
 			end)
 			spellItem:SetScript("OnLeave", function(self, ...)
@@ -1099,22 +1105,22 @@ do
 			end)
 			spellItem:SetScript("OnClick", function(self, ...)
 				if (self.tex:GetAlpha() > 0.5) then
-					db.CDsTable[spellID] = false;
-					CDEnabledCache[spellID] = nil;
+					db.CDsTable[spellInfo.spellID] = false;
+					CDEnabledCache[spellInfo.spellID] = nil;
 					self.tex:SetAlpha(0.3);
 				else
-					db.CDsTable[spellID] = true;
-					CDEnabledCache[spellID] = true;
+					db.CDsTable[spellInfo.spellID] = true;
+					CDEnabledCache[spellInfo.spellID] = true;
 					self.tex:SetAlpha(1.0);
 				end
 			end)
-			if (db.CDsTable[spellID] == true) then
+			if (db.CDsTable[spellInfo.spellID] == true) then
 				spellItem.tex:SetAlpha(1.0);
 			else
 				spellItem.tex:SetAlpha(0.3);
 			end
 			iterator = iterator + 1;
-			spellItem.spellID = spellID;
+			spellItem.spellID = spellInfo.spellID;
 			tinsert(GUIFrame.SpellIcons, spellItem);
 		end
 	end
