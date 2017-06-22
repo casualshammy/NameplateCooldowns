@@ -12,20 +12,12 @@ NameplateCooldownsDB = {};
 local charactersDB = {};
 local CDTimeCache = {};
 local CDEnabledCache = {};
-local SpellTextureByID = setmetatable({}, {
+local SpellTextureByID = setmetatable({
+	[42292] =	(UnitFactionGroup("player") == "Alliance") and "Interface\\Icons\\INV_Jewelry_TrinketPVP_01" or "Interface\\Icons\\INV_Jewelry_TrinketPVP_02",
+	[200166] =	1247262,
+}, {
 	__index = function(t, key)
-		local texture;
-		if (key == 42292) then
-			if (UnitFactionGroup("player") == "Alliance") then
-				texture = "Interface\\Icons\\INV_Jewelry_TrinketPVP_01";
-			else
-				texture = "Interface\\Icons\\INV_Jewelry_TrinketPVP_02";
-			end
-		elseif (key == 200166) then
-			texture = 1247262;
-		else
-			texture = GetSpellTexture(key);
-		end
+		local texture = GetSpellTexture(key);
 		t[key] = texture;
 		return texture;
 	end
