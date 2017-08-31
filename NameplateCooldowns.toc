@@ -1,4 +1,4 @@
-## Interface: 70200
+## Interface: 70300
 ## Title: NameplateCooldowns
 ## Notes: Shows the cooldowns of enemy players above their nameplates
 ## SavedVariables: NameplateCooldownsDB

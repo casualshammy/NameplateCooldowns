@@ -8,12 +8,15 @@ local Trinkets = addonTable.Trinkets;
 local SML = LibStub("LibSharedMedia-3.0");
 SML:Register("font", "NC_TeenBold", "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf", 255);
 
+local SPELL_PVPADAPTATION = 195901;
+local SPELL_PVPTRINKET = 42292;
+
 NameplateCooldownsDB = {};
 local charactersDB = {};
 local CDTimeCache = {};
 local CDEnabledCache = {};
 local SpellTextureByID = setmetatable({
-	[42292] =	(UnitFactionGroup("player") == "Alliance") and "Interface\\Icons\\INV_Jewelry_TrinketPVP_01" or "Interface\\Icons\\INV_Jewelry_TrinketPVP_02",
+	[SPELL_PVPTRINKET] =	(UnitFactionGroup("player") == "Alliance") and "Interface\\Icons\\INV_Jewelry_TrinketPVP_01" or "Interface\\Icons\\INV_Jewelry_TrinketPVP_02",
 	[200166] =	1247262,
 }, {
 	__index = function(t, key)
@@ -31,7 +34,7 @@ local GUIFrame, EventFrame, TestFrame, db;
 
 local _G, pairs, select, WorldFrame, string_match, string_gsub, string_find, bit_band, GetTime, table_contains_value, math_ceil =
 	  _G, pairs, select, WorldFrame, strmatch,	   gsub,		strfind,	 bit.band, GetTime, tContains,			  ceil;
-
+	  
 local OnStartup, InitializeDB, AddButtonToBlizzOptions;
 local AllocateIcon, ReallocateAllIcons, InitializeFrame, UpdateOnlyOneNameplate, Nameplate_SetBorder, Nameplate_SetCooldown, Nameplate_SortAuras, HideCDIcon, ShowCDIcon;
 local OnUpdate;
@@ -460,6 +463,19 @@ do
 						end
 					end
 				end
+			elseif (spellID == SPELL_PVPADAPTATION) then -- // pvptier 1/2 used, correcting cd of PvP trinket
+				if (CDEnabledCache[SPELL_PVPTRINKET] and eventType == "SPELL_AURA_APPLIED") then
+					local Name = string_match(srcName, "[%P]+");
+					if (charactersDB[Name]) then
+						charactersDB[Name][SPELL_PVPTRINKET] = { ["spellID"] = SPELL_PVPTRINKET, ["duration"] = 60, ["expires"] = cTime + 60 };
+						for frame, charName in pairs(NameplatesVisible) do
+							if (charName == Name) then
+								UpdateOnlyOneNameplate(frame, charName);
+								break;
+							end
+						end
+					end
+				end
 			end
 		end
 	end
@@ -506,7 +522,7 @@ do
 			if (not charactersDB[unitName]) then
 				charactersDB[unitName] = {};
 			end
-			charactersDB[unitName][42292] = { ["spellID"] = 42292, ["duration"] = CDTimeCache[42292], ["expires"] = cTime + CDTimeCache[42292] }; -- // 2m test
+			charactersDB[unitName][SPELL_PVPTRINKET] = { ["spellID"] = SPELL_PVPTRINKET, ["duration"] = CDTimeCache[SPELL_PVPTRINKET], ["expires"] = cTime + CDTimeCache[SPELL_PVPTRINKET] }; -- // 2m test
 			for _, spellID in pairs(_spellIDs) do
 				if (not charactersDB[unitName][spellID]) then
 					charactersDB[unitName][spellID] = { ["spellID"] = spellID, ["duration"] = CDTimeCache[spellID], ["expires"] = cTime + CDTimeCache[spellID] };
@@ -1123,7 +1139,7 @@ do
 		GUIFrame.ActiveCategory = self.index;
 		self.text:SetTextColor(1, 1, 1);
 		self:LockHighlight();
-		PlaySound("igMainMenuOptionCheckBoxOn");
+		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 		ShowGUICategory(GUIFrame.ActiveCategory);
 	end
 	
