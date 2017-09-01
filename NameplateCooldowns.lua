@@ -1,9 +1,13 @@
-﻿local _, addonTable = ...;
+local _, addonTable = ...;
 local L = addonTable.L;
 local CDs = addonTable.CDs;
 local Interrupts = addonTable.Interrupts;
 local Resets = addonTable.Resets;
 local Trinkets = addonTable.Trinkets;
+
+--[===[@non-debug@
+local buildTimestamp = "@project-version@";
+--@end-non-debug@]===]
 
 local SML = LibStub("LibSharedMedia-3.0");
 SML:Register("font", "NC_TeenBold", "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf", 255);
