@@ -20,8 +20,8 @@ local charactersDB = {};
 local CDTimeCache = {};
 local CDEnabledCache = {};
 local SpellTextureByID = setmetatable({
-	[SPELL_PVPTRINKET] =	(UnitFactionGroup("player") == "Alliance") and "Interface\\Icons\\INV_Jewelry_TrinketPVP_01" or "Interface\\Icons\\INV_Jewelry_TrinketPVP_02",
-	[200166] =	1247262,
+	[SPELL_PVPTRINKET] =	1322720,
+	[200166] =				1247262,
 }, {
 	__index = function(t, key)
 		local texture = GetSpellTexture(key);

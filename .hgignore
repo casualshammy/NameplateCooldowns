@@ -1,0 +1,5 @@
+syntax: glob
+.svn.7z
+syntax: regexp
+libs/.*
+_curseforge/.*
