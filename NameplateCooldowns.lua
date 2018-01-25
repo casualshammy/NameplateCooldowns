@@ -102,7 +102,11 @@ do
 			end
 		end);
 		-- // starting listening for events
-		EventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+		if (db.AddonEnabled) then
+			EventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+		else
+			Print(L["chat:addon-is-disabled-note"]);
+		end
 		EventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED");
 		EventFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
 		AddButtonToBlizzOptions();
@@ -142,6 +146,7 @@ do
 			BorderTrinketsColor = {1, 0.843, 0},
 			Font = "NC_TeenBold",
 			IconSortMode = CONST_SORT_MODES[1],
+			AddonEnabled = true,
 		};
 		for key, value in pairs(defaults) do
 			if (NameplateCooldownsDB[LocalPlayerFullName][key] == nil) then
@@ -731,10 +736,28 @@ do
 	end
 
 	function GUICategory_1(index, value)
+		local buttonEnableDisableAddon = GUICreateButton("test123", GUIFrame, db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]);
+		buttonEnableDisableAddon:SetWidth(340);
+		buttonEnableDisableAddon:SetHeight(20);
+		buttonEnableDisableAddon:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 130, -15);
+		buttonEnableDisableAddon:SetScript("OnClick", function(self, ...)
+			if (db.AddonEnabled) then
+				EventFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+				wipe(charactersDB);
+			else
+				EventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+			end
+			OnUpdate();
+			db.AddonEnabled = not db.AddonEnabled;
+			buttonEnableDisableAddon.Text:SetText(db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]);
+			Print(db.AddonEnabled and L["chat:addon-is-enabled"] or L["chat:addon-is-disabled"]);
+		end);
+		table.insert(GUIFrame.Categories[index], buttonEnableDisableAddon);
+	
 		local buttonSwitchTestMode = GUICreateButton("NC_GUIGeneralButtonSwitchTestMode", GUIFrame, L["Enable test mode (need at least one visible nameplate)"]);
 		buttonSwitchTestMode:SetWidth(340);
-		buttonSwitchTestMode:SetHeight(40);
-		buttonSwitchTestMode:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 130, -20);
+		buttonSwitchTestMode:SetHeight(20);
+		buttonSwitchTestMode:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 130, -40);
 		buttonSwitchTestMode:SetScript("OnClick", function(self, ...)
 			if (not TestFrame or not TestFrame:GetScript("OnUpdate")) then
 				EnableTestMode();

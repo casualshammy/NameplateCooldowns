@@ -24,6 +24,11 @@
 		["Unknown spell: %s"] = "Unknown spell: %s",
 		["Value must be a number"] = "Value must be a number",
 		["Font:"] = "Font:",
+		["options:general:disable-addon-btn"] = "Disable addon",
+		["options:general:enable-addon-btn"] = "Enable addon",
+		["chat:addon-is-disabled-note"] = "Please note: this addon is disabled. You can enable it in options dialog (/nc)",
+		["chat:addon-is-enabled"] = "Addon is enabled",
+		["chat:addon-is-disabled"] = "Addon is disabled",
 	},
 	["deDE"] = {
 		["Always display CD icons at full opacity (ReloadUI is needed)"] = "CD-Symbole immer mit voller Deckkraft anzeigen (UI neu laden erf.)",
@@ -321,3 +326,8 @@ end
 
 local _, addonTable = ...;
 addonTable.L = locales[GetLocale()];
+addonTable.L = setmetatable(addonTable.L, {
+	__index = function(t, key)
+		return locales["enUS"][key];
+	end
+});
