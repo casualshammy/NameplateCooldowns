@@ -419,9 +419,9 @@ do
 		wipe(charactersDB);
 	end
 	
-	function COMBAT_LOG_EVENT_UNFILTERED(...)
+	function COMBAT_LOG_EVENT_UNFILTERED()
 		local cTime = GetTime();
-		local _, eventType, _, _, srcName, srcFlags, _, _, _, _, _, spellID = ...;
+		local _, eventType, _, _, srcName, srcFlags, _, _, _, _, _, spellID = CombatLogGetCurrentEventInfo();
 		if (bit_band(srcFlags, COMBATLOG_OBJECT_IS_HOSTILE) ~= 0) then
 			if (CDEnabledCache[spellID]) then
 				if (eventType == "SPELL_CAST_SUCCESS" or eventType == "SPELL_AURA_APPLIED" or eventType == "SPELL_MISSED" or eventType == "SPELL_SUMMON") then
