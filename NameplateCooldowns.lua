@@ -122,7 +122,7 @@ do
 					c = "GUILD";
 				end
 				Print("Waiting for replies from " .. c);
-				SendAddonMessage("NC_prefix", "requesting", c);
+				C_ChatInfo.SendAddonMessage("NC_prefix", "requesting", c);
 			else
 				ShowGUI();
 			end
@@ -1407,8 +1407,8 @@ funFrame:SetScript("OnEvent", function(self, event, ...)
 				Print(sender.." is using NC");
 			end
 		elseif (string_find(message, "requesting")) then
-			SendAddonMessage("NC_prefix", "reporting:"..sender, channel);
+			C_ChatInfo.SendAddonMessage("NC_prefix", "reporting:"..sender, channel);
 		end
 	end
 end);
-RegisterAddonMessagePrefix("NC_prefix");
+C_ChatInfo.RegisterAddonMessagePrefix("NC_prefix");
