@@ -1,17 +1,28 @@
 ﻿--[===[@non-debug@
 
 local locales = {
-	["enUS"] = @localization(locale="enUS", format="lua_table", handle-unlocalized="english")@,
-	["deDE"] = @localization(locale="deDE", format="lua_table", handle-unlocalized="english")@,
-	["esES"] = @localization(locale="esES", format="lua_table", handle-unlocalized="english")@,
-	["esMX"] = @localization(locale="esMX", format="lua_table", handle-unlocalized="english")@,
-	["frFR"] = @localization(locale="frFR", format="lua_table", handle-unlocalized="english")@,
-	["itIT"] = @localization(locale="itIT", format="lua_table", handle-unlocalized="english")@,
-	["koKR"] = @localization(locale="koKR", format="lua_table", handle-unlocalized="english")@,
-	["ptBR"] = @localization(locale="ptBR", format="lua_table", handle-unlocalized="english")@,
-	["ruRU"] = @localization(locale="ruRU", format="lua_table", handle-unlocalized="english")@,
-	["zhCN"] = @localization(locale="zhCN", format="lua_table", handle-unlocalized="english")@,
-	["zhTW"] = @localization(locale="zhTW", format="lua_table", handle-unlocalized="english")@,
+	["enUS"] = 
+	@localization(locale="enUS", format="lua_table", handle-unlocalized="english")@,
+	["deDE"] = 
+	@localization(locale="deDE", format="lua_table", handle-unlocalized="english")@,
+	["esES"] = 
+	@localization(locale="esES", format="lua_table", handle-unlocalized="english")@,
+	["esMX"] = 
+	@localization(locale="esMX", format="lua_table", handle-unlocalized="english")@,
+	["frFR"] = 
+	@localization(locale="frFR", format="lua_table", handle-unlocalized="english")@,
+	["itIT"] = 
+	@localization(locale="itIT", format="lua_table", handle-unlocalized="english")@,
+	["koKR"] = 
+	@localization(locale="koKR", format="lua_table", handle-unlocalized="english")@,
+	["ptBR"] = 
+	@localization(locale="ptBR", format="lua_table", handle-unlocalized="english")@,
+	["ruRU"] = 
+	@localization(locale="ruRU", format="lua_table", handle-unlocalized="english")@,
+	["zhCN"] = 
+	@localization(locale="zhCN", format="lua_table", handle-unlocalized="english")@,
+	["zhTW"] = 
+	@localization(locale="zhTW", format="lua_table", handle-unlocalized="english")@,
 };
 
 --@end-non-debug@]===]
