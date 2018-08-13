@@ -1,4 +1,23 @@
-﻿local locales = {
+﻿--[===[@non-debug@
+
+local locales = {
+	["enUS"] = @localization(locale="enUS", format="lua_table", handle-unlocalized="english")@,
+	["deDE"] = @localization(locale="deDE", format="lua_table", handle-unlocalized="english")@,
+	["esES"] = @localization(locale="esES", format="lua_table", handle-unlocalized="english")@,
+	["esMX"] = @localization(locale="esMX", format="lua_table", handle-unlocalized="english")@,
+	["frFR"] = @localization(locale="frFR", format="lua_table", handle-unlocalized="english")@,
+	["itIT"] = @localization(locale="itIT", format="lua_table", handle-unlocalized="english")@,
+	["koKR"] = @localization(locale="koKR", format="lua_table", handle-unlocalized="english")@,
+	["ptBR"] = @localization(locale="ptBR", format="lua_table", handle-unlocalized="english")@,
+	["ruRU"] = @localization(locale="ruRU", format="lua_table", handle-unlocalized="english")@,
+	["zhCN"] = @localization(locale="zhCN", format="lua_table", handle-unlocalized="english")@,
+	["zhTW"] = @localization(locale="zhTW", format="lua_table", handle-unlocalized="english")@,
+};
+
+--@end-non-debug@]===]
+
+--@debug@
+local locales = {
 	["enUS"] = {
 		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Always display CD icons at full opacity (ReloadUI is needed)",
 		["Click on icon to enable/disable tracking"] = "Click on icon to enable/disable tracking",
@@ -29,32 +48,8 @@
 		["chat:addon-is-disabled-note"] = "Please note: this addon is disabled. You can enable it in options dialog (/nc)",
 		["chat:addon-is-enabled"] = "Addon is enabled",
 		["chat:addon-is-disabled"] = "Addon is disabled",
-	},
-	["deDE"] = {
-		["Always display CD icons at full opacity (ReloadUI is needed)"] = "CD-Symbole immer mit voller Deckkraft anzeigen (UI neu laden erf.)",
-		["Click on icon to enable/disable tracking"] = "Klicke auf das Symbol, um die Verfolgung ein-/auszuschalten",
-		["Copy"] = "Kopieren",
-		["Copy other profile to current profile:"] = "Kopiere ein anderes Profil zu dem aktuellen:",
-		["Current profile: [%s]"] = "Aktuelles Profil: [%s]",
-		["Data from '%s' has been successfully copied to '%s'"] = "Daten von '%s' wurden erfolgreich zu '%s' kopiert.",
-		["Delete"] = "Löschen",
-		["Delete profile:"] = "Profil löschen:",
-		["Disable test mode"] = "Testmodus deaktivieren",
-		["Enable test mode (need at least one visible nameplate)"] = "Testmodus aktivieren\r\n(es muss mindestens eine Namensplakette sichtbar sein)",
-		["Font:"] = "Schriftart:",
-		["General"] = "Allgemein",
-		["Icon size"] = "Symbolgröße ",
-		["Icon X-coord offset"] = "X-Position des Symbols",
-		["Icon Y-coord offset"] = "Y-Position des Symbols",
-		["MISC"] = "Verschiedenes",
-		["New spell has been added: %s"] = "Ein neuer Zauber wurde hinzugefügt: %s",
-		["Options are not available in combat!"] = "Einstellungen sind nicht im Kampf verfügbar",
-		["Profile '%s' has been successfully deleted"] = "Profil '%s' wurde erfolgreich gelöscht.",
-		["Profiles"] = "Profile",
-		["Show border around interrupts"] = "Rahmen um Unterbrechungen anzeigen",
-		["Show border around trinkets"] = "Rahmen um Schmuckstücke anzeigen",
-		["Unknown spell: %s"] = "Unbekannter Zauber: %s",
-		["Value must be a number"] = "Der Wert muss eine Zahl sein."
+		["chat:enable-only-for-target-nameplate"] = "Cooldowns will be shown on target nameplate only",
+		["options:general:enable-only-for-target-nameplate"] = "Show the cooldowns on the current target nameplate only",
 	},
 	["ruRU"] = {
 		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Иконки заклинаний всегда полностью непрозрачны\r\n(Необходима перезагрузка интерфейса)",
@@ -80,90 +75,9 @@
 		["Show border around interrupts"] = "Показывать контур вокруг прерываний",
 		["Show border around trinkets"] = "Показывать контур вокруг тринкетов",
 		["Unknown spell: %s"] = "Неизвестное заклинание: %s",
-		["Value must be a number"] = "Значение должно быть числом"
-	},
-	["esMX"] =  {
-		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Mostrar siempre iconos con opacidad completa (Se requiere recargar UI)",
-		["Click on icon to enable/disable tracking"] = "Click sobre el icono para habilitar/desactivar el hechizo.",
-		["Copy"] = "Copiar",
-		["Copy other profile to current profile:"] = "Copiar otro perfil al actual:",
-		["Current profile: [%s]"] = "Perfil actual: [%s]",
-		["Data from '%s' has been successfully copied to '%s'"] = "Los datos de '%s' se han copiado a '%s'",
-		["Delete"] = "Borrar",
-		["Delete profile:"] = "Borrar perfil:",
-		["Disable test mode"] = "Desactivar modo de prueba.",
-		["Enable test mode (need at least one visible nameplate)"] = "Habilitar modo de prueba\r\n(se necesitar tener una placa de nombre visible).",
-		--Translation missing 
-		["Font:"] = "Font:",
-		["General"] = "General",
-		["Icon size"] = "Tamaño del icono",
-		["Icon X-coord offset"] = "Coordenada X de los iconos",
-		["Icon Y-coord offset"] = "Coordenada Y de los iconos",
-		["MISC"] = "Varios ",
-		["New spell has been added: %s"] = "Se ha agregado un nuevo hechizo: %s",
-		["Options are not available in combat!"] = "Configuración no disponible durante el combate!",
-		["Profile '%s' has been successfully deleted"] = "El perfil '%s' ha sido eliminado.",
-		["Profiles"] = "Perfiles",
-		["Show border around interrupts"] = "Mostrar borde en interrupciones ",
-		["Show border around trinkets"] = "Mostrar borde en albalorios",
-		["Unknown spell: %s"] = "Hechizo desconocido: %s",
-		["Value must be a number"] = "El valor debe ser un numero"
-	},
-	["frFR"] =  {
-		--Translation missing 
-		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Always display CD icons at full opacity (ReloadUI is needed)",
-		["Click on icon to enable/disable tracking"] = "Cliquez sur l'icone pour activer/désactiver le suivi",
-		["Copy"] = "Copier",
-		["Copy other profile to current profile:"] = "Copie un profile vers le profile courant",
-		["Current profile: [%s]"] = "Profile courrant : [%s]",
-		["Data from '%s' has been successfully copied to '%s'"] = "Les données de '%s' ont été copiées vers '%s'",
-		["Delete"] = "Effacer",
-		["Delete profile:"] = "Effacer le profile :",
-		["Disable test mode"] = "Éteindre le mode test",
-		["Enable test mode (need at least one visible nameplate)"] = "Allumer le mode test ( nécessite au moins une étiquette de nom visible)",
-		--Translation missing 
-		["Font:"] = "Font:",
-		["General"] = "Général",
-		["Icon size"] = "Taille de l'icone",
-		["Icon X-coord offset"] = "Icon X-coord offset",
-		["Icon Y-coord offset"] = "Icon Y-coord offset",
-		["MISC"] = "Divers",
-		["New spell has been added: %s"] = "Un nouveau sort a été ajouté : %s",
-		["Options are not available in combat!"] = "Les options sont indisponibles durant un combat",
-		["Profile '%s' has been successfully deleted"] = "Le profile '%s' a été effacé.",
-		["Profiles"] = "Profiles",
-		--Translation missing 
-		["Show border around interrupts"] = "Show border around interrupts",
-		--Translation missing 
-		["Show border around trinkets"] = "Show border around trinkets",
-		["Unknown spell: %s"] = "Sort inconnu : %s",
-		["Value must be a number"] = "La valeur doit être un nombre"
-	},
-	["esES"] = {
-		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Mostrar siempre los iconos de CD con opacidad al máximo (es necesario ReiniciarIU)",
-		["Click on icon to enable/disable tracking"] = "Haz click en el icono para activar/desactivar seguimiento",
-		["Copy"] = "Copiar",
-		["Copy other profile to current profile:"] = "Copiar otro perfil al perfil actual:",
-		["Current profile: [%s]"] = "Perfil actual: [%s]",
-		["Data from '%s' has been successfully copied to '%s'"] = "Los datos de '%s' han sido copiados correctamente a '%s'",
-		["Delete"] = "Borrar",
-		["Delete profile:"] = "Borrar perfil:",
-		["Disable test mode"] = "Desactivar Modo Test",
-		["Enable test mode (need at least one visible nameplate)"] = "Modo test Activado\r\n(necesitas por lo menos un nameplate visible)",
-		["Font:"] = "Fuente",
-		["General"] = "General",
-		["Icon size"] = "Tamaño del icono",
-		["Icon X-coord offset"] = "Compensacion de coordenada X del icono",
-		["Icon Y-coord offset"] = "Compensacion de coordenada Y del icono",
-		["MISC"] = "Misc",
-		["New spell has been added: %s"] = "Añadido un nuevo hechizo: %s",
-		["Options are not available in combat!"] = "Las opciones no estan disponibles en combate!",
-		["Profile '%s' has been successfully deleted"] = "Perfil \"%s\" ha sido borrado con exito",
-		["Profiles"] = "Perfiles",
-		["Show border around interrupts"] = "Mostrar bordes alrededor de interrupciones",
-		["Show border around trinkets"] = "Mostrar bordes alrededor de abalorios",
-		["Unknown spell: %s"] = "Hechizo desconocido: %s",
-		["Value must be a number"] = "El valor debe ser numerico"
+		["Value must be a number"] = "Значение должно быть числом",
+		["chat:enable-only-for-target-nameplate"] = "КД будут показаны только на нэймплэйте цели",
+		["options:general:enable-only-for-target-nameplate"] = "Показывать КД только на нэймплэйте цели",
 	},
 	["koKR"] = {
 		["Always display CD icons at full opacity (ReloadUI is needed)"] = "CD 아이콘을 항상 최대 불투명도로 표시합니다 (UI 다시 불러오기 필요)",
@@ -247,67 +161,8 @@
 		["Unknown spell: %s"] = "未知的法术: %s",
 		["Value must be a number"] = "必须填写数字"
 	},
-	["ptBR"] = {
-		--Translation missing 
-		["Always display CD icons at full opacity (ReloadUI is needed)"] = "Always display CD icons at full opacity (ReloadUI is needed)",
-		["Click on icon to enable/disable tracking"] = "Clique no ícone para ativar/desativar o rastreamento.",
-		["Copy"] = "Copiar",
-		["Copy other profile to current profile:"] = "Copiar outro perfil para o perfil atual",
-		["Current profile: [%s]"] = "Perfil atual",
-		["Data from '%s' has been successfully copied to '%s'"] = "Dados de '%s' foram copiados para '%s' com sucesso ",
-		["Delete"] = "Deletar",
-		["Delete profile:"] = "Deletar perfil",
-		["Disable test mode"] = "Desativar modo de teste",
-		["Enable test mode (need at least one visible nameplate)"] = "Ativar modo de teste (é necessário ao menos um nameplate visível) ",
-		--Translation missing 
-		["Font:"] = "Font:",
-		["General"] = "Geral",
-		["Icon size"] = "Tamanho do ícone",
-		["Icon X-coord offset"] = "Coordenada X do Ícone",
-		["Icon Y-coord offset"] = "Coordenada Y do Ícone",
-		["MISC"] = "Outros",
-		["New spell has been added: %s"] = "Um novo feitiço foi adicionado.",
-		["Options are not available in combat!"] = "Opções não estão disponíveis em combate!",
-		["Profile '%s' has been successfully deleted"] = "O perfil '%s' foi deletado com sucesso",
-		["Profiles"] = "Perfis",
-		--Translation missing 
-		["Show border around interrupts"] = "Show border around interrupts",
-		--Translation missing 
-		["Show border around trinkets"] = "Show border around trinkets",
-		["Unknown spell: %s"] = "Feitiço desconhecido",
-		["Value must be a number"] = "Valor precisa ser um numero"
-	},
-	["itIT"] = {
-		["Always display CD icons at full opacity (ReloadUI is needed)"] = [=[Visualizza le icone dei CD con l'opacità al 100%
-(è necessario ricaricare l'interfaccia utente)]=],
-		["Click on icon to enable/disable tracking"] = "Clicca sull'icona per abilita/disabilitare il monitoraggio",
-		["Copy"] = "Copia",
-		["Copy other profile to current profile:"] = "Copia un altro profilo nel profilo corrente",
-		["Current profile: [%s]"] = "Profilo selezionato: [%s]",
-		["Data from '%s' has been successfully copied to '%s'"] = "I dati da '%s' sono stati copiati con successo su '%s'",
-		["Delete"] = "Elimina",
-		["Delete profile:"] = "Elimina profilo:",
-		["Disable test mode"] = "Disabilita la modalità di test",
-		["Enable test mode (need at least one visible nameplate)"] = "Abilita la modalità di test (è necessario visualizzare almeno un nameplate)",
-		--Translation missing 
-		["Font:"] = "Font:",
-		["General"] = "Generale",
-		["Icon size"] = "Grandezza delle icone",
-		["Icon X-coord offset"] = "Coordinate di Offset X dell'icona",
-		["Icon Y-coord offset"] = "Coordinate di Offset Y dell'icona",
-		["MISC"] = "MISC",
-		["New spell has been added: %s"] = "Una nuova magia è stata aggiunta: %s",
-		["Options are not available in combat!"] = "Non è possibile accedere alle opzioni in combattimento!",
-		["Profile '%s' has been successfully deleted"] = "Il profilo '%s' è stato creato con successo",
-		["Profiles"] = "Profili",
-		--Translation missing 
-		["Show border around interrupts"] = "Show border around interrupts",
-		--Translation missing 
-		["Show border around trinkets"] = "Show border around trinkets",
-		["Unknown spell: %s"] = "Magia sconosciuta: %s",
-		["Value must be a number"] = "Il valore deve essere un numero"
-	},
 };
+--@end-debug@
 
 -- locales["koKR"] = locales["enUS"];
 -- locales["zhCN"] = locales["enUS"];
@@ -328,6 +183,12 @@ local _, addonTable = ...;
 addonTable.L = locales[GetLocale()];
 addonTable.L = setmetatable(addonTable.L, {
 	__index = function(t, key)
-		return locales["enUS"][key];
+		local enus = locales["enUS"][key];
+		if (enus ~= nil) then
+			return enus;
+		else
+			print("NameplateCooldowns: missing localisation: "..key);
+			return key;
+		end
 	end
 });

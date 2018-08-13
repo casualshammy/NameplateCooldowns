@@ -42,7 +42,6 @@ local _G, pairs, select, WorldFrame, string_match, string_gsub, string_find, bit
 local OnStartup, InitializeDB, AddButtonToBlizzOptions;
 local AllocateIcon, ReallocateAllIcons, InitializeFrame, UpdateOnlyOneNameplate, Nameplate_SetBorder, Nameplate_SetCooldown, Nameplate_SortAuras, HideCDIcon, ShowCDIcon;
 local OnUpdate;
-local PLAYER_ENTERING_WORLD, COMBAT_LOG_EVENT_UNFILTERED, NAME_PLATE_UNIT_ADDED, NAME_PLATE_UNIT_REMOVED;
 local EnableTestMode, DisableTestMode;
 local ShowGUI, InitializeGUI, GUICategory_1, GUICategory_2, GUICategory_Other, OnGUICategoryClick, ShowGUICategory, RebuildDropdowns, CreateGUICategory, GUICreateSlider, GUICreateButton;
 local Print, deepcopy, table_contains_key;
@@ -107,6 +106,10 @@ do
 		else
 			Print(L["chat:addon-is-disabled-note"]);
 		end
+		if (db.ShowCooldownsOnCurrentTargetOnly) then
+			EventFrame:RegisterEvent("PLAYER_TARGET_CHANGED");
+			--Print(L["chat:enable-only-for-target-nameplate"]);
+		end
 		EventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED");
 		EventFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
 		AddButtonToBlizzOptions();
@@ -147,6 +150,7 @@ do
 			Font = "NC_TeenBold",
 			IconSortMode = CONST_SORT_MODES[1],
 			AddonEnabled = true,
+			ShowCooldownsOnCurrentTargetOnly = false,
 		};
 		for key, value in pairs(defaults) do
 			if (NameplateCooldownsDB[LocalPlayerFullName][key] == nil) then
@@ -229,29 +233,31 @@ do
 	
 	function UpdateOnlyOneNameplate(frame, name)
 		local counter = 1;
-		if (charactersDB[name]) then
-			local currentTime = GetTime();
-			local sortedCDs = Nameplate_SortAuras(charactersDB[name]);
-			for _, spellInfo in pairs(sortedCDs) do
-				local spellID = spellInfo.spellID;
-				if (spellInfo.expires > currentTime) then
-					if (counter > frame.NCIconsCount) then
-						AllocateIcon(frame);
+		if (not db.ShowCooldownsOnCurrentTargetOnly or UnitName("target") == name) then
+			if (charactersDB[name]) then
+				local currentTime = GetTime();
+				local sortedCDs = Nameplate_SortAuras(charactersDB[name]);
+				for _, spellInfo in pairs(sortedCDs) do
+					local spellID = spellInfo.spellID;
+					if (spellInfo.expires > currentTime) then
+						if (counter > frame.NCIconsCount) then
+							AllocateIcon(frame);
+						end
+						local icon = frame.NCIcons[counter];
+						if (icon.spellID ~= spellID) then
+							icon:SetTexture(SpellTextureByID[spellID]);
+							icon.spellID = spellID;
+							Nameplate_SetBorder(icon, spellID);
+						end
+						local remain = spellInfo.expires - currentTime;
+						Nameplate_SetCooldown(icon, remain)
+						if (not icon.shown) then
+							ShowCDIcon(icon);
+						end
+						counter = counter + 1;
+					else
+						charactersDB[name][spellID] = nil;
 					end
-					local icon = frame.NCIcons[counter];
-					if (icon.spellID ~= spellID) then
-						icon:SetTexture(SpellTextureByID[spellID]);
-						icon.spellID = spellID;
-						Nameplate_SetBorder(icon, spellID);
-					end
-					local remain = spellInfo.expires - currentTime;
-					Nameplate_SetCooldown(icon, remain)
-					if (not icon.shown) then
-						ShowCDIcon(icon);
-					end
-					counter = counter + 1;
-				else
-					charactersDB[name][spellID] = nil;
 				end
 			end
 		end
@@ -406,117 +412,6 @@ do
 end
 
 -------------------------------------------------------------------------------------------------
------ Events
--------------------------------------------------------------------------------------------------
-do
-	
-	local COMBATLOG_OBJECT_IS_HOSTILE = COMBATLOG_OBJECT_REACTION_HOSTILE;
-	
-	function PLAYER_ENTERING_WORLD()
-		if (OnStartup) then
-			OnStartup();
-		end
-		wipe(charactersDB);
-	end
-	
-	function COMBAT_LOG_EVENT_UNFILTERED()
-		local cTime = GetTime();
-		local _, eventType, _, _, srcName, srcFlags, _, _, _, _, _, spellID = CombatLogGetCurrentEventInfo();
-		if (bit_band(srcFlags, COMBATLOG_OBJECT_IS_HOSTILE) ~= 0) then
-			if (CDEnabledCache[spellID]) then
-				if (eventType == "SPELL_CAST_SUCCESS" or eventType == "SPELL_AURA_APPLIED" or eventType == "SPELL_MISSED" or eventType == "SPELL_SUMMON") then
-					local Name = string_match(srcName, "[%P]+");
-					if (not charactersDB[Name]) then
-						charactersDB[Name] = {};
-					end
-					local duration = CDTimeCache[spellID];
-					local expires = cTime + duration;
-					charactersDB[Name][spellID] = { ["spellID"] = spellID, ["duration"] = duration, ["expires"] = expires };
-					for frame, charName in pairs(NameplatesVisible) do
-						if (charName == Name) then
-							UpdateOnlyOneNameplate(frame, charName);
-							break;
-						end
-					end
-				end
-			end
-			-- // resets
-			if (table_contains_key(Resets, spellID)) then
-				if (eventType == "SPELL_CAST_SUCCESS") then
-					local Name = string_match(srcName, "[%P]+");
-					if (charactersDB[Name]) then
-						for _, v in pairs(Resets[spellID]) do
-							charactersDB[Name][v] = nil;
-						end
-						for frame, charName in pairs(NameplatesVisible) do
-							if (charName == Name) then
-								UpdateOnlyOneNameplate(frame, charName);
-								break;
-							end
-						end
-					end
-				end
-			elseif (spellID == 102060) then	-- // let's start cd of spellid:6552 if warrior have used spellid:102060
-				if (CDEnabledCache[6552] and eventType == "SPELL_CAST_SUCCESS") then
-					local Name = string_match(srcName, "[%P]+");
-					if (not charactersDB[Name]) then
-						charactersDB[Name] = {};
-					end
-					local duration = CDTimeCache[6552];
-					local expires = cTime + duration;
-					charactersDB[Name][6552] = { ["spellID"] = 6552, ["duration"] = duration, ["expires"] = expires };
-					for frame, charName in pairs(NameplatesVisible) do
-						if (charName == Name) then
-							UpdateOnlyOneNameplate(frame, charName);
-							break;
-						end
-					end
-				end
-			elseif (spellID == SPELL_PVPADAPTATION) then -- // pvptier 1/2 used, correcting cd of PvP trinket
-				if (CDEnabledCache[SPELL_PVPTRINKET] and eventType == "SPELL_AURA_APPLIED") then
-					local Name = string_match(srcName, "[%P]+");
-					if (charactersDB[Name]) then
-						charactersDB[Name][SPELL_PVPTRINKET] = { ["spellID"] = SPELL_PVPTRINKET, ["duration"] = 60, ["expires"] = cTime + 60 };
-						for frame, charName in pairs(NameplatesVisible) do
-							if (charName == Name) then
-								UpdateOnlyOneNameplate(frame, charName);
-								break;
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-
-	function NAME_PLATE_UNIT_ADDED(...)
-		local unitID = ...;
-		local nameplate = C_NamePlate.GetNamePlateForUnit(unitID);
-		local unitName = UnitName(unitID);
-		NameplatesVisible[nameplate] = unitName;
-		if (not Nameplates[nameplate]) then
-			nameplate.NCIcons = {};
-			nameplate.NCIconsCount = 0;	-- // it's faster than #nameplate.NCIcons
-			Nameplates[nameplate] = true;
-		end
-		UpdateOnlyOneNameplate(nameplate, unitName);
-		if (db.FullOpacityAlways and nameplate.NCFrame) then
-			nameplate.NCFrame:Show();
-		end
-	end
-	
-	function NAME_PLATE_UNIT_REMOVED(...)
-		local unitID = ...;
-		local nameplate = C_NamePlate.GetNamePlateForUnit(unitID);
-		NameplatesVisible[nameplate] = nil;
-		if (db.FullOpacityAlways and nameplate.NCFrame) then
-			nameplate.NCFrame:Hide();
-		end
-	end
-	
-end
-
--------------------------------------------------------------------------------------------------
 ----- Test mode
 -------------------------------------------------------------------------------------------------
 do
@@ -648,8 +543,8 @@ do
 	
 	function InitializeGUI()
 		GUIFrame = CreateFrame("Frame", "NC_GUIFrame", UIParent);
-		GUIFrame:SetHeight(350);
-		GUIFrame:SetWidth(500);
+		GUIFrame:SetHeight(400);
+		GUIFrame:SetWidth(540);
 		GUIFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 80);
 		GUIFrame:SetBackdrop({
 			bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
@@ -675,7 +570,7 @@ do
 		
 		local header = GUIFrame:CreateFontString("NC_GUIHeader", "ARTWORK", "GameFontHighlight");
 		header:SetFont(GameFontNormal:GetFont(), 22, "THICKOUTLINE");
-		header:SetPoint("CENTER", GUIFrame, "CENTER", 0, 185);
+		header:SetPoint("BOTTOM", GUIFrame, "TOP", 0, 0);
 		header:SetText("NameplateCooldowns");
 		
 		GUIFrame.outline = CreateFrame("Frame", nil, GUIFrame);
@@ -691,7 +586,7 @@ do
 		GUIFrame.outline:SetBackdropBorderColor(0.8, 0.8, 0.9, 0.4);
 		GUIFrame.outline:SetPoint("TOPLEFT", 12, -12);
 		GUIFrame.outline:SetPoint("BOTTOMLEFT", 12, 12);
-		GUIFrame.outline:SetWidth(100);
+		GUIFrame.outline:SetWidth(140);
 		
 		local closeButton = CreateFrame("Button", "NC_GUICloseButton", GUIFrame, "UIPanelButtonTemplate");
 		closeButton:SetWidth(24);
@@ -703,7 +598,7 @@ do
 		closeButton.text:SetText("X");
 		
 		local scrollFramesTipText = GUIFrame:CreateFontString("NC_GUIScrollFramesTipText", "OVERLAY", "GameFontNormal");
-		scrollFramesTipText:SetPoint("CENTER", GUIFrame, "LEFT", 300, 130);
+		scrollFramesTipText:SetPoint("CENTER", GUIFrame, "TOP", 70, -35);
 		scrollFramesTipText:SetText(L["Click on icon to enable/disable tracking"]);
 		
 		GUIFrame.Categories = {};
@@ -739,7 +634,7 @@ do
 		local buttonEnableDisableAddon = GUICreateButton("test123", GUIFrame, db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]);
 		buttonEnableDisableAddon:SetWidth(340);
 		buttonEnableDisableAddon:SetHeight(20);
-		buttonEnableDisableAddon:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 130, -15);
+		buttonEnableDisableAddon:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -5);
 		buttonEnableDisableAddon:SetScript("OnClick", function(self, ...)
 			if (db.AddonEnabled) then
 				EventFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
@@ -757,7 +652,7 @@ do
 		local buttonSwitchTestMode = GUICreateButton("NC_GUIGeneralButtonSwitchTestMode", GUIFrame, L["Enable test mode (need at least one visible nameplate)"]);
 		buttonSwitchTestMode:SetWidth(340);
 		buttonSwitchTestMode:SetHeight(20);
-		buttonSwitchTestMode:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 130, -40);
+		buttonSwitchTestMode:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -30);
 		buttonSwitchTestMode:SetScript("OnClick", function(self, ...)
 			if (not TestFrame or not TestFrame:GetScript("OnUpdate")) then
 				EnableTestMode();
@@ -770,6 +665,9 @@ do
 		table.insert(GUIFrame.Categories[index], buttonSwitchTestMode);
 		
 		local sliderIconSize = GUICreateSlider(GUIFrame, 130, -70, 340, "NC_GUIGeneralSliderIconSize");
+		sliderIconSize:SetParent(GUIFrame.outline);
+		sliderIconSize:ClearAllPoints();
+		sliderIconSize:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -60);
 		sliderIconSize.label:SetText(L["Icon size"]);
 		sliderIconSize.slider:SetValueStep(1);
 		sliderIconSize.slider:SetMinMaxValues(1, 50);
@@ -803,6 +701,9 @@ do
 		table.insert(GUIFrame.Categories[index], sliderIconSize);
 		
 		local sliderIconXOffset = GUICreateSlider(GUIFrame, 130, -125, 155, "NC_GUIGeneralSliderIconXOffset");
+		sliderIconXOffset:SetParent(GUIFrame.outline);
+		sliderIconXOffset:ClearAllPoints();
+		sliderIconXOffset:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -115);
 		sliderIconXOffset.label:SetText(L["Icon X-coord offset"]);
 		sliderIconXOffset.slider:SetValueStep(1);
 		sliderIconXOffset.slider:SetMinMaxValues(-200, 200);
@@ -836,6 +737,9 @@ do
 		table.insert(GUIFrame.Categories[index], sliderIconXOffset);
 		
 		local sliderIconYOffset = GUICreateSlider(GUIFrame, 315, -125, 155, "NC_GUIGeneralSliderIconYOffset");
+		sliderIconYOffset:SetParent(GUIFrame.outline);
+		sliderIconYOffset:ClearAllPoints();
+		sliderIconYOffset:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 200, -115);
 		sliderIconYOffset.label:SetText(L["Icon Y-coord offset"]);
 		sliderIconYOffset.slider:SetValueStep(1);
 		sliderIconYOffset.slider:SetMinMaxValues(-200, 200);
@@ -871,13 +775,34 @@ do
 		local checkBoxFullOpacityAlways = GUICreateCheckBox(130, -195, L["Always display CD icons at full opacity (ReloadUI is needed)"], function(this)
 			db.FullOpacityAlways = this:GetChecked();
 		end, "NC_GUI_General_CheckBoxFullOpacityAlways");
+		checkBoxFullOpacityAlways:SetParent(GUIFrame.outline);
+		checkBoxFullOpacityAlways:ClearAllPoints();
+		checkBoxFullOpacityAlways:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -185);
 		checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways);
 		table.insert(GUIFrame.Categories[index], checkBoxFullOpacityAlways);
+		
+		local checkBoxEnableOnlyForTarget = GUICreateCheckBox(130, -195, L["options:general:enable-only-for-target-nameplate"], function(this)
+			db.ShowCooldownsOnCurrentTargetOnly = this:GetChecked();
+			if (db.ShowCooldownsOnCurrentTargetOnly) then
+				EventFrame:RegisterEvent("PLAYER_TARGET_CHANGED");
+			else
+				EventFrame:UnregisterEvent("PLAYER_TARGET_CHANGED");
+			end
+			ReallocateAllIcons(true);
+		end);
+		checkBoxEnableOnlyForTarget:SetParent(GUIFrame.outline);
+		checkBoxEnableOnlyForTarget:ClearAllPoints();
+		checkBoxEnableOnlyForTarget:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -215);
+		checkBoxEnableOnlyForTarget:SetChecked(db.ShowCooldownsOnCurrentTargetOnly);
+		table.insert(GUIFrame.Categories[index], checkBoxEnableOnlyForTarget);
 		
 		local checkBoxBorderTrinkets = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderTrinkets", 130, -225, L["Show border around trinkets"], function(this)
 			db.ShowBorderTrinkets = this:GetChecked();
 			ReallocateAllIcons(true);
 		end);
+		checkBoxBorderTrinkets:SetParent(GUIFrame.outline);
+		checkBoxBorderTrinkets:ClearAllPoints();
+		checkBoxBorderTrinkets:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -235);
 		checkBoxBorderTrinkets:SetChecked(db.ShowBorderTrinkets);
 		checkBoxBorderTrinkets.ColorButton.colorSwatch:SetVertexColor(unpack(db.BorderTrinketsColor));
 		checkBoxBorderTrinkets.ColorButton:SetScript("OnClick", function()
@@ -905,6 +830,9 @@ do
 			db.ShowBorderInterrupts = this:GetChecked();
 			ReallocateAllIcons(true);
 		end);
+		checkBoxBorderInterrupts:SetParent(GUIFrame.outline);
+		checkBoxBorderInterrupts:ClearAllPoints();
+		checkBoxBorderInterrupts:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -255);
 		checkBoxBorderInterrupts:SetChecked(db.ShowBorderInterrupts);
 		checkBoxBorderInterrupts.ColorButton.colorSwatch:SetVertexColor(unpack(db.BorderInterruptsColor));
 		checkBoxBorderInterrupts.ColorButton:SetScript("OnClick", function()
@@ -930,7 +858,7 @@ do
 		
 		local dropdownIconSortMode = CreateFrame("Frame", "NC.GUI.General.DropdownIconSortMode", GUIFrame, "UIDropDownMenuTemplate");
 		UIDropDownMenu_SetWidth(dropdownIconSortMode, 300);
-		dropdownIconSortMode:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 116, -275);
+		dropdownIconSortMode:SetPoint("BOTTOMLEFT", GUIFrame.outline, "BOTTOMRIGHT", 10, 45);
 		local info = {};
 		dropdownIconSortMode.initialize = function()
 			wipe(info);
@@ -953,7 +881,7 @@ do
 		
 		local dropdownFont = CreateFrame("Frame", "NC_GUI_General_DropdownFont", GUIFrame, "UIDropDownMenuTemplate");
 		UIDropDownMenu_SetWidth(dropdownFont, 300);
-		dropdownFont:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 116, -310);
+		dropdownFont:SetPoint("BOTTOMLEFT", GUIFrame.outline, "BOTTOMRIGHT", 10, 10);
 		local info = {};
 		dropdownFont.initialize = function()
 			wipe(info);
@@ -978,13 +906,13 @@ do
 	
 	function GUICategory_2(index, value)
 		local textProfilesCurrentProfile = GUIFrame:CreateFontString("NC_GUIProfilesTextCurrentProfile", "OVERLAY", "GameFontNormal");
-		textProfilesCurrentProfile:SetPoint("CENTER", GUIFrame, "LEFT", 300, 130);
+		textProfilesCurrentProfile:SetPoint("CENTER", GUIFrame, "TOP", 70, -35);
 		textProfilesCurrentProfile:SetText(format(L["Current profile: [%s]"], LocalPlayerFullName));
 		table.insert(GUIFrame.Categories[index], textProfilesCurrentProfile);
 		
 		local dropdownCopyProfile = CreateFrame("Frame", "NC_GUIProfilesDropdownCopyProfile", GUIFrame, "UIDropDownMenuTemplate");
 		UIDropDownMenu_SetWidth(dropdownCopyProfile, 210);
-		dropdownCopyProfile:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 120, -80);
+		dropdownCopyProfile:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 160, -80);
 		dropdownCopyProfile.text = dropdownCopyProfile:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
 		dropdownCopyProfile.text:SetPoint("LEFT", 20, 20);
 		dropdownCopyProfile.text:SetText(L["Copy other profile to current profile:"]);
@@ -993,7 +921,7 @@ do
 		local buttonCopyProfile = GUICreateButton("NC_GUIProfilesButtonCopyProfile", GUIFrame, L["Copy"]);
 		buttonCopyProfile:SetWidth(90);
 		buttonCopyProfile:SetHeight(24);
-		buttonCopyProfile:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 380, -82);
+		buttonCopyProfile:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 420, -82);
 		buttonCopyProfile:SetScript("OnClick", function(self, ...)
 			if (dropdownCopyProfile.myvalue ~= nil) then
 				NameplateCooldownsDB[LocalPlayerFullName] = deepcopy(NameplateCooldownsDB[dropdownCopyProfile.myvalue]);
@@ -1019,7 +947,7 @@ do
 		
 		local dropdownDeleteProfile = CreateFrame("Frame", "NC_GUIProfilesDropdownDeleteProfile", GUIFrame, "UIDropDownMenuTemplate");
 		UIDropDownMenu_SetWidth(dropdownDeleteProfile, 210);
-		dropdownDeleteProfile:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 120, -120);
+		dropdownDeleteProfile:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 160, -120);
 		dropdownDeleteProfile.text = dropdownDeleteProfile:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
 		dropdownDeleteProfile.text:SetPoint("LEFT", 20, 20);
 		dropdownDeleteProfile.text:SetText(L["Delete profile:"]);
@@ -1028,7 +956,7 @@ do
 		local buttonDeleteProfile = GUICreateButton("NC_GUIProfilesButtonDeleteProfile", GUIFrame, L["Delete"]);
 		buttonDeleteProfile:SetWidth(90);
 		buttonDeleteProfile:SetHeight(24);
-		buttonDeleteProfile:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 380, -122);
+		buttonDeleteProfile:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 420, -122);
 		buttonDeleteProfile:SetScript("OnClick", function(self, ...)
 			if (dropdownDeleteProfile.myvalue ~= nil) then
 				NameplateCooldownsDB[dropdownDeleteProfile.myvalue] = nil;
@@ -1038,45 +966,12 @@ do
 		end);
 		table.insert(GUIFrame.Categories[index], buttonDeleteProfile);
 		
-		
-		-- /////////////////////////
-		
-		-- local editboxNewProfile = CreateFrame("EditBox", "NC_GUIProfilesEditboxNewProfile", GUIFrame)
-		-- editboxNewProfile:SetAutoFocus(false);
-		-- editboxNewProfile:SetFont("Fonts\\FRIZQT__.TTF", 12, nil);
-		-- editboxNewProfile:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 135, -162);
-		-- editboxNewProfile:SetHeight(24);
-		-- editboxNewProfile:SetWidth(230);
-		-- editboxNewProfile:SetJustifyH("LEFT");
-		-- editboxNewProfile:EnableMouse(true);
-		-- editboxNewProfile:SetBackdrop({
-			-- bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
-			-- edgeFile = "Interface\\ChatFrame\\ChatFrameBackground",
-			-- tile = true, edgeSize = 1, tileSize = 5,
-		-- });
-		-- editboxNewProfile:SetBackdropColor(0, 0, 0, 0.5)
-		-- editboxNewProfile:SetBackdropBorderColor(0.3, 0.3, 0.30, 0.80)
-		-- editboxNewProfile:SetScript("OnEscapePressed", function() editboxNewProfile:ClearFocus(); end);
-		-- table.insert(GUIFrame.Categories[index], editboxNewProfile);
-		
-		-- local buttonNewProfile = GUICreateButton("NC_GUIProfilesButtonNewProfile", GUIFrame, "Add"); -- // todo: localize
-		-- buttonNewProfile:SetWidth(90);
-		-- buttonNewProfile:SetHeight(24);
-		-- buttonNewProfile:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 380, -162);
-		-- buttonNewProfile:SetScript("OnClick", function(self, ...)
-			
-		-- end);
-		-- table.insert(GUIFrame.Categories[index], buttonNewProfile);
-		
-		-- /////////////////////////
-		
-		
 		RebuildDropdowns();
 	end
 	
 	function GUICategory_Other(index, value)
 		local scrollAreaBackground = CreateFrame("Frame", "NC_GUIScrollFrameBackground_"..tostring(index - 1), GUIFrame);
-		scrollAreaBackground:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 120, -60);
+		scrollAreaBackground:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 160, -60);
 		scrollAreaBackground:SetPoint("BOTTOMRIGHT", GUIFrame, "BOTTOMRIGHT", -30, 15);
 		scrollAreaBackground:SetBackdrop({
 			bgFile = "Interface\\AddOns\\NameplateCooldowns\\media\\Smudge.tga",
@@ -1225,7 +1120,7 @@ do
 	
 	function CreateGUICategory()
 		local b = CreateFrame("Button", nil, GUIFrame.outline);
-		b:SetWidth(92);
+		b:SetWidth(GUIFrame.outline:GetWidth()-8);
 		b:SetHeight(18);
 		b:SetScript("OnClick", OnGUICategoryClick);
 		b:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight");
@@ -1378,19 +1273,119 @@ end
 -------------------------------------------------------------------------------------------------
 ----- Frame for events
 -------------------------------------------------------------------------------------------------
-EventFrame = CreateFrame("Frame");
-EventFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
-EventFrame:SetScript("OnEvent", function(self, event, ...)
-	if (event == "COMBAT_LOG_EVENT_UNFILTERED") then
-		COMBAT_LOG_EVENT_UNFILTERED(...);
-	elseif (event == "PLAYER_ENTERING_WORLD") then
-		PLAYER_ENTERING_WORLD();
-	elseif (event == "NAME_PLATE_UNIT_ADDED") then
-		NAME_PLATE_UNIT_ADDED(...);
-	elseif (event == "NAME_PLATE_UNIT_REMOVED") then
-		NAME_PLATE_UNIT_REMOVED(...);
+do
+
+	local COMBATLOG_OBJECT_IS_HOSTILE = COMBATLOG_OBJECT_REACTION_HOSTILE;
+
+	EventFrame = CreateFrame("Frame");
+	EventFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
+	EventFrame:SetScript("OnEvent", function(self, event, ...) self[event](...); end);
+	
+	EventFrame.COMBAT_LOG_EVENT_UNFILTERED = function()
+		local cTime = GetTime();
+		local _, eventType, _, _, srcName, srcFlags, _, _, _, _, _, spellID = CombatLogGetCurrentEventInfo();
+		if (bit_band(srcFlags, COMBATLOG_OBJECT_IS_HOSTILE) ~= 0) then
+			if (CDEnabledCache[spellID]) then
+				if (eventType == "SPELL_CAST_SUCCESS" or eventType == "SPELL_AURA_APPLIED" or eventType == "SPELL_MISSED" or eventType == "SPELL_SUMMON") then
+					local Name = string_match(srcName, "[%P]+");
+					if (not charactersDB[Name]) then
+						charactersDB[Name] = {};
+					end
+					local duration = CDTimeCache[spellID];
+					local expires = cTime + duration;
+					charactersDB[Name][spellID] = { ["spellID"] = spellID, ["duration"] = duration, ["expires"] = expires };
+					for frame, charName in pairs(NameplatesVisible) do
+						if (charName == Name) then
+							UpdateOnlyOneNameplate(frame, charName);
+							break;
+						end
+					end
+				end
+			end
+			-- // resets
+			if (table_contains_key(Resets, spellID)) then
+				if (eventType == "SPELL_CAST_SUCCESS") then
+					local Name = string_match(srcName, "[%P]+");
+					if (charactersDB[Name]) then
+						for _, v in pairs(Resets[spellID]) do
+							charactersDB[Name][v] = nil;
+						end
+						for frame, charName in pairs(NameplatesVisible) do
+							if (charName == Name) then
+								UpdateOnlyOneNameplate(frame, charName);
+								break;
+							end
+						end
+					end
+				end
+			elseif (spellID == 102060) then	-- // let's start cd of spellid:6552 if warrior have used spellid:102060
+				if (CDEnabledCache[6552] and eventType == "SPELL_CAST_SUCCESS") then
+					local Name = string_match(srcName, "[%P]+");
+					if (not charactersDB[Name]) then
+						charactersDB[Name] = {};
+					end
+					local duration = CDTimeCache[6552];
+					local expires = cTime + duration;
+					charactersDB[Name][6552] = { ["spellID"] = 6552, ["duration"] = duration, ["expires"] = expires };
+					for frame, charName in pairs(NameplatesVisible) do
+						if (charName == Name) then
+							UpdateOnlyOneNameplate(frame, charName);
+							break;
+						end
+					end
+				end
+			elseif (spellID == SPELL_PVPADAPTATION) then -- // pvptier 1/2 used, correcting cd of PvP trinket
+				if (CDEnabledCache[SPELL_PVPTRINKET] and eventType == "SPELL_AURA_APPLIED") then
+					local Name = string_match(srcName, "[%P]+");
+					if (charactersDB[Name]) then
+						charactersDB[Name][SPELL_PVPTRINKET] = { ["spellID"] = SPELL_PVPTRINKET, ["duration"] = 60, ["expires"] = cTime + 60 };
+						for frame, charName in pairs(NameplatesVisible) do
+							if (charName == Name) then
+								UpdateOnlyOneNameplate(frame, charName);
+								break;
+							end
+						end
+					end
+				end
+			end
+		end
 	end
-end);
+	
+	EventFrame.PLAYER_ENTERING_WORLD = function()
+		if (OnStartup) then
+			OnStartup();
+		end
+		wipe(charactersDB);
+	end
+	
+	EventFrame.NAME_PLATE_UNIT_ADDED = function(unitID)
+		local nameplate = C_NamePlate.GetNamePlateForUnit(unitID);
+		local unitName = UnitName(unitID);
+		NameplatesVisible[nameplate] = unitName;
+		if (not Nameplates[nameplate]) then
+			nameplate.NCIcons = {};
+			nameplate.NCIconsCount = 0;	-- // it's faster than #nameplate.NCIcons
+			Nameplates[nameplate] = true;
+		end
+		UpdateOnlyOneNameplate(nameplate, unitName);
+		if (db.FullOpacityAlways and nameplate.NCFrame) then
+			nameplate.NCFrame:Show();
+		end
+	end
+	
+	EventFrame.NAME_PLATE_UNIT_REMOVED = function(unitID)
+		local nameplate = C_NamePlate.GetNamePlateForUnit(unitID);
+		NameplatesVisible[nameplate] = nil;
+		if (db.FullOpacityAlways and nameplate.NCFrame) then
+			nameplate.NCFrame:Hide();
+		end
+	end
+	
+	EventFrame.PLAYER_TARGET_CHANGED = function()
+		ReallocateAllIcons(true);
+	end
+	
+end
 
 -------------------------------------------------------------------------------------------------
 ----- Frame for fun
