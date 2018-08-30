@@ -88,6 +88,7 @@ addonTable.CDs = {
 		[157980] = 25,				-- // Supernova
 		[157997] = 25,				-- // Ice Nova
 		[235219] = 300,				-- // Cold Snap
+		[198111] = 45,				-- // Temporal Shield (Envelops you in a temporal shield for 6 sec. 100% of all damage taken while shielded will be instantly restored when the shield ends.)
 	},
 	[L["DEATHKNIGHT"]] = { -- // OK
 		[47476] = 60,				--"Strangulate",
@@ -319,7 +320,7 @@ addonTable.Interrupts = {
 	1766,	-- Kick
 	57994,	-- Wind Shear
 	6552,	-- Pummel
-	24259,	-- Spell Lock
+	19647,	-- Spell Lock https://ru.wowhead.com/spell=19647
 	147362,	-- Counter Shot
 	116705, -- Spear Hand Strike
 	115781,	-- Optical Blast
