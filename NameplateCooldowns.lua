@@ -599,6 +599,16 @@ do
 				["raid"] = 					L["instance-type:raid"],
 				["scenario"] = 				L["instance-type:scenario"],
 			};
+			local zoneIcons = {
+				["none"] = 					SpellTextureByID[6711],
+				[INSTANCE_TYPE_UNKNOWN] = 	SpellTextureByID[175697],
+				["pvp"] = 					SpellTextureByID[232352],
+				["arena"] = 				SpellTextureByID[270697],
+				["party"] = 				SpellTextureByID[77629],
+				["raid"] = 					SpellTextureByID[3363],
+				["scenario"] = 				SpellTextureByID[77628],
+			};
+			
 		
 			local entries = { };
 			local dropdownInstances = RD.CreateDropdownMenu();
@@ -608,7 +618,7 @@ do
 			for instanceType, instanceLocalizatedName in pairs(zoneTypes) do
 				table_insert(entries, {
 					["text"] = instanceLocalizatedName,
-					["icon"] = [[Interface\AddOns\NameplateAuras\media\font.tga]],
+					["icon"] = zoneIcons[instanceType],
 					["func"] = function(info)
 						local btn = dropdownInstances:GetButtonByText(info.text);
 						if (btn) then
