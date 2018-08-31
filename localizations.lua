@@ -45,11 +45,22 @@ local locales = {
 	["Delete profile:"] = "Delete profile:",
 	["Disable test mode"] = "Disable test mode",
 	["Enable test mode (need at least one visible nameplate)"] = "Enable test mode (need at least one visible nameplate)",
+	["Filters"] = "Filters",
+	["filters.instance-types"] = [=[Set the visibility of the cooldowns
+in different types of locations]=],
 	["Font:"] = "Font:",
 	["General"] = "General",
+	["general.sort-mode"] = "Sort mode:",
 	["Icon size"] = "Icon size",
 	["Icon X-coord offset"] = "Icon X-coord offset",
 	["Icon Y-coord offset"] = "Icon Y-coord offset",
+	["instance-type:arena"] = "Arenas",
+	["instance-type:none"] = "Open World",
+	["instance-type:party"] = "5ppl dungeons",
+	["instance-type:pvp"] = "Battlegrounds",
+	["instance-type:raid"] = "Raid dungeons",
+	["instance-type:scenario"] = "Scenarios",
+	["instance-type:unknown"] = "Unknown dungeons (some quest scenarios)",
 	["MISC"] = "Misc",
 	["New spell has been added: %s"] = "New spell has been added: %s",
 	["Options are not available in combat!"] = "Options are not available in combat!",
@@ -65,7 +76,8 @@ local locales = {
 },
 	["ruRU"] = 
 {
-	["Always display CD icons at full opacity (ReloadUI is needed)"] = "Иконки заклинаний всегда полностью непрозрачны\\r\\n(Необходима перезагрузка интерфейса)",
+	["Always display CD icons at full opacity (ReloadUI is needed)"] = [=[Иконки заклинаний всегда полностью непрозрачны
+(Необходима перезагрузка интерфейса)]=],
 	["chat:addon-is-disabled"] = "Аддон отключен",
 	["chat:addon-is-disabled-note"] = "Обратите внимание: этот аддон отключен. Вы можете включить его командой (/nc)",
 	["chat:addon-is-enabled"] = "Аддон включен",
@@ -79,11 +91,32 @@ local locales = {
 	["Delete profile:"] = "Удалить профиль:",
 	["Disable test mode"] = "Выключить тест",
 	["Enable test mode (need at least one visible nameplate)"] = "Включить тест (нужен хотя бы 1 видимый хп бар)",
+	--[[Translation missing --]]
+	["Filters"] = "Filters",
+	--[[Translation missing --]]
+	["filters.instance-types"] = [=[Set the visibility of the cooldowns
+in different types of locations]=],
 	["Font:"] = "Шрифт:",
 	["General"] = "Общее",
+	--[[Translation missing --]]
+	["general.sort-mode"] = "Sort mode:",
 	["Icon size"] = "Размер иконок",
 	["Icon X-coord offset"] = "Смещение иконок по X",
 	["Icon Y-coord offset"] = "Смещение иконок по Y",
+	--[[Translation missing --]]
+	["instance-type:arena"] = "Arenas",
+	--[[Translation missing --]]
+	["instance-type:none"] = "Open World",
+	--[[Translation missing --]]
+	["instance-type:party"] = "5ppl dungeons",
+	--[[Translation missing --]]
+	["instance-type:pvp"] = "Battlegrounds",
+	--[[Translation missing --]]
+	["instance-type:raid"] = "Raid dungeons",
+	--[[Translation missing --]]
+	["instance-type:scenario"] = "Scenarios",
+	--[[Translation missing --]]
+	["instance-type:unknown"] = "Unknown dungeons (some quest scenarios)",
 	["MISC"] = "Другое",
 	["New spell has been added: %s"] = "Добавлено новое заклинание: %s",
 	["Options are not available in combat!"] = "Настройки недоступны, пока идет бой!",

@@ -4,5 +4,6 @@
 <Script file="libs\LibStub\LibStub.lua"/>
 <Script file="libs\CallbackHandler-1.0\CallbackHandler-1.0.lua"/>
 <Include file="libs\LibSharedMedia-3.0\lib.xml"/>
+<Include file="libs\LibRedDropdown-1.0\LibRedDropdown-1.0.xml"/>
 </Ui>
 

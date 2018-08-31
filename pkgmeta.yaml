@@ -18,3 +18,6 @@ externals:
     libs/LibSharedMedia-3.0:
         url: https://repos.wowace.com/wow/libsharedmedia-3-0/trunk
         tag: latest
+    libs/LibRedDropdown-1.0:
+        url: https://github.com/casualshammy/LibRedDropdown.git
+        tag: latest

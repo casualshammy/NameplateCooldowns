@@ -9,6 +9,8 @@ local Trinkets = addonTable.Trinkets;
 local buildTimestamp = "@project-version@";
 --@end-non-debug@]===]
 
+local RD = LibStub("LibRedDropdown-1.0");
+
 local SML = LibStub("LibSharedMedia-3.0");
 SML:Register("font", "NC_TeenBold", "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf", 255);
 
@@ -32,18 +34,18 @@ local SpellTextureByID = setmetatable({
 local ElapsedTimer = 0;
 local Nameplates = {};
 local NameplatesVisible = {};
-local WorldFrameNumChildren = 0;
 local LocalPlayerFullName = UnitName("player").." - "..GetRealmName();
+local InstanceType = "none";
 local GUIFrame, EventFrame, TestFrame, db;
 
-local _G, pairs, select, WorldFrame, string_match, string_gsub, string_find, bit_band, GetTime, table_contains_value, math_ceil =
-	  _G, pairs, select, WorldFrame, strmatch,	   gsub,		strfind,	 bit.band, GetTime, tContains,			  ceil;
+local _G, pairs, select, UIParent, string_match, string_gsub, string_find, bit_band, GetTime, table_contains_value, math_ceil, 	table_insert, table_sort, C_Timer_After =
+	  _G, pairs, select, UIParent, strmatch,	   gsub,		strfind,	 bit.band, GetTime, tContains,			  ceil,		table.insert, table.sort, C_Timer.After;
 	  
 local OnStartup, InitializeDB, AddButtonToBlizzOptions;
 local AllocateIcon, ReallocateAllIcons, InitializeFrame, UpdateOnlyOneNameplate, Nameplate_SetBorder, Nameplate_SetCooldown, Nameplate_SortAuras, HideCDIcon, ShowCDIcon;
 local OnUpdate;
 local EnableTestMode, DisableTestMode;
-local ShowGUI, InitializeGUI, GUICategory_1, GUICategory_2, GUICategory_Other, OnGUICategoryClick, ShowGUICategory, RebuildDropdowns, CreateGUICategory, GUICreateSlider, GUICreateButton;
+local ShowGUI, InitializeGUI, GUICategory_General, GUICategory_Profiles, GUICategory_Other, OnGUICategoryClick, ShowGUICategory, RebuildDropdowns, CreateGUICategory, GUICreateSlider, GUICreateButton;
 local Print, deepcopy, table_contains_key;
 
 -- // consts: you should not change existing values
@@ -55,6 +57,7 @@ local CONST_SORT_MODES_L = {
 	[CONST_SORT_MODES[4]] = "trinkets, then other spells",
 	[CONST_SORT_MODES[5]] = "interrupts, then other spells",
 };
+local INSTANCE_TYPE_UNKNOWN = "unknown";
 
 -------------------------------------------------------------------------------------------------
 ----- Initialize
@@ -151,6 +154,15 @@ do
 			IconSortMode = CONST_SORT_MODES[1],
 			AddonEnabled = true,
 			ShowCooldownsOnCurrentTargetOnly = false,
+			EnabledZoneTypes = { 
+				["none"] =					true,
+				[INSTANCE_TYPE_UNKNOWN] = 	true,
+				["pvp"] = 					true,
+				["arena"] = 				true,
+				["party"] = 				true,
+				["raid"] = 					true,
+				["scenario"] = 				true,
+			},
 		};
 		for key, value in pairs(defaults) do
 			if (NameplateCooldownsDB[LocalPlayerFullName][key] == nil) then
@@ -185,7 +197,7 @@ do
 
 	function AllocateIcon(frame)
 		if (not frame.NCFrame) then
-			frame.NCFrame = CreateFrame("frame", nil, db.FullOpacityAlways and WorldFrame or frame);
+			frame.NCFrame = CreateFrame("frame", nil, db.FullOpacityAlways and UIParent or frame);
 			frame.NCFrame:SetWidth(db.IconSize);
 			frame.NCFrame:SetHeight(db.IconSize);
 			frame.NCFrame:SetPoint("TOPLEFT", frame, db.IconXOffset, db.IconYOffset);
@@ -231,9 +243,18 @@ do
 		end
 	end
 	
+	local function GlobalFilterNameplate(unitName)
+		if (not db.ShowCooldownsOnCurrentTargetOnly or UnitName("target") == unitName) then
+			if (db.EnabledZoneTypes[InstanceType]) then
+				return true;
+			end
+		end
+		return false;
+	end
+	
 	function UpdateOnlyOneNameplate(frame, name)
 		local counter = 1;
-		if (not db.ShowCooldownsOnCurrentTargetOnly or UnitName("target") == name) then
+		if (GlobalFilterNameplate(name)) then
 			if (charactersDB[name]) then
 				local currentTime = GetTime();
 				local sortedCDs = Nameplate_SortAuras(charactersDB[name]);
@@ -541,6 +562,90 @@ do
 		end
 	end
 	
+	local function GUICategory_Filters(index, value)
+		local checkBoxEnableOnlyForTarget;
+		
+		-- // checkBoxEnableOnlyForTarget
+		do
+		
+			checkBoxEnableOnlyForTarget = RD.CreateCheckBox();
+			checkBoxEnableOnlyForTarget:SetText(L["options:general:enable-only-for-target-nameplate"]);
+			checkBoxEnableOnlyForTarget:SetOnClickHandler(function(this)
+				db.ShowCooldownsOnCurrentTargetOnly = this:GetChecked();
+				if (db.ShowCooldownsOnCurrentTargetOnly) then
+					EventFrame:RegisterEvent("PLAYER_TARGET_CHANGED");
+				else
+					EventFrame:UnregisterEvent("PLAYER_TARGET_CHANGED");
+				end
+				ReallocateAllIcons(true);
+			end);
+			checkBoxEnableOnlyForTarget:SetChecked(db.ShowCooldownsOnCurrentTargetOnly);
+			checkBoxEnableOnlyForTarget:SetParent(GUIFrame.outline);
+			checkBoxEnableOnlyForTarget:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -15);
+			-- // RD.SetTooltip(checkBoxEnableOnlyForTarget, L["options:apps:explosive-orbs:tooltip"]);
+			table_insert(GUIFrame.Categories[index], checkBoxEnableOnlyForTarget);
+			
+		end
+		
+		-- // buttonInstances
+		do
+			
+			local zoneTypes = {
+				["none"] = 					L["instance-type:none"],
+				[INSTANCE_TYPE_UNKNOWN] = 	L["instance-type:unknown"],
+				["pvp"] = 					L["instance-type:pvp"],
+				["arena"] = 				L["instance-type:arena"],
+				["party"] = 				L["instance-type:party"],
+				["raid"] = 					L["instance-type:raid"],
+				["scenario"] = 				L["instance-type:scenario"],
+			};
+		
+			local entries = { };
+			local dropdownInstances = RD.CreateDropdownMenu();
+			local buttonInstances = RD.CreateButton();
+			buttonInstances:SetParent(GUIFrame.outline);
+			buttonInstances:SetText(L["filters.instance-types"]);
+			for instanceType, instanceLocalizatedName in pairs(zoneTypes) do
+				table_insert(entries, {
+					["text"] = instanceLocalizatedName,
+					["icon"] = [[Interface\AddOns\NameplateAuras\media\font.tga]],
+					["func"] = function(info)
+						local btn = dropdownInstances:GetButtonByText(info.text);
+						if (btn) then
+							info.disabled = not info.disabled;
+							btn:SetGray(info.disabled);
+							db.EnabledZoneTypes[info.instanceType] = not info.disabled;
+						end
+						ReallocateAllIcons(true);
+					end,
+					["disabled"] = not db.EnabledZoneTypes[instanceType],
+					["dontCloseOnClick"] = true,
+					["instanceType"] = instanceType,
+				});
+			end
+			table_sort(entries, function(item1, item2) return item1.instanceType < item2.instanceType; end);
+			
+			buttonInstances:SetWidth(350);
+			buttonInstances:SetHeight(40);
+			buttonInstances:SetPoint("TOPLEFT", checkBoxEnableOnlyForTarget, "BOTTOMLEFT", 0, -5);
+			buttonInstances:SetScript("OnClick", function(self, ...)
+				if (dropdownInstances:IsVisible()) then
+					dropdownInstances:Hide();
+				else
+					dropdownInstances:SetList(entries);
+					dropdownInstances:SetParent(self);
+					dropdownInstances:ClearAllPoints();
+					dropdownInstances:SetPoint("TOP", self, "BOTTOM", 0, 0);
+					dropdownInstances:Show();
+				end
+			end);
+			buttonInstances:SetScript("OnHide", function() dropdownInstances:Hide(); end);
+			table_insert(GUIFrame.Categories[index], buttonInstances);
+		
+		end
+		
+	end
+	
 	function InitializeGUI()
 		GUIFrame = CreateFrame("Frame", "NC_GUIFrame", UIParent);
 		GUIFrame:SetHeight(400);
@@ -604,33 +709,35 @@ do
 		GUIFrame.Categories = {};
 		GUIFrame.SpellIcons = {};
 		
-		for index, value in pairs({L["General"], L["Profiles"], L["WARRIOR"], L["DRUID"], L["PRIEST"], L["MAGE"], L["MONK"], L["HUNTER"], L["PALADIN"], L["ROGUE"], L["DEATHKNIGHT"], L["WARLOCK"], L["SHAMAN"], L["DEMONHUNTER"], L["MISC"]}) do
+		for index, value in pairs({L["General"], L["Filters"], L["Profiles"], L["WARRIOR"], L["DRUID"], L["PRIEST"], L["MAGE"], L["MONK"], L["HUNTER"], L["PALADIN"], L["ROGUE"], L["DEATHKNIGHT"], L["WARLOCK"], L["SHAMAN"], L["DEMONHUNTER"], L["MISC"]}) do
 			local b = CreateGUICategory();
 			b.index = index;
 			b.text:SetText(value);
 			if (index == 1) then
 				b:LockHighlight();
 				b.text:SetTextColor(1, 1, 1);
-				b:SetPoint("TOPLEFT", GUIFrame.outline, "TOPLEFT", 5, -6);
-			elseif (index == 2) then
-				b:SetPoint("TOPLEFT",GUIFrame.outline,"TOPLEFT", 5, -24);
+			end
+			if (index < 4) then
+				b:SetPoint("TOPLEFT", GUIFrame.outline, "TOPLEFT", 5, (index-1) * -18 - 6);
 			else
-				b:SetPoint("TOPLEFT",GUIFrame.outline,"TOPLEFT", 5, -18 * (index - 1) - 26);
+				b:SetPoint("TOPLEFT", GUIFrame.outline, "TOPLEFT", 5, (index-1) * -18 - 26);
 			end
 			
 			GUIFrame.Categories[index] = {};
 			
-			if (index == 1) then
-				GUICategory_1(index, value);
-			elseif (index == 2) then
-				GUICategory_2(index, value);
+			if (value == L["General"]) then
+				GUICategory_General(index, value);
+			elseif (value == L["Filters"]) then
+				GUICategory_Filters(index, value);
+			elseif (value == L["Profiles"]) then
+				GUICategory_Profiles(index, value);
 			else
 				GUICategory_Other(index, value);
 			end
 		end
 	end
 
-	function GUICategory_1(index, value)
+	function GUICategory_General(index, value)
 		local buttonEnableDisableAddon = GUICreateButton("test123", GUIFrame, db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]);
 		buttonEnableDisableAddon:SetWidth(340);
 		buttonEnableDisableAddon:SetHeight(20);
@@ -781,21 +888,6 @@ do
 		checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways);
 		table.insert(GUIFrame.Categories[index], checkBoxFullOpacityAlways);
 		
-		local checkBoxEnableOnlyForTarget = GUICreateCheckBox(130, -195, L["options:general:enable-only-for-target-nameplate"], function(this)
-			db.ShowCooldownsOnCurrentTargetOnly = this:GetChecked();
-			if (db.ShowCooldownsOnCurrentTargetOnly) then
-				EventFrame:RegisterEvent("PLAYER_TARGET_CHANGED");
-			else
-				EventFrame:UnregisterEvent("PLAYER_TARGET_CHANGED");
-			end
-			ReallocateAllIcons(true);
-		end);
-		checkBoxEnableOnlyForTarget:SetParent(GUIFrame.outline);
-		checkBoxEnableOnlyForTarget:ClearAllPoints();
-		checkBoxEnableOnlyForTarget:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -215);
-		checkBoxEnableOnlyForTarget:SetChecked(db.ShowCooldownsOnCurrentTargetOnly);
-		table.insert(GUIFrame.Categories[index], checkBoxEnableOnlyForTarget);
-		
 		local checkBoxBorderTrinkets = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderTrinkets", 130, -225, L["Show border around trinkets"], function(this)
 			db.ShowBorderTrinkets = this:GetChecked();
 			ReallocateAllIcons(true);
@@ -876,7 +968,7 @@ do
 		_G[dropdownIconSortMode:GetName().."Text"]:SetText(CONST_SORT_MODES_L[db.IconSortMode]);
 		dropdownIconSortMode.text = dropdownIconSortMode:CreateFontString("NC.GUI.General.DropdownIconSortMode.Label", "ARTWORK", "GameFontNormalSmall");
 		dropdownIconSortMode.text:SetPoint("LEFT", 20, 15);
-		dropdownIconSortMode.text:SetText("Sort mode:"); -- // todo:localize
+		dropdownIconSortMode.text:SetText(L["general.sort-mode"]);
 		table.insert(GUIFrame.Categories[index], dropdownIconSortMode);
 		
 		local dropdownFont = CreateFrame("Frame", "NC_GUI_General_DropdownFont", GUIFrame, "UIDropDownMenuTemplate");
@@ -904,7 +996,7 @@ do
 		table.insert(GUIFrame.Categories[index], dropdownFont);
 	end
 	
-	function GUICategory_2(index, value)
+	function GUICategory_Profiles(index, value)
 		local textProfilesCurrentProfile = GUIFrame:CreateFontString("NC_GUIProfilesTextCurrentProfile", "OVERLAY", "GameFontNormal");
 		textProfilesCurrentProfile:SetPoint("CENTER", GUIFrame, "TOP", 70, -35);
 		textProfilesCurrentProfile:SetText(format(L["Current profile: [%s]"], LocalPlayerFullName));
@@ -1074,7 +1166,7 @@ do
 		for i, v in pairs(GUIFrame.Categories[index]) do
 			v:Show();
 		end
-		if (index > 2) then
+		if (index > 3) then
 			NC_GUIScrollFramesTipText:Show();
 		else
 			NC_GUIScrollFramesTipText:Hide();
@@ -1356,6 +1448,14 @@ do
 			OnStartup();
 		end
 		wipe(charactersDB);
+		local inInstance, instanceType = IsInInstance();
+		if (not inInstance) then
+			InstanceType = instanceType;
+		elseif (inInstance and instanceType == "none") then
+			InstanceType = INSTANCE_TYPE_UNKNOWN;
+		else
+			InstanceType = instanceType;
+		end
 	end
 	
 	EventFrame.NAME_PLATE_UNIT_ADDED = function(unitID)
@@ -1384,7 +1484,7 @@ do
 	EventFrame.PLAYER_TARGET_CHANGED = function()
 		ReallocateAllIcons(true);
 	end
-	
+		
 end
 
 -------------------------------------------------------------------------------------------------
