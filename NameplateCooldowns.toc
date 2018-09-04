@@ -1,9 +1,9 @@
 ## Interface: 80000
 ## Title: NameplateCooldowns
 ## Notes: Shows the cooldowns of enemy players above their nameplates
-## SavedVariables: NameplateCooldownsDB
+## SavedVariables: NameplateCooldownsDB, NameplateCooldownsAceDB
 
 embeds.xml
 localizations.lua
-spells.lua
+defaultSpells.lua
 NameplateCooldowns.lua

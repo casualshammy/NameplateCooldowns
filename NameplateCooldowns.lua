@@ -17,7 +17,6 @@ SML:Register("font", "NC_TeenBold", "Interface\\AddOns\\NameplateCooldowns\\medi
 local SPELL_PVPADAPTATION = 195901;
 local SPELL_PVPTRINKET = 42292;
 
-NameplateCooldownsDB = {};
 local charactersDB = {};
 local CDTimeCache = {};
 local CDEnabledCache = {};
@@ -36,17 +35,17 @@ local Nameplates = {};
 local NameplatesVisible = {};
 local LocalPlayerFullName = UnitName("player").." - "..GetRealmName();
 local InstanceType = "none";
-local GUIFrame, EventFrame, TestFrame, db;
+local GUIFrame, EventFrame, TestFrame, db, aceDB, ProfileOptionsFrame;
 
 local _G, pairs, select, UIParent, string_match, string_gsub, string_find, bit_band, GetTime, table_contains_value, math_ceil, 	table_insert, table_sort, C_Timer_After =
-	  _G, pairs, select, UIParent, strmatch,	   gsub,		strfind,	 bit.band, GetTime, tContains,			  ceil,		table.insert, table.sort, C_Timer.After;
+	  _G, pairs, select, UIParent, strmatch,	   		gsub,	  strfind, bit.band, GetTime, 			 tContains,		 ceil,	table.insert, table.sort, C_Timer.After;
 	  
 local OnStartup, InitializeDB, AddButtonToBlizzOptions;
 local AllocateIcon, ReallocateAllIcons, InitializeFrame, UpdateOnlyOneNameplate, Nameplate_SetBorder, Nameplate_SetCooldown, Nameplate_SortAuras, HideCDIcon, ShowCDIcon;
 local OnUpdate;
 local EnableTestMode, DisableTestMode;
-local ShowGUI, InitializeGUI, GUICategory_General, GUICategory_Profiles, GUICategory_Other, OnGUICategoryClick, ShowGUICategory, RebuildDropdowns, CreateGUICategory, GUICreateSlider, GUICreateButton;
-local Print, deepcopy, table_contains_key;
+local ShowGUI, InitializeGUI, GUICategory_General, GUICategory_Profiles, GUICategory_Other, OnGUICategoryClick, ShowGUICategory, RebuildDropdowns, CreateGUICategory;
+local Print, deepcopy, table_contains_key, table_any;
 
 -- // consts: you should not change existing values
 local CONST_SORT_MODES = { "none", "trinket-interrupt-other", "interrupt-trinket-other", "trinket-other", "interrupt-other" };
@@ -64,12 +63,110 @@ local INSTANCE_TYPE_UNKNOWN = "unknown";
 -------------------------------------------------------------------------------------------------
 do
 
+	local function ConvertDBToAceIfNeeded(t)
+		if (NameplateCooldownsDB ~= nil and NameplateCooldownsDB[LocalPlayerFullName] ~= nil) then
+			local oldTable = NameplateCooldownsDB[LocalPlayerFullName];
+			for index, value in pairs(oldTable) do
+				if (value ~= nil) then
+					t[deepcopy(index)] = deepcopy(value);
+				end
+			end
+			NameplateCooldownsDB[LocalPlayerFullName] = nil;
+		end
+	end
+	
+	local function MigrateDB(t)
+		
+	end
+	
+	local function AddToBlizzOptions()
+		LibStub("AceConfig-3.0"):RegisterOptionsTable("NameplateCooldowns", {
+			name = "NameplateCooldowns",
+			type = "group",
+			args = {
+				openGUI = {
+					type = 'execute',
+					order = 1,
+					name = 'Open config dialog',
+					desc = nil,
+					func = function()
+						ShowGUI();
+						if (GUIFrame) then
+							InterfaceOptionsFrameCancel:Click();
+						end
+					end,
+				},
+			},
+		});
+		LibStub("AceConfigDialog-3.0"):AddToBlizOptions("NameplateCooldowns", "NameplateCooldowns");
+		local profilesConfig = LibStub("AceDBOptions-3.0"):GetOptionsTable(aceDB);
+		LibStub("AceConfig-3.0"):RegisterOptionsTable("NameplateCooldowns.profiles", profilesConfig);
+		ProfileOptionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("NameplateCooldowns.profiles", "Profiles", "NameplateCooldowns");
+	end
+
+	local function ReloadDB()
+		db = aceDB.profile;
+		if (db.AddonEnabled) then
+			EventFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+			wipe(charactersDB);
+		else
+			EventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+		end
+		if (TestFrame and TestFrame:GetScript("OnUpdate") ~= nil) then
+			DisableTestMode();
+		end
+		OnUpdate();
+		if (GUIFrame) then
+			for _, func in pairs(GUIFrame.OnDBChangedHandlers) do
+				func();
+			end
+		end
+	end
+	
+	function InitializeDB()
+		-- // set defaults
+		local aceDBDefaults = {
+			profile = {
+				CDsTable = { },
+				IconSize = 26,
+				IconXOffset = 0,
+				IconYOffset = 30,
+				FullOpacityAlways = false,
+				ShowBorderTrinkets = true,
+				ShowBorderInterrupts = true,
+				BorderInterruptsColor = {1, 0.35, 0},
+				BorderTrinketsColor = {1, 0.843, 0},
+				Font = "NC_TeenBold",
+				IconSortMode = CONST_SORT_MODES[1],
+				AddonEnabled = true,
+				ShowCooldownsOnCurrentTargetOnly = false,
+				EnabledZoneTypes = { 
+					["none"] =					true,
+					[INSTANCE_TYPE_UNKNOWN] = 	true,
+					["pvp"] = 					true,
+					["arena"] = 				true,
+					["party"] = 				true,
+					["raid"] = 					true,
+					["scenario"] = 				true,
+				},
+			},
+		};
+		aceDB = LibStub("AceDB-3.0"):New("NameplateCooldownsAceDB", aceDBDefaults);
+		ConvertDBToAceIfNeeded(aceDB.profile);
+		MigrateDB(aceDB.profile);
+		AddToBlizzOptions();
+		aceDB.RegisterCallback("NameplateCooldowns", "OnProfileChanged", ReloadDB);
+		aceDB.RegisterCallback("NameplateCooldowns", "OnProfileCopied", ReloadDB);
+		aceDB.RegisterCallback("NameplateCooldowns", "OnProfileReset", ReloadDB);
+		db = aceDB.profile;
+	end
+	
 	function OnStartup()
 		InitializeDB();
 		-- // remove non-existent spells
 		local badSkills = {};
-		for _, k in pairs(CDs) do
-			for spellID in pairs(k) do
+		for _, spellsByClass in pairs(CDs) do
+			for spellID in pairs(spellsByClass) do
 				if (GetSpellLink(spellID) == nil) then
 					db.CDsTable[spellID] = nil;
 					table.insert(badSkills, spellID);
@@ -78,8 +175,8 @@ do
 			end
 		end
 		-- // add new spells to user's db
-		for _, k in pairs(CDs) do
-			for spellID in pairs(k) do
+		for _, spellsByClass in pairs(CDs) do
+			for spellID in pairs(spellsByClass) do
 				if (db.CDsTable[spellID] == nil and not table_contains_value(badSkills, spellID)) then
 					db.CDsTable[spellID] = true;
 					Print(format(L["New spell has been added: %s"], GetSpellLink(spellID)));
@@ -87,8 +184,8 @@ do
 			end
 		end
 		-- // cache initialisation
-		for _, k in pairs(CDs) do
-			for spellID, timeInSec in pairs(k) do
+		for _, spellsByClass in pairs(CDs) do
+			for spellID, timeInSec in pairs(spellsByClass) do
 				if (db.CDsTable[spellID] == true) then
 					CDEnabledCache[spellID] = true;
 				end
@@ -135,48 +232,14 @@ do
 		end
 		OnStartup = nil;
 	end
-
-	function InitializeDB()
-		if (NameplateCooldownsDB[LocalPlayerFullName] == nil) then
-			NameplateCooldownsDB[LocalPlayerFullName] = { };
-		end
-		local defaults = {
-			CDsTable = { },
-			IconSize = 26,
-			IconXOffset = 0,
-			IconYOffset = 30,
-			FullOpacityAlways = false,
-			ShowBorderTrinkets = true,
-			ShowBorderInterrupts = true,
-			BorderInterruptsColor = {1, 0.35, 0},
-			BorderTrinketsColor = {1, 0.843, 0},
-			Font = "NC_TeenBold",
-			IconSortMode = CONST_SORT_MODES[1],
-			AddonEnabled = true,
-			ShowCooldownsOnCurrentTargetOnly = false,
-			EnabledZoneTypes = { 
-				["none"] =					true,
-				[INSTANCE_TYPE_UNKNOWN] = 	true,
-				["pvp"] = 					true,
-				["arena"] = 				true,
-				["party"] = 				true,
-				["raid"] = 					true,
-				["scenario"] = 				true,
-			},
-		};
-		for key, value in pairs(defaults) do
-			if (NameplateCooldownsDB[LocalPlayerFullName][key] == nil) then
-				NameplateCooldownsDB[LocalPlayerFullName][key] = value;
-			end
-		end
-		db = NameplateCooldownsDB[LocalPlayerFullName];
-	end
 		
 	function AddButtonToBlizzOptions()
 		local frame = CreateFrame("Frame", "NC_BlizzOptionsFrame", UIParent);
 		frame.name = "NameplateCooldowns";
 		InterfaceOptions_AddCategory(frame);
-		local button = GUICreateButton("NC_BlizzOptionsButton", frame, "/nc");
+		local button = RD.CreateButton();
+		button:SetParent(frame);
+		button:SetText("/nc");
 		button:SetWidth(80);
 		button:SetHeight(40);
 		button:SetPoint("CENTER", frame, "CENTER", 0, 0);
@@ -489,67 +552,6 @@ end
 -------------------------------------------------------------------------------------------------
 do
 
-	local function GUICreateCheckBox(x, y, text, func, publicName)
-		local checkBox = CreateFrame("CheckButton", publicName, GUIFrame);
-		checkBox:SetHeight(20);
-		checkBox:SetWidth(20);
-		checkBox:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", x, y);
-		checkBox:SetNormalTexture("Interface\\Buttons\\UI-CheckBox-Up");
-		checkBox:SetPushedTexture("Interface\\Buttons\\UI-CheckBox-Down");
-		checkBox:SetHighlightTexture("Interface\\Buttons\\UI-CheckBox-Highlight");
-		checkBox:SetDisabledCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled");
-		checkBox:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check");
-		checkBox.Text = checkBox:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-		checkBox.Text:SetPoint("LEFT", 20, 0);
-		checkBox.Text:SetText(text);
-		checkBox:EnableMouse(true);
-		checkBox:SetScript("OnClick", func);
-		checkBox:Hide();
-		return checkBox;
-	end
-	
-	local function GUICreateCheckBoxWithColorPicker(publicName, x, y, text, checkedChangedCallback)
-		local checkBox = GUICreateCheckBox(x, y, text, checkedChangedCallback, publicName);
-		checkBox.Text:SetPoint("LEFT", 40, 0);
-		
-		checkBox.ColorButton = CreateFrame("Button", nil, checkBox);
-		checkBox.ColorButton:SetPoint("LEFT", 19, 0);
-		checkBox.ColorButton:SetWidth(20);
-		checkBox.ColorButton:SetHeight(20);
-		checkBox.ColorButton:Hide();
-
-		checkBox.ColorButton:EnableMouse(true);
-
-		checkBox.ColorButton.colorSwatch = checkBox.ColorButton:CreateTexture(nil, "OVERLAY");
-		checkBox.ColorButton.colorSwatch:SetWidth(19);
-		checkBox.ColorButton.colorSwatch:SetHeight(19);
-		checkBox.ColorButton.colorSwatch:SetTexture("Interface\\ChatFrame\\ChatFrameColorSwatch");
-		checkBox.ColorButton.colorSwatch:SetPoint("LEFT");
-		checkBox.ColorButton.SetColor = checkBox.ColorButton.colorSwatch.SetVertexColor;
-
-		checkBox.ColorButton.texture = checkBox.ColorButton:CreateTexture(nil, "BACKGROUND");
-		checkBox.ColorButton.texture:SetWidth(16);
-		checkBox.ColorButton.texture:SetHeight(16);
-		checkBox.ColorButton.texture:SetTexture(1, 1, 1);
-		checkBox.ColorButton.texture:SetPoint("CENTER", checkBox.ColorButton.colorSwatch);
-		checkBox.ColorButton.texture:Show();
-
-		checkBox.ColorButton.checkers = checkBox.ColorButton:CreateTexture(nil, "BACKGROUND");
-		checkBox.ColorButton.checkers:SetWidth(14);
-		checkBox.ColorButton.checkers:SetHeight(14);
-		checkBox.ColorButton.checkers:SetTexture("Tileset\\Generic\\Checkers");
-		checkBox.ColorButton.checkers:SetTexCoord(.25, 0, 0.5, .25);
-		checkBox.ColorButton.checkers:SetDesaturated(true);
-		checkBox.ColorButton.checkers:SetVertexColor(1, 1, 1, 0.75);
-		checkBox.ColorButton.checkers:SetPoint("CENTER", checkBox.ColorButton.colorSwatch);
-		checkBox.ColorButton.checkers:Show();
-		
-		checkBox:HookScript("OnShow", function(self) self.ColorButton:Show(); end);
-		checkBox:HookScript("OnHide", function(self) self.ColorButton:Hide(); end);
-		
-		return checkBox;
-	end
-
 	function ShowGUI()
 		if (not InCombatLockdown()) then
 			if (not GUIFrame) then
@@ -582,8 +584,8 @@ do
 			checkBoxEnableOnlyForTarget:SetChecked(db.ShowCooldownsOnCurrentTargetOnly);
 			checkBoxEnableOnlyForTarget:SetParent(GUIFrame.outline);
 			checkBoxEnableOnlyForTarget:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -15);
-			-- // RD.SetTooltip(checkBoxEnableOnlyForTarget, L["options:apps:explosive-orbs:tooltip"]);
 			table_insert(GUIFrame.Categories[index], checkBoxEnableOnlyForTarget);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxEnableOnlyForTarget:SetChecked(db.ShowCooldownsOnCurrentTargetOnly); end);
 			
 		end
 		
@@ -610,30 +612,34 @@ do
 			};
 			
 		
-			local entries = { };
 			local dropdownInstances = RD.CreateDropdownMenu();
 			local buttonInstances = RD.CreateButton();
 			buttonInstances:SetParent(GUIFrame.outline);
 			buttonInstances:SetText(L["filters.instance-types"]);
-			for instanceType, instanceLocalizatedName in pairs(zoneTypes) do
-				table_insert(entries, {
-					["text"] = instanceLocalizatedName,
-					["icon"] = zoneIcons[instanceType],
-					["func"] = function(info)
-						local btn = dropdownInstances:GetButtonByText(info.text);
-						if (btn) then
-							info.disabled = not info.disabled;
-							btn:SetGray(info.disabled);
-							db.EnabledZoneTypes[info.instanceType] = not info.disabled;
-						end
-						ReallocateAllIcons(true);
-					end,
-					["disabled"] = not db.EnabledZoneTypes[instanceType],
-					["dontCloseOnClick"] = true,
-					["instanceType"] = instanceType,
-				});
+			
+			local function setEntries()
+				local entries = { };
+				for instanceType, instanceLocalizatedName in pairs(zoneTypes) do
+					table_insert(entries, {
+						["text"] = instanceLocalizatedName,
+						["icon"] = zoneIcons[instanceType],
+						["func"] = function(info)
+							local btn = dropdownInstances:GetButtonByText(info.text);
+							if (btn) then
+								info.disabled = not info.disabled;
+								btn:SetGray(info.disabled);
+								db.EnabledZoneTypes[info.instanceType] = not info.disabled;
+							end
+							ReallocateAllIcons(true);
+						end,
+						["disabled"] = not db.EnabledZoneTypes[instanceType],
+						["dontCloseOnClick"] = true,
+						["instanceType"] = instanceType,
+					});
+				end
+				table_sort(entries, function(item1, item2) return item1.instanceType < item2.instanceType; end);
+				return entries;
 			end
-			table_sort(entries, function(item1, item2) return item1.instanceType < item2.instanceType; end);
 			
 			buttonInstances:SetWidth(350);
 			buttonInstances:SetHeight(40);
@@ -642,7 +648,7 @@ do
 				if (dropdownInstances:IsVisible()) then
 					dropdownInstances:Hide();
 				else
-					dropdownInstances:SetList(entries);
+					dropdownInstances:SetList(setEntries());
 					dropdownInstances:SetParent(self);
 					dropdownInstances:ClearAllPoints();
 					dropdownInstances:SetPoint("TOP", self, "BOTTOM", 0, 0);
@@ -651,6 +657,7 @@ do
 			end);
 			buttonInstances:SetScript("OnHide", function() dropdownInstances:Hide(); end);
 			table_insert(GUIFrame.Categories[index], buttonInstances);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() dropdownInstances:SetList(setEntries()); dropdownInstances:Hide(); end);
 		
 		end
 		
@@ -734,6 +741,7 @@ do
 			end
 			
 			GUIFrame.Categories[index] = {};
+			GUIFrame.OnDBChangedHandlers = { };
 			
 			if (value == L["General"]) then
 				GUICategory_General(index, value);
@@ -748,7 +756,9 @@ do
 	end
 
 	function GUICategory_General(index, value)
-		local buttonEnableDisableAddon = GUICreateButton("test123", GUIFrame, db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]);
+		local buttonEnableDisableAddon = RD.CreateButton();
+		buttonEnableDisableAddon:SetParent(GUIFrame);
+		buttonEnableDisableAddon:SetText(db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]);
 		buttonEnableDisableAddon:SetWidth(340);
 		buttonEnableDisableAddon:SetHeight(20);
 		buttonEnableDisableAddon:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -5);
@@ -765,8 +775,11 @@ do
 			Print(db.AddonEnabled and L["chat:addon-is-enabled"] or L["chat:addon-is-disabled"]);
 		end);
 		table.insert(GUIFrame.Categories[index], buttonEnableDisableAddon);
+		table_insert(GUIFrame.OnDBChangedHandlers, function() buttonEnableDisableAddon.Text:SetText(db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]); end);
 	
-		local buttonSwitchTestMode = GUICreateButton("NC_GUIGeneralButtonSwitchTestMode", GUIFrame, L["Enable test mode (need at least one visible nameplate)"]);
+		local buttonSwitchTestMode = RD.CreateButton();
+		buttonSwitchTestMode:SetParent(GUIFrame);
+		buttonSwitchTestMode:SetText(L["Enable test mode (need at least one visible nameplate)"]);
 		buttonSwitchTestMode:SetWidth(340);
 		buttonSwitchTestMode:SetHeight(20);
 		buttonSwitchTestMode:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -30);
@@ -780,26 +793,28 @@ do
 			end
 		end);
 		table.insert(GUIFrame.Categories[index], buttonSwitchTestMode);
+		table_insert(GUIFrame.OnDBChangedHandlers, function() buttonSwitchTestMode.Text:SetText(L["Enable test mode (need at least one visible nameplate)"]); end);
 		
-		local sliderIconSize = GUICreateSlider(GUIFrame, 130, -70, 340, "NC_GUIGeneralSliderIconSize");
+		local sliderIconSize = RD.CreateSlider();
 		sliderIconSize:SetParent(GUIFrame.outline);
-		sliderIconSize:ClearAllPoints();
 		sliderIconSize:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -60);
-		sliderIconSize.label:SetText(L["Icon size"]);
-		sliderIconSize.slider:SetValueStep(1);
-		sliderIconSize.slider:SetMinMaxValues(1, 50);
-		sliderIconSize.slider:SetValue(db.IconSize);
-		sliderIconSize.slider:SetScript("OnValueChanged", function(self, value)
-			sliderIconSize.editbox:SetText(tostring(math_ceil(value)));
+		sliderIconSize:SetHeight(100);
+		sliderIconSize:SetWidth(340);
+		sliderIconSize:GetTextObject():SetText(L["Icon size"]);
+		sliderIconSize:GetBaseSliderObject():SetValueStep(1);
+		sliderIconSize:GetBaseSliderObject():SetMinMaxValues(1, 50);
+		sliderIconSize:GetBaseSliderObject():SetValue(db.IconSize);
+		sliderIconSize:GetBaseSliderObject():SetScript("OnValueChanged", function(self, value)
+			sliderIconSize:GetEditboxObject():SetText(tostring(math_ceil(value)));
 			db.IconSize = math_ceil(value);
 			ReallocateAllIcons(false);
 		end);
-		sliderIconSize.editbox:SetText(tostring(db.IconSize));
-		sliderIconSize.editbox:SetScript("OnEnterPressed", function(self, value)
-			if (sliderIconSize.editbox:GetText() ~= "") then
-				local v = tonumber(sliderIconSize.editbox:GetText());
+		sliderIconSize:GetEditboxObject():SetText(tostring(db.IconSize));
+		sliderIconSize:GetEditboxObject():SetScript("OnEnterPressed", function(self, value)
+			if (sliderIconSize:GetEditboxObject():GetText() ~= "") then
+				local v = tonumber(sliderIconSize:GetEditboxObject():GetText());
 				if (v == nil) then
-					sliderIconSize.editbox:SetText(tostring(db.IconSize));
+					sliderIconSize:GetEditboxObject():SetText(tostring(db.IconSize));
 					Print(L["Value must be a number"]);
 				else
 					if (v > 50) then
@@ -808,34 +823,36 @@ do
 					if (v < 1) then
 						v = 1;
 					end
-					sliderIconSize.slider:SetValue(v);
+					sliderIconSize:GetBaseSliderObject():SetValue(v);
 				end
-				sliderIconSize.editbox:ClearFocus();
+				sliderIconSize:GetEditboxObject():ClearFocus();
 			end
 		end);
-		sliderIconSize.lowtext:SetText("1");
-		sliderIconSize.hightext:SetText("50");
+		sliderIconSize:GetLowTextObject():SetText("1");
+		sliderIconSize:GetHighTextObject():SetText("50");
 		table.insert(GUIFrame.Categories[index], sliderIconSize);
+		table_insert(GUIFrame.OnDBChangedHandlers, function() sliderIconSize:GetBaseSliderObject():SetValue(db.IconSize); sliderIconSize:GetEditboxObject():SetText(tostring(db.IconSize)); end);
 		
-		local sliderIconXOffset = GUICreateSlider(GUIFrame, 130, -125, 155, "NC_GUIGeneralSliderIconXOffset");
+		local sliderIconXOffset = RD.CreateSlider();
 		sliderIconXOffset:SetParent(GUIFrame.outline);
-		sliderIconXOffset:ClearAllPoints();
 		sliderIconXOffset:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -115);
-		sliderIconXOffset.label:SetText(L["Icon X-coord offset"]);
-		sliderIconXOffset.slider:SetValueStep(1);
-		sliderIconXOffset.slider:SetMinMaxValues(-200, 200);
-		sliderIconXOffset.slider:SetValue(db.IconXOffset);
-		sliderIconXOffset.slider:SetScript("OnValueChanged", function(self, value)
-			sliderIconXOffset.editbox:SetText(tostring(math_ceil(value)));
+		sliderIconXOffset:SetHeight(100);
+		sliderIconXOffset:SetWidth(155);
+		sliderIconXOffset:GetTextObject():SetText(L["Icon X-coord offset"]);
+		sliderIconXOffset:GetBaseSliderObject():SetValueStep(1);
+		sliderIconXOffset:GetBaseSliderObject():SetMinMaxValues(-200, 200);
+		sliderIconXOffset:GetBaseSliderObject():SetValue(db.IconXOffset);
+		sliderIconXOffset:GetBaseSliderObject():SetScript("OnValueChanged", function(self, value)
+			sliderIconXOffset:GetEditboxObject():SetText(tostring(math_ceil(value)));
 			db.IconXOffset = math_ceil(value);
 			ReallocateAllIcons(false);
 		end);
-		sliderIconXOffset.editbox:SetText(tostring(db.IconXOffset));
-		sliderIconXOffset.editbox:SetScript("OnEnterPressed", function(self, value)
-			if (sliderIconXOffset.editbox:GetText() ~= "") then
-				local v = tonumber(sliderIconXOffset.editbox:GetText());
+		sliderIconXOffset:GetEditboxObject():SetText(tostring(db.IconXOffset));
+		sliderIconXOffset:GetEditboxObject():SetScript("OnEnterPressed", function(self, value)
+			if (sliderIconXOffset:GetEditboxObject():GetText() ~= "") then
+				local v = tonumber(sliderIconXOffset:GetEditboxObject():GetText());
 				if (v == nil) then
-					sliderIconXOffset.editbox:SetText(tostring(db.IconXOffset));
+					sliderIconXOffset:GetEditboxObject():SetText(tostring(db.IconXOffset));
 					Print(L["Value must be a number"]);
 				else
 					if (v > 200) then
@@ -844,34 +861,36 @@ do
 					if (v < -200) then
 						v = -200;
 					end
-					sliderIconXOffset.slider:SetValue(v);
+					sliderIconXOffset:GetBaseSliderObject():SetValue(v);
 				end
-				sliderIconXOffset.editbox:ClearFocus();
+				sliderIconXOffset:GetEditboxObject():ClearFocus();
 			end
 		end);
-		sliderIconXOffset.lowtext:SetText("-200");
-		sliderIconXOffset.hightext:SetText("200");
+		sliderIconXOffset:GetLowTextObject():SetText("-200");
+		sliderIconXOffset:GetHighTextObject():SetText("200");
 		table.insert(GUIFrame.Categories[index], sliderIconXOffset);
+		table_insert(GUIFrame.OnDBChangedHandlers, function() sliderIconXOffset:GetBaseSliderObject():SetValue(db.IconXOffset); sliderIconXOffset:GetEditboxObject():SetText(tostring(db.IconXOffset)); end);
 		
-		local sliderIconYOffset = GUICreateSlider(GUIFrame, 315, -125, 155, "NC_GUIGeneralSliderIconYOffset");
+		local sliderIconYOffset = RD.CreateSlider();
+		sliderIconYOffset:SetHeight(100);
+		sliderIconYOffset:SetWidth(155);
 		sliderIconYOffset:SetParent(GUIFrame.outline);
-		sliderIconYOffset:ClearAllPoints();
 		sliderIconYOffset:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 200, -115);
-		sliderIconYOffset.label:SetText(L["Icon Y-coord offset"]);
-		sliderIconYOffset.slider:SetValueStep(1);
-		sliderIconYOffset.slider:SetMinMaxValues(-200, 200);
-		sliderIconYOffset.slider:SetValue(db.IconYOffset);
-		sliderIconYOffset.slider:SetScript("OnValueChanged", function(self, value)
-			sliderIconYOffset.editbox:SetText(tostring(math_ceil(value)));
+		sliderIconYOffset:GetTextObject():SetText(L["Icon Y-coord offset"]);
+		sliderIconYOffset:GetBaseSliderObject():SetValueStep(1);
+		sliderIconYOffset:GetBaseSliderObject():SetMinMaxValues(-200, 200);
+		sliderIconYOffset:GetBaseSliderObject():SetValue(db.IconYOffset);
+		sliderIconYOffset:GetBaseSliderObject():SetScript("OnValueChanged", function(self, value)
+			sliderIconYOffset:GetEditboxObject():SetText(tostring(math_ceil(value)));
 			db.IconYOffset = math_ceil(value);
 			ReallocateAllIcons(false);
 		end);
-		sliderIconYOffset.editbox:SetText(tostring(db.IconYOffset));
-		sliderIconYOffset.editbox:SetScript("OnEnterPressed", function(self, value)
-			if (sliderIconYOffset.editbox:GetText() ~= "") then
-				local v = tonumber(sliderIconYOffset.editbox:GetText());
+		sliderIconYOffset:GetEditboxObject():SetText(tostring(db.IconYOffset));
+		sliderIconYOffset:GetEditboxObject():SetScript("OnEnterPressed", function(self, value)
+			if (sliderIconYOffset:GetEditboxObject():GetText() ~= "") then
+				local v = tonumber(sliderIconYOffset:GetEditboxObject():GetText());
 				if (v == nil) then
-					sliderIconYOffset.editbox:SetText(tostring(db.IconYOffset));
+					sliderIconYOffset:GetEditboxObject():SetText(tostring(db.IconYOffset));
 					Print(L["Value must be a number"]);
 				else
 					if (v > 200) then
@@ -880,33 +899,37 @@ do
 					if (v < -200) then
 						v = -200;
 					end
-					sliderIconYOffset.slider:SetValue(v);
+					sliderIconYOffset:GetBaseSliderObject():SetValue(v);
 				end
-				sliderIconYOffset.editbox:ClearFocus();
+				sliderIconYOffset:GetEditboxObject():ClearFocus();
 			end
 		end);
-		sliderIconYOffset.lowtext:SetText("-200");
-		sliderIconYOffset.hightext:SetText("200");
+		sliderIconYOffset:GetLowTextObject():SetText("-200");
+		sliderIconYOffset:GetHighTextObject():SetText("200");
 		table.insert(GUIFrame.Categories[index], sliderIconYOffset);
+		table_insert(GUIFrame.OnDBChangedHandlers, function() sliderIconYOffset:GetBaseSliderObject():SetValue(db.IconYOffset); sliderIconYOffset:GetEditboxObject():SetText(tostring(db.IconYOffset)); end);
 		
-		local checkBoxFullOpacityAlways = GUICreateCheckBox(130, -195, L["Always display CD icons at full opacity (ReloadUI is needed)"], function(this)
+		local checkBoxFullOpacityAlways = RD.CreateCheckBox();
+		checkBoxFullOpacityAlways:SetText(L["Always display CD icons at full opacity (ReloadUI is needed)"]);
+		checkBoxFullOpacityAlways:SetOnClickHandler(function(this)
 			db.FullOpacityAlways = this:GetChecked();
-		end, "NC_GUI_General_CheckBoxFullOpacityAlways");
+		end);
 		checkBoxFullOpacityAlways:SetParent(GUIFrame.outline);
-		checkBoxFullOpacityAlways:ClearAllPoints();
 		checkBoxFullOpacityAlways:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -185);
 		checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways);
 		table.insert(GUIFrame.Categories[index], checkBoxFullOpacityAlways);
+		table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways); end);
 		
-		local checkBoxBorderTrinkets = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderTrinkets", 130, -225, L["Show border around trinkets"], function(this)
+		local checkBoxBorderTrinkets = RD.CreateCheckBoxWithColorPicker();
+		checkBoxBorderTrinkets:SetText(L["Show border around trinkets"]);
+		checkBoxBorderTrinkets:SetOnClickHandler(function(this)
 			db.ShowBorderTrinkets = this:GetChecked();
 			ReallocateAllIcons(true);
 		end);
 		checkBoxBorderTrinkets:SetParent(GUIFrame.outline);
-		checkBoxBorderTrinkets:ClearAllPoints();
 		checkBoxBorderTrinkets:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -235);
 		checkBoxBorderTrinkets:SetChecked(db.ShowBorderTrinkets);
-		checkBoxBorderTrinkets.ColorButton.colorSwatch:SetVertexColor(unpack(db.BorderTrinketsColor));
+		checkBoxBorderTrinkets:SetColor(unpack(db.BorderTrinketsColor));
 		checkBoxBorderTrinkets.ColorButton:SetScript("OnClick", function()
 			ColorPickerFrame:Hide();
 			local function callback(restore)
@@ -917,7 +940,7 @@ do
 					r, g, b = ColorPickerFrame:GetColorRGB();
 				end
 				db.BorderTrinketsColor = {r, g, b};
-				checkBoxBorderTrinkets.ColorButton.colorSwatch:SetVertexColor(unpack(db.BorderTrinketsColor));
+				checkBoxBorderTrinkets:SetColor(unpack(db.BorderTrinketsColor));
 				ReallocateAllIcons(true);
 			end
 			ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = callback, callback, callback;
@@ -927,16 +950,18 @@ do
 			ColorPickerFrame:Show();
 		end);
 		table.insert(GUIFrame.Categories[index], checkBoxBorderTrinkets);
+		table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxBorderTrinkets:SetChecked(db.ShowBorderTrinkets); checkBoxBorderTrinkets:SetColor(unpack(db.BorderTrinketsColor)); end);
 		
-		local checkBoxBorderInterrupts = GUICreateCheckBoxWithColorPicker("NC_GUI_General_CheckBoxBorderInterrupts", 130, -245, L["Show border around interrupts"], function(this)
+		local checkBoxBorderInterrupts = RD.CreateCheckBoxWithColorPicker();
+		checkBoxBorderInterrupts:SetText(L["Show border around interrupts"]);
+		checkBoxBorderInterrupts:SetOnClickHandler(function(this)
 			db.ShowBorderInterrupts = this:GetChecked();
 			ReallocateAllIcons(true);
 		end);
 		checkBoxBorderInterrupts:SetParent(GUIFrame.outline);
-		checkBoxBorderInterrupts:ClearAllPoints();
 		checkBoxBorderInterrupts:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -255);
 		checkBoxBorderInterrupts:SetChecked(db.ShowBorderInterrupts);
-		checkBoxBorderInterrupts.ColorButton.colorSwatch:SetVertexColor(unpack(db.BorderInterruptsColor));
+		checkBoxBorderInterrupts:SetColor(unpack(db.BorderInterruptsColor));
 		checkBoxBorderInterrupts.ColorButton:SetScript("OnClick", function()
 			ColorPickerFrame:Hide();
 			local function callback(restore)
@@ -947,7 +972,7 @@ do
 					r, g, b = ColorPickerFrame:GetColorRGB();
 				end
 				db.BorderInterruptsColor = {r, g, b};
-				checkBoxBorderInterrupts.ColorButton.colorSwatch:SetVertexColor(unpack(db.BorderInterruptsColor));
+				checkBoxBorderInterrupts:SetColor(unpack(db.BorderInterruptsColor));
 				ReallocateAllIcons(true);
 			end
 			ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = callback, callback, callback;
@@ -957,6 +982,7 @@ do
 			ColorPickerFrame:Show();
 		end);
 		table.insert(GUIFrame.Categories[index], checkBoxBorderInterrupts);
+		table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxBorderInterrupts:SetChecked(db.ShowBorderInterrupts); checkBoxBorderInterrupts:SetColor(unpack(db.BorderInterruptsColor)); end);
 		
 		local dropdownIconSortMode = CreateFrame("Frame", "NC.GUI.General.DropdownIconSortMode", GUIFrame, "UIDropDownMenuTemplate");
 		UIDropDownMenu_SetWidth(dropdownIconSortMode, 300);
@@ -980,6 +1006,7 @@ do
 		dropdownIconSortMode.text:SetPoint("LEFT", 20, 15);
 		dropdownIconSortMode.text:SetText(L["general.sort-mode"]);
 		table.insert(GUIFrame.Categories[index], dropdownIconSortMode);
+		table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownIconSortMode:GetName().."Text"]:SetText(CONST_SORT_MODES_L[db.IconSortMode]); end);
 		
 		local dropdownFont = CreateFrame("Frame", "NC_GUI_General_DropdownFont", GUIFrame, "UIDropDownMenuTemplate");
 		UIDropDownMenu_SetWidth(dropdownFont, 300);
@@ -1004,71 +1031,22 @@ do
 		dropdownFont.text:SetPoint("LEFT", 20, 15);
 		dropdownFont.text:SetText(L["Font:"]);
 		table.insert(GUIFrame.Categories[index], dropdownFont);
+		table_insert(GUIFrame.OnDBChangedHandlers, function() NC_GUI_General_DropdownFontText:SetText(db.Font); end);
+		
 	end
 	
 	function GUICategory_Profiles(index, value)
-		local textProfilesCurrentProfile = GUIFrame:CreateFontString("NC_GUIProfilesTextCurrentProfile", "OVERLAY", "GameFontNormal");
-		textProfilesCurrentProfile:SetPoint("CENTER", GUIFrame, "TOP", 70, -35);
-		textProfilesCurrentProfile:SetText(format(L["Current profile: [%s]"], LocalPlayerFullName));
-		table.insert(GUIFrame.Categories[index], textProfilesCurrentProfile);
-		
-		local dropdownCopyProfile = CreateFrame("Frame", "NC_GUIProfilesDropdownCopyProfile", GUIFrame, "UIDropDownMenuTemplate");
-		UIDropDownMenu_SetWidth(dropdownCopyProfile, 210);
-		dropdownCopyProfile:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 160, -80);
-		dropdownCopyProfile.text = dropdownCopyProfile:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
-		dropdownCopyProfile.text:SetPoint("LEFT", 20, 20);
-		dropdownCopyProfile.text:SetText(L["Copy other profile to current profile:"]);
-		table.insert(GUIFrame.Categories[index], dropdownCopyProfile);
-		
-		local buttonCopyProfile = GUICreateButton("NC_GUIProfilesButtonCopyProfile", GUIFrame, L["Copy"]);
-		buttonCopyProfile:SetWidth(90);
-		buttonCopyProfile:SetHeight(24);
-		buttonCopyProfile:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 420, -82);
-		buttonCopyProfile:SetScript("OnClick", function(self, ...)
-			if (dropdownCopyProfile.myvalue ~= nil) then
-				NameplateCooldownsDB[LocalPlayerFullName] = deepcopy(NameplateCooldownsDB[dropdownCopyProfile.myvalue]);
-				db = NameplateCooldownsDB[LocalPlayerFullName];
-				Print(format(L["Data from '%s' has been successfully copied to '%s'"], dropdownCopyProfile.myvalue, LocalPlayerFullName));
-				RebuildDropdowns();
-				NC_GUIGeneralSliderIconSize.slider:SetValue(db.IconSize);
-				NC_GUIGeneralSliderIconSize.editbox:SetText(tostring(db.IconSize));
-				NC_GUIGeneralSliderIconXOffset.slider:SetValue(db.IconXOffset);
-				NC_GUIGeneralSliderIconXOffset.editbox:SetText(tostring(db.IconXOffset));
-				NC_GUIGeneralSliderIconYOffset.slider:SetValue(db.IconYOffset);
-				NC_GUIGeneralSliderIconYOffset.editbox:SetText(tostring(db.IconYOffset));
-				for _, v in pairs(GUIFrame.SpellIcons) do
-					if (db.CDsTable[v.spellID] == true) then
-						v.tex:SetAlpha(1.0);
-					else
-						v.tex:SetAlpha(0.3);
-					end
-				end
-			end
+		local button = RD.CreateButton();
+		button:SetParent(GUIFrame);
+		button:SetText(L["Open profiles dialog"]);
+		button:SetWidth(170);
+		button:SetHeight(40);
+		button:SetPoint("CENTER", GUIFrame, "CENTER", 70, 0);
+		button:SetScript("OnClick", function(self, ...)
+			InterfaceOptionsFrame_OpenToCategory(ProfileOptionsFrame);
+			GUIFrame:Hide();
 		end);
-		table.insert(GUIFrame.Categories[index], buttonCopyProfile);
-		
-		local dropdownDeleteProfile = CreateFrame("Frame", "NC_GUIProfilesDropdownDeleteProfile", GUIFrame, "UIDropDownMenuTemplate");
-		UIDropDownMenu_SetWidth(dropdownDeleteProfile, 210);
-		dropdownDeleteProfile:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 160, -120);
-		dropdownDeleteProfile.text = dropdownDeleteProfile:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
-		dropdownDeleteProfile.text:SetPoint("LEFT", 20, 20);
-		dropdownDeleteProfile.text:SetText(L["Delete profile:"]);
-		table.insert(GUIFrame.Categories[index], dropdownDeleteProfile);
-		
-		local buttonDeleteProfile = GUICreateButton("NC_GUIProfilesButtonDeleteProfile", GUIFrame, L["Delete"]);
-		buttonDeleteProfile:SetWidth(90);
-		buttonDeleteProfile:SetHeight(24);
-		buttonDeleteProfile:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 420, -122);
-		buttonDeleteProfile:SetScript("OnClick", function(self, ...)
-			if (dropdownDeleteProfile.myvalue ~= nil) then
-				NameplateCooldownsDB[dropdownDeleteProfile.myvalue] = nil;
-				Print(format(L["Profile '%s' has been successfully deleted"], dropdownDeleteProfile.myvalue));
-				RebuildDropdowns();
-			end
-		end);
-		table.insert(GUIFrame.Categories[index], buttonDeleteProfile);
-		
-		RebuildDropdowns();
+		table_insert(GUIFrame.Categories[index], button);
 	end
 	
 	function GUICategory_Other(index, value)
@@ -1154,6 +1132,7 @@ do
 			iterator = iterator + 1;
 			spellItem.spellID = spellInfo.spellID;
 			tinsert(GUIFrame.SpellIcons, spellItem);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() spellItem.tex:SetAlpha(db.CDsTable[spellInfo.spellID] and 1.0 or 0.3); end);
 		end
 	end
 	
@@ -1233,101 +1212,6 @@ do
 		return b;
 	end
 	
-	function GUICreateSlider(parent, x, y, size, publicName)
-		local frame = CreateFrame("Frame", publicName, parent);
-		frame:SetHeight(100);
-		frame:SetWidth(size);
-		frame:SetPoint("TOPLEFT", x, y);
-
-		frame.label = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal");
-		frame.label:SetPoint("TOPLEFT");
-		frame.label:SetPoint("TOPRIGHT");
-		frame.label:SetJustifyH("CENTER");
-		frame.label:SetHeight(15);
-		
-		frame.slider = CreateFrame("Slider", nil, frame);
-		frame.slider:SetOrientation("HORIZONTAL")
-		frame.slider:SetHeight(15)
-		frame.slider:SetHitRectInsets(0, 0, -10, 0)
-		frame.slider:SetBackdrop({
-			bgFile = "Interface\\Buttons\\UI-SliderBar-Background",
-			edgeFile = "Interface\\Buttons\\UI-SliderBar-Border",
-			tile = true, tileSize = 8, edgeSize = 8,
-			insets = { left = 3, right = 3, top = 6, bottom = 6 }
-		});
-		frame.slider:SetThumbTexture("Interface\\Buttons\\UI-SliderBar-Button-Horizontal")
-		frame.slider:SetPoint("TOP", frame.label, "BOTTOM")
-		frame.slider:SetPoint("LEFT", 3, 0)
-		frame.slider:SetPoint("RIGHT", -3, 0)
-
-		frame.lowtext = frame.slider:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-		frame.lowtext:SetPoint("TOPLEFT", frame.slider, "BOTTOMLEFT", 2, 3)
-
-		frame.hightext = frame.slider:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-		frame.hightext:SetPoint("TOPRIGHT", frame.slider, "BOTTOMRIGHT", -2, 3)
-
-		frame.editbox = CreateFrame("EditBox", nil, frame)
-		frame.editbox:SetAutoFocus(false)
-		frame.editbox:SetFontObject(GameFontHighlightSmall)
-		frame.editbox:SetPoint("TOP", frame.slider, "BOTTOM")
-		frame.editbox:SetHeight(14)
-		frame.editbox:SetWidth(70)
-		frame.editbox:SetJustifyH("CENTER")
-		frame.editbox:EnableMouse(true)
-		frame.editbox:SetBackdrop({
-			bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
-			edgeFile = "Interface\\ChatFrame\\ChatFrameBackground",
-			tile = true, edgeSize = 1, tileSize = 5,
-		});
-		frame.editbox:SetBackdropColor(0, 0, 0, 0.5)
-		frame.editbox:SetBackdropBorderColor(0.3, 0.3, 0.30, 0.80)
-		frame.editbox:SetScript("OnEscapePressed", function() frame.editbox:ClearFocus(); end)
-		frame:Hide();
-		return frame;
-	end
-	
-	function GUICreateButton(publicName, parentFrame, text)
-		-- After creation we need to set up :SetWidth, :SetHeight, :SetPoint, :SetScript
-		local button = CreateFrame("Button", publicName, parentFrame);
-		button.Background = button:CreateTexture(nil, "BORDER");
-		button.Background:SetPoint("TOPLEFT", 1, -1);
-		button.Background:SetPoint("BOTTOMRIGHT", -1, 1);
-		button.Background:SetColorTexture(0, 0, 0, 1);
-
-		button.Border = button:CreateTexture(nil, "BACKGROUND");
-		button.Border:SetPoint("TOPLEFT", 0, 0);
-		button.Border:SetPoint("BOTTOMRIGHT", 0, 0);
-		button.Border:SetColorTexture(unpack({0.73, 0.26, 0.21, 1}));
-
-		button.Normal = button:CreateTexture(nil, "ARTWORK");
-		button.Normal:SetPoint("TOPLEFT", 2, -2);
-		button.Normal:SetPoint("BOTTOMRIGHT", -2, 2);
-		button.Normal:SetColorTexture(unpack({0.38, 0, 0, 1}));
-		button:SetNormalTexture(button.Normal);
-
-		button.Disabled = button:CreateTexture(nil, "OVERLAY");
-		button.Disabled:SetPoint("TOPLEFT", 3, -3);
-		button.Disabled:SetPoint("BOTTOMRIGHT", -3, 3);
-		button.Disabled:SetColorTexture(0.6, 0.6, 0.6, 0.2);
-		button:SetDisabledTexture(button.Disabled);
-
-		button.Highlight = button:CreateTexture(nil, "OVERLAY");
-		button.Highlight:SetPoint("TOPLEFT", 3, -3);
-		button.Highlight:SetPoint("BOTTOMRIGHT", -3, 3);
-		button.Highlight:SetColorTexture(0.6, 0.6, 0.6, 0.2);
-		button:SetHighlightTexture(button.Highlight);
-
-		button.Text = button:CreateFontString(publicName.."Text", "OVERLAY", "GameFontNormal");
-		button.Text:SetPoint("CENTER", 0, 0);
-		button.Text:SetJustifyH("CENTER");
-		button.Text:SetTextColor(1, 0.82, 0, 1);
-		button.Text:SetText(text);
-
-		button:SetScript("OnMouseDown", function(self) self.Text:SetPoint("CENTER", 1, -1) end);
-		button:SetScript("OnMouseUp", function(self) self.Text:SetPoint("CENTER", 0, 0) end);
-		return button;
-	end
-	
 end
 
 -------------------------------------------------------------------------------------------------
@@ -1366,6 +1250,13 @@ do
 			if (index == key) then
 				return true;
 			end
+		end
+		return false;
+	end
+	
+	function table_any(t)
+		for index in pairs(t) do
+			return true;
 		end
 		return false;
 	end
