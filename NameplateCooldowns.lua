@@ -40,7 +40,7 @@ local GUIFrame, EventFrame, TestFrame, db, aceDB, ProfileOptionsFrame;
 local _G, pairs, select, UIParent, string_match, string_gsub, string_find, bit_band, GetTime, table_contains_value, math_ceil, 	table_insert, table_sort, C_Timer_After =
 	  _G, pairs, select, UIParent, strmatch,	   		gsub,	  strfind, bit.band, GetTime, 			 tContains,		 ceil,	table.insert, table.sort, C_Timer.After;
 	  
-local OnStartup, InitializeDB, AddButtonToBlizzOptions;
+local OnStartup, InitializeDB;
 local AllocateIcon, ReallocateAllIcons, InitializeFrame, UpdateOnlyOneNameplate, Nameplate_SetBorder, Nameplate_SetCooldown, Nameplate_SortAuras, HideCDIcon, ShowCDIcon;
 local OnUpdate;
 local EnableTestMode, DisableTestMode;
@@ -212,7 +212,6 @@ do
 		end
 		EventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED");
 		EventFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
-		AddButtonToBlizzOptions();
 		SLASH_NAMEPLATECOOLDOWNS1 = '/nc';
 		SlashCmdList["NAMEPLATECOOLDOWNS"] = function(msg, editBox)
 			if (msg == "t" or msg == "ver") then
@@ -231,24 +230,6 @@ do
 			end
 		end
 		OnStartup = nil;
-	end
-		
-	function AddButtonToBlizzOptions()
-		local frame = CreateFrame("Frame", "NC_BlizzOptionsFrame", UIParent);
-		frame.name = "NameplateCooldowns";
-		InterfaceOptions_AddCategory(frame);
-		local button = RD.CreateButton();
-		button:SetParent(frame);
-		button:SetText("/nc");
-		button:SetWidth(80);
-		button:SetHeight(40);
-		button:SetPoint("CENTER", frame, "CENTER", 0, 0);
-		button:SetScript("OnClick", function(self, ...)
-			ShowGUI();
-			if (GUIFrame) then
-				InterfaceOptionsFrameCancel:Click();
-			end
-		end);
 	end
 	
 end
