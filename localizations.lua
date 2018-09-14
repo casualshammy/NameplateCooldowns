@@ -35,6 +35,7 @@ local locales = {
 	["chat:addon-is-disabled"] = "Addon is disabled",
 	["chat:addon-is-disabled-note"] = "Please note: this addon is disabled. You can enable it in options dialog (/nc)",
 	["chat:addon-is-enabled"] = "Addon is enabled",
+	["chat:default-spell-is-added-to-ignore-list"] = "Default spell is added to ignore list: %s. You will not receive cooldown time updates for this spell.",
 	["chat:enable-only-for-target-nameplate"] = "Cooldowns will be shown on target nameplate only",
 	["Click on icon to enable/disable tracking"] = "Click on icon to enable/disable tracking",
 	["Copy"] = "Copy",
@@ -64,9 +65,24 @@ in different types of locations]=],
 	["MISC"] = "Misc",
 	["New spell has been added: %s"] = "New spell has been added: %s",
 	["Options are not available in combat!"] = "Options are not available in combat!",
+	["options:category:spells"] = "Spells",
 	["options:general:disable-addon-btn"] = "Disable addon",
 	["options:general:enable-addon-btn"] = "Enable addon",
 	["options:general:enable-only-for-target-nameplate"] = "Show the cooldowns on the current target nameplate only",
+	["options:profiles:open-profiles-dialog"] = "Open profiles dialog",
+	["options:spells:add-new-spell"] = "Add new spell (name or id):",
+	["options:spells:add-spell"] = "Add spell",
+	["options:spells:click-to-select-spell"] = "Click to select spell",
+	["options:spells:cooldown-time"] = "Cooldown time",
+	["options:spells:delete-all-spells"] = "Delete all spells",
+	["options:spells:delete-all-spells-confirmation"] = "Do you really want to delete ALL spells?",
+	["options:spells:delete-spell"] = "Delete spell",
+	["options:spells:enable-tracking-of-this-spell"] = "Enable tracking of this spell",
+	["options:spells:icon-glow"] = "Icon glow is disabled",
+	["options:spells:icon-glow-always"] = "Icon will glow if spell is on cooldown",
+	["options:spells:icon-glow-threshold"] = "Icon will glow if remaining time is less than",
+	["options:spells:track-only-this-spellid"] = [=[Track only these spell IDs
+(comma-separated)]=],
 	["Profile '%s' has been successfully deleted"] = "Profile '%s' has been successfully deleted",
 	["Profiles"] = "Profiles",
 	["Show border around interrupts"] = "Show border around interrupts",
@@ -91,8 +107,7 @@ in different types of locations]=],
 	["Delete profile:"] = "Удалить профиль:",
 	["Disable test mode"] = "Выключить тест",
 	["Enable test mode (need at least one visible nameplate)"] = "Включить тест (нужен хотя бы 1 видимый хп бар)",
-	--[[Translation missing --]]
-	["Filters"] = "Filters",
+	["Filters"] = "Фильтры",
 	--[[Translation missing --]]
 	["filters.instance-types"] = [=[Set the visibility of the cooldowns
 in different types of locations]=],
@@ -103,26 +118,47 @@ in different types of locations]=],
 	["Icon size"] = "Размер иконок",
 	["Icon X-coord offset"] = "Смещение иконок по X",
 	["Icon Y-coord offset"] = "Смещение иконок по Y",
-	--[[Translation missing --]]
-	["instance-type:arena"] = "Arenas",
+	["instance-type:arena"] = "Арена",
 	--[[Translation missing --]]
 	["instance-type:none"] = "Open World",
 	--[[Translation missing --]]
 	["instance-type:party"] = "5ppl dungeons",
-	--[[Translation missing --]]
-	["instance-type:pvp"] = "Battlegrounds",
-	--[[Translation missing --]]
-	["instance-type:raid"] = "Raid dungeons",
-	--[[Translation missing --]]
-	["instance-type:scenario"] = "Scenarios",
+	["instance-type:pvp"] = "Поля битв",
+	["instance-type:raid"] = "Рейдовые подземелья",
+	["instance-type:scenario"] = "Сценарии",
 	--[[Translation missing --]]
 	["instance-type:unknown"] = "Unknown dungeons (some quest scenarios)",
 	["MISC"] = "Другое",
 	["New spell has been added: %s"] = "Добавлено новое заклинание: %s",
 	["Options are not available in combat!"] = "Настройки недоступны, пока идет бой!",
+	--[[Translation missing --]]
+	["options:category:spells"] = "Spells",
 	["options:general:disable-addon-btn"] = "Отключить аддон",
 	["options:general:enable-addon-btn"] = "Включить аддон",
 	["options:general:enable-only-for-target-nameplate"] = "Показывать КД только на нэймплэйте цели",
+	--[[Translation missing --]]
+	["options:profiles:open-profiles-dialog"] = "Open profiles dialog",
+	--[[Translation missing --]]
+	["options:spells:add-new-spell"] = "Add new spell (name or id):",
+	--[[Translation missing --]]
+	["options:spells:add-spell"] = "Add spell",
+	--[[Translation missing --]]
+	["options:spells:click-to-select-spell"] = "Click to select spell",
+	--[[Translation missing --]]
+	["options:spells:cooldown-time"] = "Cooldown time",
+	--[[Translation missing --]]
+	["options:spells:delete-spell"] = "Delete spell",
+	--[[Translation missing --]]
+	["options:spells:enable-tracking-of-this-spell"] = "Enable tracking of this spell",
+	--[[Translation missing --]]
+	["options:spells:icon-glow"] = "Icon glow is disabled",
+	--[[Translation missing --]]
+	["options:spells:icon-glow-always"] = "Icon will glow if spell is on cooldown",
+	--[[Translation missing --]]
+	["options:spells:icon-glow-threshold"] = "Icon will glow if remaining time is less than",
+	--[[Translation missing --]]
+	["options:spells:track-only-this-spellid"] = [=[Track only these spell IDs
+(comma-separated)]=],
 	["Profile '%s' has been successfully deleted"] = "Профиль '%s' успешно удален",
 	["Profiles"] = "Профили",
 	["Show border around interrupts"] = "Показывать контур вокруг прерываний",

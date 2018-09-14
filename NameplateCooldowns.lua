@@ -10,7 +10,7 @@ local buildTimestamp = "@project-version@";
 --@end-non-debug@]===]
 
 local LRD = LibStub("LibRedDropdown-1.0");
-
+local LBG_ShowOverlayGlow, LBG_HideOverlayGlow = NAuras_LibButtonGlow.ShowOverlayGlow, NAuras_LibButtonGlow.HideOverlayGlow;
 local SML = LibStub("LibSharedMedia-3.0");
 SML:Register("font", "NC_TeenBold", "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf", 255);
 
@@ -45,10 +45,10 @@ local LocalPlayerFullName = UnitName("player").." - "..GetRealmName();
 local InstanceType = "none";
 local GUIFrame, EventFrame, TestFrame, db, aceDB, ProfileOptionsFrame;
 
-local _G, pairs, select, UIParent, string_match, string_gsub, string_find, bit_band, GetTime, table_contains_value, math_ceil, 	table_insert, table_sort, C_Timer_After, string_lower, string_format =
-	  _G, pairs, select, UIParent, strmatch,	   		gsub,	  strfind, bit.band, GetTime, 			 tContains,		 ceil,	table.insert, table.sort, C_Timer.After, string.lower, string.format;
+local _G, pairs, select, UIParent, string_match, string_gsub, string_find, bit_band, GetTime, table_contains_value, math_ceil, 	table_insert, table_sort, C_Timer_After, string_lower, string_format, C_Timer_NewTimer =
+	  _G, pairs, select, UIParent, strmatch,	   		gsub,	  strfind, bit.band, GetTime, 			 tContains,		 ceil,	table.insert, table.sort, C_Timer.After, string.lower, string.format, C_Timer.NewTimer;
 	  
-local OnStartup, InitializeDB;
+local OnStartup, InitializeDB, GetDefaultDBEntryForSpell;
 local AllocateIcon, ReallocateAllIcons, InitializeFrame, UpdateOnlyOneNameplate, Nameplate_SetBorder, Nameplate_SetCooldown, HideCDIcon, ShowCDIcon;
 local OnUpdate;
 local EnableTestMode, DisableTestMode;
@@ -76,7 +76,7 @@ end
 -------------------------------------------------------------------------------------------------
 do
 
-	local function GetDefaultDBEntryForSpell(spellID)
+	function GetDefaultDBEntryForSpell(spellID)
 		return {
 			["enabled"] = true,
 			["cooldown"] = 60,
@@ -263,7 +263,9 @@ end
 ----- Nameplates
 -------------------------------------------------------------------------------------------------
 do
-
+	
+	local glowInfo = { };
+	
 	function AllocateIcon(frame)
 		if (not frame.NCFrame) then
 			frame.NCFrame = CreateFrame("frame", nil, db.FullOpacityAlways and UIParent or frame);
@@ -414,6 +416,23 @@ do
 		return t;
 	end
 	
+	local function UpdateNameplate_SetGlow(icon, spellNeedGlow, remain)
+		if (glowInfo[icon]) then
+			glowInfo[icon]:Cancel(); -- // cancel delayed glow
+			glowInfo[icon] = nil;
+		end
+		if (spellNeedGlow ~= nil) then
+			if (remain < spellNeedGlow or remain > GLOW_TIME_INFINITE) then
+				LBG_ShowOverlayGlow(icon, true, true); -- // show glow immediately
+			else
+				LBG_HideOverlayGlow(icon); -- // hide glow
+				glowInfo[icon] = C_Timer_NewTimer(remain - spellNeedGlow, function() LBG_ShowOverlayGlow(icon, true, true); end); -- // queue delayed glow
+			end
+		else
+			LBG_HideOverlayGlow(icon); -- // this aura doesn't require glow
+		end
+	end
+	
 	function UpdateOnlyOneNameplate(frame, name)
 		local counter = 1;
 		if (GlobalFilterNameplate(name)) then
@@ -423,6 +442,7 @@ do
 				for _, spellInfo in pairs(sortedCDs) do
 					local spellName = spellInfo.spellName;
 					if (spellInfo.expires > currentTime) then
+						local dbInfo = db.SpellCDs[spellName];
 						if (counter > frame.NCIconsCount) then
 							AllocateIcon(frame);
 						end
@@ -433,7 +453,8 @@ do
 							Nameplate_SetBorder(icon, spellName);
 						end
 						local remain = spellInfo.expires - currentTime;
-						Nameplate_SetCooldown(icon, remain)
+						Nameplate_SetCooldown(icon, remain);
+						UpdateNameplate_SetGlow(icon, dbInfo.glow, remain);
 						if (not icon.shown) then
 							ShowCDIcon(icon);
 						end
@@ -486,6 +507,7 @@ do
 		icon:Hide();
 		icon.shown = false;
 		icon.textureID = 0;
+		LBG_HideOverlayGlow(icon);
 	end
 	
 	function ShowCDIcon(icon)
@@ -763,14 +785,10 @@ do
 		closeButton.text:SetPoint("CENTER", closeButton, "CENTER", 1, -1);
 		closeButton.text:SetText("X");
 		
-		-- local scrollFramesTipText = GUIFrame:CreateFontString("NC_GUIScrollFramesTipText", "OVERLAY", "GameFontNormal");
-		-- scrollFramesTipText:SetPoint("CENTER", GUIFrame, "TOP", 70, -35);
-		-- scrollFramesTipText:SetText(L["Click on icon to enable/disable tracking"]);
-		
 		GUIFrame.Categories = {};
 		GUIFrame.SpellIcons = {};
 		
-		for index, value in pairs({ L["General"], L["Filters"], L["Profiles"], L["Spells"] }) do
+		for index, value in pairs({ L["General"], L["Filters"], L["Profiles"], L["options:category:spells"] }) do
 			local b = CreateGUICategory();
 			b.index = index;
 			b.text:SetText(value);
@@ -1083,7 +1101,7 @@ do
 	function GUICategory_Profiles(index, value)
 		local button = LRD.CreateButton();
 		button:SetParent(GUIFrame);
-		button:SetText(L["Open profiles dialog"]);
+		button:SetText(L["options:profiles:open-profiles-dialog"]);
 		button:SetWidth(170);
 		button:SetHeight(40);
 		button:SetPoint("CENTER", GUIFrame, "CENTER", 70, 0);
@@ -1162,7 +1180,7 @@ do
 			editboxAddSpell:SetScript("OnEnterPressed", function() buttonAddSpell:Click(); end);
 			local text = editboxAddSpell:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
 			text:SetPoint("LEFT", 0, 15);
-			text:SetText(L["Add new spell: "]);
+			text:SetText(L["options:spells:add-new-spell"]);
 			hooksecurefunc("ChatEdit_InsertLink", function(link)
                 if (editboxAddSpell:IsVisible() and editboxAddSpell:HasFocus() and link ~= nil) then
 					local spellName = string.match(link, "%[\"?(.-)\"?%]");
@@ -1177,7 +1195,7 @@ do
 			
 			buttonAddSpell = LRD.CreateButton();
 			buttonAddSpell:SetParent(GUIFrame);
-			buttonAddSpell:SetText(L["Add spell"]);
+			buttonAddSpell:SetText(L["options:spells:add-spell"]);
 			buttonAddSpell:SetWidth(110);
 			buttonAddSpell:SetHeight(20);
 			buttonAddSpell:SetPoint("LEFT", editboxAddSpell, "RIGHT", 10, 0);
@@ -1215,7 +1233,11 @@ do
 								if (userHasProvidedSpellName) then db.SpellCDs[spellName].spellIDs = { [refSpellID] = true }; end
 								selectSpell:Click();
 								local btn = dropdownMenuSpells:GetButtonByText(spellName);
-								if (btn ~= nil) then btn:Click(); end
+								if (btn ~= nil) then
+									btn:Click();
+									LBG_ShowOverlayGlow(areaCooldown, false, true);
+									C_Timer_After(3, function() LBG_HideOverlayGlow(areaCooldown); end);
+								end
 								ReallocateAllIcons(true);
 							end
 						else
@@ -1244,9 +1266,9 @@ do
 			buttonDeleteAllSpells:SetScript("OnClick", function(self, ...)
 				if (not StaticPopupDialogs["NCOOLDOWN_MSG_DELETE_ALL_SPELLS"]) then
 					StaticPopupDialogs["NCOOLDOWN_MSG_DELETE_ALL_SPELLS"] = {
-						text = L["Do you really want to delete ALL spells?"],
-						button1 = L["Yes"],
-						button2 = L["No"],
+						text = L["options:spells:delete-all-spells-confirmation"],
+						button1 = YES,
+						button2 = NO,
 						OnAccept = function()
 							wipe(db.SpellCDs);
 							ReloadDB();
@@ -1261,7 +1283,7 @@ do
 			end);
 			buttonDeleteAllSpells:SetScript("OnEnter", function(self, ...)
 				GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT");
-				GameTooltip:SetText(L["Delete all spells"]);
+				GameTooltip:SetText(L["options:spells:delete-all-spells"]);
 				GameTooltip:Show();
 			end)
 			buttonDeleteAllSpells:SetScript("OnLeave", function(self, ...)
@@ -1322,7 +1344,7 @@ do
 				for _, control in pairs(controls) do
 					control:Hide();
 				end
-				selectSpell.Text:SetText(L["Click to select spell"]);
+				selectSpell.Text:SetText(L["options:spells:click-to-select-spell"]);
 				selectSpell:SetScript("OnEnter", nil);
 				selectSpell:SetScript("OnLeave", nil);
 				selectSpell.icon:Hide();
@@ -1330,7 +1352,7 @@ do
 		
 			selectSpell = LRD.CreateButton();
 			selectSpell:SetParent(GUIFrame);
-			selectSpell:SetText(L["Click to select spell"]);
+			selectSpell:SetText(L["options:spells:click-to-select-spell"]);
 			selectSpell:SetWidth(285);
 			selectSpell:SetHeight(24);
 			selectSpell.icon = selectSpell:CreateTexture(nil, "OVERLAY");
@@ -1380,7 +1402,7 @@ do
 		-- // checkboxEnabled
 		do
 			checkboxEnabled = LRD.CreateCheckBox();
-			checkboxEnabled:SetText(L["Enable tracking of this spell"]);
+			checkboxEnabled:SetText(L["options:spells:enable-tracking-of-this-spell"]);
 			checkboxEnabled:SetOnClickHandler(function(self)
 				db.SpellCDs[selectedSpellName].enabled = self:GetChecked();
 				ReallocateAllIcons(true);
@@ -1420,7 +1442,7 @@ do
 			sliderCooldown:SetWidth(330);
 			sliderCooldown.label:ClearAllPoints();
 			sliderCooldown.label:SetPoint("CENTER", sliderCooldown, "CENTER", 0, 15);
-			sliderCooldown.label:SetText(L["Cooldown time"]);
+			sliderCooldown.label:SetText(L["options:spells:cooldown-time"]);
 			sliderCooldown:ClearAllPoints();
 			sliderCooldown:SetPoint("CENTER", areaCooldown, "CENTER", 0, 0);
 			sliderCooldown.slider:ClearAllPoints();
@@ -1629,7 +1651,7 @@ do
 		
 			buttonDeleteSpell = LRD.CreateButton();
 			buttonDeleteSpell:SetParent(spellArea.controlsFrame);
-			buttonDeleteSpell:SetText(L["Delete spell"]);
+			buttonDeleteSpell:SetText(L["options:spells:delete-spell"]);
 			buttonDeleteSpell:SetWidth(90);
 			buttonDeleteSpell:SetHeight(20);
 			buttonDeleteSpell:SetPoint("TOPLEFT", areaIDs, "BOTTOMLEFT", 10, -10);
@@ -1638,14 +1660,14 @@ do
 				db.SpellCDs[selectedSpellName] = nil;
 				for spellID in pairs(addonTable.CDs) do
 					local spellName = SpellNameByID[spellID];
-					if (spellName == selectedSpellName) then
+					if (spellName == selectedSpellName and not db.UnwantedDefaultSpells[spellName]) then
 						db.UnwantedDefaultSpells[spellName] = true;
-						Print(L["chat:default-spell-is-added-to-ignore-list"]);
+						Print(string_format(L["chat:default-spell-is-added-to-ignore-list"], GetSpellLink(spellID)));
 						break;
 					end
 				end
 				ReallocateAllIcons(true);
-				selectSpell.Text:SetText(L["Click to select spell"]);
+				selectSpell.Text:SetText(L["options:spells:click-to-select-spell"]);
 				selectSpell.icon:SetTexture(nil);
 				for _, control in pairs(controls) do
 					control:Hide();
