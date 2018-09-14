@@ -1,7 +1,5 @@
 package-as: NameplateCooldowns
 
-license-output: LICENSE.txt
-
 manual-changelog:
     filename: CHANGELOG.html
     markup-type: html

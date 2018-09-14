@@ -134,6 +134,9 @@ addonTable.CDs = {
 	[102558] = 180,				-- // Incarnation: Guardian of Ursoc
 	[33891] = 180,				-- // Incarnation: Tree of Life
 	[106839] = 15,				-- // Skull Bash
+	[5211]		= 50,			-- // Mighty Bash
+	[132469]	= 30,			-- // Typhoon https://www.wowhead.com/spell=132469/typhoon
+	[102359]	= 30,			-- // Mass Entanglement https://www.wowhead.com/spell=102359/mass-entanglement
 	-- // monk
 	[202162] = 45,			-- // Guard
 	[202370] = 60,			-- // Mighty Ox Kick
@@ -252,29 +255,29 @@ addonTable.CDs = {
 	[192058] = 45,				-- // Тотем выброса тока
 	[207399] = 300,				-- // Тотем защиты Предков
 	-- // warrior
-	[100] = 17,					--"Charge", [-3sec (talent)]
-	[6552] = 15,				--"Pummel",
-	[23920] = 25,				--"Spell Reflection",
-	[46924] = 60,				--"Bladestorm",
-	[46968] = 40,				--"Shockwave",
-	[107574] = 90,				--"Avatar",
-	[12292] = 30, 				--"Bloodbath",
-	[5246] = 90,				--"Intimidating Shout",
-	[871] = 240,				--"Shield Wall",	
-	[118038] = 180,				--"Die by the Sword",
-	[1719] = 35,				-- // Battle Cry [-10sec (arti)] [-15sec (htalent)]
-	[6544] = 39,				--"Heroic Leap", [-6sec]
-	[12975] = 180,				--"Last Stand",
-	[18499] = 60,				-- Berserker Rage
-	[107570] = 30,				-- Storm Bolt
-	[198758] = 17,				-- // Intercept [-3sec (talent)]
-	[216890] = 25,				-- // Spell Reflection
-	[213915] = 30,				-- // Mass Spell Reflection
-	[227847] = 60,				-- // Bladestorm
-	[184364] = 120,				-- // Enraged Regeneration
-	[198304] = 17,				-- // Intercept [-3sec (talent)]
-	[206572] = 20,				-- // Dragon Charge
-	[236077] = 30,				-- // Disarm
+	[100] 		= 17,					--"Charge", [-3sec (talent)]
+	[6552] 		= 15,				--"Pummel",
+	[23920] 	= 25,				--"Spell Reflection",
+	[46924] 	= 60,				--"Bladestorm",
+	[46968] 	= 40,				--"Shockwave",
+	[107574] 	= 90,				--"Avatar",
+	[12292] 	= 30, 				--"Bloodbath",
+	[5246] 		= 90,				--"Intimidating Shout",
+	[871] 		= 240,				--"Shield Wall",	
+	[118038] 	= 180,				--"Die by the Sword",
+	[1719] 		= 90,				-- // Recklessness https://www.wowhead.com/spell=1719/recklessness
+	[6544] 		= 39,				--"Heroic Leap", [-6sec]
+	[12975] 	= 180,				--"Last Stand",
+	[18499] 	= 60,				-- Berserker Rage
+	[107570] 	= 30,				-- Storm Bolt
+	[198758] 	= 17,				-- // Intercept [-3sec (talent)]
+	[216890] 	= 25,				-- // Spell Reflection
+	[213915] 	= 30,				-- // Mass Spell Reflection
+	[227847] 	= 60,				-- // Bladestorm
+	[184364] 	= 120,				-- // Enraged Regeneration
+	[198304] 	= 17,				-- // Intercept [-3sec (talent)]
+	[206572] 	= 20,				-- // Dragon Charge
+	[236077] 	= 30,				-- // Disarm
 	
 	[167105] = 45,				-- // Colossus Smash
 	[262161] = 45,				-- // Warbreaker
@@ -342,15 +345,20 @@ addonTable.Resets = {
 	},
 };
 
-local trinkets = {
-	42292,
-	59752,
-	7744,
-	195710,				-- // Почетный медальон
-	208683,				-- // Медальон гладиатора
-};
-addonTable.Trinkets = { };
-for _, spellID in pairs(trinkets) do
-	local spellName = GetSpellInfo(spellID);
-	addonTable.Trinkets[spellName] = true;
+-- // Trinkets
+do
+
+	local trinkets = {
+		42292,
+		59752,
+		7744,
+		195710,				-- // Почетный медальон
+		208683,				-- // Медальон гладиатора
+	};
+	addonTable.Trinkets = { };
+	for _, spellID in pairs(trinkets) do
+		local spellName = GetSpellInfo(spellID);
+		addonTable.Trinkets[spellName] = true;
+	end
+
 end

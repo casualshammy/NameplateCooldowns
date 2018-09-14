@@ -274,22 +274,25 @@ do
 			frame.NCFrame:SetPoint("TOPLEFT", frame, db.IconXOffset, db.IconYOffset);
 			frame.NCFrame:Show();
 		end
-		local texture = frame.NCFrame:CreateTexture(nil, "BORDER");
-		texture:SetPoint("LEFT", frame.NCFrame, frame.NCIconsCount * db.IconSize, 0);
-		texture:SetWidth(db.IconSize);
-		texture:SetHeight(db.IconSize);
-		texture:Hide();
-		texture.cooldown = frame.NCFrame:CreateFontString(nil, "OVERLAY");
-		texture.cooldown:SetTextColor(0.7, 1, 0);
-		texture.cooldown:SetAllPoints(texture);
-		texture.cooldown:SetFont(SML:Fetch("font", db.Font), math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
-		texture.border = frame.NCFrame:CreateTexture(nil, "OVERLAY");
-		texture.border:SetTexture("Interface\\AddOns\\NameplateCooldowns\\media\\CooldownFrameBorder.tga");
-		texture.border:SetVertexColor(1, 0.35, 0);
-		texture.border:SetAllPoints(texture);
-		texture.border:Hide();
+		local icon = CreateFrame("frame", nil, frame.NCFrame);
+		icon:SetWidth(db.IconSize);
+		icon:SetHeight(db.IconSize);
+		icon:SetPoint("LEFT", frame.NCFrame, frame.NCIconsCount * db.IconSize, 0);
+		icon:Hide();
+		icon.texture = icon:CreateTexture(nil, "BORDER");
+		icon.texture:SetAllPoints(icon);
+		icon.texture:SetTexCoord(0.07, 0.93, 0.07, 0.93);
+		icon.cooldownText = icon:CreateFontString(nil, "OVERLAY");
+		icon.cooldownText:SetTextColor(0.7, 1, 0);
+		icon.cooldownText:SetAllPoints(icon);
+		icon.cooldownText:SetFont(SML:Fetch("font", db.Font), math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
+		icon.border = icon:CreateTexture(nil, "OVERLAY");
+		icon.border:SetTexture("Interface\\AddOns\\NameplateCooldowns\\media\\CooldownFrameBorder.tga");
+		icon.border:SetVertexColor(1, 0.35, 0);
+		icon.border:SetAllPoints(icon);
+		icon.border:Hide();
 		frame.NCIconsCount = frame.NCIconsCount + 1;
-		tinsert(frame.NCIcons, texture);
+		tinsert(frame.NCIcons, icon);
 	end
 	
 	function ReallocateAllIcons(clearSpells)
@@ -301,7 +304,7 @@ do
 					icon:SetWidth(db.IconSize);
 					icon:SetHeight(db.IconSize);
 					icon:SetPoint("LEFT", frame.NCFrame, counter * db.IconSize, 0);
-					icon.cooldown:SetFont(SML:Fetch("font", db.Font), math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
+					icon.cooldownText:SetFont(SML:Fetch("font", db.Font), math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
 					if (clearSpells) then
 						HideCDIcon(icon);
 					end
@@ -448,7 +451,7 @@ do
 						end
 						local icon = frame.NCIcons[counter];
 						if (icon.textureID ~= spellInfo.texture) then
-							icon:SetTexture(spellInfo.texture);
+							icon.texture:SetTexture(spellInfo.texture);
 							icon.textureID = spellInfo.texture;
 							Nameplate_SetBorder(icon, spellName);
 						end
@@ -494,16 +497,16 @@ do
 	
 	function Nameplate_SetCooldown(icon, remain)
 		if (remain >= 60) then
-			icon.cooldown:SetText(math_ceil(remain/60).."m");
+			icon.cooldownText:SetText(math_ceil(remain/60).."m");
 		else
-			icon.cooldown:SetText(math_ceil(remain));
+			icon.cooldownText:SetText(math_ceil(remain));
 		end
 	end
 	
 	function HideCDIcon(icon)
 		icon.border:Hide();
 		icon.borderState = nil;
-		icon.cooldown:Hide();
+		icon.cooldownText:Hide();
 		icon:Hide();
 		icon.shown = false;
 		icon.textureID = 0;
@@ -511,7 +514,7 @@ do
 	end
 	
 	function ShowCDIcon(icon)
-		icon.cooldown:Show();
+		icon.cooldownText:Show();
 		icon:Show();
 		icon.shown = true;
 	end
