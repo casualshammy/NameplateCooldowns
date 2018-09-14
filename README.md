@@ -2,9 +2,8 @@
 This AddOn will show you selected cooldowns of an enemies above their nameplates. NameplateCooldowns does not contain a single piece of code from Icicle, but was inspired by it. 
 Compatible with Tidy Plates, PlateBuffs.
 
-*****LEGION***** 
+### Battle for Azeroth 
 Feel free to report about incorrect/missing cooldowns. 
-********************
 
 # Call to arms
 I'm looking for anyone who can help on translating NameplateCooldowns. If you are interested in it, please visit localization portal.  
