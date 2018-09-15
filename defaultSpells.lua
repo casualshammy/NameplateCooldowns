@@ -1,7 +1,7 @@
 local _, addonTable = ...;
 local L = addonTable.L;
 
-addonTable.DefaultSpellsVersion = 1;
+addonTable.DefaultSpellsVersion = 2;
 
 addonTable.CDs = {
 	-- // other spells
@@ -88,28 +88,29 @@ addonTable.CDs = {
 	[235219] = 300,				-- // Cold Snap
 	[198111] = 45,				-- // Temporal Shield (Envelops you in a temporal shield for 6 sec. 100% of all damage taken while shielded will be instantly restored when the shield ends.)
 	-- // deathknight
-	[47476] = 60,				--"Strangulate",
-	[108194] = 45,				-- Asphyxiate
-	[48707] = 60,				--"Anti-Magic Shell",
-	[49576] = 25,				--"Death Grip",	
-	[47528] = 15,				--"Mind Freeze",
-	[108201] = 120,				--"Desecrated Ground",
-	[108199] = 90,				--"Gorefiend's Grasp", (talent: Tightening Grasp)
-	[51271] = 60,				--"Pillar of Frost",
-	[51052] = 120,				--"Anti-Magic Zone",
-	[49206] = 180,				--"Summon Gargoyle",
-	[48792] = 180,				--"Icebound Fortitude",
-	[48743] = 120,				--"Death Pact",
-	[77606] = 60,				-- Dark Simulacrum
-	[221562] = 45,				-- // Asphyxiate
-	[49028] = 180,				-- // Dancing Rune Weapon
-	[42650] = 600,				-- // Army of the Dead
-	[63560] = 60,				-- // Dark Transformation
-	[206977] = 120,				-- // Blood Mirror
-	[219809] = 60,				-- // Tombstone
-	[207167] = 60, 				-- // Blinding Sleet
-	[207319] = 60,				-- // Corpse Shield
-	[207349] = 120,				-- // Dark Arbiter
+	[47476] 	= 60,				--"Strangulate",
+	[108194] 	= 45,				-- Asphyxiate
+	[48707] 	= 60,				--"Anti-Magic Shell",
+	[49576] 	= 25,				--"Death Grip",	
+	[47528] 	= 15,				--"Mind Freeze",
+	[108201] 	= 120,				--"Desecrated Ground",
+	[108199] 	= 90,				--"Gorefiend's Grasp", (talent: Tightening Grasp)
+	[51271] 	= 60,				--"Pillar of Frost",
+	[51052] 	= 120,				--"Anti-Magic Zone",
+	[49206] 	= 180,				--"Summon Gargoyle",
+	[48792] 	= 180,				--"Icebound Fortitude",
+	[48743] 	= 120,				--"Death Pact",
+	[77606] 	= 60,				-- Dark Simulacrum
+	[221562] 	= 45,				-- // Asphyxiate
+	[49028] 	= 180,				-- // Dancing Rune Weapon
+	[42650] 	= 600,				-- // Army of the Dead
+	[63560] 	= 60,				-- // Dark Transformation
+	[206977] 	= 120,				-- // Blood Mirror
+	[219809] 	= 60,				-- // Tombstone
+	[207167] 	= 60, 				-- // Blinding Sleet
+	[207319] 	= 60,				-- // Corpse Shield
+	[207349] 	= 120,				-- // Dark Arbiter
+	[91802] 	= 30,				-- // Shambling Rush https://www.wowhead.com/spell=91802/shambling-rush
 	-- // druid
 	[1850] = 180,				-- // Dash
 	[20484] = 600,				-- // Rebirth
@@ -161,6 +162,8 @@ addonTable.CDs = {
 	[152173] = 90,			-- // Serenity
 	[122278] = 120,			-- // Dampen Harm
 	[122783] = 90,			-- // Diffuse Magic
+	[119381] = 60,			-- // Leg Sweep https://www.wowhead.com/spell=119381/leg-sweep
+	[116844] = 45,			-- // Ring of Peace https://www.wowhead.com/spell=116844/ring-of-peace
 	-- // paladin
 	[642] = 240,			-- // Божественный щит
 	[1044] = 25,			-- // Благословенная свобода
@@ -172,7 +175,7 @@ addonTable.CDs = {
 	[31821] = 180,			-- // Владение аурами
 	[498] = 60,				-- // Божественная защита
 	[6940] = 75,			-- // Жертвенное благословение
-	[853] = 30,				-- // Молот правосудия
+	[853] = 30,				-- // Молот правосудия https://www.wowhead.com/spell=853/hammer-of-justice
 	[190784] = 45,			-- // Божественный скакун
 	[31884] = 120,			-- // Гнев карателя
 	[86659] = 300,			-- // Защитник древних королей
@@ -203,7 +206,7 @@ addonTable.CDs = {
 	[205369] = 30,				-- // Мыслебомба
 	[204263] = 45,				-- // Сияющая мощь
 	-- // rogue
-	[2094] = 120,				--"Blind",
+	[2094] = 90,				--"Blind",
 	[1766] = 15,				--"Kick",
 	[31224] = 81,				--"Cloak of Shadows" [-9sec]
 	[1856] = 30,				-- Исчезновение [-90sec]
@@ -231,8 +234,8 @@ addonTable.CDs = {
 	[51485] = 30,				--"Earthbind Totem",
 	[108280] = 180,				--"Healing Tide Totem",
 	[98008] = 180,				--"Spirit Link Totem",
-	[32182] = 300,				--"Heroism",
-	[2825] = 300,				--"Bloodlust",
+	[32182] = 60,				--"Heroism",
+	[2825] = 60,				--"Bloodlust",
 	[51533] = 120,				--"Feral Spirit",
 	[79206] = 60,				--"Spiritwalker's Grace", [-60sec]
 	[16166] = 120,				--"Elemental Mastery",
@@ -266,7 +269,7 @@ addonTable.CDs = {
 	[871] 		= 240,				--"Shield Wall",	
 	[118038] 	= 180,				--"Die by the Sword",
 	[1719] 		= 90,				-- // Recklessness https://www.wowhead.com/spell=1719/recklessness
-	[6544] 		= 39,				--"Heroic Leap", [-6sec]
+	[6544] 		= 30,				--"Heroic Leap", [-6sec]
 	[12975] 	= 180,				--"Last Stand",
 	[18499] 	= 60,				-- Berserker Rage
 	[107570] 	= 30,				-- Storm Bolt
@@ -305,6 +308,8 @@ addonTable.CDs = {
 	[206803] = 60,					-- // Rain from Above
 	[205630] = 60,					-- // Illidan's Grasp
 	[206650] = 45,					-- // Глаз Леотераса
+	[217832] = 45,					-- // Imprison https://www.wowhead.com/spell=217832/imprison
+	[221527] = 45,					-- // Imprison https://www.wowhead.com/spell=221527/imprison
 };
 
 local interrupts = {
@@ -322,6 +327,7 @@ local interrupts = {
 	115781,	-- Optical Blast
 	183752,	-- Consume Magic
 	187707, -- // Muzzle
+	91802,	-- // Shambling Rush https://www.wowhead.com/spell=91802/shambling-rush
 };
 addonTable.Interrupts = { };
 for _, spellID in pairs(interrupts) do
@@ -360,5 +366,36 @@ do
 		local spellName = GetSpellInfo(spellID);
 		addonTable.Trinkets[spellName] = true;
 	end
+
+end
+
+-- // spells that reduce cooldown of other spells
+do
+	
+	local BIG_REDUCTION = 4*1000*1000;
+
+	addonTable.Reductions = {
+		-- [275773] = { -- // holy paladin's judgment https://www.wowhead.com/spell=275773/judgment
+			-- ["reduction"] = 10,
+			-- ["spells"] = { 853 },
+		-- },
+		-- [275779] = { -- // protection paladin's judgment https://www.wowhead.com/spell=275779/judgment
+			-- ["reduction"] = 6,
+			-- ["spells"] = { 853 },
+		-- },
+		[195676] = { -- // Displacement https://ru.wowhead.com/spell=195676/%D1%81%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D0%B5
+			["reduction"] = BIG_REDUCTION,
+			["spells"] = { 1953 }, -- // Blink
+		},
+		[235219] = { -- // Cold Snap https://ru.wowhead.com/spell=235219/%D1%85%D0%BE%D0%BB%D0%BE%D0%B4%D0%BD%D0%B0%D1%8F-%D1%85%D0%B2%D0%B0%D1%82%D0%BA%D0%B0
+			["reduction"] = BIG_REDUCTION,
+			["spells"] = {
+				122,			-- // Frost Nova
+				120,			-- // Cone of Cold
+				11426,			-- // Ice Barrier
+				45438,			-- // Ice Block
+			},
+		},
+	};
 
 end

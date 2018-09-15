@@ -4,6 +4,7 @@ local CDs = addonTable.CDs;
 local Interrupts = addonTable.Interrupts;
 local Resets = addonTable.Resets;
 local Trinkets = addonTable.Trinkets;
+local Reductions = addonTable.Reductions;
 
 --[===[@non-debug@
 local buildTimestamp = "@project-version@";
@@ -704,34 +705,6 @@ do
 		
 	end
 	
-	local function InitializeGUI_CreateSpellInfoCaches()
-		GUIFrame:HookScript("OnShow", function()
-			local scanAllSpells = coroutine.create(function()
-				local misses = 0;
-				local id = 0;
-				while (misses < 400) do
-					id = id + 1;
-					local name, _, icon = GetSpellInfo(id);
-					if (icon == 136243) then -- 136243 is the a gear icon
-						misses = 0;
-					elseif (name and name ~= "") then
-						misses = 0;
-						if (AllSpellIDsAndIconsByName[name] == nil) then AllSpellIDsAndIconsByName[name] = { }; end
-						AllSpellIDsAndIconsByName[name][id] = icon;
-					else
-						misses = misses + 1;
-					end
-					coroutine.yield();
-				end
-			end);
-			CoroutineProcessor:Queue("scanAllSpells", scanAllSpells);
-		end);
-		GUIFrame:HookScript("OnHide", function()
-			CoroutineProcessor:DeleteFromQueue("scanAllSpells");
-			wipe(AllSpellIDsAndIconsByName);
-		end);
-	end
-	
 	function InitializeGUI()
 		GUIFrame = CreateFrame("Frame", "NC_GUIFrame", UIParent);
 		GUIFrame:SetHeight(400);
@@ -818,7 +791,6 @@ do
 				GUICategory_Other(index, value);
 			end
 		end
-		InitializeGUI_CreateSpellInfoCaches();
 	end
 
 	function GUICategory_General(index, value)
@@ -1122,6 +1094,40 @@ do
 		local spellArea, editboxAddSpell, buttonAddSpell, dropdownSelectSpell, sliderCooldown, dropdownSpellShowType, editboxSpellID, buttonDeleteSpell, checkboxShowOnFriends,
 			checkboxShowOnEnemies, checkboxAllowMultipleInstances, selectSpell, checkboxPvPMode, checkboxEnabled, checkboxGlow, areaGlow, sliderGlowThreshold, areaCooldown, areaAuraType, areaIDs,
 			areaMaxAuraDurationFilter, sliderMaxAuraDurationFilter;
+			
+		-- // building spell cache
+		do
+			
+			GUIFrame:HookScript("OnShow", function()
+				buttonAddSpell:Disable();
+				local scanAllSpells = coroutine.create(function()
+					local misses = 0;
+					local id = 0;
+					while (misses < 400) do
+						id = id + 1;
+						local name, _, icon = GetSpellInfo(id);
+						if (icon == 136243) then -- 136243 is the a gear icon
+							misses = 0;
+						elseif (name and name ~= "") then
+							misses = 0;
+							if (AllSpellIDsAndIconsByName[name] == nil) then AllSpellIDsAndIconsByName[name] = { }; end
+							AllSpellIDsAndIconsByName[name][id] = icon;
+						else
+							misses = misses + 1;
+						end
+						coroutine.yield();
+					end
+					buttonAddSpell:Enable();
+				end);
+				CoroutineProcessor:Queue("scanAllSpells", scanAllSpells);
+			end);
+			GUIFrame:HookScript("OnHide", function()
+				CoroutineProcessor:DeleteFromQueue("scanAllSpells");
+				wipe(AllSpellIDsAndIconsByName);
+			end);
+			
+		end
+			
 			
 		-- // spellArea
 		do
@@ -1907,19 +1913,19 @@ do
 					end
 				end
 			end
-			-- // resets
-			if (table_contains_key(Resets, spellID)) then
-				if (eventType == "SPELL_CAST_SUCCESS") then
-					local name = string_match(srcName, "[%P]+");
-					if (charactersDB[name]) then
-						for _, v in pairs(Resets[spellID]) do
-							charactersDB[name][SpellNameByID[v]] = nil;
+			-- reductions
+			if (Reductions[spellID] ~= nil and eventType == "SPELL_CAST_SUCCESS") then
+				local name = string_match(srcName, "[%P]+");
+				if (charactersDB[name]) then
+					for _, sp in pairs(Reductions[spellID].spells) do
+						if (charactersDB[name][SpellNameByID[sp]] ~= nil) then
+							charactersDB[name][SpellNameByID[sp]].expires = charactersDB[name][SpellNameByID[sp]].expires - Reductions[spellID].reduction;
 						end
-						for frame, charName in pairs(NameplatesVisible) do
-							if (charName == name) then
-								UpdateOnlyOneNameplate(frame, charName);
-								break;
-							end
+					end
+					for frame, charName in pairs(NameplatesVisible) do
+						if (charName == name) then
+							UpdateOnlyOneNameplate(frame, charName);
+							break;
 						end
 					end
 				end
