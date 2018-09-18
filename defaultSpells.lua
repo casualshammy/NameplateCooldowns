@@ -1,7 +1,7 @@
 local _, addonTable = ...;
 local L = addonTable.L;
 
-addonTable.DefaultSpellsVersion = 2;
+addonTable.DefaultSpellsVersion = 8;
 
 addonTable.CDs = {
 	-- // other spells
@@ -71,7 +71,7 @@ addonTable.CDs = {
 	[122] = 30,					-- // Frost Nova
 	[1953] = 15,				-- // Blink
 	[11426] = 25,				-- // Ice Barrier
-	[45438] = 300,				-- // Ice Block
+	[45438] = 240,				-- // Ice Block
 	[2139] = 24,				-- // Counterspell
 	[12042] = 90,				-- // Arcane Power
 	[195676] = 24,				-- // Displacement
@@ -145,7 +145,6 @@ addonTable.CDs = {
 	[201325] = 180,			-- // Zen Meditation
 	[216113] = 45,			-- // Way of the Crane
 	[115181] = 15,			-- // Breath of Fire
-	[115203] = 210,			-- // Fortifying Brew
 	[116705] = 15,			-- // Spear Hand Strike
 	[115176] = 150,			-- // Zen Meditation
 	[137639] = 90,			-- // Storm, Earth, and Fire
@@ -208,8 +207,8 @@ addonTable.CDs = {
 	-- // rogue
 	[2094] = 90,				--"Blind",
 	[1766] = 15,				--"Kick",
-	[31224] = 81,				--"Cloak of Shadows" [-9sec]
-	[1856] = 30,				-- Исчезновение [-90sec]
+	[31224] = 120,				-- Cloak of Shadows https://www.wowhead.com/spell=31224/cloak-of-shadows#modified-by
+	[1856] = 75,				-- Vanish https://www.wowhead.com/spell=1856/vanish
 	[1776] = 10,				--"Gouge",
 	[2983] = 51,				--"Sprint" [-9sec]
 	[36554] = 30,				--"Shadowstep",
@@ -228,6 +227,7 @@ addonTable.CDs = {
 	[198529] = 120,				-- // Кража доспехов
 	[199804] = 20,				-- // Промеж глаз
 	[121471] = 180,				-- // Теневые клинки
+	[199754] = 120,				-- // Riposte https://www.wowhead.com/spell=199754/riposte
 	-- // shaman
 	[57994] = 12,				--"Wind Shear",
 	[51490] = 45,				--"Thunderstorm",
@@ -338,18 +338,6 @@ for _, spellID in pairs(interrupts) do
 		error("NameplateCooldowns: interrupt spell is not exist: "..tostring(spellID));
 	end
 end
-
-addonTable.Resets = {
-	[195676] = {	-- // Displacement
-		1953,			-- // Blink
-	},
-	[235219] = {	-- // Cold Snap
-		122,			-- // Frost Nova
-		120,			-- // Cone of Cold
-		11426,			-- // Ice Barrier
-		45438,			-- // Ice Block
-	},
-};
 
 -- // Trinkets
 do

@@ -2,7 +2,6 @@ local _, addonTable = ...;
 local L = addonTable.L;
 local CDs = addonTable.CDs;
 local Interrupts = addonTable.Interrupts;
-local Resets = addonTable.Resets;
 local Trinkets = addonTable.Trinkets;
 local Reductions = addonTable.Reductions;
 
@@ -166,6 +165,7 @@ do
 				SpellCDs = { },
 				UnwantedDefaultSpells = { },
 				DBVersion = 0,
+				IconSpacing = 0,
 				CDsTable = { }, -- // obsolete
 				IconSize = 26,
 				IconXOffset = 0,
@@ -204,19 +204,35 @@ do
 		InitializeDB();
 		-- // add new spells
 		if (db.DBVersion < addonTable.DefaultSpellsVersion) then
+			local spellsAlreadyInUserDb = { };
 			for spellID, spellCd in pairs(addonTable.CDs) do
 				local spellName = SpellNameByID[spellID];
-				if (db.SpellCDs[spellName] == nil and db.UnwantedDefaultSpells[spellName] == nil) then
-					db.SpellCDs[spellName] = GetDefaultDBEntryForSpell(spellID);
-					db.SpellCDs[spellName].cooldown = spellCd;
-					db.SpellCDs[spellName].spellIDs = { [spellID] = true; };
-					Print(format(L["New spell has been added: %s"], GetSpellLink(spellID)));
+				if (db.UnwantedDefaultSpells[spellName] == nil) then
+					if (db.SpellCDs[spellName] == nil) then
+						db.SpellCDs[spellName] = GetDefaultDBEntryForSpell(spellID);
+						db.SpellCDs[spellName].cooldown = spellCd;
+						db.SpellCDs[spellName].spellIDs = { [spellID] = true; };
+						Print(format(L["New spell has been added: %s"], GetSpellLink(spellID)));
+					else
+						if (db.SpellCDs[spellName].cooldown ~= spellCd) then
+							spellsAlreadyInUserDb[spellName] = spellCd;
+						end
+					end
 				end
 			end
+			if (table_any(spellsAlreadyInUserDb)) then
+				msgWithQuestion(L["msg:question:import-existing-spells"], 
+					function()
+						for spellName, spellCd in pairs(spellsAlreadyInUserDb) do
+							local oldCooldown = db.SpellCDs[spellName].cooldown;
+							db.SpellCDs[spellName].cooldown = spellCd;
+							Print(string_format(L["chat:cooldown-of-existing-spell-is-updated %s %s %s"], spellName, oldCooldown, db.SpellCDs[spellName].cooldown))
+						end
+					end,
+					function() end
+				);
+			end
 			db.DBVersion = addonTable.DefaultSpellsVersion;
-		end
-		for spellName, spellInfo in pairs(db.SpellCDs) do
-			
 		end
 		-- // starting OnUpdate()
 		EventFrame:SetScript("OnUpdate", function(self, elapsed)
@@ -278,7 +294,11 @@ do
 		local icon = CreateFrame("frame", nil, frame.NCFrame);
 		icon:SetWidth(db.IconSize);
 		icon:SetHeight(db.IconSize);
-		icon:SetPoint("LEFT", frame.NCFrame, frame.NCIconsCount * db.IconSize, 0);
+		if (frame.NCIconsCount == 0) then
+			icon:SetPoint("LEFT", frame.NCFrame, 0, 0);
+		else
+			icon:SetPoint("LEFT", frame.NCIcons[frame.NCIconsCount], "RIGHT", db.IconSpacing, 0);
+		end
 		icon:Hide();
 		icon.texture = icon:CreateTexture(nil, "BORDER");
 		icon.texture:SetAllPoints(icon);
@@ -301,10 +321,14 @@ do
 			if (frame.NCFrame) then
 				frame.NCFrame:SetPoint("TOPLEFT", frame, db.IconXOffset, db.IconYOffset);
 				local counter = 0;
-				for _, icon in pairs(frame.NCIcons) do
+				for iconIndex, icon in pairs(frame.NCIcons) do
 					icon:SetWidth(db.IconSize);
 					icon:SetHeight(db.IconSize);
-					icon:SetPoint("LEFT", frame.NCFrame, counter * db.IconSize, 0);
+					if (iconIndex == 1) then
+						icon:SetPoint("LEFT", frame.NCFrame, 0, 0);
+					else
+						icon:SetPoint("LEFT", frame.NCIcons[iconIndex-1], "RIGHT", db.IconSpacing, 0);
+					end
 					icon.cooldownText:SetFont(SML:Fetch("font", db.Font), math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
 					if (clearSpells) then
 						HideCDIcon(icon);
@@ -705,6 +729,10 @@ do
 		
 	end
 	
+	local function GUICategory_Font(index)
+		
+	end
+	
 	function InitializeGUI()
 		GUIFrame = CreateFrame("Frame", "NC_GUIFrame", UIParent);
 		GUIFrame:SetHeight(400);
@@ -837,7 +865,7 @@ do
 		sliderIconSize:SetParent(GUIFrame.outline);
 		sliderIconSize:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -60);
 		sliderIconSize:SetHeight(100);
-		sliderIconSize:SetWidth(340);
+		sliderIconSize:SetWidth(155);
 		sliderIconSize:GetTextObject():SetText(L["Icon size"]);
 		sliderIconSize:GetBaseSliderObject():SetValueStep(1);
 		sliderIconSize:GetBaseSliderObject():SetMinMaxValues(1, 50);
@@ -870,6 +898,49 @@ do
 		sliderIconSize:GetHighTextObject():SetText("50");
 		table.insert(GUIFrame.Categories[index], sliderIconSize);
 		table_insert(GUIFrame.OnDBChangedHandlers, function() sliderIconSize:GetBaseSliderObject():SetValue(db.IconSize); sliderIconSize:GetEditboxObject():SetText(tostring(db.IconSize)); end);
+		
+		-- // sliderIconSpacing
+		do
+		
+			local minValue, maxValue = 0, 50;
+			local sliderIconSpacing = LRD.CreateSlider();
+			sliderIconSpacing:SetParent(GUIFrame.outline);
+			sliderIconSpacing:SetWidth(155);
+			sliderIconSpacing:SetPoint("LEFT", sliderIconSize, "RIGHT", 10, 0);
+			sliderIconSpacing.label:SetText(L["Space between icons"]);
+			sliderIconSpacing.slider:SetValueStep(1);
+			sliderIconSpacing.slider:SetMinMaxValues(minValue, maxValue);
+			sliderIconSpacing.slider:SetValue(db.IconSpacing);
+			sliderIconSpacing.slider:SetScript("OnValueChanged", function(self, value)
+				sliderIconSpacing.editbox:SetText(tostring(math_ceil(value)));
+				db.IconSpacing = math_ceil(value);
+				ReallocateAllIcons(true);
+			end);
+			sliderIconSpacing.editbox:SetText(tostring(db.IconSpacing));
+			sliderIconSpacing.editbox:SetScript("OnEnterPressed", function(self, value)
+				if (sliderIconSpacing.editbox:GetText() ~= "") then
+					local v = tonumber(sliderIconSpacing.editbox:GetText());
+					if (v == nil) then
+						sliderIconSpacing.editbox:SetText(tostring(db.IconSpacing));
+						msg(L["Value must be a number"]);
+					else
+						if (v > maxValue) then
+							v = maxValue;
+						end
+						if (v < minValue) then
+							v = minValue;
+						end
+						sliderIconSpacing.slider:SetValue(v);
+					end
+					sliderIconSpacing.editbox:ClearFocus();
+				end
+			end);
+			sliderIconSpacing.lowtext:SetText(tostring(minValue));
+			sliderIconSpacing.hightext:SetText(tostring(maxValue));
+			table_insert(GUIFrame.Categories[index], sliderIconSpacing);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() sliderIconSpacing.slider:SetValue(db.IconSpacing); sliderIconSpacing.editbox:SetText(tostring(db.IconSpacing)); end);
+		
+		end
 		
 		local sliderIconXOffset = LRD.CreateSlider();
 		sliderIconXOffset:SetParent(GUIFrame.outline);
@@ -1830,6 +1901,24 @@ do
 		end
 		StaticPopupDialogs["NCOOLDOWNS_MSG"].text = text;
 		StaticPopup_Show("NCOOLDOWNS_MSG");
+	end
+	
+	function msgWithQuestion(text, funcOnAccept, funcOnCancel)
+		local frameName = "NameplateCooldowns_msgWithQuestion";
+		if (StaticPopupDialogs[frameName] == nil) then
+			StaticPopupDialogs[frameName] = {
+				button1 = YES,
+				button2 = NO,
+				timeout = 0,
+				whileDead = true,
+				hideOnEscape = true,
+				preferredIndex = 3,
+			};
+		end
+		StaticPopupDialogs[frameName].text = text;
+		StaticPopupDialogs[frameName].OnAccept = funcOnAccept;
+		StaticPopupDialogs[frameName].OnCancel = funcOnCancel;
+		StaticPopup_Show(frameName);
 	end
 	
 	-- // CoroutineProcessor
