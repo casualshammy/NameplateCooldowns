@@ -200,9 +200,7 @@ do
 		db = aceDB.profile;
 	end
 	
-	function OnStartup()
-		InitializeDB();
-		-- // add new spells
+	local function OnStartup_AddNewAndUpdatedSpells()
 		if (db.DBVersion < addonTable.DefaultSpellsVersion) then
 			local spellsAlreadyInUserDb = { };
 			for spellID, spellCd in pairs(addonTable.CDs) do
@@ -221,12 +219,14 @@ do
 				end
 			end
 			if (table_any(spellsAlreadyInUserDb)) then
+				for spellName, spellCd in pairs(spellsAlreadyInUserDb) do
+					Print(string_format(L["chat:print-updated-spells"], spellName, db.SpellCDs[spellName].cooldown, spellCd));
+				end
 				msgWithQuestion(L["msg:question:import-existing-spells"], 
 					function()
 						for spellName, spellCd in pairs(spellsAlreadyInUserDb) do
 							local oldCooldown = db.SpellCDs[spellName].cooldown;
 							db.SpellCDs[spellName].cooldown = spellCd;
-							Print(string_format(L["chat:cooldown-of-existing-spell-is-updated %s %s %s"], spellName, oldCooldown, db.SpellCDs[spellName].cooldown))
 						end
 					end,
 					function() end
@@ -234,6 +234,11 @@ do
 			end
 			db.DBVersion = addonTable.DefaultSpellsVersion;
 		end
+	end
+	
+	function OnStartup()
+		InitializeDB();
+		OnStartup_AddNewAndUpdatedSpells();
 		-- // starting OnUpdate()
 		EventFrame:SetScript("OnUpdate", function(self, elapsed)
 			ElapsedTimer = ElapsedTimer + elapsed;
@@ -576,13 +581,13 @@ do
 		local cTime = GetTime();
 		for _, unitName in pairs(NameplatesVisible) do
 			if (not charactersDB[unitName]) then charactersDB[unitName] = { }; end
-			charactersDB[unitName][SpellNameByID[SPELL_PVPTRINKET]] = { ["spellName"] = SpellNameByID[SPELL_PVPTRINKET], ["duration"] = 120, ["expires"] = cTime + 120, ["texture"] = SpellTextureByID[SPELL_PVPTRINKET] }; -- // 2m test
+			charactersDB[unitName][SpellNameByID[SPELL_PVPTRINKET]] = { ["spellName"] = SpellNameByID[SPELL_PVPTRINKET], ["expires"] = cTime + 120, ["texture"] = SpellTextureByID[SPELL_PVPTRINKET] }; -- // 2m test
 			for spellID, cd in pairs(_spellIDs) do
 				if (not charactersDB[unitName][SpellNameByID[spellID]]) then
-					charactersDB[unitName][SpellNameByID[spellID]] = { ["spellName"] = SpellNameByID[spellID], ["duration"] = cd, ["expires"] = cTime + cd, ["texture"] = SpellTextureByID[spellID] };
+					charactersDB[unitName][SpellNameByID[spellID]] = { ["spellName"] = SpellNameByID[spellID], ["expires"] = cTime + cd, ["texture"] = SpellTextureByID[spellID] };
 				else
 					if (cTime - charactersDB[unitName][SpellNameByID[spellID]]["expires"] > 0) then
-						charactersDB[unitName][SpellNameByID[spellID]] = { ["spellName"] = SpellNameByID[spellID], ["duration"] = cd, ["expires"] = cTime + cd, ["texture"] = SpellTextureByID[spellID] };
+						charactersDB[unitName][SpellNameByID[spellID]] = { ["spellName"] = SpellNameByID[spellID], ["expires"] = cTime + cd, ["texture"] = SpellTextureByID[spellID] };
 					end
 				end
 			end
@@ -906,8 +911,8 @@ do
 			local sliderIconSpacing = LRD.CreateSlider();
 			sliderIconSpacing:SetParent(GUIFrame.outline);
 			sliderIconSpacing:SetWidth(155);
-			sliderIconSpacing:SetPoint("LEFT", sliderIconSize, "RIGHT", 10, 0);
-			sliderIconSpacing.label:SetText(L["Space between icons"]);
+			sliderIconSpacing:SetPoint("LEFT", sliderIconSize, "RIGHT", 30, 0);
+			sliderIconSpacing.label:SetText(L["options:general:space-between-icons"]);
 			sliderIconSpacing.slider:SetValueStep(1);
 			sliderIconSpacing.slider:SetMinMaxValues(minValue, maxValue);
 			sliderIconSpacing.slider:SetValue(db.IconSpacing);
@@ -1991,9 +1996,8 @@ do
 					entry.texture = SpellTextureByID[spellID];
 					local name = string_match(srcName, "[%P]+");
 					if (not charactersDB[name]) then charactersDB[name] = { }; end
-					local duration = entry.cooldown;
-					local expires = cTime + duration;
-					charactersDB[name][spellName] = { ["spellName"] = spellName, ["duration"] = duration, ["expires"] = expires, ["texture"] = SpellTextureByID[spellID] };
+					local expires = cTime + entry.cooldown;
+					charactersDB[name][spellName] = { ["spellName"] = spellName, ["expires"] = expires, ["texture"] = SpellTextureByID[spellID] };
 					for frame, charName in pairs(NameplatesVisible) do
 						if (charName == name) then
 							UpdateOnlyOneNameplate(frame, charName);
@@ -2022,7 +2026,7 @@ do
 			elseif (spellID == SPELL_PVPADAPTATION and db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]] ~= nil and db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]].enabled and eventType == "SPELL_AURA_APPLIED") then
 				local name = string_match(srcName, "[%P]+");
 				if (charactersDB[name]) then
-					charactersDB[name][SpellNameByID[SPELL_PVPTRINKET]] = { ["spellName"] = SpellNameByID[SPELL_PVPTRINKET], ["duration"] = 60, ["expires"] = cTime + 60, ["texture"] = SpellTextureByID[SPELL_PVPTRINKET] };
+					charactersDB[name][SpellNameByID[SPELL_PVPTRINKET]] = { ["spellName"] = SpellNameByID[SPELL_PVPTRINKET], ["expires"] = cTime + 60, ["texture"] = SpellTextureByID[SPELL_PVPTRINKET] };
 					for frame, charName in pairs(NameplatesVisible) do
 						if (charName == name) then
 							UpdateOnlyOneNameplate(frame, charName);

@@ -384,6 +384,12 @@ do
 				45438,			-- // Ice Block
 			},
 		},
+		[115203] = { -- // Fortifying Brew https://www.wowhead.com/spell=115203/fortifying-brew
+			["reduction"] = -120,
+			["spells"] = {
+				243435,			-- // Fortifying Brew https://www.wowhead.com/spell=243435/fortifying-brew
+			},
+		},
 	};
 
 end
