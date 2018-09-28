@@ -571,6 +571,7 @@ do
 
 	local _t = 0;
 	local _charactersDB;
+	local _spellCDs;
 	local _spellIDs = {
 		[2139] 		= 24,
 		[108194] 	= 45,
@@ -596,8 +597,23 @@ do
 	
 	function EnableTestMode()
 		_charactersDB = deepcopy(charactersDB);
+		_spellCDs = deepcopy(db.SpellCDs);
+		db.SpellCDs = { };
+		for spellID, cd in pairs(_spellIDs) do
+			local spellName = SpellNameByID[spellID];
+			db.SpellCDs[spellName] = GetDefaultDBEntryForSpell(spellID);
+			db.SpellCDs[spellName].enabled = true;
+			db.SpellCDs[spellName].cooldown = cd;
+			db.SpellCDs[spellName].spellIDs = { [spellID] = true; };
+		end
+		db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]] = GetDefaultDBEntryForSpell(SPELL_PVPTRINKET);
+		db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]].enabled = true;
+		db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]].cooldown = 120;
+		db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]].spellIDs = { [SPELL_PVPTRINKET] = true; };
+		db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]].glow = GLOW_TIME_INFINITE;
 		if (not TestFrame) then
 			TestFrame = CreateFrame("frame");
+			TestFrame:SetScript("OnEvent", function() DisableTestMode(); end);
 		end
 		TestFrame:SetScript("OnUpdate", function(self, elapsed)
 			_t = _t + elapsed;
@@ -606,13 +622,16 @@ do
 				_t = 0;
 			end
 		end);
+		TestFrame:RegisterEvent("PLAYER_LOGOUT");
 		refreshCDs(); 	-- // for instant start
 		OnUpdate();		-- // for instant start
 	end
 	
 	function DisableTestMode()
 		TestFrame:SetScript("OnUpdate", nil);
+		TestFrame:UnregisterEvent("PLAYER_LOGOUT");
 		charactersDB = deepcopy(_charactersDB);
+		db.SpellCDs = deepcopy(_spellCDs);
 		OnUpdate();		-- // for instant start
 	end
 	
