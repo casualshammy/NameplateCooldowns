@@ -101,7 +101,9 @@ There are updated cooldowns for some of your spells. Do you want to apply update
 	["chat:addon-is-disabled"] = "Аддон отключен",
 	["chat:addon-is-disabled-note"] = "Обратите внимание: этот аддон отключен. Вы можете включить его командой (/nc)",
 	["chat:addon-is-enabled"] = "Аддон включен",
+	["chat:default-spell-is-added-to-ignore-list"] = "Заклинание добавлено в игнор-лист: %s. Вы не будете получать обновления кулдаунов для этого заклинания от разработчика.",
 	["chat:enable-only-for-target-nameplate"] = "КД будут показаны только на нэймплэйте цели",
+	["chat:print-updated-spells"] = "%s: прошлое значение: %s сек., новое значение: %s сек.",
 	["Click on icon to enable/disable tracking"] = "Нажмите на иконку чтобы вкл/выкл отслеживание",
 	["Copy"] = "Скопировать",
 	["Copy other profile to current profile:"] = "Скопировать другой профиль в текущий:",
@@ -112,57 +114,46 @@ There are updated cooldowns for some of your spells. Do you want to apply update
 	["Disable test mode"] = "Выключить тест",
 	["Enable test mode (need at least one visible nameplate)"] = "Включить тест (нужен хотя бы 1 видимый хп бар)",
 	["Filters"] = "Фильтры",
-	--[[Translation missing --]]
-	["filters.instance-types"] = [=[Set the visibility of the cooldowns
-in different types of locations]=],
+	["filters.instance-types"] = [=[Настроить видимость кулдаунов
+в различных типах локаций]=],
 	["Font:"] = "Шрифт:",
 	["General"] = "Общее",
-	--[[Translation missing --]]
-	["general.sort-mode"] = "Sort mode:",
+	["general.sort-mode"] = "Режим сортировки:",
 	["Icon size"] = "Размер иконок",
 	["Icon X-coord offset"] = "Смещение иконок по X",
 	["Icon Y-coord offset"] = "Смещение иконок по Y",
 	["instance-type:arena"] = "Арена",
-	--[[Translation missing --]]
-	["instance-type:none"] = "Open World",
-	--[[Translation missing --]]
-	["instance-type:party"] = "5ppl dungeons",
+	["instance-type:none"] = "Открытый мир",
+	["instance-type:party"] = "Подземелья на 5 человек",
 	["instance-type:pvp"] = "Поля битв",
 	["instance-type:raid"] = "Рейдовые подземелья",
 	["instance-type:scenario"] = "Сценарии",
-	--[[Translation missing --]]
-	["instance-type:unknown"] = "Unknown dungeons (some quest scenarios)",
+	["instance-type:unknown"] = "Неизвестные типы подземелий",
 	["MISC"] = "Другое",
+	["msg:question:import-existing-spells"] = [=[NameplateCooldowns
+Доступны обновленные значения кулдаунов для некоторых ваших заклинаний. Хотите применить обновление?]=],
 	["New spell has been added: %s"] = "Добавлено новое заклинание: %s",
 	["Options are not available in combat!"] = "Настройки недоступны, пока идет бой!",
-	--[[Translation missing --]]
-	["options:category:spells"] = "Spells",
+	["options:category:spells"] = "Заклинания",
 	["options:general:disable-addon-btn"] = "Отключить аддон",
 	["options:general:enable-addon-btn"] = "Включить аддон",
 	["options:general:enable-only-for-target-nameplate"] = "Показывать КД только на нэймплэйте цели",
-	--[[Translation missing --]]
-	["options:profiles:open-profiles-dialog"] = "Open profiles dialog",
-	--[[Translation missing --]]
-	["options:spells:add-new-spell"] = "Add new spell (name or id):",
-	--[[Translation missing --]]
-	["options:spells:add-spell"] = "Add spell",
-	--[[Translation missing --]]
-	["options:spells:click-to-select-spell"] = "Click to select spell",
-	--[[Translation missing --]]
-	["options:spells:cooldown-time"] = "Cooldown time",
-	--[[Translation missing --]]
-	["options:spells:delete-spell"] = "Delete spell",
-	--[[Translation missing --]]
-	["options:spells:enable-tracking-of-this-spell"] = "Enable tracking of this spell",
-	--[[Translation missing --]]
-	["options:spells:icon-glow"] = "Icon glow is disabled",
-	--[[Translation missing --]]
-	["options:spells:icon-glow-always"] = "Icon will glow if spell is on cooldown",
-	--[[Translation missing --]]
-	["options:spells:icon-glow-threshold"] = "Icon will glow if remaining time is less than",
-	--[[Translation missing --]]
-	["options:spells:track-only-this-spellid"] = [=[Track only these spell IDs
-(comma-separated)]=],
+	["options:general:space-between-icons"] = "Расстояние между иконками (пикс.)",
+	["options:profiles:open-profiles-dialog"] = "Открыть окно профилей",
+	["options:spells:add-new-spell"] = "Добавить заклинание (название или id):",
+	["options:spells:add-spell"] = "Добавить",
+	["options:spells:click-to-select-spell"] = "Нажмите, чтобы выбрать заклинание",
+	["options:spells:cooldown-time"] = "Значение кулдауна",
+	["options:spells:delete-all-spells"] = "Удалить все заклинания",
+	["options:spells:delete-all-spells-confirmation"] = "Вы действительно хотите удалить ВСЕ заклинания?",
+	["options:spells:delete-spell"] = "Удалить заклинание",
+	["options:spells:enable-tracking-of-this-spell"] = "Включить отслеживание этого заклинания",
+	["options:spells:icon-glow"] = "Подсветка иконки выключена",
+	["options:spells:icon-glow-always"] = "Подсветка иконки включена постоянно",
+	["options:spells:icon-glow-threshold"] = [=[Иконка будет подсвечиваться если оставшееся
+время кулдауна меньше чем]=],
+	["options:spells:track-only-this-spellid"] = [=[Отслеживать только эти id заклинания
+(разделять запятыми)]=],
 	["Profile '%s' has been successfully deleted"] = "Профиль '%s' успешно удален",
 	["Profiles"] = "Профили",
 	["Show border around interrupts"] = "Показывать контур вокруг прерываний",
