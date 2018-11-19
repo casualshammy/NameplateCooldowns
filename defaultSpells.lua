@@ -214,7 +214,6 @@ addonTable.CDs = {
 	[36554] = 30,				--"Shadowstep",
 	[5277] = 120,				--"Evasion",
 	[408] = 20,					--"Kidney Shot",
-	[76577] = 180,				--"Smoke Bomb",
 	[51690] = 120,				--"Killing Spree",
 	[79140] = 90,				--"Vendetta", [-30sec]
 	[13750] = 150,				-- Adrenaline Rush [-30sec]
