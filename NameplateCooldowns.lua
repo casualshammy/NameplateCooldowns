@@ -41,7 +41,6 @@ local SpellNameByID = setmetatable({}, {
 local ElapsedTimer = 0;
 local Nameplates = {};
 local NameplatesVisible = {};
-local LocalPlayerFullName = UnitName("player").." - "..GetRealmName();
 local InstanceType = "none";
 local GUIFrame, EventFrame, TestFrame, db, aceDB, ProfileOptionsFrame;
 
@@ -52,7 +51,7 @@ local OnStartup, InitializeDB, GetDefaultDBEntryForSpell;
 local AllocateIcon, ReallocateAllIcons, InitializeFrame, UpdateOnlyOneNameplate, Nameplate_SetBorder, Nameplate_SetCooldown, HideCDIcon, ShowCDIcon;
 local OnUpdate;
 local EnableTestMode, DisableTestMode;
-local ShowGUI, InitializeGUI, GUICategory_General, GUICategory_Profiles, GUICategory_Other, OnGUICategoryClick, ShowGUICategory, RebuildDropdowns, CreateGUICategory;
+local ShowGUI, InitializeGUI, GUICategory_General, GUICategory_Profiles, GUICategory_Other, OnGUICategoryClick, ShowGUICategory, CreateGUICategory;
 local Print, deepcopy, table_contains_key, table_any, CoroutineProcessor, ColorizeText, msg, table_count;
 
 -- // consts: you should not change existing values
@@ -85,18 +84,6 @@ do
 			["refSpellID"] = spellID,
 			["spellIDs"] = nil,
 		};
-	end
-
-	local function ConvertDBToAceIfNeeded(t)
-		if (NameplateCooldownsDB ~= nil and NameplateCooldownsDB[LocalPlayerFullName] ~= nil) then
-			local oldTable = NameplateCooldownsDB[LocalPlayerFullName];
-			for index, value in pairs(oldTable) do
-				if (value ~= nil) then
-					t[deepcopy(index)] = deepcopy(value);
-				end
-			end
-			NameplateCooldownsDB[LocalPlayerFullName] = nil;
-		end
 	end
 	
 	local function MigrateDB(t)
@@ -191,7 +178,6 @@ do
 			},
 		};
 		aceDB = LibStub("AceDB-3.0"):New("NameplateCooldownsAceDB", aceDBDefaults);
-		ConvertDBToAceIfNeeded(aceDB.profile);
 		MigrateDB(aceDB.profile);
 		AddToBlizzOptions();
 		aceDB.RegisterCallback("NameplateCooldowns", "OnProfileChanged", ReloadDB);
@@ -1802,43 +1788,6 @@ do
 		for i, v in pairs(GUIFrame.Categories[index]) do
 			v:Show();
 		end
-	end
-	
-	function RebuildDropdowns()
-		local info = {};
-		NC_GUIProfilesDropdownCopyProfile.myvalue = nil;
-		UIDropDownMenu_SetText(NC_GUIProfilesDropdownCopyProfile, "");
-		local initCopyProfile = function()
-			wipe(info);
-			for index in pairs(NameplateCooldownsDB) do
-				if (index ~= LocalPlayerFullName) then
-					info.text = index;
-					info.func = function(self)
-						NC_GUIProfilesDropdownCopyProfile.myvalue = index;
-						UIDropDownMenu_SetText(NC_GUIProfilesDropdownCopyProfile, index);
-					end
-					info.notCheckable = true;
-					UIDropDownMenu_AddButton(info);
-				end
-			end
-		end
-		UIDropDownMenu_Initialize(NC_GUIProfilesDropdownCopyProfile, initCopyProfile);
-		
-		NC_GUIProfilesDropdownDeleteProfile.myvalue = nil;
-		UIDropDownMenu_SetText(NC_GUIProfilesDropdownDeleteProfile, "");
-		local initDeleteProfile = function()
-			wipe(info);
-			for index in pairs(NameplateCooldownsDB) do
-				info.text = index;
-				info.func = function(self)
-					NC_GUIProfilesDropdownDeleteProfile.myvalue = index;
-					UIDropDownMenu_SetText(NC_GUIProfilesDropdownDeleteProfile, index);
-				end
-				info.notCheckable = true;
-				UIDropDownMenu_AddButton(info);
-			end
-		end
-		UIDropDownMenu_Initialize(NC_GUIProfilesDropdownDeleteProfile, initDeleteProfile);
 	end
 	
 	function CreateGUICategory()
