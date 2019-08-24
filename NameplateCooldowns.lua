@@ -745,7 +745,7 @@ do
 	
 	function InitializeGUI()
 		GUIFrame = CreateFrame("Frame", "NC_GUIFrame", UIParent);
-		GUIFrame:SetHeight(400);
+		GUIFrame:SetHeight(450);
 		GUIFrame:SetWidth(540);
 		GUIFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 80);
 		GUIFrame:SetBackdrop({
@@ -1263,7 +1263,7 @@ do
 			editboxAddSpell:SetFontObject(GameFontHighlightSmall);
 			editboxAddSpell:SetPoint("TOPLEFT", GUIFrame, 172, -30);
 			editboxAddSpell:SetHeight(20);
-			editboxAddSpell:SetWidth(175);
+			editboxAddSpell:SetWidth(210);
 			editboxAddSpell:SetJustifyH("LEFT");
 			editboxAddSpell:EnableMouse(true);
 			editboxAddSpell:SetScript("OnEscapePressed", function() editboxAddSpell:ClearFocus(); end);
@@ -1286,7 +1286,7 @@ do
 			buttonAddSpell = LRD.CreateButton();
 			buttonAddSpell:SetParent(GUIFrame);
 			buttonAddSpell:SetText(L["options:spells:add-spell"]);
-			buttonAddSpell:SetWidth(110);
+			buttonAddSpell:SetWidth(115);
 			buttonAddSpell:SetHeight(20);
 			buttonAddSpell:SetPoint("LEFT", editboxAddSpell, "RIGHT", 10, 0);
 			buttonAddSpell:SetScript("OnClick", function(self, ...)
@@ -1344,43 +1344,101 @@ do
 			
 		end
 		
-		-- // buttonDeleteAllSpells
+		-- // enable & disable all spells buttons
 		do
-		
-			local buttonDeleteAllSpells = LRD.CreateButton();
-			buttonDeleteAllSpells:SetParent(GUIFrame);
-			buttonDeleteAllSpells:SetText("X");
-			buttonDeleteAllSpells:SetWidth(24);
-			buttonDeleteAllSpells:SetHeight(24);
-			buttonDeleteAllSpells:SetPoint("LEFT", buttonAddSpell, "RIGHT", 5, 0);
-			buttonDeleteAllSpells:SetScript("OnClick", function(self, ...)
-				if (not StaticPopupDialogs["NCOOLDOWN_MSG_DELETE_ALL_SPELLS"]) then
-					StaticPopupDialogs["NCOOLDOWN_MSG_DELETE_ALL_SPELLS"] = {
-						text = L["options:spells:delete-all-spells-confirmation"],
-						button1 = YES,
-						button2 = NO,
-						OnAccept = function()
-							wipe(db.SpellCDs);
-							ReloadDB();
-						end,
-						timeout = 0,
-						whileDead = true,
-						hideOnEscape = true,
-						preferredIndex = 3,
-					};
+
+			local enableAllSpellsButton = LRD.CreateButton();
+			enableAllSpellsButton.clickedOnce = false;
+			enableAllSpellsButton:SetParent(dropdownMenuSpells);
+			enableAllSpellsButton:SetPoint("TOPLEFT", dropdownMenuSpells, "BOTTOMLEFT", 0, -10);
+			enableAllSpellsButton:SetHeight(18);
+			enableAllSpellsButton:SetWidth(dropdownMenuSpells:GetWidth() / 2 - 10);
+			enableAllSpellsButton:SetText(L["options:spells:enable-all-spells"]);
+			enableAllSpellsButton:SetScript("OnClick", function(self)
+				if (self.clickedOnce) then
+					for spellName in pairs(db.SpellCDs) do
+						db.SpellCDs[spellName].enabled = true;
+					end
+					ReallocateAllIcons(true);
+					selectSpell:Click();
+					self.clickedOnce = false;
+					self:SetText(L["options:spells:enable-all-spells"]);
+				else
+					self.clickedOnce = true;
+					self:SetText(L["options:spells:please-push-once-more"]);
+					C_Timer_After(3, function() 
+						self.clickedOnce = false;
+						self:SetText(L["options:spells:enable-all-spells"]);
+					end);
 				end
-				StaticPopup_Show("NCOOLDOWN_MSG_DELETE_ALL_SPELLS");
 			end);
-			buttonDeleteAllSpells:SetScript("OnEnter", function(self, ...)
-				GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT");
-				GameTooltip:SetText(L["options:spells:delete-all-spells"]);
-				GameTooltip:Show();
-			end)
-			buttonDeleteAllSpells:SetScript("OnLeave", function(self, ...)
-				GameTooltip:Hide();
-			end)
-			table_insert(GUIFrame.Categories[index], buttonDeleteAllSpells);
-		
+			enableAllSpellsButton:SetScript("OnHide", function(self)
+				self.clickedOnce = false;
+				self:SetText(L["options:spells:enable-all-spells"]);
+			end);
+
+			local disableAllSpellsButton = LRD.CreateButton();
+			disableAllSpellsButton.clickedOnce = false;
+			disableAllSpellsButton:SetParent(dropdownMenuSpells);
+			disableAllSpellsButton:SetPoint("LEFT", enableAllSpellsButton, "RIGHT", 10, 0);
+			disableAllSpellsButton:SetPoint("TOPRIGHT", dropdownMenuSpells, "BOTTOMRIGHT", 0, -10);
+			disableAllSpellsButton:SetHeight(18);
+			disableAllSpellsButton:SetText(L["options:spells:disable-all-spells"]);
+			disableAllSpellsButton:SetScript("OnClick", function(self)
+				if (self.clickedOnce) then
+					for spellName in pairs(db.SpellCDs) do
+						db.SpellCDs[spellName].enabled = false;
+					end
+					ReallocateAllIcons(true);
+					selectSpell:Click();
+					self.clickedOnce = false;
+					self:SetText(L["options:spells:disable-all-spells"]);
+				else
+					self.clickedOnce = true;
+					self:SetText(L["options:spells:please-push-once-more"]);
+					C_Timer_After(3, function() 
+						self.clickedOnce = false;
+						self:SetText(L["options:spells:disable-all-spells"]);
+					end);
+				end
+			end);
+			disableAllSpellsButton:SetScript("OnHide", function(self)
+				self.clickedOnce = false;
+				self:SetText(L["options:spells:disable-all-spells"]);
+			end);
+
+		end
+
+		-- // delete all spells button
+		do
+
+			local deleteAllSpellsButton = LRD.CreateButton();
+			deleteAllSpellsButton.clickedOnce = false;
+			deleteAllSpellsButton:SetParent(dropdownMenuSpells);
+			deleteAllSpellsButton:SetPoint("TOPLEFT", dropdownMenuSpells, "BOTTOMLEFT", 0, -29);
+			deleteAllSpellsButton:SetPoint("TOPRIGHT", dropdownMenuSpells, "BOTTOMRIGHT", 0, -29);
+			deleteAllSpellsButton:SetHeight(18);
+			deleteAllSpellsButton:SetText(L["options:spells:delete-all-spells"]);
+			deleteAllSpellsButton:SetScript("OnClick", function(self)
+				if (self.clickedOnce) then
+					wipe(db.SpellCDs);
+					ReloadDB();
+					self.clickedOnce = false;
+					self:SetText(L["options:spells:delete-all-spells"]);
+				else
+					self.clickedOnce = true;
+					self:SetText(L["options:spells:please-push-once-more"]);
+					C_Timer_After(3, function() 
+						self.clickedOnce = false;
+						self:SetText(L["options:spells:delete-all-spells"]);
+					end);
+				end
+			end);
+			deleteAllSpellsButton:SetScript("OnHide", function(self)
+				self.clickedOnce = false;
+				self:SetText(L["options:spells:delete-all-spells"]);
+			end);
+
 		end
 		
 		-- // selectSpell
@@ -1468,6 +1526,13 @@ do
 						end,
 						onLeave = HideGameTooltip,
 						func = OnSpellSelected,
+						checkBoxEnabled = true,
+						checkBoxState = spellInfo.enabled,
+						onCheckBoxClick = function(checkbox)
+							db.SpellCDs[spellName].enabled = checkbox:GetChecked();
+							ReallocateAllIcons(true);
+							dropdownMenuSpells:GetButtonByText(spellName):SetGray(not checkbox:GetChecked());
+						end,
 					});
 				end
 				table_sort(t, function(item1, item2) return item1.text < item2.text; end);
