@@ -1,3 +1,5 @@
+if (select(4, GetBuildInfo()) < 80200) then return end
+
 local _, addonTable = ...;
 local L = addonTable.L;
 local CDs = addonTable.CDs;

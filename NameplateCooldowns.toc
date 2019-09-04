@@ -6,4 +6,6 @@
 embeds.xml
 localizations.lua
 defaultSpells.lua
+defaultSpells_Classic.lua
 NameplateCooldowns.lua
+NameplateCooldowns_Classic.lua
