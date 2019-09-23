@@ -16,7 +16,6 @@ local LBG_ShowOverlayGlow, LBG_HideOverlayGlow = NAuras_LibButtonGlow.ShowOverla
 local SML = LibStub("LibSharedMedia-3.0");
 SML:Register("font", "NC_TeenBold", "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf", 255);
 
-local SPELL_PVPADAPTATION = 195901;
 local SPELL_PVPTRINKET = 7744;
 
 local charactersDB = {};
@@ -93,7 +92,6 @@ do
 			["glow"] = nil,
 			["texture"] = SpellTextureByID[spellID],
 			["refSpellID"] = spellID,
-			["spellIDs"] = nil,
 		};
 	end
 	
@@ -105,7 +103,6 @@ do
 					t.SpellCDs[spellName] = GetDefaultDBEntryForSpell(spellID);
 					t.SpellCDs[spellName].enabled = enabled;
 					t.SpellCDs[spellName].cooldown = addonTable.CDs[spellID];
-					t.SpellCDs[spellName].spellIDs = { [spellID] = true; };
 				end
 			end
 			t.CDsTable = { };
@@ -209,7 +206,6 @@ do
 						if (db.SpellCDs[spellName] == nil) then
 							db.SpellCDs[spellName] = GetDefaultDBEntryForSpell(spellID);
 							db.SpellCDs[spellName].cooldown = spellCd;
-							db.SpellCDs[spellName].spellIDs = { [spellID] = true; };
 							Print(format(L["New spell has been added: %s %s"], GetSpellLink(spellID), spellID));
 						else
 							if (db.SpellCDs[spellName].cooldown ~= spellCd) then
@@ -605,12 +601,10 @@ do
 			db.SpellCDs[spellName] = GetDefaultDBEntryForSpell(spellID);
 			db.SpellCDs[spellName].enabled = true;
 			db.SpellCDs[spellName].cooldown = cd;
-			db.SpellCDs[spellName].spellIDs = { [spellID] = true; };
 		end
 		db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]] = GetDefaultDBEntryForSpell(SPELL_PVPTRINKET);
 		db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]].enabled = true;
 		db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]].cooldown = 120;
-		db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]].spellIDs = { [SPELL_PVPTRINKET] = true; };
 		db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]].glow = GLOW_TIME_INFINITE;
 		if (not TestFrame) then
 			TestFrame = CreateFrame("frame");
@@ -1187,8 +1181,8 @@ do
 		local controls = { };
 		local selectedSpellName = 0;
 		local dropdownMenuSpells = LRD.CreateDropdownMenu();
-		local spellArea, editboxAddSpell, buttonAddSpell, dropdownSelectSpell, sliderCooldown, dropdownSpellShowType, editboxSpellID, buttonDeleteSpell, checkboxShowOnFriends,
-			checkboxShowOnEnemies, checkboxAllowMultipleInstances, selectSpell, checkboxPvPMode, checkboxEnabled, checkboxGlow, areaGlow, sliderGlowThreshold, areaCooldown, areaAuraType, areaIDs,
+		local spellArea, editboxAddSpell, buttonAddSpell, dropdownSelectSpell, sliderCooldown, dropdownSpellShowType, buttonDeleteSpell, checkboxShowOnFriends,
+			checkboxShowOnEnemies, checkboxAllowMultipleInstances, selectSpell, checkboxPvPMode, checkboxEnabled, checkboxGlow, areaGlow, sliderGlowThreshold, areaCooldown, areaAuraType,
 			areaMaxAuraDurationFilter, sliderMaxAuraDurationFilter;
 			
 		-- // building spell cache
@@ -1309,9 +1303,8 @@ do
 				if (text == nil or text == "") then
 					Print(L["Empty spell name!"]);
 				else
-					local spellName, refSpellID, userHasProvidedSpellName;
+					local spellName, refSpellID;
 					if (tonumber(text) ~= nil) then
-						userHasProvidedSpellName = true;
 						refSpellID = tonumber(text);
 						spellName = SpellNameByID[refSpellID];
 					else
@@ -1335,7 +1328,6 @@ do
 								msg(format(L["Spell already exists (%s)"], spellName));
 							else
 								db.SpellCDs[spellName] = GetDefaultDBEntryForSpell(refSpellID);
-								if (userHasProvidedSpellName) then db.SpellCDs[spellName].spellIDs = { [refSpellID] = true }; end
 								selectSpell:Click();
 								local btn = dropdownMenuSpells:GetButtonByText(spellName);
 								if (btn ~= nil) then
@@ -1488,15 +1480,6 @@ do
 					areaGlow:SetHeight(80);
 				end
 				sliderCooldown.slider:SetValue(db.SpellCDs[selectedSpellName].cooldown);
-				if (db.SpellCDs[selectedSpellName].spellIDs) then
-					local t = { };
-					for key in pairs(db.SpellCDs[selectedSpellName].spellIDs) do
-						table_insert(t, key);
-					end
-					editboxSpellID:SetText(table.concat(t, ","));
-				else
-					editboxSpellID:SetText("");
-				end
 			end
 			
 			local function HideGameTooltip()
@@ -1748,74 +1731,6 @@ do
 			
 		end
 		
-		-- // areaIDs
-		do
-		
-			areaIDs = CreateFrame("Frame", nil, spellArea.controlsFrame);
-			areaIDs:SetBackdrop({
-				bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
-				edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-				tile = 1,
-				tileSize = 16,
-				edgeSize = 16,
-				insets = { left = 4, right = 4, top = 4, bottom = 4 }
-			});
-			areaIDs:SetBackdropColor(0.1, 0.1, 0.2, 1);
-			areaIDs:SetBackdropBorderColor(0.8, 0.8, 0.9, 0.4);
-			areaIDs:SetPoint("TOPLEFT", areaGlow, "BOTTOMLEFT", 0, 0);
-			areaIDs:SetWidth(340);
-			areaIDs:SetHeight(40);
-			table_insert(controls, areaIDs);
-		
-		end
-		
-		-- // editboxSpellID
-		do
-		
-			local function StringToTableKeys(str)
-				local t = { };
-				for key in gmatch(str, "%w+") do
-					local nmbr = tonumber(key);
-					if (nmbr ~= nil) then
-						t[nmbr] = true;
-					end
-				end
-				return t;
-			end
-		
-			editboxSpellID = CreateFrame("EditBox", nil, areaIDs);
-			editboxSpellID:SetAutoFocus(false);
-			editboxSpellID:SetFontObject(GameFontHighlightSmall);
-			editboxSpellID.text = editboxSpellID:CreateFontString(nil, "ARTWORK", "GameFontNormal");
-			editboxSpellID.text:SetPoint("TOPLEFT", areaIDs, "TOPLEFT", 10, -10);
-			editboxSpellID.text:SetText(L["options:spells:track-only-this-spellid"]);
-			editboxSpellID:SetPoint("LEFT", editboxSpellID.text, "RIGHT", 5, 0);
-			editboxSpellID:SetPoint("RIGHT", areaIDs, "RIGHT", -15, 0);
-			editboxSpellID:SetHeight(20);
-			editboxSpellID:SetJustifyH("LEFT");
-			editboxSpellID:EnableMouse(true);
-			editboxSpellID:SetBackdrop({
-				bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
-				edgeFile = "Interface\\ChatFrame\\ChatFrameBackground",
-				tile = true, edgeSize = 1, tileSize = 5,
-			});
-			editboxSpellID:SetBackdropColor(0, 0, 0, 0.5);
-			editboxSpellID:SetBackdropBorderColor(0.3, 0.3, 0.30, 0.80);
-			editboxSpellID:SetScript("OnEscapePressed", function() editboxSpellID:ClearFocus(); end);
-			editboxSpellID:SetScript("OnEnterPressed", function(self, value)
-				local text = self:GetText();
-				local t = StringToTableKeys(text);
-				db.SpellCDs[selectedSpellName].spellIDs = (table_count(t) > 0) and t or nil;
-				ReallocateAllIcons(true);
-				if (table_count(t) == 0) then
-					self:SetText("");
-				end
-				self:ClearFocus();
-			end);
-			table_insert(controls, editboxSpellID);
-		
-		end
-		
 		-- // buttonDeleteSpell
 		do
 		
@@ -1824,8 +1739,8 @@ do
 			buttonDeleteSpell:SetText(L["options:spells:delete-spell"]);
 			buttonDeleteSpell:SetWidth(90);
 			buttonDeleteSpell:SetHeight(20);
-			buttonDeleteSpell:SetPoint("TOPLEFT", areaIDs, "BOTTOMLEFT", 10, -10);
-			buttonDeleteSpell:SetPoint("TOPRIGHT", areaIDs, "BOTTOMRIGHT", -10, -10);
+			buttonDeleteSpell:SetPoint("TOPLEFT", areaGlow, "BOTTOMLEFT", 10, -10);
+			buttonDeleteSpell:SetPoint("TOPRIGHT", areaGlow, "BOTTOMRIGHT", -10, -10);
 			buttonDeleteSpell:SetScript("OnClick", function(self, ...)
 				db.SpellCDs[selectedSpellName] = nil;
 				for spellID in pairs(addonTable.CDs) do
@@ -2035,13 +1950,13 @@ do
 	
 	EventFrame.COMBAT_LOG_EVENT_UNFILTERED = function()
 		local cTime = GetTime();
-		local _, eventType, _, _, srcName, srcFlags, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo();
+		local _, eventType, _, _, srcName, srcFlags, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo(); -- spellID actually is 0, always!
 		if (bit_band(srcFlags, COMBATLOG_OBJECT_IS_HOSTILE) ~= 0) then
 			local entry = db.SpellCDs[spellName];
-			if (entry and entry.enabled and (entry.spellIDs == nil or entry.spellIDs[spellID])) then
+			if (entry and entry.enabled) then
 				if (eventType == "SPELL_CAST_SUCCESS" or eventType == "SPELL_AURA_APPLIED" or eventType == "SPELL_MISSED" or eventType == "SPELL_SUMMON") then
-					entry.refSpellID = spellID;
-					entry.texture = SpellTextureByName[spellID];
+					-- entry.refSpellID = spellID;
+					entry.texture = SpellTextureByName[spellName];
 					local name = string_match(srcName, "[%P]+");
 					if (not charactersDB[name]) then charactersDB[name] = { }; end
 					local expires = cTime + entry.cooldown;
@@ -2055,26 +1970,14 @@ do
 				end
 			end
 			-- reductions
-			if (Reductions[spellID] ~= nil and eventType == "SPELL_CAST_SUCCESS") then
+			if (Reductions[spellName] ~= nil and eventType == "SPELL_CAST_SUCCESS") then
 				local name = string_match(srcName, "[%P]+");
 				if (charactersDB[name]) then
-					for _, sp in pairs(Reductions[spellID].spells) do
+					for _, sp in pairs(Reductions[spellName].spells) do
 						if (charactersDB[name][SpellNameByID[sp]] ~= nil) then
-							charactersDB[name][SpellNameByID[sp]].expires = charactersDB[name][SpellNameByID[sp]].expires - Reductions[spellID].reduction;
+							charactersDB[name][SpellNameByID[sp]].expires = charactersDB[name][SpellNameByID[sp]].expires - Reductions[spellName].reduction;
 						end
 					end
-					for frame, charName in pairs(NameplatesVisible) do
-						if (charName == name) then
-							UpdateOnlyOneNameplate(frame, charName);
-							break;
-						end
-					end
-				end
-			-- // pvptier 1/2 used, correcting cd of PvP trinket
-			elseif (spellID == SPELL_PVPADAPTATION and db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]] ~= nil and db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]].enabled and eventType == "SPELL_AURA_APPLIED") then
-				local name = string_match(srcName, "[%P]+");
-				if (charactersDB[name]) then
-					charactersDB[name][SpellNameByID[SPELL_PVPTRINKET]] = { ["spellName"] = SpellNameByID[SPELL_PVPTRINKET], ["expires"] = cTime + 60, ["texture"] = SpellTextureByID[SPELL_PVPTRINKET] };
 					for frame, charName in pairs(NameplatesVisible) do
 						if (charName == name) then
 							UpdateOnlyOneNameplate(frame, charName);

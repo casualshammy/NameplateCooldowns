@@ -90,33 +90,12 @@ do
 	local BIG_REDUCTION = 4*1000*1000;
 
 	addonTable.Reductions = {
-		-- [275773] = { -- // holy paladin's judgment https://www.wowhead.com/spell=275773/judgment
-			-- ["reduction"] = 10,
-			-- ["spells"] = { 853 },
+		-- ["SPELL NAME HERE"] = { -- // Fortifying Brew https://www.wowhead.com/spell=115203/fortifying-brew
+			-- ["reduction"] = -120,
+			-- ["spells"] = {
+				-- 243435,			-- // Fortifying Brew https://www.wowhead.com/spell=243435/fortifying-brew
+			-- },
 		-- },
-		-- [275779] = { -- // protection paladin's judgment https://www.wowhead.com/spell=275779/judgment
-			-- ["reduction"] = 6,
-			-- ["spells"] = { 853 },
-		-- },
-		[195676] = { -- // Displacement https://ru.wowhead.com/spell=195676/%D1%81%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D0%B5
-			["reduction"] = BIG_REDUCTION,
-			["spells"] = { 1953 }, -- // Blink
-		},
-		[235219] = { -- // Cold Snap https://ru.wowhead.com/spell=235219/%D1%85%D0%BE%D0%BB%D0%BE%D0%B4%D0%BD%D0%B0%D1%8F-%D1%85%D0%B2%D0%B0%D1%82%D0%BA%D0%B0
-			["reduction"] = BIG_REDUCTION,
-			["spells"] = {
-				122,			-- // Frost Nova
-				120,			-- // Cone of Cold
-				11426,			-- // Ice Barrier
-				45438,			-- // Ice Block
-			},
-		},
-		[115203] = { -- // Fortifying Brew https://www.wowhead.com/spell=115203/fortifying-brew
-			["reduction"] = -120,
-			["spells"] = {
-				243435,			-- // Fortifying Brew https://www.wowhead.com/spell=243435/fortifying-brew
-			},
-		},
 	};
 
 end
