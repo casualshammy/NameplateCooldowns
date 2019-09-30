@@ -206,7 +206,7 @@ do
 						if (db.SpellCDs[spellName] == nil) then
 							db.SpellCDs[spellName] = GetDefaultDBEntryForSpell(spellID);
 							db.SpellCDs[spellName].cooldown = spellCd;
-							Print(format(L["New spell has been added: %s %s"], GetSpellLink(spellID), spellID));
+							Print(format(L["New spell has been added: %s"], GetSpellLink(spellID)));
 						else
 							if (db.SpellCDs[spellName].cooldown ~= spellCd) then
 								spellsAlreadyInUserDb[spellName] = spellCd;
