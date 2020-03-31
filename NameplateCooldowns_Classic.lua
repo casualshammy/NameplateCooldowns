@@ -35,9 +35,23 @@ local SpellTextureByID = setmetatable({
 
 local SpellTextureByName = setmetatable({ }, {
 	__index = function(t, key)
-		local texture = GetSpellTexture(key);
-		t[key] = texture;
-		return texture;
+		local errorLimit = 10000;
+		local spellName, _, texture;
+		for spellID = 1, 1000000 do
+			spellName, _, texture = GetSpellInfo(spellID);
+			if (spellName ~= nil) then
+				t[spellName] = texture;
+			end
+			if (spellName == key) then
+				return texture;
+			end
+			if (spellName == nil) then
+				errorLimit = errorLimit - 1;
+			end
+			if (errorLimit <= 0) then
+				return nil;
+			end
+		end
 	end
 });
 
