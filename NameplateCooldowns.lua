@@ -177,6 +177,7 @@ do
 					["raid"] = 					true,
 					["scenario"] = 				true,
 				},
+				ShowOldBlizzardBorderAroundIcons = false,
 			},
 		};
 		aceDB = LibStub("AceDB-3.0"):New("NameplateCooldownsAceDB", aceDBDefaults);
@@ -295,7 +296,9 @@ do
 		icon:Hide();
 		icon.texture = icon:CreateTexture(nil, "BORDER");
 		icon.texture:SetAllPoints(icon);
-		icon.texture:SetTexCoord(0.07, 0.93, 0.07, 0.93);
+		if (not db.ShowOldBlizzardBorderAroundIcons) then
+			icon.texture:SetTexCoord(0.07, 0.93, 0.07, 0.93);
+		end
 		icon.cooldownText = icon:CreateFontString(nil, "OVERLAY");
 		icon.cooldownText:SetTextColor(0.7, 1, 0);
 		icon.cooldownText:SetAllPoints(icon);
@@ -322,6 +325,13 @@ do
 					else
 						icon:SetPoint("LEFT", frame.NCIcons[iconIndex-1], "RIGHT", db.IconSpacing, 0);
 					end
+					
+					if (not db.ShowOldBlizzardBorderAroundIcons) then
+						icon.texture:SetTexCoord(0.07, 0.93, 0.07, 0.93);
+					else
+						icon.texture:SetTexCoord(0, 1, 0, 1);
+					end
+					
 					icon.cooldownText:SetFont(SML:Fetch("font", db.Font), math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
 					if (clearSpells) then
 						HideCDIcon(icon);
@@ -741,10 +751,96 @@ do
 		
 	end
 	
-	local function GUICategory_Font(index)
+	local function GUICategory_Borders(index, value)
+		local checkBoxBorderTrinkets, checkBoxBorderInterrupts, checkBoxShowOldBlizzardBordersAroundIcons;
+
+		-- // checkBoxBorderTrinkets
+		do
+			checkBoxBorderTrinkets = LRD.CreateCheckBoxWithColorPicker();
+			checkBoxBorderTrinkets:SetText(L["Show border around trinkets"]);
+			checkBoxBorderTrinkets:SetOnClickHandler(function(this)
+				db.ShowBorderTrinkets = this:GetChecked();
+				ReallocateAllIcons(true);
+			end);
+			checkBoxBorderTrinkets:SetParent(GUIFrame.outline);
+			checkBoxBorderTrinkets:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -15);
+			checkBoxBorderTrinkets:SetChecked(db.ShowBorderTrinkets);
+			checkBoxBorderTrinkets:SetColor(unpack(db.BorderTrinketsColor));
+			checkBoxBorderTrinkets.ColorButton:SetScript("OnClick", function()
+				ColorPickerFrame:Hide();
+				local function callback(restore)
+					local r, g, b;
+					if (restore) then
+						r, g, b = unpack(restore);
+					else
+						r, g, b = ColorPickerFrame:GetColorRGB();
+					end
+					db.BorderTrinketsColor = {r, g, b};
+					checkBoxBorderTrinkets:SetColor(unpack(db.BorderTrinketsColor));
+					ReallocateAllIcons(true);
+				end
+				ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = callback, callback, callback;
+				ColorPickerFrame:SetColorRGB(unpack(db.BorderTrinketsColor));
+				ColorPickerFrame.hasOpacity = false;
+				ColorPickerFrame.previousValues = { unpack(db.BorderTrinketsColor) };
+				ColorPickerFrame:Show();
+			end);
+			table.insert(GUIFrame.Categories[index], checkBoxBorderTrinkets);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxBorderTrinkets:SetChecked(db.ShowBorderTrinkets); checkBoxBorderTrinkets:SetColor(unpack(db.BorderTrinketsColor)); end);	
+		end
+		
+		-- // checkBoxBorderInterrupts
+		do
+			checkBoxBorderInterrupts = LRD.CreateCheckBoxWithColorPicker();
+			checkBoxBorderInterrupts:SetText(L["Show border around interrupts"]);
+			checkBoxBorderInterrupts:SetOnClickHandler(function(this)
+				db.ShowBorderInterrupts = this:GetChecked();
+				ReallocateAllIcons(true);
+			end);
+			checkBoxBorderInterrupts:SetParent(GUIFrame.outline);
+			checkBoxBorderInterrupts:SetPoint("TOPLEFT", checkBoxBorderTrinkets, "BOTTOMLEFT", 0, -5);
+			checkBoxBorderInterrupts:SetChecked(db.ShowBorderInterrupts);
+			checkBoxBorderInterrupts:SetColor(unpack(db.BorderInterruptsColor));
+			checkBoxBorderInterrupts.ColorButton:SetScript("OnClick", function()
+				ColorPickerFrame:Hide();
+				local function callback(restore)
+					local r, g, b;
+					if (restore) then
+						r, g, b = unpack(restore);
+					else
+						r, g, b = ColorPickerFrame:GetColorRGB();
+					end
+					db.BorderInterruptsColor = {r, g, b};
+					checkBoxBorderInterrupts:SetColor(unpack(db.BorderInterruptsColor));
+					ReallocateAllIcons(true);
+				end
+				ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = callback, callback, callback;
+				ColorPickerFrame:SetColorRGB(unpack(db.BorderInterruptsColor));
+				ColorPickerFrame.hasOpacity = false;
+				ColorPickerFrame.previousValues = { unpack(db.BorderInterruptsColor) };
+				ColorPickerFrame:Show();
+			end);
+			table.insert(GUIFrame.Categories[index], checkBoxBorderInterrupts);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxBorderInterrupts:SetChecked(db.ShowBorderInterrupts); checkBoxBorderInterrupts:SetColor(unpack(db.BorderInterruptsColor)); end);
+		end
+
+		-- // checkBoxShowOldBlizzardBordersAroundIcons
+		do
+			checkBoxShowOldBlizzardBordersAroundIcons = LRD.CreateCheckBox();
+			checkBoxShowOldBlizzardBordersAroundIcons:SetText(L["options:borders:show-blizz-borders"]);
+			checkBoxShowOldBlizzardBordersAroundIcons:SetOnClickHandler(function(this)
+				db.ShowOldBlizzardBorderAroundIcons = this:GetChecked();
+				ReallocateAllIcons(true);
+			end);
+			checkBoxShowOldBlizzardBordersAroundIcons:SetParent(GUIFrame.outline);
+			checkBoxShowOldBlizzardBordersAroundIcons:SetPoint("TOPLEFT", checkBoxBorderInterrupts, "BOTTOMLEFT", 0, -5);
+			checkBoxShowOldBlizzardBordersAroundIcons:SetChecked(db.ShowOldBlizzardBorderAroundIcons);
+			table.insert(GUIFrame.Categories[index], checkBoxShowOldBlizzardBordersAroundIcons);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxShowOldBlizzardBordersAroundIcons:SetChecked(db.ShowOldBlizzardBorderAroundIcons); end);
+		end
 		
 	end
-	
+
 	function InitializeGUI()
 		GUIFrame = CreateFrame("Frame", "NC_GUIFrame", UIParent);
 		GUIFrame:SetHeight(450);
@@ -804,7 +900,7 @@ do
 		GUIFrame.Categories = {};
 		GUIFrame.SpellIcons = {};
 		
-		for index, value in pairs({ L["General"], L["Filters"], L["Profiles"], L["options:category:spells"] }) do
+		for index, value in pairs({ L["General"], L["Filters"], L["options:category:borders"], L["Profiles"], L["options:category:spells"] }) do
 			local b = CreateGUICategory();
 			b.index = index;
 			b.text:SetText(value);
@@ -812,7 +908,7 @@ do
 				b:LockHighlight();
 				b.text:SetTextColor(1, 1, 1);
 			end
-			if (index < 4) then
+			if (index < 5) then
 				b:SetPoint("TOPLEFT", GUIFrame.outline, "TOPLEFT", 5, (index-1) * -18 - 6);
 			else
 				b:SetPoint("TOPLEFT", GUIFrame.outline, "TOPLEFT", 5, (index-1) * -18 - 26);
@@ -827,6 +923,8 @@ do
 				GUICategory_Filters(index, value);
 			elseif (value == L["Profiles"]) then
 				GUICategory_Profiles(index, value);
+			elseif (value == L["options:category:borders"]) then
+				GUICategory_Borders(index, value);
 			else
 				GUICategory_Other(index, value);
 			end
@@ -1040,70 +1138,6 @@ do
 		checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways);
 		table.insert(GUIFrame.Categories[index], checkBoxFullOpacityAlways);
 		table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways); end);
-		
-		local checkBoxBorderTrinkets = LRD.CreateCheckBoxWithColorPicker();
-		checkBoxBorderTrinkets:SetText(L["Show border around trinkets"]);
-		checkBoxBorderTrinkets:SetOnClickHandler(function(this)
-			db.ShowBorderTrinkets = this:GetChecked();
-			ReallocateAllIcons(true);
-		end);
-		checkBoxBorderTrinkets:SetParent(GUIFrame.outline);
-		checkBoxBorderTrinkets:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -235);
-		checkBoxBorderTrinkets:SetChecked(db.ShowBorderTrinkets);
-		checkBoxBorderTrinkets:SetColor(unpack(db.BorderTrinketsColor));
-		checkBoxBorderTrinkets.ColorButton:SetScript("OnClick", function()
-			ColorPickerFrame:Hide();
-			local function callback(restore)
-				local r, g, b;
-				if (restore) then
-					r, g, b = unpack(restore);
-				else
-					r, g, b = ColorPickerFrame:GetColorRGB();
-				end
-				db.BorderTrinketsColor = {r, g, b};
-				checkBoxBorderTrinkets:SetColor(unpack(db.BorderTrinketsColor));
-				ReallocateAllIcons(true);
-			end
-			ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = callback, callback, callback;
-			ColorPickerFrame:SetColorRGB(unpack(db.BorderTrinketsColor));
-			ColorPickerFrame.hasOpacity = false;
-			ColorPickerFrame.previousValues = { unpack(db.BorderTrinketsColor) };
-			ColorPickerFrame:Show();
-		end);
-		table.insert(GUIFrame.Categories[index], checkBoxBorderTrinkets);
-		table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxBorderTrinkets:SetChecked(db.ShowBorderTrinkets); checkBoxBorderTrinkets:SetColor(unpack(db.BorderTrinketsColor)); end);
-		
-		local checkBoxBorderInterrupts = LRD.CreateCheckBoxWithColorPicker();
-		checkBoxBorderInterrupts:SetText(L["Show border around interrupts"]);
-		checkBoxBorderInterrupts:SetOnClickHandler(function(this)
-			db.ShowBorderInterrupts = this:GetChecked();
-			ReallocateAllIcons(true);
-		end);
-		checkBoxBorderInterrupts:SetParent(GUIFrame.outline);
-		checkBoxBorderInterrupts:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -255);
-		checkBoxBorderInterrupts:SetChecked(db.ShowBorderInterrupts);
-		checkBoxBorderInterrupts:SetColor(unpack(db.BorderInterruptsColor));
-		checkBoxBorderInterrupts.ColorButton:SetScript("OnClick", function()
-			ColorPickerFrame:Hide();
-			local function callback(restore)
-				local r, g, b;
-				if (restore) then
-					r, g, b = unpack(restore);
-				else
-					r, g, b = ColorPickerFrame:GetColorRGB();
-				end
-				db.BorderInterruptsColor = {r, g, b};
-				checkBoxBorderInterrupts:SetColor(unpack(db.BorderInterruptsColor));
-				ReallocateAllIcons(true);
-			end
-			ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = callback, callback, callback;
-			ColorPickerFrame:SetColorRGB(unpack(db.BorderInterruptsColor));
-			ColorPickerFrame.hasOpacity = false;
-			ColorPickerFrame.previousValues = { unpack(db.BorderInterruptsColor) };
-			ColorPickerFrame:Show();
-		end);
-		table.insert(GUIFrame.Categories[index], checkBoxBorderInterrupts);
-		table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxBorderInterrupts:SetChecked(db.ShowBorderInterrupts); checkBoxBorderInterrupts:SetColor(unpack(db.BorderInterruptsColor)); end);
 		
 		local dropdownIconSortMode = CreateFrame("Frame", "NC.GUI.General.DropdownIconSortMode", GUIFrame, "UIDropDownMenuTemplate");
 		UIDropDownMenu_SetWidth(dropdownIconSortMode, 300);

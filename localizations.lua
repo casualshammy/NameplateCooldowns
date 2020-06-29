@@ -95,7 +95,9 @@ local locales = {
 		["Show border around interrupts"] = "Show border around interrupts",
 		["Show border around trinkets"] = "Show border around trinkets",
 		["Unknown spell: %s"] = "Unknown spell: %s",
-		["Value must be a number"] = "Value must be a number"
+		["Value must be a number"] = "Value must be a number",
+		["options:category:borders"] = "Borders",
+		["options:borders:show-blizz-borders"] = "Show Blizzard's borders around icons",
 	},
 	["ruRU"] = 
 {
@@ -162,7 +164,9 @@ local locales = {
 	["Show border around interrupts"] = "Показывать контур вокруг прерываний",
 	["Show border around trinkets"] = "Показывать контур вокруг тринкетов",
 	["Unknown spell: %s"] = "Неизвестное заклинание: %s",
-	["Value must be a number"] = "Значение должно быть числом"
+	["Value must be a number"] = "Значение должно быть числом",
+	["options:category:borders"] = "Границы",
+	["options:borders:show-blizz-borders"] = "Показывать стандартные границы иконок",
 },
 };
 --@end-debug@
