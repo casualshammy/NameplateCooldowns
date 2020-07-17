@@ -101,6 +101,9 @@ do
 			end
 			t.CDsTable = { };
 		end
+		if (t.TimerTextSize == nil) then
+			t.TimerTextSize = math_ceil(t.IconSize - t.IconSize/2);
+		end
 	end
 		
 	local function AddToBlizzOptions()
@@ -178,6 +181,15 @@ do
 					["scenario"] = 				true,
 				},
 				ShowOldBlizzardBorderAroundIcons = false,
+
+				FontScale = 1,
+				TimerTextSize = nil,
+				TimerTextUseRelativeScale = true,
+				TimerTextAnchor = "CENTER",
+				TimerTextAnchorIcon = "CENTER",
+				TimerTextXOffset = 0,
+				TimerTextYOffset = 0,
+				TimerTextColor = { 0.7, 1, 0 },
 			},
 		};
 		aceDB = LibStub("AceDB-3.0"):New("NameplateCooldownsAceDB", aceDBDefaults);
@@ -300,9 +312,13 @@ do
 			icon.texture:SetTexCoord(0.07, 0.93, 0.07, 0.93);
 		end
 		icon.cooldownText = icon:CreateFontString(nil, "OVERLAY");
-		icon.cooldownText:SetTextColor(0.7, 1, 0);
-		icon.cooldownText:SetAllPoints(icon);
-		icon.cooldownText:SetFont(SML:Fetch("font", db.Font), math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
+		icon.cooldownText:SetTextColor(unpack(db.TimerTextColor));
+		icon.cooldownText:SetPoint(db.TimerTextAnchor, icon, db.TimerTextAnchorIcon, db.TimerTextXOffset, db.TimerTextYOffset);
+		if (db.TimerTextUseRelativeScale) then
+			icon.cooldownText:SetFont(SML:Fetch("font", db.Font), math_ceil((db.IconSize - db.IconSize / 2) * db.FontScale), "OUTLINE");
+		else
+			icon.cooldownText:SetFont(SML:Fetch("font", db.Font), db.TimerTextSize, "OUTLINE");
+		end
 		icon.border = icon:CreateTexture(nil, "OVERLAY");
 		icon.border:SetTexture("Interface\\AddOns\\NameplateCooldowns\\media\\CooldownFrameBorder.tga");
 		icon.border:SetVertexColor(1, 0.35, 0);
@@ -331,8 +347,16 @@ do
 					else
 						icon.texture:SetTexCoord(0, 1, 0, 1);
 					end
-					
-					icon.cooldownText:SetFont(SML:Fetch("font", db.Font), math_ceil(db.IconSize - db.IconSize / 2), "OUTLINE");
+
+					icon.cooldownText:SetTextColor(unpack(db.TimerTextColor));
+					icon.cooldownText:ClearAllPoints();
+					icon.cooldownText:SetPoint(db.TimerTextAnchor, icon, db.TimerTextAnchorIcon, db.TimerTextXOffset, db.TimerTextYOffset);
+					if (db.TimerTextUseRelativeScale) then
+						icon.cooldownText:SetFont(SML:Fetch("font", db.Font), math_ceil((db.IconSize - db.IconSize / 2) * db.FontScale), "OUTLINE");
+					else
+						icon.cooldownText:SetFont(SML:Fetch("font", db.Font), db.TimerTextSize, "OUTLINE");
+					end
+
 					if (clearSpells) then
 						HideCDIcon(icon);
 					end
@@ -841,6 +865,411 @@ do
 		
 	end
 
+	local function GUICategory_Text(index, value)
+		local dropdownMenuFont = LRD.CreateDropdownMenu();
+		local textAnchors = { "TOPRIGHT", "RIGHT", "BOTTOMRIGHT", "TOP", "CENTER", "BOTTOM", "TOPLEFT", "LEFT", "BOTTOMLEFT" };
+		local textAnchorsLocalization = {
+			[textAnchors[1]] = L["anchor-point:topright"],
+			[textAnchors[2]] = L["anchor-point:right"],
+			[textAnchors[3]] = L["anchor-point:bottomright"],
+			[textAnchors[4]] = L["anchor-point:top"],
+			[textAnchors[5]] = L["anchor-point:center"],
+			[textAnchors[6]] = L["anchor-point:bottom"],
+			[textAnchors[7]] = L["anchor-point:topleft"],
+			[textAnchors[8]] = L["anchor-point:left"],
+			[textAnchors[9]] = L["anchor-point:bottomleft"]
+		};
+		local textSizeArea, textAnchorArea;
+		local sliderTimerFontScale, sliderTimerFontSize;
+	
+		-- // dropdownFont
+		do
+		
+			local fonts = { };
+			local button = LRD.CreateButton();
+			button:SetParent(GUIFrame);
+			button:SetText(L["options:text:font"] .. ": " .. db.Font);
+			
+			for idx, font in next, SML:List("font") do
+				table_insert(fonts, {
+					["text"] = font,
+					["icon"] = [[Interface\AddOns\NameplateAuras\media\font.tga]],
+					["func"] = function(info)
+						button.Text:SetText(L["options:text:font"] .. ": " .. info.text);
+						db.Font = info.text;
+						ReallocateAllIcons(false);
+					end,
+					["options:text:font"] = SML:Fetch("font", font),
+				});
+			end
+			table_sort(fonts, function(item1, item2) return item1.text < item2.text; end);
+			
+			button:SetWidth(170);
+			button:SetHeight(24);
+			button:SetPoint("TOPLEFT", GUIFrame, "TOPLEFT", 160, -28);
+			button:SetPoint("TOPRIGHT", GUIFrame, "TOPRIGHT", -30, -28);
+			button:SetScript("OnClick", function(self, ...)
+				if (dropdownMenuFont:IsVisible()) then
+					dropdownMenuFont:Hide();
+				else
+					dropdownMenuFont:SetList(fonts);
+					dropdownMenuFont:SetParent(self);
+					dropdownMenuFont:ClearAllPoints();
+					dropdownMenuFont:SetPoint("TOP", self, "BOTTOM", 0, 0);
+					dropdownMenuFont:Show();
+				end
+			end);
+			table_insert(GUIFrame.Categories[index], button);
+			
+		end
+	
+		-- // textSizeArea
+		do
+		
+			textSizeArea = CreateFrame("Frame", nil, GUIFrame);
+			textSizeArea:SetBackdrop({
+				bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
+				edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+				tile = 1,
+				tileSize = 16,
+				edgeSize = 16,
+				insets = { left = 4, right = 4, top = 4, bottom = 4 }
+			});
+			textSizeArea:SetBackdropColor(0.1, 0.1, 0.2, 1);
+			textSizeArea:SetBackdropBorderColor(0.8, 0.8, 0.9, 0.4);
+			textSizeArea:SetPoint("TOPLEFT", 155, -60);
+			textSizeArea:SetWidth(360);
+			textSizeArea:SetHeight(71);
+			table_insert(GUIFrame.Categories[index], textSizeArea);
+			
+		end
+		
+		-- // sliderTimerFontScale
+		do
+			
+			local minValue, maxValue = 0.3, 3;
+			sliderTimerFontScale = LRD.CreateSlider();
+			sliderTimerFontScale:SetParent(textSizeArea);
+			sliderTimerFontScale:SetWidth(200);
+			sliderTimerFontScale:SetPoint("TOPLEFT", 150, -15);
+			sliderTimerFontScale.label:SetText(L["options:text:font-scale"]);
+			sliderTimerFontScale.slider:SetValueStep(0.1);
+			sliderTimerFontScale.slider:SetMinMaxValues(minValue, maxValue);
+			sliderTimerFontScale.slider:SetValue(db.FontScale);
+			sliderTimerFontScale.slider:SetScript("OnValueChanged", function(self, value)
+				local actualValue = tonumber(string_format("%.1f", value));
+				sliderTimerFontScale.editbox:SetText(tostring(actualValue));
+				db.FontScale = actualValue;
+				ReallocateAllIcons(false);
+			end);
+			sliderTimerFontScale.editbox:SetText(tostring(db.FontScale));
+			sliderTimerFontScale.editbox:SetScript("OnEnterPressed", function(self, value)
+				if (sliderTimerFontScale.editbox:GetText() ~= "") then
+					local v = tonumber(sliderTimerFontScale.editbox:GetText());
+					if (v == nil) then
+						sliderTimerFontScale.editbox:SetText(tostring(db.FontScale));
+						msg(L["Value must be a number"]);
+					else
+						if (v > maxValue) then
+							v = maxValue;
+						end
+						if (v < minValue) then
+							v = minValue;
+						end
+						sliderTimerFontScale.slider:SetValue(v);
+					end
+					sliderTimerFontScale.editbox:ClearFocus();
+				end
+			end);
+			sliderTimerFontScale.lowtext:SetText(tostring(minValue));
+			sliderTimerFontScale.hightext:SetText(tostring(maxValue));
+			table_insert(GUIFrame.OnDBChangedHandlers, function() sliderTimerFontScale.editbox:SetText(tostring(db.FontScale)); sliderTimerFontScale.slider:SetValue(db.FontScale); end);
+			
+		end
+	
+		-- // sliderTimerFontSize
+		do
+			
+			local minValue, maxValue = 6, 96;
+			sliderTimerFontSize = LRD.CreateSlider();
+			sliderTimerFontSize:SetParent(textSizeArea);
+			sliderTimerFontSize:SetWidth(200);
+			sliderTimerFontSize:SetPoint("TOPLEFT", 150, -15);
+			sliderTimerFontSize.label:SetText(L["options:text:font-size"]);
+			sliderTimerFontSize.slider:SetValueStep(1);
+			sliderTimerFontSize.slider:SetMinMaxValues(minValue, maxValue);
+			sliderTimerFontSize.slider:SetValue(db.TimerTextSize);
+			sliderTimerFontSize.slider:SetScript("OnValueChanged", function(self, value)
+				local actualValue = tonumber(string_format("%.0f", value));
+				sliderTimerFontSize.editbox:SetText(tostring(actualValue));
+				db.TimerTextSize = actualValue;
+				ReallocateAllIcons(false);
+			end);
+			sliderTimerFontSize.editbox:SetText(tostring(db.TimerTextSize));
+			sliderTimerFontSize.editbox:SetScript("OnEnterPressed", function(self, value)
+				if (sliderTimerFontSize.editbox:GetText() ~= "") then
+					local v = tonumber(sliderTimerFontSize.editbox:GetText());
+					if (v == nil) then
+						sliderTimerFontSize.editbox:SetText(tostring(db.TimerTextSize));
+						msg(L["Value must be a number"]);
+					else
+						if (v > maxValue) then
+							v = maxValue;
+						end
+						if (v < minValue) then
+							v = minValue;
+						end
+						sliderTimerFontSize.slider:SetValue(v);
+					end
+					sliderTimerFontSize.editbox:ClearFocus();
+				end
+			end);
+			sliderTimerFontSize.lowtext:SetText(tostring(minValue));
+			sliderTimerFontSize.hightext:SetText(tostring(maxValue));
+			table_insert(GUIFrame.OnDBChangedHandlers, function() sliderTimerFontSize.editbox:SetText(tostring(db.TimerTextSize)); sliderTimerFontSize.slider:SetValue(db.TimerTextSize); end);
+			
+		end
+	
+		-- // checkBoxUseRelativeFontSize
+		do
+		
+			local checkBoxUseRelativeFontSize = LRD.CreateCheckBox();
+			checkBoxUseRelativeFontSize:SetText(L["options:timer-text:scale-font-size"]);
+			checkBoxUseRelativeFontSize:SetOnClickHandler(function(this)
+				db.TimerTextUseRelativeScale = this:GetChecked();
+				if (db.TimerTextUseRelativeScale) then
+					sliderTimerFontScale:Show();
+					sliderTimerFontSize:Hide();
+				else
+					sliderTimerFontScale:Hide();
+					sliderTimerFontSize:Show();
+				end
+				ReallocateAllIcons(false);
+			end);
+			checkBoxUseRelativeFontSize:SetChecked(db.TimerTextUseRelativeScale);
+			checkBoxUseRelativeFontSize:SetParent(textSizeArea);
+			checkBoxUseRelativeFontSize:SetPoint("TOPLEFT", 10, -25);
+			table_insert(GUIFrame.Categories[index], checkBoxUseRelativeFontSize);
+			table_insert(GUIFrame.OnDBChangedHandlers, function()
+				checkBoxUseRelativeFontSize:SetChecked(db.TimerTextUseRelativeScale);
+			end);
+			checkBoxUseRelativeFontSize:SetScript("OnShow", function(self)
+				if (db.TimerTextUseRelativeScale) then
+					sliderTimerFontScale:Show();
+					sliderTimerFontSize:Hide();
+				else
+					sliderTimerFontScale:Hide();
+					sliderTimerFontSize:Show();
+				end
+			end);
+			checkBoxUseRelativeFontSize:SetScript("OnHide", function(self)
+				sliderTimerFontScale:Hide();
+				sliderTimerFontSize:Hide();
+			end);
+		end
+	
+		-- // textAnchorArea
+		do
+				
+			textAnchorArea = CreateFrame("Frame", nil, GUIFrame);
+			textAnchorArea:SetBackdrop({
+				bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
+				edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+				tile = 1,
+				tileSize = 16,
+				edgeSize = 16,
+				insets = { left = 4, right = 4, top = 4, bottom = 4 }
+			});
+			textAnchorArea:SetBackdropColor(0.1, 0.1, 0.2, 1);
+			textAnchorArea:SetBackdropBorderColor(0.8, 0.8, 0.9, 0.4);
+			textAnchorArea:SetPoint("TOP", textSizeArea, "BOTTOM", 0, -10);
+			textAnchorArea:SetWidth(textSizeArea:GetWidth());
+			textAnchorArea:SetHeight(100);
+			table_insert(GUIFrame.Categories[index], textAnchorArea);
+		end
+
+		-- // dropdownTimerTextAnchor
+		do
+			
+			local dropdownTimerTextAnchor = CreateFrame("Frame", "NC.GUI.Fonts.DropdownTimerTextAnchor", textAnchorArea, "UIDropDownMenuTemplate");
+			UIDropDownMenu_SetWidth(dropdownTimerTextAnchor, 145);
+			dropdownTimerTextAnchor:SetPoint("TOPLEFT", 0, -15);
+			local info = {};
+			dropdownTimerTextAnchor.initialize = function()
+				wipe(info);
+				for _, anchorPoint in pairs(textAnchors) do
+					info.text = textAnchorsLocalization[anchorPoint];
+					info.value = anchorPoint;
+					info.func = function(self)
+						db.TimerTextAnchor = self.value;
+						_G[dropdownTimerTextAnchor:GetName() .. "Text"]:SetText(self:GetText());
+						ReallocateAllIcons(false);
+					end
+					info.checked = anchorPoint == db.TimerTextAnchor;
+					UIDropDownMenu_AddButton(info);
+				end
+			end
+			_G[dropdownTimerTextAnchor:GetName() .. "Text"]:SetText(textAnchorsLocalization[db.TimerTextAnchor]);
+			dropdownTimerTextAnchor.text = dropdownTimerTextAnchor:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
+			dropdownTimerTextAnchor.text:SetPoint("LEFT", 20, 15);
+			dropdownTimerTextAnchor.text:SetText(L["options:text:anchor-point"]);
+			table_insert(GUIFrame.Categories[index], dropdownTimerTextAnchor);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownTimerTextAnchor:GetName() .. "Text"]:SetText(L[db.TimerTextAnchor]); end);
+			
+		end
+	
+		-- // dropdownTimerTextAnchorIcon
+		do
+			
+			local dropdownTimerTextAnchorIcon = CreateFrame("Frame", "NC.GUI.Fonts.DropdownTimerTextAnchorIcon", textAnchorArea, "UIDropDownMenuTemplate");
+			UIDropDownMenu_SetWidth(dropdownTimerTextAnchorIcon, 145);
+			dropdownTimerTextAnchorIcon:SetPoint("TOPLEFT", 165, -15);
+			local info = {};
+			dropdownTimerTextAnchorIcon.initialize = function()
+				wipe(info);
+				for _, anchorPoint in pairs(textAnchors) do
+					info.text = textAnchorsLocalization[anchorPoint];
+					info.value = anchorPoint;
+					info.func = function(self)
+						db.TimerTextAnchorIcon = self.value;
+						_G[dropdownTimerTextAnchorIcon:GetName() .. "Text"]:SetText(self:GetText());
+						ReallocateAllIcons(false);
+					end
+					info.checked = anchorPoint == db.TimerTextAnchorIcon;
+					UIDropDownMenu_AddButton(info);
+				end
+			end
+			_G[dropdownTimerTextAnchorIcon:GetName() .. "Text"]:SetText(textAnchorsLocalization[db.TimerTextAnchorIcon]);
+			dropdownTimerTextAnchorIcon.text = dropdownTimerTextAnchorIcon:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
+			dropdownTimerTextAnchorIcon.text:SetPoint("LEFT", 20, 15);
+			dropdownTimerTextAnchorIcon.text:SetText(L["options:text:anchor-to-icon"]);
+			table_insert(GUIFrame.Categories[index], dropdownTimerTextAnchorIcon);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownTimerTextAnchorIcon:GetName() .. "Text"]:SetText(L[db.TimerTextAnchorIcon]); end);
+			
+		end
+			
+		-- // sliderTimerTextXOffset
+		do
+			
+			local minValue, maxValue = -100, 100;
+			local sliderTimerTextXOffset = LRD.CreateSlider();
+			sliderTimerTextXOffset:SetParent(textAnchorArea);
+			sliderTimerTextXOffset:SetWidth(165);
+			sliderTimerTextXOffset:SetPoint("TOPLEFT", 15, -50);
+			sliderTimerTextXOffset.label:SetText(L["anchor-point:x-offset"]);
+			sliderTimerTextXOffset.slider:SetValueStep(1);
+			sliderTimerTextXOffset.slider:SetMinMaxValues(minValue, maxValue);
+			sliderTimerTextXOffset.slider:SetValue(db.TimerTextXOffset);
+			sliderTimerTextXOffset.slider:SetScript("OnValueChanged", function(self, value)
+				local actualValue = tonumber(string_format("%.0f", value));
+				sliderTimerTextXOffset.editbox:SetText(tostring(actualValue));
+				db.TimerTextXOffset = actualValue;
+				ReallocateAllIcons(false);
+			end);
+			sliderTimerTextXOffset.editbox:SetText(tostring(db.TimerTextXOffset));
+			sliderTimerTextXOffset.editbox:SetScript("OnEnterPressed", function(self, value)
+				if (sliderTimerTextXOffset.editbox:GetText() ~= "") then
+					local v = tonumber(sliderTimerTextXOffset.editbox:GetText());
+					if (v == nil) then
+						sliderTimerTextXOffset.editbox:SetText(tostring(db.TimerTextXOffset));
+						msg(L["Value must be a number"]);
+					else
+						if (v > maxValue) then
+							v = maxValue;
+						end
+						if (v < minValue) then
+							v = minValue;
+						end
+						sliderTimerTextXOffset.slider:SetValue(v);
+					end
+					sliderTimerTextXOffset.editbox:ClearFocus();
+				end
+			end);
+			sliderTimerTextXOffset.lowtext:SetText(tostring(minValue));
+			sliderTimerTextXOffset.hightext:SetText(tostring(maxValue));
+			table_insert(GUIFrame.Categories[index], sliderTimerTextXOffset);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() sliderTimerTextXOffset.editbox:SetText(tostring(db.TimerTextXOffset)); sliderTimerTextXOffset.slider:SetValue(db.TimerTextXOffset); end);
+			
+		end
+	
+		-- // sliderTimerTextYOffset
+		do
+			
+			local minValue, maxValue = -100, 100;
+			local sliderTimerTextYOffset = LRD.CreateSlider();
+			sliderTimerTextYOffset:SetParent(textAnchorArea);
+			sliderTimerTextYOffset:SetWidth(165);
+			sliderTimerTextYOffset:SetPoint("TOPLEFT", 185, -50);
+			sliderTimerTextYOffset.label:SetText(L["anchor-point:y-offset"]);
+			sliderTimerTextYOffset.slider:SetValueStep(1);
+			sliderTimerTextYOffset.slider:SetMinMaxValues(minValue, maxValue);
+			sliderTimerTextYOffset.slider:SetValue(db.TimerTextYOffset);
+			sliderTimerTextYOffset.slider:SetScript("OnValueChanged", function(self, value)
+				local actualValue = tonumber(string_format("%.0f", value));
+				sliderTimerTextYOffset.editbox:SetText(tostring(actualValue));
+				db.TimerTextYOffset = actualValue;
+				ReallocateAllIcons(false);
+			end);
+			sliderTimerTextYOffset.editbox:SetText(tostring(db.TimerTextYOffset));
+			sliderTimerTextYOffset.editbox:SetScript("OnEnterPressed", function(self, value)
+				if (sliderTimerTextYOffset.editbox:GetText() ~= "") then
+					local v = tonumber(sliderTimerTextYOffset.editbox:GetText());
+					if (v == nil) then
+						sliderTimerTextYOffset.editbox:SetText(tostring(db.TimerTextYOffset));
+						msg(L["Value must be a number"]);
+					else
+						if (v > maxValue) then
+							v = maxValue;
+						end
+						if (v < minValue) then
+							v = minValue;
+						end
+						sliderTimerTextYOffset.slider:SetValue(v);
+					end
+					sliderTimerTextYOffset.editbox:ClearFocus();
+				end
+			end);
+			sliderTimerTextYOffset.lowtext:SetText(tostring(minValue));
+			sliderTimerTextYOffset.hightext:SetText(tostring(maxValue));
+			table_insert(GUIFrame.Categories[index], sliderTimerTextYOffset);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() sliderTimerTextYOffset.editbox:SetText(tostring(db.TimerTextYOffset)); sliderTimerTextYOffset.slider:SetValue(db.TimerTextYOffset); end);
+			
+		end
+	
+		-- // colorPickerTimerTextMore
+		do
+		
+			local colorPickerTimerTextMore = LRD.CreateColorPicker();
+			colorPickerTimerTextMore:SetParent(GUIFrame);
+			colorPickerTimerTextMore:SetPoint("TOPLEFT", 160, -250);
+			colorPickerTimerTextMore:SetText(L["options:text:color"]);
+			colorPickerTimerTextMore.colorSwatch:SetVertexColor(unpack(db.TimerTextColor));
+			colorPickerTimerTextMore:SetScript("OnClick", function()
+				ColorPickerFrame:Hide();
+				local function callback(restore)
+					local r, g, b;
+					if (restore) then
+						r, g, b = unpack(restore);
+					else
+						r, g, b = ColorPickerFrame:GetColorRGB();
+					end
+					db.TimerTextColor = {r, g, b};
+					colorPickerTimerTextMore.colorSwatch:SetVertexColor(unpack(db.TimerTextColor));
+					ReallocateAllIcons(false);
+				end
+				ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = callback, callback, callback;
+				ColorPickerFrame:SetColorRGB(unpack(db.TimerTextColor));
+				ColorPickerFrame.hasOpacity = false;
+				ColorPickerFrame.previousValues = { unpack(db.TimerTextColor) };
+				ColorPickerFrame:Show();
+			end);
+			table_insert(GUIFrame.Categories[index], colorPickerTimerTextMore);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() colorPickerTimerTextMore.colorSwatch:SetVertexColor(unpack(db.TimerTextColor)); end);
+			a1 = colorPickerTimerTextMore;
+		end
+
+	end
+
 	function InitializeGUI()
 		GUIFrame = CreateFrame("Frame", "NC_GUIFrame", UIParent);
 		GUIFrame:SetHeight(450);
@@ -900,7 +1329,7 @@ do
 		GUIFrame.Categories = {};
 		GUIFrame.SpellIcons = {};
 		
-		for index, value in pairs({ L["General"], L["Filters"], L["options:category:borders"], L["Profiles"], L["options:category:spells"] }) do
+		for index, value in pairs({ L["General"], L["Filters"], L["options:category:borders"], L["options:category:text"], L["Profiles"], L["options:category:spells"] }) do
 			local b = CreateGUICategory();
 			b.index = index;
 			b.text:SetText(value);
@@ -908,7 +1337,7 @@ do
 				b:LockHighlight();
 				b.text:SetTextColor(1, 1, 1);
 			end
-			if (index < 5) then
+			if (index < 6) then
 				b:SetPoint("TOPLEFT", GUIFrame.outline, "TOPLEFT", 5, (index-1) * -18 - 6);
 			else
 				b:SetPoint("TOPLEFT", GUIFrame.outline, "TOPLEFT", 5, (index-1) * -18 - 26);
@@ -925,6 +1354,8 @@ do
 				GUICategory_Profiles(index, value);
 			elseif (value == L["options:category:borders"]) then
 				GUICategory_Borders(index, value);
+			elseif (value == L["options:category:text"]) then
+				GUICategory_Text(index, value);
 			else
 				GUICategory_Other(index, value);
 			end
@@ -1141,7 +1572,7 @@ do
 		
 		local dropdownIconSortMode = CreateFrame("Frame", "NC.GUI.General.DropdownIconSortMode", GUIFrame, "UIDropDownMenuTemplate");
 		UIDropDownMenu_SetWidth(dropdownIconSortMode, 300);
-		dropdownIconSortMode:SetPoint("BOTTOMLEFT", GUIFrame.outline, "BOTTOMRIGHT", 10, 45);
+		dropdownIconSortMode:SetPoint("BOTTOMLEFT", GUIFrame.outline, "BOTTOMRIGHT", 10, 10);
 		local info = {};
 		dropdownIconSortMode.initialize = function()
 			wipe(info);
@@ -1162,32 +1593,7 @@ do
 		dropdownIconSortMode.text:SetText(L["general.sort-mode"]);
 		table.insert(GUIFrame.Categories[index], dropdownIconSortMode);
 		table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownIconSortMode:GetName().."Text"]:SetText(CONST_SORT_MODES_L[db.IconSortMode]); end);
-		
-		local dropdownFont = CreateFrame("Frame", "NC_GUI_General_DropdownFont", GUIFrame, "UIDropDownMenuTemplate");
-		UIDropDownMenu_SetWidth(dropdownFont, 300);
-		dropdownFont:SetPoint("BOTTOMLEFT", GUIFrame.outline, "BOTTOMRIGHT", 10, 10);
-		local info = {};
-		dropdownFont.initialize = function()
-			wipe(info);
-			for idx, font in next, LibStub("LibSharedMedia-3.0"):List("font") do
-				info.text = font;
-				info.value = font;
-				info.func = function(self)
-					db.Font = self.value;
-					ReallocateAllIcons(false);
-					NC_GUI_General_DropdownFontText:SetText(self:GetText());
-				end
-				info.checked = font == db.Font;
-				UIDropDownMenu_AddButton(info);
-			end
-		end
-		NC_GUI_General_DropdownFontText:SetText(db.Font);
-		dropdownFont.text = dropdownFont:CreateFontString("NC_GUI_General_DropdownFontNoteText", "ARTWORK", "GameFontNormalSmall");
-		dropdownFont.text:SetPoint("LEFT", 20, 15);
-		dropdownFont.text:SetText(L["Font:"]);
-		table.insert(GUIFrame.Categories[index], dropdownFont);
-		table_insert(GUIFrame.OnDBChangedHandlers, function() NC_GUI_General_DropdownFontText:SetText(db.Font); end);
-		
+				
 	end
 	
 	function GUICategory_Profiles(index, value)
