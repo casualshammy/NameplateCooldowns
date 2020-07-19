@@ -57,17 +57,23 @@ local ShowGUI, InitializeGUI, GUICategory_General, GUICategory_Profiles, GUICate
 local Print, deepcopy, table_contains_key, table_any, CoroutineProcessor, ColorizeText, msg, table_count;
 
 -- // consts: you should not change existing values
-local CONST_SORT_MODES = { "none", "trinket-interrupt-other", "interrupt-trinket-other", "trinket-other", "interrupt-other" };
-local CONST_SORT_MODES_L = {
-	[CONST_SORT_MODES[1]] = "none",
-	[CONST_SORT_MODES[2]] = "trinkets, then interrupts, then other spells",
-	[CONST_SORT_MODES[3]] = "interrupts, then trinkets, then other spells",
-	[CONST_SORT_MODES[4]] = "trinkets, then other spells",
-	[CONST_SORT_MODES[5]] = "interrupts, then other spells",
-};
-
-local GLOW_TIME_INFINITE, INSTANCE_TYPE_UNKNOWN;
+local ICON_GROW_DIRECTIONS, CONST_SORT_MODES, CONST_SORT_MODES_L, GLOW_TIME_INFINITE, INSTANCE_TYPE_UNKNOWN;
 do
+	ICON_GROW_DIRECTIONS = { "right", "left", "top", "bottom" };
+	ICON_GROW_DIRECTIONS_L = {
+		[ICON_GROW_DIRECTIONS[1]] = L["icon-grow-direction:right"],
+		[ICON_GROW_DIRECTIONS[2]] = L["icon-grow-direction:left"],
+		[ICON_GROW_DIRECTIONS[3]] = L["icon-grow-direction:up"],
+		[ICON_GROW_DIRECTIONS[4]] = L["icon-grow-direction:down"],
+	};
+	CONST_SORT_MODES = { "none", "trinket-interrupt-other", "interrupt-trinket-other", "trinket-other", "interrupt-other" };
+	CONST_SORT_MODES_L = {
+		[CONST_SORT_MODES[1]] = "none",
+		[CONST_SORT_MODES[2]] = "trinkets, then interrupts, then other spells",
+		[CONST_SORT_MODES[3]] = "interrupts, then trinkets, then other spells",
+		[CONST_SORT_MODES[4]] = "trinkets, then other spells",
+		[CONST_SORT_MODES[5]] = "interrupts, then other spells",
+	};
 	GLOW_TIME_INFINITE 		= 4*1000*1000*1000;
 	INSTANCE_TYPE_UNKNOWN 	= "unknown";
 end
@@ -181,7 +187,6 @@ do
 					["scenario"] = 				true,
 				},
 				ShowOldBlizzardBorderAroundIcons = false,
-
 				FontScale = 1,
 				TimerTextSize = nil,
 				TimerTextUseRelativeScale = true,
@@ -190,6 +195,7 @@ do
 				TimerTextXOffset = 0,
 				TimerTextYOffset = 0,
 				TimerTextColor = { 0.7, 1, 0 },
+				IconGrowDirection = "right",
 			},
 		};
 		aceDB = LibStub("AceDB-3.0"):New("NameplateCooldownsAceDB", aceDBDefaults);
@@ -289,6 +295,24 @@ do
 	
 	local glowInfo = { };
 	
+	local function AllocateIcon_SetIconPlace(frame, icon, iconIndex)
+		icon:ClearAllPoints();
+		local index = iconIndex == nil and frame.NCIconsCount or (iconIndex-1)
+		if (index == 0) then
+			icon:SetPoint("LEFT", frame.NCFrame, 0, 0);
+		else
+			if (db.IconGrowDirection == ICON_GROW_DIRECTIONS[1]) then
+				icon:SetPoint("LEFT", frame.NCIcons[index], "RIGHT", db.IconSpacing, 0);
+			elseif (db.IconGrowDirection == ICON_GROW_DIRECTIONS[2]) then
+				icon:SetPoint("RIGHT", frame.NCIcons[index], "LEFT", -db.IconSpacing, 0);
+			elseif (db.IconGrowDirection == ICON_GROW_DIRECTIONS[3]) then
+				icon:SetPoint("BOTTOM", frame.NCIcons[index], "TOP", 0, db.IconSpacing);
+			else -- // bottom
+				icon:SetPoint("TOP", frame.NCIcons[index], "BOTTOM", 0, -db.IconSpacing);
+			end
+		end
+	end
+
 	function AllocateIcon(frame)
 		if (not frame.NCFrame) then
 			frame.NCFrame = CreateFrame("frame", nil, db.FullOpacityAlways and UIParent or frame);
@@ -300,11 +324,7 @@ do
 		local icon = CreateFrame("frame", nil, frame.NCFrame);
 		icon:SetWidth(db.IconSize);
 		icon:SetHeight(db.IconSize);
-		if (frame.NCIconsCount == 0) then
-			icon:SetPoint("LEFT", frame.NCFrame, 0, 0);
-		else
-			icon:SetPoint("LEFT", frame.NCIcons[frame.NCIconsCount], "RIGHT", db.IconSpacing, 0);
-		end
+		AllocateIcon_SetIconPlace(frame, icon);
 		icon:Hide();
 		icon.texture = icon:CreateTexture(nil, "BORDER");
 		icon.texture:SetAllPoints(icon);
@@ -336,11 +356,7 @@ do
 				for iconIndex, icon in pairs(frame.NCIcons) do
 					icon:SetWidth(db.IconSize);
 					icon:SetHeight(db.IconSize);
-					if (iconIndex == 1) then
-						icon:SetPoint("LEFT", frame.NCFrame, 0, 0);
-					else
-						icon:SetPoint("LEFT", frame.NCIcons[iconIndex-1], "RIGHT", db.IconSpacing, 0);
-					end
+					AllocateIcon_SetIconPlace(frame, icon, iconIndex);
 					
 					if (not db.ShowOldBlizzardBorderAroundIcons) then
 						icon.texture:SetTexCoord(0.07, 0.93, 0.07, 0.93);
@@ -1265,7 +1281,6 @@ do
 			end);
 			table_insert(GUIFrame.Categories[index], colorPickerTimerTextMore);
 			table_insert(GUIFrame.OnDBChangedHandlers, function() colorPickerTimerTextMore.colorSwatch:SetVertexColor(unpack(db.TimerTextColor)); end);
-			a1 = colorPickerTimerTextMore;
 		end
 
 	end
@@ -1565,14 +1580,14 @@ do
 			db.FullOpacityAlways = this:GetChecked();
 		end);
 		checkBoxFullOpacityAlways:SetParent(GUIFrame.outline);
-		checkBoxFullOpacityAlways:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -185);
+		checkBoxFullOpacityAlways:SetPoint("TOPLEFT", 155, -280);
 		checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways);
 		table.insert(GUIFrame.Categories[index], checkBoxFullOpacityAlways);
 		table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways); end);
 		
 		local dropdownIconSortMode = CreateFrame("Frame", "NC.GUI.General.DropdownIconSortMode", GUIFrame, "UIDropDownMenuTemplate");
 		UIDropDownMenu_SetWidth(dropdownIconSortMode, 300);
-		dropdownIconSortMode:SetPoint("BOTTOMLEFT", GUIFrame.outline, "BOTTOMRIGHT", 10, 10);
+		dropdownIconSortMode:SetPoint("TOPLEFT", 155, -200);
 		local info = {};
 		dropdownIconSortMode.initialize = function()
 			wipe(info);
@@ -1593,6 +1608,35 @@ do
 		dropdownIconSortMode.text:SetText(L["general.sort-mode"]);
 		table.insert(GUIFrame.Categories[index], dropdownIconSortMode);
 		table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownIconSortMode:GetName().."Text"]:SetText(CONST_SORT_MODES_L[db.IconSortMode]); end);
+
+		-- // 
+		do
+
+			local dropdownIconGrowDirection = CreateFrame("Frame", "NC.GUI.General.DropdownIconGrowDirection", GUIFrame, "UIDropDownMenuTemplate");
+			UIDropDownMenu_SetWidth(dropdownIconGrowDirection, 300);
+			dropdownIconGrowDirection:SetPoint("TOPLEFT", 155, -240);
+			local info = {};
+			dropdownIconGrowDirection.initialize = function()
+				wipe(info);
+				for _, direction in pairs(ICON_GROW_DIRECTIONS) do
+					info.text = ICON_GROW_DIRECTIONS_L[direction];
+					info.value = direction;
+					info.func = function(self)
+						db.IconGrowDirection = self.value;
+						_G[dropdownIconGrowDirection:GetName().."Text"]:SetText(self:GetText());
+						ReallocateAllIcons(false);
+					end
+					info.checked = (db.IconGrowDirection == info.value);
+					UIDropDownMenu_AddButton(info);
+				end
+			end
+			_G[dropdownIconGrowDirection:GetName().."Text"]:SetText(ICON_GROW_DIRECTIONS_L[db.IconGrowDirection]);
+			dropdownIconGrowDirection.text = dropdownIconGrowDirection:CreateFontString("NC.GUI.General.DropdownIconGrowDirection.Label", "ARTWORK", "GameFontNormalSmall");
+			dropdownIconGrowDirection.text:SetPoint("LEFT", 20, 15);
+			dropdownIconGrowDirection.text:SetText(L["options:general:icon-grow-direction"]);
+			table.insert(GUIFrame.Categories[index], dropdownIconGrowDirection);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownIconGrowDirection:GetName().."Text"]:SetText(ICON_GROW_DIRECTIONS_L[db.IconGrowDirection]); end);
+		end
 				
 	end
 	

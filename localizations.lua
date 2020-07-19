@@ -119,6 +119,11 @@ icon size]=],
 		["options:text:anchor-point"] = "Anchor point",
 		["options:text:anchor-to-icon"] = "Anchor to icon",
 		["options:text:color"] = "Text color",
+		["options:general:icon-grow-direction"] = "Icons' growth direction",
+		["icon-grow-direction:right"] = "Right",
+		["icon-grow-direction:left"] = "Left",
+		["icon-grow-direction:up"] = "Up",
+		["icon-grow-direction:down"] = "Down",
 	},
 	["ruRU"] = 
 	{
@@ -209,6 +214,11 @@ icon size]=],
 		["options:text:anchor-point"] = "Точка привязки",
 		["options:text:anchor-to-icon"] = "Точка привязки к иконке",
 		["options:text:color"] = "Цвет текста",
+		["options:general:icon-grow-direction"] = "Направление роста значков",
+		["icon-grow-direction:right"] = "Направо",
+		["icon-grow-direction:left"] = "Налево",
+		["icon-grow-direction:up"] = "Вверх",
+		["icon-grow-direction:down"] = "Вниз",
 	},
 };
 --@end-debug@
