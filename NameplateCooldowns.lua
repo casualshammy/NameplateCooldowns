@@ -59,7 +59,7 @@ local Print, deepcopy, table_contains_key, table_any, CoroutineProcessor, Colori
 -- // consts: you should not change existing values
 local ICON_GROW_DIRECTIONS, CONST_SORT_MODES, CONST_SORT_MODES_L, GLOW_TIME_INFINITE, INSTANCE_TYPE_UNKNOWN;
 do
-	ICON_GROW_DIRECTIONS = { "right", "left", "top", "bottom" };
+	ICON_GROW_DIRECTIONS = { "right", "left", "up", "down" };
 	ICON_GROW_DIRECTIONS_L = {
 		[ICON_GROW_DIRECTIONS[1]] = L["icon-grow-direction:right"],
 		[ICON_GROW_DIRECTIONS[2]] = L["icon-grow-direction:left"],
