@@ -46,8 +46,8 @@ local NameplatesVisible = {};
 local InstanceType = "none";
 local GUIFrame, EventFrame, TestFrame, db, aceDB, ProfileOptionsFrame;
 
-local _G, pairs, select, UIParent, string_match, string_gsub, string_find, bit_band, GetTime, table_contains_value, math_ceil, 	table_insert, table_sort, C_Timer_After, string_lower, string_format, C_Timer_NewTimer =
-	  _G, pairs, select, UIParent, strmatch,	   		gsub,	  strfind, bit.band, GetTime, 			 tContains,		 ceil,	table.insert, table.sort, C_Timer.After, string.lower, string.format, C_Timer.NewTimer;
+local _G, pairs, select, UIParent, string_match, string_gsub, string_find, bit_band, GetTime, table_contains_value, math_ceil, 	table_insert, table_sort, C_Timer_After, string_lower, string_format, C_Timer_NewTimer, math_max =
+	  _G, pairs, select, UIParent, strmatch,	   		gsub,	  strfind, bit.band, GetTime, 			 tContains,		 ceil,	table.insert, table.sort, C_Timer.After, string.lower, string.format, C_Timer.NewTimer,		 max;
 	  
 local OnStartup, InitializeDB, GetDefaultDBEntryForSpell;
 local AllocateIcon, ReallocateAllIcons, InitializeFrame, UpdateOnlyOneNameplate, Nameplate_SetBorder, Nameplate_SetCooldown, HideCDIcon, ShowCDIcon;
@@ -196,6 +196,8 @@ do
 				TimerTextYOffset = 0,
 				TimerTextColor = { 0.7, 1, 0 },
 				IconGrowDirection = "right",
+				CDFrameAnchor = "TOPLEFT",
+				CDFrameAnchorToParent = "TOPLEFT",
 			},
 		};
 		aceDB = LibStub("AceDB-3.0"):New("NameplateCooldownsAceDB", aceDBDefaults);
@@ -307,10 +309,32 @@ do
 				icon:SetPoint("RIGHT", frame.NCIcons[index], "LEFT", -db.IconSpacing, 0);
 			elseif (db.IconGrowDirection == ICON_GROW_DIRECTIONS[3]) then
 				icon:SetPoint("BOTTOM", frame.NCIcons[index], "TOP", 0, db.IconSpacing);
-			else -- // bottom
+			else -- // down
 				icon:SetPoint("TOP", frame.NCIcons[index], "BOTTOM", 0, -db.IconSpacing);
 			end
 		end
+	end
+
+	local function SetFrameSize(frame)
+		local maxWidth, maxHeight = 0, 0;
+		local vertical = db.IconGrowDirection == ICON_GROW_DIRECTIONS[1] or db.IconGrowDirection == ICON_GROW_DIRECTIONS[2]; -- right -- left
+		if (frame.NCFrame) then
+			for iconIndex, icon in pairs(frame.NCIcons) do
+				if (icon.shown) then
+					if (vertical) then -- right -- left
+						maxHeight = math_max(maxHeight, icon:GetHeight());
+						maxWidth = maxWidth + icon:GetWidth() + db.IconSpacing;
+					else -- up -- down
+						maxHeight = maxHeight + icon:GetHeight() + db.IconSpacing;
+						maxWidth = math_max(maxWidth, icon:GetWidth());
+					end
+				end
+			end
+		end
+		maxWidth = maxWidth - db.IconSpacing;
+		maxHeight = maxHeight - db.IconSpacing;
+		frame.NCFrame:SetWidth(math_max(maxWidth, 1));
+		frame.NCFrame:SetHeight(math_max(maxHeight, 1));
 	end
 
 	function AllocateIcon(frame)
@@ -318,7 +342,7 @@ do
 			frame.NCFrame = CreateFrame("frame", nil, db.FullOpacityAlways and UIParent or frame);
 			frame.NCFrame:SetWidth(db.IconSize);
 			frame.NCFrame:SetHeight(db.IconSize);
-			frame.NCFrame:SetPoint("TOPLEFT", frame, db.IconXOffset, db.IconYOffset);
+			frame.NCFrame:SetPoint(db.CDFrameAnchor, frame, db.CDFrameAnchorToParent, db.IconXOffset, db.IconYOffset);
 			frame.NCFrame:Show();
 		end
 		local icon = CreateFrame("frame", nil, frame.NCFrame);
@@ -351,7 +375,8 @@ do
 	function ReallocateAllIcons(clearSpells)
 		for frame in pairs(Nameplates) do
 			if (frame.NCFrame) then
-				frame.NCFrame:SetPoint("TOPLEFT", frame, db.IconXOffset, db.IconYOffset);
+				frame.NCFrame:ClearAllPoints();
+				frame.NCFrame:SetPoint(db.CDFrameAnchor, frame, db.CDFrameAnchorToParent, db.IconXOffset, db.IconYOffset);
 				local counter = 0;
 				for iconIndex, icon in pairs(frame.NCIcons) do
 					icon:SetWidth(db.IconSize);
@@ -374,10 +399,11 @@ do
 					end
 
 					if (clearSpells) then
-						HideCDIcon(icon);
+						HideCDIcon(icon, frame);
 					end
 					counter = counter + 1;
 				end
+				SetFrameSize(frame);
 			end
 		end
 		if (clearSpells) then
@@ -527,7 +553,7 @@ do
 						Nameplate_SetCooldown(icon, remain);
 						UpdateNameplate_SetGlow(icon, dbInfo.glow, remain);
 						if (not icon.shown) then
-							ShowCDIcon(icon);
+							ShowCDIcon(icon, frame);
 						end
 						counter = counter + 1;
 					else
@@ -539,7 +565,7 @@ do
 		for k = counter, frame.NCIconsCount do
 			local icon = frame.NCIcons[k];
 			if (icon.shown) then
-				HideCDIcon(icon);
+				HideCDIcon(icon, frame);
 			end
 		end
 	end
@@ -571,7 +597,7 @@ do
 		end
 	end
 	
-	function HideCDIcon(icon)
+	function HideCDIcon(icon, frame)
 		icon.border:Hide();
 		icon.borderState = nil;
 		icon.cooldownText:Hide();
@@ -579,12 +605,14 @@ do
 		icon.shown = false;
 		icon.textureID = 0;
 		LBG_HideOverlayGlow(icon);
+		SetFrameSize(frame);
 	end
 	
-	function ShowCDIcon(icon)
+	function ShowCDIcon(icon, frame)
 		icon.cooldownText:Show();
 		icon:Show();
 		icon.shown = true;
+		SetFrameSize(frame);
 	end
 	
 end
@@ -1378,6 +1406,20 @@ do
 	end
 
 	function GUICategory_General(index, value)
+		local frameAnchors = { "TOPRIGHT", "RIGHT", "BOTTOMRIGHT", "TOP", "CENTER", "BOTTOM", "TOPLEFT", "LEFT", "BOTTOMLEFT" };
+		local frameAnchorsLocalization = {
+			[frameAnchors[1]] = L["anchor-point:topright"],
+			[frameAnchors[2]] = L["anchor-point:right"],
+			[frameAnchors[3]] = L["anchor-point:bottomright"],
+			[frameAnchors[4]] = L["anchor-point:top"],
+			[frameAnchors[5]] = L["anchor-point:center"],
+			[frameAnchors[6]] = L["anchor-point:bottom"],
+			[frameAnchors[7]] = L["anchor-point:topleft"],
+			[frameAnchors[8]] = L["anchor-point:left"],
+			[frameAnchors[9]] = L["anchor-point:bottomleft"]
+		};
+
+
 		local buttonEnableDisableAddon = LRD.CreateButton();
 		buttonEnableDisableAddon:SetParent(GUIFrame);
 		buttonEnableDisableAddon:SetText(db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]);
@@ -1574,42 +1616,110 @@ do
 		table.insert(GUIFrame.Categories[index], sliderIconYOffset);
 		table_insert(GUIFrame.OnDBChangedHandlers, function() sliderIconYOffset:GetBaseSliderObject():SetValue(db.IconYOffset); sliderIconYOffset:GetEditboxObject():SetText(tostring(db.IconYOffset)); end);
 		
-		local checkBoxFullOpacityAlways = LRD.CreateCheckBox();
-		checkBoxFullOpacityAlways:SetText(L["Always display CD icons at full opacity (ReloadUI is needed)"]);
-		checkBoxFullOpacityAlways:SetOnClickHandler(function(this)
-			db.FullOpacityAlways = this:GetChecked();
-		end);
-		checkBoxFullOpacityAlways:SetParent(GUIFrame.outline);
-		checkBoxFullOpacityAlways:SetPoint("TOPLEFT", 155, -280);
-		checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways);
-		table.insert(GUIFrame.Categories[index], checkBoxFullOpacityAlways);
-		table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways); end);
 		
-		local dropdownIconSortMode = CreateFrame("Frame", "NC.GUI.General.DropdownIconSortMode", GUIFrame, "UIDropDownMenuTemplate");
-		UIDropDownMenu_SetWidth(dropdownIconSortMode, 300);
-		dropdownIconSortMode:SetPoint("TOPLEFT", 155, -200);
-		local info = {};
-		dropdownIconSortMode.initialize = function()
-			wipe(info);
-			for _, sortMode in pairs(CONST_SORT_MODES) do
-				info.text = CONST_SORT_MODES_L[sortMode];
-				info.value = sortMode;
-				info.func = function(self)
-					db.IconSortMode = self.value;
-					_G[dropdownIconSortMode:GetName().."Text"]:SetText(self:GetText());
+		-- // dropdownFrameAnchor
+		do
+			
+			local dropdownFrameAnchor = CreateFrame("Frame", "NC.GUI.Fonts.DropdownFrameAnchor", GUIFrame, "UIDropDownMenuTemplate");
+			UIDropDownMenu_SetWidth(dropdownFrameAnchor, 140);
+			dropdownFrameAnchor:SetPoint("TOPLEFT", 155, -200);
+			local info = {};
+			dropdownFrameAnchor.initialize = function()
+				wipe(info);
+				for _, anchorPoint in pairs(frameAnchors) do
+					info.text = frameAnchorsLocalization[anchorPoint];
+					info.value = anchorPoint;
+					info.func = function(self)
+						db.CDFrameAnchor = self.value;
+						_G[dropdownFrameAnchor:GetName() .. "Text"]:SetText(self:GetText());
+						ReallocateAllIcons(false);
+					end
+					info.checked = anchorPoint == db.CDFrameAnchor;
+					UIDropDownMenu_AddButton(info);
 				end
-				info.checked = (db.IconSortMode == info.value);
-				UIDropDownMenu_AddButton(info);
 			end
+			_G[dropdownFrameAnchor:GetName() .. "Text"]:SetText(frameAnchorsLocalization[db.CDFrameAnchor]);
+			dropdownFrameAnchor.text = dropdownFrameAnchor:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
+			dropdownFrameAnchor.text:SetPoint("LEFT", 20, 15);
+			dropdownFrameAnchor.text:SetText(L["options:general:anchor-point"]);
+			table_insert(GUIFrame.Categories[index], dropdownFrameAnchor);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownFrameAnchor:GetName() .. "Text"]:SetText(frameAnchorsLocalization[db.CDFrameAnchor]); end);
+			
 		end
-		_G[dropdownIconSortMode:GetName().."Text"]:SetText(CONST_SORT_MODES_L[db.IconSortMode]);
-		dropdownIconSortMode.text = dropdownIconSortMode:CreateFontString("NC.GUI.General.DropdownIconSortMode.Label", "ARTWORK", "GameFontNormalSmall");
-		dropdownIconSortMode.text:SetPoint("LEFT", 20, 15);
-		dropdownIconSortMode.text:SetText(L["general.sort-mode"]);
-		table.insert(GUIFrame.Categories[index], dropdownIconSortMode);
-		table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownIconSortMode:GetName().."Text"]:SetText(CONST_SORT_MODES_L[db.IconSortMode]); end);
+	
+		-- // dropdownFrameAnchorToParent
+		do
+			
+			local dropdownFrameAnchorToParent = CreateFrame("Frame", "NC.GUI.Fonts.DropdownFrameAnchorToParent", GUIFrame, "UIDropDownMenuTemplate");
+			UIDropDownMenu_SetWidth(dropdownFrameAnchorToParent, 140);
+			dropdownFrameAnchorToParent:SetPoint("TOPLEFT", 315, -200);
+			local info = {};
+			dropdownFrameAnchorToParent.initialize = function()
+				wipe(info);
+				for _, anchorPoint in pairs(frameAnchors) do
+					info.text = frameAnchorsLocalization[anchorPoint];
+					info.value = anchorPoint;
+					info.func = function(self)
+						db.CDFrameAnchorToParent = self.value;
+						_G[dropdownFrameAnchorToParent:GetName() .. "Text"]:SetText(self:GetText());
+						ReallocateAllIcons(false);
+					end
+					info.checked = anchorPoint == db.CDFrameAnchorToParent;
+					UIDropDownMenu_AddButton(info);
+				end
+			end
+			_G[dropdownFrameAnchorToParent:GetName() .. "Text"]:SetText(frameAnchorsLocalization[db.CDFrameAnchorToParent]);
+			dropdownFrameAnchorToParent.text = dropdownFrameAnchorToParent:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
+			dropdownFrameAnchorToParent.text:SetPoint("LEFT", 20, 15);
+			dropdownFrameAnchorToParent.text:SetText(L["options:general:anchor-point-to-parent"]);
+			table_insert(GUIFrame.Categories[index], dropdownFrameAnchorToParent);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownFrameAnchorToParent:GetName() .. "Text"]:SetText(frameAnchorsLocalization[db.CDFrameAnchorToParent]); end);
+			
+		end
+		
+		-- // checkBoxFullOpacityAlways
+		do
+			local checkBoxFullOpacityAlways = LRD.CreateCheckBox();
+			checkBoxFullOpacityAlways:SetText(L["Always display CD icons at full opacity (ReloadUI is needed)"]);
+			checkBoxFullOpacityAlways:SetOnClickHandler(function(this)
+				db.FullOpacityAlways = this:GetChecked();
+			end);
+			checkBoxFullOpacityAlways:SetParent(GUIFrame.outline);
+			checkBoxFullOpacityAlways:SetPoint("TOPLEFT", 155, -320);
+			checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways);
+			table.insert(GUIFrame.Categories[index], checkBoxFullOpacityAlways);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways); end);
+			
+		end
+		
+		-- // dropdownIconSortMode
+		do
+			local dropdownIconSortMode = CreateFrame("Frame", "NC.GUI.General.DropdownIconSortMode", GUIFrame, "UIDropDownMenuTemplate");
+			UIDropDownMenu_SetWidth(dropdownIconSortMode, 300);
+			dropdownIconSortMode:SetPoint("TOPLEFT", 155, -280);
+			local info = {};
+			dropdownIconSortMode.initialize = function()
+				wipe(info);
+				for _, sortMode in pairs(CONST_SORT_MODES) do
+					info.text = CONST_SORT_MODES_L[sortMode];
+					info.value = sortMode;
+					info.func = function(self)
+						db.IconSortMode = self.value;
+						_G[dropdownIconSortMode:GetName().."Text"]:SetText(self:GetText());
+					end
+					info.checked = (db.IconSortMode == info.value);
+					UIDropDownMenu_AddButton(info);
+				end
+			end
+			_G[dropdownIconSortMode:GetName().."Text"]:SetText(CONST_SORT_MODES_L[db.IconSortMode]);
+			dropdownIconSortMode.text = dropdownIconSortMode:CreateFontString("NC.GUI.General.DropdownIconSortMode.Label", "ARTWORK", "GameFontNormalSmall");
+			dropdownIconSortMode.text:SetPoint("LEFT", 20, 15);
+			dropdownIconSortMode.text:SetText(L["general.sort-mode"]);
+			table.insert(GUIFrame.Categories[index], dropdownIconSortMode);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownIconSortMode:GetName().."Text"]:SetText(CONST_SORT_MODES_L[db.IconSortMode]); end);
+		end
 
-		-- // 
+		-- // dropdownIconGrowDirection
 		do
 
 			local dropdownIconGrowDirection = CreateFrame("Frame", "NC.GUI.General.DropdownIconGrowDirection", GUIFrame, "UIDropDownMenuTemplate");
@@ -1636,6 +1746,7 @@ do
 			dropdownIconGrowDirection.text:SetText(L["options:general:icon-grow-direction"]);
 			table.insert(GUIFrame.Categories[index], dropdownIconGrowDirection);
 			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownIconGrowDirection:GetName().."Text"]:SetText(ICON_GROW_DIRECTIONS_L[db.IconGrowDirection]); end);
+			
 		end
 				
 	end
