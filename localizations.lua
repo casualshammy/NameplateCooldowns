@@ -124,6 +124,8 @@ icon size]=],
 		["icon-grow-direction:left"] = "Left",
 		["icon-grow-direction:up"] = "Up",
 		["icon-grow-direction:down"] = "Down",
+		["options:general:anchor-point"] = "Anchor point",
+		["options:general:anchor-point-to-parent"] = "Anchor point (to parent)"
 	},
 	["ruRU"] = 
 	{
