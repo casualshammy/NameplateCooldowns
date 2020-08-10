@@ -301,7 +301,15 @@ do
 		icon:ClearAllPoints();
 		local index = iconIndex == nil and frame.NCIconsCount or (iconIndex-1)
 		if (index == 0) then
-			icon:SetPoint("LEFT", frame.NCFrame, 0, 0);
+			if (db.IconGrowDirection == ICON_GROW_DIRECTIONS[1]) then
+				icon:SetPoint("LEFT", frame.NCFrame, "LEFT", 0, 0);
+			elseif (db.IconGrowDirection == ICON_GROW_DIRECTIONS[2]) then
+				icon:SetPoint("RIGHT", frame.NCFrame, "RIGHT", 0, 0);
+			elseif (db.IconGrowDirection == ICON_GROW_DIRECTIONS[3]) then
+				icon:SetPoint("BOTTOM", frame.NCFrame, "BOTTOM", 0, 0);
+			else -- // down
+				icon:SetPoint("TOP", frame.NCFrame, "TOP", 0, 0);
+			end
 		else
 			if (db.IconGrowDirection == ICON_GROW_DIRECTIONS[1]) then
 				icon:SetPoint("LEFT", frame.NCIcons[index], "RIGHT", db.IconSpacing, 0);
