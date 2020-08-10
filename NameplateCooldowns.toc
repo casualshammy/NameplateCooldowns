@@ -4,7 +4,7 @@
 ## SavedVariables: NameplateCooldownsAceDB
 
 embeds.xml
-localizations.lua
+locales\localizations.xml
 defaultSpells.lua
 defaultSpells_Classic.lua
 NameplateCooldowns.lua

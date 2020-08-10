@@ -1,7 +1,6 @@
 if (select(4, GetBuildInfo()) < 80200) then return end
 
 local _, addonTable = ...;
-local L = addonTable.L;
 local CDs = addonTable.CDs;
 local Interrupts = addonTable.Interrupts;
 local Trinkets = addonTable.Trinkets;
@@ -11,6 +10,7 @@ local Reductions = addonTable.Reductions;
 local buildTimestamp = "@project-version@";
 --@end-non-debug@]===]
 
+local L = LibStub("AceLocale-3.0"):GetLocale("NameplateCooldowns");
 local LRD = LibStub("LibRedDropdown-1.0");
 local LBG_ShowOverlayGlow, LBG_HideOverlayGlow = NAuras_LibButtonGlow.ShowOverlayGlow, NAuras_LibButtonGlow.HideOverlayGlow;
 local SML = LibStub("LibSharedMedia-3.0");

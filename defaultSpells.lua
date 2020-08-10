@@ -1,7 +1,7 @@
 if (select(4, GetBuildInfo()) < 80200) then return end
 
 local _, addonTable = ...;
-local L = addonTable.L;
+local L = LibStub("AceLocale-3.0"):GetLocale("NameplateCooldowns");
 
 addonTable.DefaultSpellsVersion = 9;
 
