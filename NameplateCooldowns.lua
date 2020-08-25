@@ -198,6 +198,7 @@ do
 				IconGrowDirection = "right",
 				CDFrameAnchor = "TOPLEFT",
 				CDFrameAnchorToParent = "TOPLEFT",
+				ShowCDOnAllies = false,
 			},
 		};
 		aceDB = LibStub("AceDB-3.0"):New("NameplateCooldownsAceDB", aceDBDefaults);
@@ -214,7 +215,7 @@ do
 			local spellsAlreadyInUserDb = { };
 			for spellID, spellCd in pairs(addonTable.CDs) do
 				local spellName = SpellNameByID[spellID];
-				if (db.UnwantedDefaultSpells[spellName] == nil) then
+				if (spellName ~= nil and db.UnwantedDefaultSpells[spellName] == nil) then
 					if (db.SpellCDs[spellName] == nil) then
 						db.SpellCDs[spellName] = GetDefaultDBEntryForSpell(spellID);
 						db.SpellCDs[spellName].cooldown = spellCd;
@@ -978,7 +979,7 @@ do
 		-- // textSizeArea
 		do
 		
-			textSizeArea = CreateFrame("Frame", nil, GUIFrame);
+			textSizeArea = CreateFrame("Frame", nil, GUIFrame, BackdropTemplateMixin and "BackdropTemplate");
 			textSizeArea:SetBackdrop({
 				bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
 				edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
@@ -1123,7 +1124,7 @@ do
 		-- // textAnchorArea
 		do
 				
-			textAnchorArea = CreateFrame("Frame", nil, GUIFrame);
+			textAnchorArea = CreateFrame("Frame", nil, GUIFrame, BackdropTemplateMixin and "BackdropTemplate");
 			textAnchorArea:SetBackdrop({
 				bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
 				edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
@@ -1322,7 +1323,7 @@ do
 	end
 
 	function InitializeGUI()
-		GUIFrame = CreateFrame("Frame", "NC_GUIFrame", UIParent);
+		GUIFrame = CreateFrame("Frame", "NC_GUIFrame", UIParent, BackdropTemplateMixin and "BackdropTemplate");
 		GUIFrame:SetHeight(450);
 		GUIFrame:SetWidth(540);
 		GUIFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 80);
@@ -1353,7 +1354,7 @@ do
 		header:SetPoint("BOTTOM", GUIFrame, "TOP", 0, 0);
 		header:SetText("NameplateCooldowns");
 		
-		GUIFrame.outline = CreateFrame("Frame", nil, GUIFrame);
+		GUIFrame.outline = CreateFrame("Frame", nil, GUIFrame, BackdropTemplateMixin and "BackdropTemplate");
 		GUIFrame.outline:SetBackdrop({
 			bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
 			edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
@@ -1414,6 +1415,7 @@ do
 	end
 
 	function GUICategory_General(index, value)
+		local checkBoxFullOpacityAlways, checkboxShowCDOnAllies;
 		local frameAnchors = { "TOPRIGHT", "RIGHT", "BOTTOMRIGHT", "TOP", "CENTER", "BOTTOM", "TOPLEFT", "LEFT", "BOTTOMLEFT" };
 		local frameAnchorsLocalization = {
 			[frameAnchors[1]] = L["anchor-point:topright"],
@@ -1687,7 +1689,7 @@ do
 		
 		-- // checkBoxFullOpacityAlways
 		do
-			local checkBoxFullOpacityAlways = LRD.CreateCheckBox();
+			checkBoxFullOpacityAlways = LRD.CreateCheckBox();
 			checkBoxFullOpacityAlways:SetText(L["Always display CD icons at full opacity (ReloadUI is needed)"]);
 			checkBoxFullOpacityAlways:SetOnClickHandler(function(this)
 				db.FullOpacityAlways = this:GetChecked();
@@ -1700,6 +1702,20 @@ do
 			
 		end
 		
+		-- checkboxShowCDOnAllies
+		do
+			checkboxShowCDOnAllies = LRD.CreateCheckBox();
+			checkboxShowCDOnAllies:SetText(L["options:general:show-cd-on-allies"]);
+			checkboxShowCDOnAllies:SetOnClickHandler(function(this)
+				db.ShowCDOnAllies = this:GetChecked();
+			end);
+			checkboxShowCDOnAllies:SetParent(GUIFrame.outline);
+			checkboxShowCDOnAllies:SetPoint("TOPLEFT", checkBoxFullOpacityAlways, "BOTTOMLEFT", 0, -10);
+			checkboxShowCDOnAllies:SetChecked(db.ShowCDOnAllies);
+			table.insert(GUIFrame.Categories[index], checkboxShowCDOnAllies);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() checkboxShowCDOnAllies:SetChecked(db.ShowCDOnAllies); end);
+		end
+
 		-- // dropdownIconSortMode
 		do
 			local dropdownIconSortMode = CreateFrame("Frame", "NC.GUI.General.DropdownIconSortMode", GUIFrame, "UIDropDownMenuTemplate");
@@ -1818,7 +1834,7 @@ do
 		-- // spellArea
 		do
 		
-			spellArea = CreateFrame("Frame", nil, GUIFrame);
+			spellArea = CreateFrame("Frame", nil, GUIFrame, BackdropTemplateMixin and "BackdropTemplate");
 			spellArea:SetBackdrop({
 				bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
 				edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
@@ -1843,7 +1859,7 @@ do
 			spellArea.controlsFrame:SetWidth(360);
 			spellArea.controlsFrame:SetHeight(spellArea:GetHeight() + 150);
 			
-			spellArea.scrollBG = CreateFrame("Frame", nil, spellArea)
+			spellArea.scrollBG = CreateFrame("Frame", nil, spellArea, BackdropTemplateMixin and "BackdropTemplate")
 			spellArea.scrollBG:SetBackdrop({
 				bgFile = [[Interface\Tooltips\UI-Tooltip-Background]],
 				edgeFile = [[Interface\Tooltips\UI-Tooltip-Border]], edgeSize = 16,
@@ -2176,7 +2192,7 @@ do
 		-- // areaCooldown
 		do
 		
-			areaCooldown = CreateFrame("Frame", nil, spellArea.controlsFrame);
+			areaCooldown = CreateFrame("Frame", nil, spellArea.controlsFrame, BackdropTemplateMixin and "BackdropTemplate");
 			areaCooldown:SetBackdrop({
 				bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
 				edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
@@ -2242,7 +2258,7 @@ do
 		-- // areaGlow
 		do
 		
-			areaGlow = CreateFrame("Frame", nil, spellArea.controlsFrame);
+			areaGlow = CreateFrame("Frame", nil, spellArea.controlsFrame, BackdropTemplateMixin and "BackdropTemplate");
 			areaGlow:SetBackdrop({
 				bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
 				edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
@@ -2341,7 +2357,7 @@ do
 		-- // areaIDs
 		do
 		
-			areaIDs = CreateFrame("Frame", nil, spellArea.controlsFrame);
+			areaIDs = CreateFrame("Frame", nil, spellArea.controlsFrame, BackdropTemplateMixin and "BackdropTemplate");
 			areaIDs:SetBackdrop({
 				bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
 				edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
@@ -2373,7 +2389,7 @@ do
 				return t;
 			end
 		
-			editboxSpellID = CreateFrame("EditBox", nil, areaIDs);
+			editboxSpellID = CreateFrame("EditBox", nil, areaIDs, BackdropTemplateMixin and "BackdropTemplate");
 			editboxSpellID:SetAutoFocus(false);
 			editboxSpellID:SetFontObject(GameFontHighlightSmall);
 			editboxSpellID.text = editboxSpellID:CreateFontString(nil, "ARTWORK", "GameFontNormal");
@@ -2626,7 +2642,7 @@ do
 	EventFrame.COMBAT_LOG_EVENT_UNFILTERED = function()
 		local cTime = GetTime();
 		local _, eventType, _, _, srcName, srcFlags, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo();
-		if (bit_band(srcFlags, COMBATLOG_OBJECT_IS_HOSTILE) ~= 0) then
+		if (bit_band(srcFlags, COMBATLOG_OBJECT_IS_HOSTILE) ~= 0 or db.ShowCDOnAllies == true) then
 			local entry = db.SpellCDs[spellName];
 			if (entry and entry.enabled and (entry.spellIDs == nil or entry.spellIDs[spellID])) then
 				if (eventType == "SPELL_CAST_SUCCESS" or eventType == "SPELL_AURA_APPLIED" or eventType == "SPELL_MISSED" or eventType == "SPELL_SUMMON") then
