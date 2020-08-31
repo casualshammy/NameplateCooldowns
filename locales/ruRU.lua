@@ -5,6 +5,7 @@ L = L or {}
 --@end-non-debug@]===]
 --@debug@
 L = L or {}
+L["options:general:show-cd-on-allies"] = "Показывать КД на полосках ХП союзников"
 L["Always display CD icons at full opacity (ReloadUI is needed)"] = [=[Иконки заклинаний всегда полностью непрозрачны
 (Необходима перезагрузка интерфейса)]=];
 L["chat:addon-is-disabled"] = "Аддон отключен";

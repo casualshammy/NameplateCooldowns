@@ -5,6 +5,7 @@ L = L or {}
 --@end-non-debug@]===]
 --@debug@
 L = L or {}
+L["options:general:show-cd-on-allies"] = "Show cooldowns on nameplates of allies"
 L["Always display CD icons at full opacity (ReloadUI is needed)"] = "Always display CD icons at full opacity (ReloadUI is needed)";
 L["chat:addon-is-disabled"] = "Addon is disabled";
 L["chat:addon-is-disabled-note"] = "Please note: this addon is disabled. You can enable it in options dialog (/nc)";
