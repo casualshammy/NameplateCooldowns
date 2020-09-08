@@ -605,7 +605,7 @@ do
 					local spellName = spellInfo.spellName;
 					local isActiveCD = spellInfo.expires > currentTime;
 					local dbInfo = db.SpellCDs[spellName];
-					if (dbInfo and (db.ShowInactiveCD or isActiveCD)) then
+					if (dbInfo and dbInfo.enabled and (db.ShowInactiveCD or isActiveCD)) then
 						if (counter > frame.NCIconsCount) then
 							AllocateIcon(frame);
 						end
@@ -2196,6 +2196,11 @@ do
 							db.SpellCDs[spellName].enabled = checkbox:GetChecked();
 							ReallocateAllIcons(true);
 							dropdownMenuSpells:GetButtonByText(spellName):SetGray(not checkbox:GetChecked());
+						end,
+						onCloseButtonClick = function(buttonInfo)
+							OnSpellSelected(buttonInfo);
+							buttonDeleteSpell:Click();
+							selectSpell:Click();
 						end,
 					});
 				end
