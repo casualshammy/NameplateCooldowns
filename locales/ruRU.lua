@@ -98,5 +98,9 @@ L["icon-grow-direction:right"] = "Направо";
 L["icon-grow-direction:left"] = "Налево";
 L["icon-grow-direction:up"] = "Вверх";
 L["icon-grow-direction:down"] = "Вниз";
+L["options:general:show-inactive-cd"] = "Показывать неактивные кулдауны";
+L["options:general:show-inactive-cd:tooltip"] = 
+[[Обратите внимание: вы не будете видеть все доступные кулдауны!
+Вы будете видеть только те кулдауны, которые противник уже использовал]];
 
 --@end-debug@

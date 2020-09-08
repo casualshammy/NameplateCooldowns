@@ -101,6 +101,10 @@ L["icon-grow-direction:up"] = "Up";
 L["icon-grow-direction:down"] = "Down";
 L["options:general:anchor-point"] = "Anchor point";
 L["options:general:anchor-point-to-parent"] = "Anchor point (to parent)"
+L["options:general:show-inactive-cd"] = "Show inactive cooldowns";
+L["options:general:show-inactive-cd:tooltip"] = 
+[[Pay attention: you will NOT be able to see all available cooldowns!
+You will see ONLY those cooldowns that foe has already used]];
 
 
 --@end-debug@

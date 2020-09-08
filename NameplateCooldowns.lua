@@ -50,7 +50,7 @@ local _G, pairs, select, UIParent, string_match, string_gsub, string_find, bit_b
 	  _G, pairs, select, UIParent, strmatch,	   		gsub,	  strfind, bit.band, GetTime, 			 tContains,		 ceil,	table.insert, table.sort, C_Timer.After, string.lower, string.format, C_Timer.NewTimer,		 max;
 	  
 local OnStartup, InitializeDB, GetDefaultDBEntryForSpell;
-local AllocateIcon, ReallocateAllIcons, InitializeFrame, UpdateOnlyOneNameplate, Nameplate_SetBorder, Nameplate_SetCooldown, HideCDIcon, ShowCDIcon;
+local AllocateIcon, ReallocateAllIcons, InitializeFrame, UpdateOnlyOneNameplate, HideCDIcon, ShowCDIcon;
 local OnUpdate;
 local EnableTestMode, DisableTestMode;
 local ShowGUI, InitializeGUI, GUICategory_General, GUICategory_Profiles, GUICategory_Other, OnGUICategoryClick, ShowGUICategory, CreateGUICategory;
@@ -199,6 +199,7 @@ do
 				CDFrameAnchor = "TOPLEFT",
 				CDFrameAnchorToParent = "TOPLEFT",
 				ShowCDOnAllies = false,
+				ShowInactiveCD = false,
 			},
 		};
 		aceDB = LibStub("AceDB-3.0"):New("NameplateCooldownsAceDB", aceDBDefaults);
@@ -522,71 +523,43 @@ do
 		return t;
 	end
 	
-	local function UpdateNameplate_SetGlow(icon, spellNeedGlow, remain)
+	local function UpdateNameplate_SetGlow(icon, spellNeedGlow, remain, isActive)
 		if (glowInfo[icon]) then
 			glowInfo[icon]:Cancel(); -- // cancel delayed glow
 			glowInfo[icon] = nil;
 		end
-		if (spellNeedGlow ~= nil) then
-			if (remain < spellNeedGlow or remain > GLOW_TIME_INFINITE) then
-				LBG_ShowOverlayGlow(icon, true, true); -- // show glow immediately
-			else
-				LBG_HideOverlayGlow(icon); -- // hide glow
-				glowInfo[icon] = C_Timer_NewTimer(remain - spellNeedGlow, function() LBG_ShowOverlayGlow(icon, true, true); end); -- // queue delayed glow
+		if (not isActive) then
+			if (icon.glow ~= false) then
+				LBG_HideOverlayGlow(icon);
+				icon.glow = false;
 			end
 		else
-			LBG_HideOverlayGlow(icon); -- // this aura doesn't require glow
-		end
-	end
-	
-	function UpdateOnlyOneNameplate(frame, name)
-		local counter = 1;
-		if (GlobalFilterNameplate(name)) then
-			if (charactersDB[name]) then
-				local currentTime = GetTime();
-				local sortedCDs = Nameplate_SortAuras(charactersDB[name]);
-				for _, spellInfo in pairs(sortedCDs) do
-					local spellName = spellInfo.spellName;
-					if (spellInfo.expires > currentTime) then
-						local dbInfo = db.SpellCDs[spellName];
-						if (counter > frame.NCIconsCount) then
-							AllocateIcon(frame);
-						end
-						local icon = frame.NCIcons[counter];
-						if (icon.textureID ~= spellInfo.texture) then
-							icon.texture:SetTexture(spellInfo.texture);
-							icon.textureID = spellInfo.texture;
-							Nameplate_SetBorder(icon, spellName);
-						end
-						local remain = spellInfo.expires - currentTime;
-						Nameplate_SetCooldown(icon, remain);
-						UpdateNameplate_SetGlow(icon, dbInfo.glow, remain);
-						if (not icon.shown) then
-							ShowCDIcon(icon, frame);
-						end
-						counter = counter + 1;
-					else
-						charactersDB[name][spellName] = nil;
+			if (spellNeedGlow ~= nil) then
+				if (remain < spellNeedGlow or remain > GLOW_TIME_INFINITE) then
+					if (icon.glow ~= true) then
+						LBG_ShowOverlayGlow(icon, true, true); -- // show glow immediately
+						icon.glow = true;
 					end
+				else
+					LBG_HideOverlayGlow(icon); -- // hide glow
+					icon.glow = false;
+					glowInfo[icon] = C_Timer_NewTimer(remain - spellNeedGlow, function() LBG_ShowOverlayGlow(icon, true, true); icon.glow = true; end); -- // queue delayed glow
 				end
-			end
-		end
-		for k = counter, frame.NCIconsCount do
-			local icon = frame.NCIcons[k];
-			if (icon.shown) then
-				HideCDIcon(icon, frame);
+			elseif (icon.glow ~= false) then
+				LBG_HideOverlayGlow(icon); -- // this aura doesn't require glow
+				icon.glow = false;
 			end
 		end
 	end
-	
-	function Nameplate_SetBorder(icon, spellName)
-		if (db.ShowBorderInterrupts and Interrupts[spellName]) then
+
+	local function Nameplate_SetBorder(icon, spellName, isActive)
+		if (isActive and db.ShowBorderInterrupts and Interrupts[spellName]) then
 			if (icon.borderState ~= 1) then
 				icon.border:SetVertexColor(unpack(db.BorderInterruptsColor));
 				icon.border:Show();
 				icon.borderState = 1;
 			end
-		elseif (db.ShowBorderTrinkets and Trinkets[spellName]) then
+		elseif (isActive and db.ShowBorderTrinkets and Trinkets[spellName]) then
 			if (icon.borderState ~= 2) then
 				icon.border:SetVertexColor(unpack(db.BorderTrinketsColor));
 				icon.border:Show();
@@ -597,12 +570,64 @@ do
 			icon.borderState = nil;
 		end
 	end
-	
-	function Nameplate_SetCooldown(icon, remain)
-		if (remain >= 60) then
-			icon.cooldownText:SetText(math_ceil(remain/60).."m");
-		else
-			icon.cooldownText:SetText(math_ceil(remain));
+
+	local function Nameplate_SetCooldown(icon, remain, isActive)
+		if (isActive) then
+			local text = (remain >= 60) and (math_ceil(remain/60).."m") or math_ceil(remain);
+			if (icon.text ~= text) then
+				icon.cooldownText:SetText(text);
+				icon.text = text;
+			end
+		elseif (icon.text ~= "") then
+			icon.cooldownText:SetText("");
+			icon.text = "";
+		end
+	end
+
+	local function UpdateOnlyOneNameplate_SetTexture(icon, texture, isActive)
+		if (icon.textureID ~= texture) then
+			icon.texture:SetTexture(texture);
+			icon.textureID = texture;
+		end
+		if (icon.desaturation ~= not isActive) then
+			icon.texture:SetDesaturated(not isActive);
+			icon.desaturation = not isActive;
+		end
+	end
+
+	function UpdateOnlyOneNameplate(frame, name)
+		local counter = 1;
+		if (GlobalFilterNameplate(name)) then
+			if (charactersDB[name]) then
+				local currentTime = GetTime();
+				local sortedCDs = Nameplate_SortAuras(charactersDB[name]);
+				for _, spellInfo in pairs(sortedCDs) do
+					local spellName = spellInfo.spellName;
+					local isActiveCD = spellInfo.expires > currentTime;
+					local dbInfo = db.SpellCDs[spellName];
+					if (dbInfo and (db.ShowInactiveCD or isActiveCD)) then
+						if (counter > frame.NCIconsCount) then
+							AllocateIcon(frame);
+						end
+						local icon = frame.NCIcons[counter];
+						UpdateOnlyOneNameplate_SetTexture(icon, spellInfo.texture, isActiveCD);
+						local remain = spellInfo.expires - currentTime;
+						UpdateNameplate_SetGlow(icon, dbInfo.glow, remain, isActiveCD);
+						Nameplate_SetCooldown(icon, remain, isActiveCD);
+						Nameplate_SetBorder(icon, spellName, isActiveCD);
+						if (not icon.shown) then
+							ShowCDIcon(icon, frame);
+						end
+						counter = counter + 1;
+					end
+				end
+			end
+		end
+		for k = counter, frame.NCIconsCount do
+			local icon = frame.NCIcons[k];
+			if (icon.shown) then
+				HideCDIcon(icon, frame);
+			end
 		end
 	end
 	
@@ -1415,7 +1440,7 @@ do
 	end
 
 	function GUICategory_General(index, value)
-		local checkBoxFullOpacityAlways, checkboxShowCDOnAllies;
+		local checkBoxFullOpacityAlways, checkboxShowCDOnAllies, checkboxShowInactiveCD;
 		local frameAnchors = { "TOPRIGHT", "RIGHT", "BOTTOMRIGHT", "TOP", "CENTER", "BOTTOM", "TOPLEFT", "LEFT", "BOTTOMLEFT" };
 		local frameAnchorsLocalization = {
 			[frameAnchors[1]] = L["anchor-point:topright"],
@@ -1714,6 +1739,24 @@ do
 			checkboxShowCDOnAllies:SetChecked(db.ShowCDOnAllies);
 			table.insert(GUIFrame.Categories[index], checkboxShowCDOnAllies);
 			table_insert(GUIFrame.OnDBChangedHandlers, function() checkboxShowCDOnAllies:SetChecked(db.ShowCDOnAllies); end);
+		end
+
+		-- checkboxShowInactiveCD
+		do
+			checkboxShowInactiveCD = LRD.CreateCheckBox();
+			checkboxShowInactiveCD:SetText(L["options:general:show-inactive-cd"]);
+			LRD.SetTooltip(checkboxShowInactiveCD, L["options:general:show-inactive-cd:tooltip"])
+			checkboxShowInactiveCD:SetOnClickHandler(function(this)
+				db.ShowInactiveCD = this:GetChecked();
+				for frame, unitName in pairs(NameplatesVisible) do
+					UpdateOnlyOneNameplate(frame, unitName);
+				end
+			end);
+			checkboxShowInactiveCD:SetParent(GUIFrame.outline);
+			checkboxShowInactiveCD:SetPoint("TOPLEFT", checkboxShowCDOnAllies, "BOTTOMLEFT", 0, -10);
+			checkboxShowInactiveCD:SetChecked(db.ShowInactiveCD);
+			table.insert(GUIFrame.Categories[index], checkboxShowInactiveCD);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() checkboxShowInactiveCD:SetChecked(db.ShowInactiveCD); end);
 		end
 
 		-- // dropdownIconSortMode
@@ -2641,7 +2684,7 @@ do
 	
 	EventFrame.COMBAT_LOG_EVENT_UNFILTERED = function()
 		local cTime = GetTime();
-		local _, eventType, _, _, srcName, srcFlags, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo();
+		local _, eventType, _, srcGUID, srcName, srcFlags, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo();
 		if (bit_band(srcFlags, COMBATLOG_OBJECT_IS_HOSTILE) ~= 0 or db.ShowCDOnAllies == true) then
 			local entry = db.SpellCDs[spellName];
 			if (entry and entry.enabled and (entry.spellIDs == nil or entry.spellIDs[spellID])) then
