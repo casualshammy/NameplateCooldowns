@@ -46,8 +46,8 @@ local NameplatesVisible = {};
 local InstanceType = "none";
 local GUIFrame, EventFrame, TestFrame, db, aceDB, ProfileOptionsFrame;
 
-local _G, pairs, select, UIParent, string_match, string_gsub, string_find, bit_band, GetTime, table_contains_value, math_ceil, 	table_insert, table_sort, C_Timer_After, string_lower, string_format, C_Timer_NewTimer, math_max =
-	  _G, pairs, select, UIParent, strmatch,	   		gsub,	  strfind, bit.band, GetTime, 			 tContains,		 ceil,	table.insert, table.sort, C_Timer.After, string.lower, string.format, C_Timer.NewTimer,		 max;
+local _G, pairs, select, UIParent, string_match, string_gsub, string_find, bit_band, GetTime, table_contains_value, math_ceil, 	table_insert, table_sort, C_Timer_After, string_lower, string_format, C_Timer_NewTimer, math_max, C_NamePlate_GetNamePlateForUnit, UnitGUID =
+	  _G, pairs, select, UIParent, strmatch,	   		gsub,	  strfind, bit.band, GetTime, 			 tContains,		 ceil,	table.insert, table.sort, C_Timer.After, string.lower, string.format, C_Timer.NewTimer,		 max, C_NamePlate.GetNamePlateForUnit, UnitGUID;
 	  
 local OnStartup, InitializeDB, GetDefaultDBEntryForSpell;
 local AllocateIcon, ReallocateAllIcons, InitializeFrame, UpdateOnlyOneNameplate, HideCDIcon, ShowCDIcon;
@@ -200,6 +200,7 @@ do
 				CDFrameAnchorToParent = "TOPLEFT",
 				ShowCDOnAllies = false,
 				ShowInactiveCD = false,
+				IgnoreNameplateScale = false,
 			},
 		};
 		aceDB = LibStub("AceDB-3.0"):New("NameplateCooldownsAceDB", aceDBDefaults);
@@ -349,7 +350,9 @@ do
 
 	function AllocateIcon(frame)
 		if (not frame.NCFrame) then
-			frame.NCFrame = CreateFrame("frame", nil, db.FullOpacityAlways and UIParent or frame);
+			frame.NCFrame = CreateFrame("frame", nil, frame);
+			frame.NCFrame:SetIgnoreParentAlpha(db.FullOpacityAlways);
+			frame.NCFrame:SetIgnoreParentScale(db.IgnoreNameplateScale);
 			frame.NCFrame:SetWidth(db.IconSize);
 			frame.NCFrame:SetHeight(db.IconSize);
 			frame.NCFrame:SetPoint(db.CDFrameAnchor, frame, db.CDFrameAnchorToParent, db.IconXOffset, db.IconYOffset);
@@ -385,6 +388,8 @@ do
 	function ReallocateAllIcons(clearSpells)
 		for frame in pairs(Nameplates) do
 			if (frame.NCFrame) then
+				frame.NCFrame:SetIgnoreParentAlpha(db.FullOpacityAlways);
+				frame.NCFrame:SetIgnoreParentScale(db.IgnoreNameplateScale);
 				frame.NCFrame:ClearAllPoints();
 				frame.NCFrame:SetPoint(db.CDFrameAnchor, frame, db.CDFrameAnchorToParent, db.IconXOffset, db.IconYOffset);
 				local counter = 0;
@@ -1715,15 +1720,34 @@ do
 		-- // checkBoxFullOpacityAlways
 		do
 			checkBoxFullOpacityAlways = LRD.CreateCheckBox();
-			checkBoxFullOpacityAlways:SetText(L["Always display CD icons at full opacity (ReloadUI is needed)"]);
+			checkBoxFullOpacityAlways:SetText(L["options:general:full-opacity-always"]);
+			LRD.SetTooltip(checkBoxFullOpacityAlways, L["options:general:full-opacity-always:tooltip"]);
 			checkBoxFullOpacityAlways:SetOnClickHandler(function(this)
 				db.FullOpacityAlways = this:GetChecked();
+				ReallocateAllIcons(true);
 			end);
 			checkBoxFullOpacityAlways:SetParent(GUIFrame.outline);
 			checkBoxFullOpacityAlways:SetPoint("TOPLEFT", 155, -320);
 			checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways);
 			table.insert(GUIFrame.Categories[index], checkBoxFullOpacityAlways);
 			table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways); end);
+			
+		end
+
+		-- // checkBoxIgnoreNameplateScale
+		do
+			checkBoxIgnoreNameplateScale = LRD.CreateCheckBox();
+			checkBoxIgnoreNameplateScale:SetText(L["options:general:ignore-nameplate-scale"]);
+			LRD.SetTooltip(checkBoxIgnoreNameplateScale, L["options:general:ignore-nameplate-scale:tooltip"]);
+			checkBoxIgnoreNameplateScale:SetOnClickHandler(function(this)
+				db.IgnoreNameplateScale = this:GetChecked();
+				ReallocateAllIcons(true);
+			end);
+			checkBoxIgnoreNameplateScale:SetParent(GUIFrame.outline);
+			checkBoxIgnoreNameplateScale:SetPoint("TOPLEFT", checkBoxFullOpacityAlways, "BOTTOMLEFT", 0, 0);
+			checkBoxIgnoreNameplateScale:SetChecked(db.IgnoreNameplateScale);
+			table.insert(GUIFrame.Categories[index], checkBoxIgnoreNameplateScale);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxIgnoreNameplateScale:SetChecked(db.IgnoreNameplateScale); ReallocateAllIcons(true); end);
 			
 		end
 		
@@ -1735,7 +1759,7 @@ do
 				db.ShowCDOnAllies = this:GetChecked();
 			end);
 			checkboxShowCDOnAllies:SetParent(GUIFrame.outline);
-			checkboxShowCDOnAllies:SetPoint("TOPLEFT", checkBoxFullOpacityAlways, "BOTTOMLEFT", 0, -10);
+			checkboxShowCDOnAllies:SetPoint("TOPLEFT", checkBoxIgnoreNameplateScale, "BOTTOMLEFT", 0, 0);
 			checkboxShowCDOnAllies:SetChecked(db.ShowCDOnAllies);
 			table.insert(GUIFrame.Categories[index], checkboxShowCDOnAllies);
 			table_insert(GUIFrame.OnDBChangedHandlers, function() checkboxShowCDOnAllies:SetChecked(db.ShowCDOnAllies); end);
@@ -1753,7 +1777,7 @@ do
 				end
 			end);
 			checkboxShowInactiveCD:SetParent(GUIFrame.outline);
-			checkboxShowInactiveCD:SetPoint("TOPLEFT", checkboxShowCDOnAllies, "BOTTOMLEFT", 0, -10);
+			checkboxShowInactiveCD:SetPoint("TOPLEFT", checkboxShowCDOnAllies, "BOTTOMLEFT", 0, 0);
 			checkboxShowInactiveCD:SetChecked(db.ShowInactiveCD);
 			table.insert(GUIFrame.Categories[index], checkboxShowInactiveCD);
 			table_insert(GUIFrame.OnDBChangedHandlers, function() checkboxShowInactiveCD:SetChecked(db.ShowInactiveCD); end);
@@ -2756,7 +2780,8 @@ do
 	end
 	
 	EventFrame.NAME_PLATE_UNIT_ADDED = function(unitID)
-		local nameplate = C_NamePlate.GetNamePlateForUnit(unitID);
+		local nameplate = C_NamePlate_GetNamePlateForUnit(unitID);
+		local unitGUID = UnitGUID(unitID);
 		local unitName = UnitName(unitID);
 		NameplatesVisible[nameplate] = unitName;
 		if (not Nameplates[nameplate]) then
@@ -2765,17 +2790,11 @@ do
 			Nameplates[nameplate] = true;
 		end
 		UpdateOnlyOneNameplate(nameplate, unitName);
-		if (db.FullOpacityAlways and nameplate.NCFrame) then
-			nameplate.NCFrame:Show();
-		end
 	end
 	
 	EventFrame.NAME_PLATE_UNIT_REMOVED = function(unitID)
-		local nameplate = C_NamePlate.GetNamePlateForUnit(unitID);
+		local nameplate = C_NamePlate_GetNamePlateForUnit(unitID);
 		NameplatesVisible[nameplate] = nil;
-		if (db.FullOpacityAlways and nameplate.NCFrame) then
-			nameplate.NCFrame:Hide();
-		end
 	end
 	
 	EventFrame.PLAYER_TARGET_CHANGED = function()

@@ -6,7 +6,6 @@ L = L or {}
 --@debug@
 L = L or {}
 L["options:general:show-cd-on-allies"] = "Show cooldowns on nameplates of allies"
-L["Always display CD icons at full opacity (ReloadUI is needed)"] = "Always display CD icons at full opacity (ReloadUI is needed)";
 L["chat:addon-is-disabled"] = "Addon is disabled";
 L["chat:addon-is-disabled-note"] = "Please note: this addon is disabled. You can enable it in options dialog (/nc)";
 L["chat:addon-is-enabled"] = "Addon is enabled";
@@ -105,6 +104,15 @@ L["options:general:show-inactive-cd"] = "Show inactive cooldowns";
 L["options:general:show-inactive-cd:tooltip"] = 
 [[Pay attention: you will NOT be able to see all available cooldowns!
 You will see ONLY those cooldowns that foe has already used]];
-
+L["options:general:full-opacity-always"] = "Icons are always completely opaque"
+L["options:general:full-opacity-always:tooltip"] = 
+[[If this option is enabled, the icons will 
+always be completely opaque. If not, the opacity
+will be the same as the health bar]]
+L["options:general:ignore-nameplate-scale"] = "Ignore nameplate scale";
+L["options:general:ignore-nameplate-scale:tooltip"] = 
+[[If this option is checked, icon size will not
+change accordingly to nameplate scale
+(for example, if nameplate of your target becomes bigger)]];
 
 --@end-debug@
