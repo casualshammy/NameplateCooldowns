@@ -44,7 +44,7 @@ local ElapsedTimer = 0;
 local Nameplates = {};
 local NameplatesVisible = {};
 local InstanceType = "none";
-local GUIFrame, EventFrame, TestFrame, db, aceDB, ProfileOptionsFrame;
+local GUIFrame, EventFrame, TestFrame, db, aceDB, ProfileOptionsFrame, LocalPlayerGUID;
 
 local _G, pairs, select, UIParent, string_match, string_gsub, string_find, bit_band, GetTime, table_contains_value, math_ceil, 	table_insert, table_sort, C_Timer_After, string_lower, string_format, C_Timer_NewTimer, math_max =
 	  _G, pairs, select, UIParent, strmatch,	   		gsub,	  strfind, bit.band, GetTime, 			 tContains,		 ceil,	table.insert, table.sort, C_Timer.After, string.lower, string.format, C_Timer.NewTimer,		 max;
@@ -247,6 +247,7 @@ do
 	end
 	
 	function OnStartup()
+		LocalPlayerGUID = UnitGUID("player");
 		InitializeDB();
 		OnStartup_AddNewAndUpdatedSpells();
 		-- // starting OnUpdate()
@@ -2641,8 +2642,8 @@ do
 	
 	EventFrame.COMBAT_LOG_EVENT_UNFILTERED = function()
 		local cTime = GetTime();
-		local _, eventType, _, _, srcName, srcFlags, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo();
-		if (bit_band(srcFlags, COMBATLOG_OBJECT_IS_HOSTILE) ~= 0 or db.ShowCDOnAllies == true) then
+		local _, eventType, _, sourceGUID, srcName, srcFlags, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo();
+		if (bit_band(srcFlags, COMBATLOG_OBJECT_IS_HOSTILE) ~= 0 or (db.ShowCDOnAllies == true and sourceGUID ~= LocalPlayerGUID)) then
 			local entry = db.SpellCDs[spellName];
 			if (entry and entry.enabled and (entry.spellIDs == nil or entry.spellIDs[spellID])) then
 				if (eventType == "SPELL_CAST_SUCCESS" or eventType == "SPELL_AURA_APPLIED" or eventType == "SPELL_MISSED" or eventType == "SPELL_SUMMON") then
