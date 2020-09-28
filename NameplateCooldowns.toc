@@ -5,6 +5,8 @@
 ## Version: @project-version@
 
 embeds.xml
+src\constants.lua
+src\utilities.lua
 locales\localizations.xml
 defaultSpells.lua
 defaultSpells_Classic.lua

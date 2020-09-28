@@ -10,36 +10,38 @@ local Reductions = addonTable.Reductions;
 local buildTimestamp = "@project-version@";
 --@end-non-debug@]===]
 
-local L = LibStub("AceLocale-3.0"):GetLocale("NameplateCooldowns");
-local LRD = LibStub("LibRedDropdown-1.0");
-local LBG_ShowOverlayGlow, LBG_HideOverlayGlow = NAuras_LibButtonGlow.ShowOverlayGlow, NAuras_LibButtonGlow.HideOverlayGlow;
-local SML = LibStub("LibSharedMedia-3.0");
-SML:Register("font", "NC_TeenBold", "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf", 255);
+-- Libraries
+local L, LRD, SML, LBG_ShowOverlayGlow, LBG_HideOverlayGlow;
+do
+	L = LibStub("AceLocale-3.0"):GetLocale("NameplateCooldowns");
+	LRD = LibStub("LibRedDropdown-1.0");
+	LBG_ShowOverlayGlow, LBG_HideOverlayGlow = NAuras_LibButtonGlow.ShowOverlayGlow, NAuras_LibButtonGlow.HideOverlayGlow;
+	SML = LibStub("LibSharedMedia-3.0");
+	SML:Register("font", "NC_TeenBold", "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf", 255);
+end
 
-local SPELL_PVPADAPTATION = 195901;
-local SPELL_PVPTRINKET = 42292;
+-- Consts
+local SPELL_PVPADAPTATION, SPELL_PVPTRINKET, ICON_GROW_DIRECTION_RIGHT, ICON_GROW_DIRECTION_LEFT, ICON_GROW_DIRECTION_UP, ICON_GROW_DIRECTION_DOWN, SORT_MODE_NONE, SORT_MODE_TRINKET_INTERRUPT_OTHER,
+	SORT_MODE_INTERRUPT_TRINKET_OTHER, SORT_MODE_TRINKET_OTHER, SORT_MODE_INTERRUPT_OTHER;
+do
+	SPELL_PVPADAPTATION, SPELL_PVPTRINKET = addonTable.SPELL_PVPADAPTATION, addonTable.SPELL_PVPTRINKET;
+	ICON_GROW_DIRECTION_RIGHT, ICON_GROW_DIRECTION_LEFT, ICON_GROW_DIRECTION_UP, ICON_GROW_DIRECTION_DOWN = 
+		addonTable.ICON_GROW_DIRECTION_RIGHT, addonTable.ICON_GROW_DIRECTION_LEFT, addonTable.ICON_GROW_DIRECTION_UP, addonTable.ICON_GROW_DIRECTION_DOWN;
+	SORT_MODE_NONE, SORT_MODE_TRINKET_INTERRUPT_OTHER, SORT_MODE_INTERRUPT_TRINKET_OTHER, SORT_MODE_TRINKET_OTHER, SORT_MODE_INTERRUPT_OTHER = 
+		addonTable.SORT_MODE_NONE, addonTable.SORT_MODE_TRINKET_INTERRUPT_OTHER, addonTable.SORT_MODE_INTERRUPT_TRINKET_OTHER, addonTable.SORT_MODE_TRINKET_OTHER, addonTable.SORT_MODE_INTERRUPT_OTHER;
+	GLOW_TIME_INFINITE = addonTable.GLOW_TIME_INFINITE;
+	INSTANCE_TYPE_UNKNOWN = addonTable.INSTANCE_TYPE_UNKNOWN;
+end
 
-local charactersDB = {};
+-- Utilities
+local SpellTextureByID, SpellNameByID;
+do
+	SpellTextureByID, SpellNameByID = addonTable.SpellTextureByID, addonTable.SpellNameByID;
+end
+
+local SpellsPerPlayerGUID = { };
 local spellNamesWithCd = { };
 local AllSpellIDsAndIconsByName = { };
-
-local SpellTextureByID = setmetatable({
-	[SPELL_PVPTRINKET] =	1322720,
-	[200166] =				1247262,
-}, {
-	__index = function(t, key)
-		local texture = GetSpellTexture(key);
-		t[key] = texture;
-		return texture;
-	end
-});
-local SpellNameByID = setmetatable({}, {
-	__index = function(t, key)
-		local spellName = GetSpellInfo(key);
-		t[key] = spellName;
-		return spellName;
-	end
-});
 local ElapsedTimer = 0;
 local Nameplates = {};
 local NameplatesVisible = {};
@@ -48,35 +50,12 @@ local GUIFrame, EventFrame, TestFrame, db, aceDB, ProfileOptionsFrame;
 
 local _G, pairs, select, UIParent, string_match, string_gsub, string_find, bit_band, GetTime, table_contains_value, math_ceil, 	table_insert, table_sort, C_Timer_After, string_lower, string_format, C_Timer_NewTimer, math_max, C_NamePlate_GetNamePlateForUnit, UnitGUID =
 	  _G, pairs, select, UIParent, strmatch,	   		gsub,	  strfind, bit.band, GetTime, 			 tContains,		 ceil,	table.insert, table.sort, C_Timer.After, string.lower, string.format, C_Timer.NewTimer,		 max, C_NamePlate.GetNamePlateForUnit, UnitGUID;
-	  
+
 local OnStartup, InitializeDB, GetDefaultDBEntryForSpell;
 local AllocateIcon, ReallocateAllIcons, InitializeFrame, UpdateOnlyOneNameplate, HideCDIcon, ShowCDIcon;
 local OnUpdate;
 local EnableTestMode, DisableTestMode;
 local ShowGUI, InitializeGUI, GUICategory_General, GUICategory_Profiles, GUICategory_Other, OnGUICategoryClick, ShowGUICategory, CreateGUICategory;
-local Print, deepcopy, table_contains_key, table_any, CoroutineProcessor, ColorizeText, msg, table_count;
-
--- // consts: you should not change existing values
-local ICON_GROW_DIRECTIONS, CONST_SORT_MODES, CONST_SORT_MODES_L, GLOW_TIME_INFINITE, INSTANCE_TYPE_UNKNOWN;
-do
-	ICON_GROW_DIRECTIONS = { "right", "left", "up", "down" };
-	ICON_GROW_DIRECTIONS_L = {
-		[ICON_GROW_DIRECTIONS[1]] = L["icon-grow-direction:right"],
-		[ICON_GROW_DIRECTIONS[2]] = L["icon-grow-direction:left"],
-		[ICON_GROW_DIRECTIONS[3]] = L["icon-grow-direction:up"],
-		[ICON_GROW_DIRECTIONS[4]] = L["icon-grow-direction:down"],
-	};
-	CONST_SORT_MODES = { "none", "trinket-interrupt-other", "interrupt-trinket-other", "trinket-other", "interrupt-other" };
-	CONST_SORT_MODES_L = {
-		[CONST_SORT_MODES[1]] = "none",
-		[CONST_SORT_MODES[2]] = "trinkets, then interrupts, then other spells",
-		[CONST_SORT_MODES[3]] = "interrupts, then trinkets, then other spells",
-		[CONST_SORT_MODES[4]] = "trinkets, then other spells",
-		[CONST_SORT_MODES[5]] = "interrupts, then other spells",
-	};
-	GLOW_TIME_INFINITE 		= 4*1000*1000*1000;
-	INSTANCE_TYPE_UNKNOWN 	= "unknown";
-end
 
 -------------------------------------------------------------------------------------------------
 ----- Initialize
@@ -141,7 +120,7 @@ do
 		db = aceDB.profile;
 		if (db.AddonEnabled) then
 			EventFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
-			wipe(charactersDB);
+			wipe(SpellsPerPlayerGUID);
 		else
 			EventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 		end
@@ -174,7 +153,7 @@ do
 				BorderInterruptsColor = {1, 0.35, 0},
 				BorderTrinketsColor = {1, 0.843, 0},
 				Font = "NC_TeenBold",
-				IconSortMode = CONST_SORT_MODES[1],
+				IconSortMode = SORT_MODE_NONE,
 				AddonEnabled = true,
 				ShowCooldownsOnCurrentTargetOnly = false,
 				EnabledZoneTypes = { 
@@ -222,7 +201,7 @@ do
 						db.SpellCDs[spellName] = GetDefaultDBEntryForSpell(spellID);
 						db.SpellCDs[spellName].cooldown = spellCd;
 						db.SpellCDs[spellName].spellIDs = { [spellID] = true; };
-						Print(format(L["New spell has been added: %s"], GetSpellLink(spellID)));
+						addonTable.Print(format(L["New spell has been added: %s"], GetSpellLink(spellID)));
 					else
 						if (db.SpellCDs[spellName].cooldown ~= spellCd) then
 							spellsAlreadyInUserDb[spellName] = spellCd;
@@ -230,11 +209,11 @@ do
 					end
 				end
 			end
-			if (table_any(spellsAlreadyInUserDb)) then
+			if (next(spellsAlreadyInUserDb) ~= nil) then
 				for spellName, spellCd in pairs(spellsAlreadyInUserDb) do
-					Print(string_format(L["chat:print-updated-spells"], spellName, db.SpellCDs[spellName].cooldown, spellCd));
+					addonTable.Print(string_format(L["chat:print-updated-spells"], spellName, db.SpellCDs[spellName].cooldown, spellCd));
 				end
-				msgWithQuestion(L["msg:question:import-existing-spells"], 
+				addonTable.msgWithQuestion(L["msg:question:import-existing-spells"], 
 					function()
 						for spellName, spellCd in pairs(spellsAlreadyInUserDb) do
 							local oldCooldown = db.SpellCDs[spellName].cooldown;
@@ -263,11 +242,11 @@ do
 		if (db.AddonEnabled) then
 			EventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 		else
-			Print(L["chat:addon-is-disabled-note"]);
+			addonTable.Print(L["chat:addon-is-disabled-note"]);
 		end
 		if (db.ShowCooldownsOnCurrentTargetOnly) then
 			EventFrame:RegisterEvent("PLAYER_TARGET_CHANGED");
-			--Print(L["chat:enable-only-for-target-nameplate"]);
+			--addonTable.Print(L["chat:enable-only-for-target-nameplate"]);
 		end
 		EventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED");
 		EventFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
@@ -282,7 +261,7 @@ do
 				else
 					c = "GUILD";
 				end
-				Print("Waiting for replies from " .. c);
+				addonTable.Print("Waiting for replies from " .. c);
 				C_ChatInfo.SendAddonMessage("NC_prefix", "requesting", c);
 			else
 				ShowGUI();
@@ -304,21 +283,21 @@ do
 		icon:ClearAllPoints();
 		local index = iconIndex == nil and frame.NCIconsCount or (iconIndex-1)
 		if (index == 0) then
-			if (db.IconGrowDirection == ICON_GROW_DIRECTIONS[1]) then
+			if (db.IconGrowDirection == ICON_GROW_DIRECTION_RIGHT) then
 				icon:SetPoint("LEFT", frame.NCFrame, "LEFT", 0, 0);
-			elseif (db.IconGrowDirection == ICON_GROW_DIRECTIONS[2]) then
+			elseif (db.IconGrowDirection == ICON_GROW_DIRECTION_LEFT) then
 				icon:SetPoint("RIGHT", frame.NCFrame, "RIGHT", 0, 0);
-			elseif (db.IconGrowDirection == ICON_GROW_DIRECTIONS[3]) then
+			elseif (db.IconGrowDirection == ICON_GROW_DIRECTION_UP) then
 				icon:SetPoint("BOTTOM", frame.NCFrame, "BOTTOM", 0, 0);
 			else -- // down
 				icon:SetPoint("TOP", frame.NCFrame, "TOP", 0, 0);
 			end
 		else
-			if (db.IconGrowDirection == ICON_GROW_DIRECTIONS[1]) then
+			if (db.IconGrowDirection == ICON_GROW_DIRECTION_RIGHT) then
 				icon:SetPoint("LEFT", frame.NCIcons[index], "RIGHT", db.IconSpacing, 0);
-			elseif (db.IconGrowDirection == ICON_GROW_DIRECTIONS[2]) then
+			elseif (db.IconGrowDirection == ICON_GROW_DIRECTION_LEFT) then
 				icon:SetPoint("RIGHT", frame.NCIcons[index], "LEFT", -db.IconSpacing, 0);
-			elseif (db.IconGrowDirection == ICON_GROW_DIRECTIONS[3]) then
+			elseif (db.IconGrowDirection == ICON_GROW_DIRECTION_UP) then
 				icon:SetPoint("BOTTOM", frame.NCIcons[index], "TOP", 0, db.IconSpacing);
 			else -- // down
 				icon:SetPoint("TOP", frame.NCIcons[index], "BOTTOM", 0, -db.IconSpacing);
@@ -328,7 +307,7 @@ do
 
 	local function SetFrameSize(frame)
 		local maxWidth, maxHeight = 0, 0;
-		local vertical = db.IconGrowDirection == ICON_GROW_DIRECTIONS[1] or db.IconGrowDirection == ICON_GROW_DIRECTIONS[2]; -- right -- left
+		local vertical = db.IconGrowDirection == ICON_GROW_DIRECTION_RIGHT or db.IconGrowDirection == ICON_GROW_DIRECTION_LEFT;
 		if (frame.NCFrame) then
 			for iconIndex, icon in pairs(frame.NCIcons) do
 				if (icon.shown) then
@@ -426,8 +405,8 @@ do
 		end
 	end
 	
-	local function GlobalFilterNameplate(unitName)
-		if (not db.ShowCooldownsOnCurrentTargetOnly or UnitName("target") == unitName) then
+	local function GlobalFilterNameplate(unitGUID)
+		if (not db.ShowCooldownsOnCurrentTargetOnly or UnitGUID("target") == unitGUID) then
 			if (db.EnabledZoneTypes[InstanceType]) then
 				return true;
 			end
@@ -514,15 +493,15 @@ do
 				table.insert(t, spellInfo);
 			end
 		end
-		if (db.IconSortMode == CONST_SORT_MODES[1]) then
+		if (db.IconSortMode == SORT_MODE_NONE) then
 			-- // do nothing
-		elseif (db.IconSortMode == CONST_SORT_MODES[2]) then
+		elseif (db.IconSortMode == SORT_MODE_TRINKET_INTERRUPT_OTHER) then
 			table.sort(t, Nameplate_SortAuras_mode1);
-		elseif (db.IconSortMode == CONST_SORT_MODES[3]) then
+		elseif (db.IconSortMode == SORT_MODE_INTERRUPT_TRINKET_OTHER) then
 			table.sort(t, Nameplate_SortAuras_mode2);
-		elseif (db.IconSortMode == CONST_SORT_MODES[4]) then
+		elseif (db.IconSortMode == SORT_MODE_TRINKET_OTHER) then
 			table.sort(t, Nameplate_SortAuras_mode3);
-		elseif (db.IconSortMode == CONST_SORT_MODES[5]) then
+		elseif (db.IconSortMode == SORT_MODE_INTERRUPT_OTHER) then
 			table.sort(t, Nameplate_SortAuras_mode4);
 		end
 		return t;
@@ -600,12 +579,12 @@ do
 		end
 	end
 
-	function UpdateOnlyOneNameplate(frame, name)
+	function UpdateOnlyOneNameplate(frame, unitGUID)
 		local counter = 1;
-		if (GlobalFilterNameplate(name)) then
-			if (charactersDB[name]) then
+		if (GlobalFilterNameplate(unitGUID)) then
+			if (SpellsPerPlayerGUID[unitGUID]) then
 				local currentTime = GetTime();
-				local sortedCDs = Nameplate_SortAuras(charactersDB[name]);
+				local sortedCDs = Nameplate_SortAuras(SpellsPerPlayerGUID[unitGUID]);
 				for _, spellInfo in pairs(sortedCDs) do
 					local spellName = spellInfo.spellName;
 					local isActiveCD = spellInfo.expires > currentTime;
@@ -662,8 +641,8 @@ end
 do
 
 	function OnUpdate()
-		for frame, unitName in pairs(NameplatesVisible) do
-			UpdateOnlyOneNameplate(frame, unitName);
+		for frame, unitGUID in pairs(NameplatesVisible) do
+			UpdateOnlyOneNameplate(frame, unitGUID);
 		end
 	end
 	
@@ -685,15 +664,15 @@ do
 	
 	local function refreshCDs()
 		local cTime = GetTime();
-		for _, unitName in pairs(NameplatesVisible) do
-			if (not charactersDB[unitName]) then charactersDB[unitName] = { }; end
-			charactersDB[unitName][SpellNameByID[SPELL_PVPTRINKET]] = { ["spellName"] = SpellNameByID[SPELL_PVPTRINKET], ["expires"] = cTime + 120, ["texture"] = SpellTextureByID[SPELL_PVPTRINKET] }; -- // 2m test
+		for _, unitGUID in pairs(NameplatesVisible) do
+			if (not SpellsPerPlayerGUID[unitGUID]) then SpellsPerPlayerGUID[unitGUID] = { }; end
+			SpellsPerPlayerGUID[unitGUID][SpellNameByID[SPELL_PVPTRINKET]] = { ["spellName"] = SpellNameByID[SPELL_PVPTRINKET], ["expires"] = cTime + 120, ["texture"] = SpellTextureByID[SPELL_PVPTRINKET] }; -- // 2m test
 			for spellID, cd in pairs(_spellIDs) do
-				if (not charactersDB[unitName][SpellNameByID[spellID]]) then
-					charactersDB[unitName][SpellNameByID[spellID]] = { ["spellName"] = SpellNameByID[spellID], ["expires"] = cTime + cd, ["texture"] = SpellTextureByID[spellID] };
+				if (not SpellsPerPlayerGUID[unitGUID][SpellNameByID[spellID]]) then
+					SpellsPerPlayerGUID[unitGUID][SpellNameByID[spellID]] = { ["spellName"] = SpellNameByID[spellID], ["expires"] = cTime + cd, ["texture"] = SpellTextureByID[spellID] };
 				else
-					if (cTime - charactersDB[unitName][SpellNameByID[spellID]]["expires"] > 0) then
-						charactersDB[unitName][SpellNameByID[spellID]] = { ["spellName"] = SpellNameByID[spellID], ["expires"] = cTime + cd, ["texture"] = SpellTextureByID[spellID] };
+					if (cTime - SpellsPerPlayerGUID[unitGUID][SpellNameByID[spellID]]["expires"] > 0) then
+						SpellsPerPlayerGUID[unitGUID][SpellNameByID[spellID]] = { ["spellName"] = SpellNameByID[spellID], ["expires"] = cTime + cd, ["texture"] = SpellTextureByID[spellID] };
 					end
 				end
 			end
@@ -701,8 +680,8 @@ do
 	end
 	
 	function EnableTestMode()
-		_charactersDB = deepcopy(charactersDB);
-		_spellCDs = deepcopy(db.SpellCDs);
+		_charactersDB = addonTable.deepcopy(SpellsPerPlayerGUID);
+		_spellCDs = addonTable.deepcopy(db.SpellCDs);
 		db.SpellCDs = { };
 		for spellID, cd in pairs(_spellIDs) do
 			local spellName = SpellNameByID[spellID];
@@ -735,8 +714,8 @@ do
 	function DisableTestMode()
 		TestFrame:SetScript("OnUpdate", nil);
 		TestFrame:UnregisterEvent("PLAYER_LOGOUT");
-		charactersDB = deepcopy(_charactersDB);
-		db.SpellCDs = deepcopy(_spellCDs);
+		SpellsPerPlayerGUID = addonTable.deepcopy(_charactersDB);
+		db.SpellCDs = addonTable.deepcopy(_spellCDs);
 		OnUpdate();		-- // for instant start
 	end
 	
@@ -755,7 +734,7 @@ do
 			GUIFrame:Show();
 			OnGUICategoryClick(GUIFrame.CategoryButtons[1]);
 		else
-			Print(L["Options are not available in combat!"]);
+			addonTable.Print(L["Options are not available in combat!"]);
 		end
 	end
 	
@@ -1051,7 +1030,7 @@ do
 					local v = tonumber(sliderTimerFontScale.editbox:GetText());
 					if (v == nil) then
 						sliderTimerFontScale.editbox:SetText(tostring(db.FontScale));
-						msg(L["Value must be a number"]);
+						addonTable.msg(L["Value must be a number"]);
 					else
 						if (v > maxValue) then
 							v = maxValue;
@@ -1094,7 +1073,7 @@ do
 					local v = tonumber(sliderTimerFontSize.editbox:GetText());
 					if (v == nil) then
 						sliderTimerFontSize.editbox:SetText(tostring(db.TimerTextSize));
-						msg(L["Value must be a number"]);
+						addonTable.msg(L["Value must be a number"]);
 					else
 						if (v > maxValue) then
 							v = maxValue;
@@ -1255,7 +1234,7 @@ do
 					local v = tonumber(sliderTimerTextXOffset.editbox:GetText());
 					if (v == nil) then
 						sliderTimerTextXOffset.editbox:SetText(tostring(db.TimerTextXOffset));
-						msg(L["Value must be a number"]);
+						addonTable.msg(L["Value must be a number"]);
 					else
 						if (v > maxValue) then
 							v = maxValue;
@@ -1299,7 +1278,7 @@ do
 					local v = tonumber(sliderTimerTextYOffset.editbox:GetText());
 					if (v == nil) then
 						sliderTimerTextYOffset.editbox:SetText(tostring(db.TimerTextYOffset));
-						msg(L["Value must be a number"]);
+						addonTable.msg(L["Value must be a number"]);
 					else
 						if (v > maxValue) then
 							v = maxValue;
@@ -1469,14 +1448,14 @@ do
 		buttonEnableDisableAddon:SetScript("OnClick", function(self, ...)
 			if (db.AddonEnabled) then
 				EventFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
-				wipe(charactersDB);
+				wipe(SpellsPerPlayerGUID);
 			else
 				EventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 			end
 			OnUpdate();
 			db.AddonEnabled = not db.AddonEnabled;
 			buttonEnableDisableAddon.Text:SetText(db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]);
-			Print(db.AddonEnabled and L["chat:addon-is-enabled"] or L["chat:addon-is-disabled"]);
+			addonTable.Print(db.AddonEnabled and L["chat:addon-is-enabled"] or L["chat:addon-is-disabled"]);
 		end);
 		table.insert(GUIFrame.Categories[index], buttonEnableDisableAddon);
 		table_insert(GUIFrame.OnDBChangedHandlers, function() buttonEnableDisableAddon.Text:SetText(db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]); end);
@@ -1519,7 +1498,7 @@ do
 				local v = tonumber(sliderIconSize:GetEditboxObject():GetText());
 				if (v == nil) then
 					sliderIconSize:GetEditboxObject():SetText(tostring(db.IconSize));
-					Print(L["Value must be a number"]);
+					addonTable.Print(L["Value must be a number"]);
 				else
 					if (v > 50) then
 						v = 50;
@@ -1560,7 +1539,7 @@ do
 					local v = tonumber(sliderIconSpacing.editbox:GetText());
 					if (v == nil) then
 						sliderIconSpacing.editbox:SetText(tostring(db.IconSpacing));
-						msg(L["Value must be a number"]);
+						addonTable.msg(L["Value must be a number"]);
 					else
 						if (v > maxValue) then
 							v = maxValue;
@@ -1600,7 +1579,7 @@ do
 				local v = tonumber(sliderIconXOffset:GetEditboxObject():GetText());
 				if (v == nil) then
 					sliderIconXOffset:GetEditboxObject():SetText(tostring(db.IconXOffset));
-					Print(L["Value must be a number"]);
+					addonTable.Print(L["Value must be a number"]);
 				else
 					if (v > 200) then
 						v = 200;
@@ -1638,7 +1617,7 @@ do
 				local v = tonumber(sliderIconYOffset:GetEditboxObject():GetText());
 				if (v == nil) then
 					sliderIconYOffset:GetEditboxObject():SetText(tostring(db.IconYOffset));
-					Print(L["Value must be a number"]);
+					addonTable.Print(L["Value must be a number"]);
 				else
 					if (v > 200) then
 						v = 200;
@@ -1772,8 +1751,8 @@ do
 			LRD.SetTooltip(checkboxShowInactiveCD, L["options:general:show-inactive-cd:tooltip"])
 			checkboxShowInactiveCD:SetOnClickHandler(function(this)
 				db.ShowInactiveCD = this:GetChecked();
-				for frame, unitName in pairs(NameplatesVisible) do
-					UpdateOnlyOneNameplate(frame, unitName);
+				for frame, unitGUID in pairs(NameplatesVisible) do
+					UpdateOnlyOneNameplate(frame, unitGUID);
 				end
 			end);
 			checkboxShowInactiveCD:SetParent(GUIFrame.outline);
@@ -1785,14 +1764,22 @@ do
 
 		-- // dropdownIconSortMode
 		do
+			local sortModes = {
+				[SORT_MODE_NONE] = "none",
+				[SORT_MODE_TRINKET_INTERRUPT_OTHER] = "trinkets, then interrupts, then other spells",
+				[SORT_MODE_INTERRUPT_TRINKET_OTHER] = "interrupts, then trinkets, then other spells",
+				[SORT_MODE_TRINKET_OTHER] = "trinkets, then other spells",
+				[SORT_MODE_INTERRUPT_OTHER] = "interrupts, then other spells",
+			};
+
 			local dropdownIconSortMode = CreateFrame("Frame", "NC.GUI.General.DropdownIconSortMode", GUIFrame, "UIDropDownMenuTemplate");
 			UIDropDownMenu_SetWidth(dropdownIconSortMode, 300);
 			dropdownIconSortMode:SetPoint("TOPLEFT", 155, -280);
 			local info = {};
 			dropdownIconSortMode.initialize = function()
 				wipe(info);
-				for _, sortMode in pairs(CONST_SORT_MODES) do
-					info.text = CONST_SORT_MODES_L[sortMode];
+				for sortMode, sortModeL in pairs(sortModes) do
+					info.text = sortModeL;
 					info.value = sortMode;
 					info.func = function(self)
 						db.IconSortMode = self.value;
@@ -1802,16 +1789,23 @@ do
 					UIDropDownMenu_AddButton(info);
 				end
 			end
-			_G[dropdownIconSortMode:GetName().."Text"]:SetText(CONST_SORT_MODES_L[db.IconSortMode]);
+			_G[dropdownIconSortMode:GetName().."Text"]:SetText(sortModes[db.IconSortMode]);
 			dropdownIconSortMode.text = dropdownIconSortMode:CreateFontString("NC.GUI.General.DropdownIconSortMode.Label", "ARTWORK", "GameFontNormalSmall");
 			dropdownIconSortMode.text:SetPoint("LEFT", 20, 15);
 			dropdownIconSortMode.text:SetText(L["general.sort-mode"]);
 			table.insert(GUIFrame.Categories[index], dropdownIconSortMode);
-			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownIconSortMode:GetName().."Text"]:SetText(CONST_SORT_MODES_L[db.IconSortMode]); end);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownIconSortMode:GetName().."Text"]:SetText(sortModes[db.IconSortMode]); end);
 		end
 
 		-- // dropdownIconGrowDirection
 		do
+
+			local iconGrowDirections = {
+				[ICON_GROW_DIRECTION_RIGHT] = L["icon-grow-direction:right"],
+				[ICON_GROW_DIRECTION_LEFT] = L["icon-grow-direction:left"],
+				[ICON_GROW_DIRECTION_UP] = L["icon-grow-direction:up"],
+				[ICON_GROW_DIRECTION_DOWN] = L["icon-grow-direction:down"],
+			};
 
 			local dropdownIconGrowDirection = CreateFrame("Frame", "NC.GUI.General.DropdownIconGrowDirection", GUIFrame, "UIDropDownMenuTemplate");
 			UIDropDownMenu_SetWidth(dropdownIconGrowDirection, 300);
@@ -1819,8 +1813,8 @@ do
 			local info = {};
 			dropdownIconGrowDirection.initialize = function()
 				wipe(info);
-				for _, direction in pairs(ICON_GROW_DIRECTIONS) do
-					info.text = ICON_GROW_DIRECTIONS_L[direction];
+				for direction, directionL in pairs(iconGrowDirections) do
+					info.text = directionL;
 					info.value = direction;
 					info.func = function(self)
 						db.IconGrowDirection = self.value;
@@ -1831,12 +1825,12 @@ do
 					UIDropDownMenu_AddButton(info);
 				end
 			end
-			_G[dropdownIconGrowDirection:GetName().."Text"]:SetText(ICON_GROW_DIRECTIONS_L[db.IconGrowDirection]);
+			_G[dropdownIconGrowDirection:GetName().."Text"]:SetText(iconGrowDirections[db.IconGrowDirection]);
 			dropdownIconGrowDirection.text = dropdownIconGrowDirection:CreateFontString("NC.GUI.General.DropdownIconGrowDirection.Label", "ARTWORK", "GameFontNormalSmall");
 			dropdownIconGrowDirection.text:SetPoint("LEFT", 20, 15);
 			dropdownIconGrowDirection.text:SetText(L["options:general:icon-grow-direction"]);
 			table.insert(GUIFrame.Categories[index], dropdownIconGrowDirection);
-			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownIconGrowDirection:GetName().."Text"]:SetText(ICON_GROW_DIRECTIONS_L[db.IconGrowDirection]); end);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownIconGrowDirection:GetName().."Text"]:SetText(iconGrowDirections[db.IconGrowDirection]); end);
 			
 		end
 				
@@ -1888,10 +1882,10 @@ do
 					end
 					buttonAddSpell:Enable();
 				end);
-				CoroutineProcessor:Queue("scanAllSpells", scanAllSpells);
+				addonTable.coroutine_queue("scanAllSpells", scanAllSpells);
 			end);
 			GUIFrame:HookScript("OnHide", function()
-				CoroutineProcessor:DeleteFromQueue("scanAllSpells");
+				addonTable.coroutine_delete("scanAllSpells");
 				wipe(AllSpellIDsAndIconsByName);
 			end);
 			
@@ -1980,7 +1974,7 @@ do
 			buttonAddSpell:SetScript("OnClick", function(self, ...)
 				local text = editboxAddSpell:GetText();
 				if (text == nil or text == "") then
-					Print(L["Empty spell name!"]);
+					addonTable.Print(L["Empty spell name!"]);
 				else
 					local spellName, refSpellID, userHasProvidedSpellName;
 					if (tonumber(text) ~= nil) then
@@ -2005,7 +1999,7 @@ do
 						end
 						if (refSpellID ~= nil) then
 							if (db.SpellCDs[spellName] ~= nil) then
-								msg(format(L["Spell already exists (%s)"], spellName));
+								addonTable.msg(format(L["Spell already exists (%s)"], spellName));
 							else
 								db.SpellCDs[spellName] = GetDefaultDBEntryForSpell(refSpellID);
 								if (userHasProvidedSpellName) then db.SpellCDs[spellName].spellIDs = { [refSpellID] = true }; end
@@ -2019,10 +2013,10 @@ do
 								ReallocateAllIcons(true);
 							end
 						else
-							msg(L["Spell seems to be nonexistent"]);
+							addonTable.msg(L["Spell seems to be nonexistent"]);
 						end
 					else
-						msg(L["Spell seems to be nonexistent"]);
+						addonTable.msg(L["Spell seems to be nonexistent"]);
 					end
 				end
 				editboxAddSpell:SetText("");
@@ -2308,7 +2302,7 @@ do
 					local v = tonumber(sliderCooldown.editbox:GetText());
 					if (v == nil) then
 						sliderCooldown.editbox:SetText(tostring(db.SpellCDs[selectedSpellName].cooldown));
-						Print(L["Value must be a number"]);
+						addonTable.Print(L["Value must be a number"]);
 					else
 						if (v > maxV) then
 							v = maxV;
@@ -2352,9 +2346,9 @@ do
 		do
 			checkboxGlow = LRD.CreateCheckBoxTristate();
 			checkboxGlow:SetTextEntries({
-				ColorizeText(L["options:spells:icon-glow"], 1, 1, 1),
-				ColorizeText(L["options:spells:icon-glow-threshold"], 0, 1, 1),
-				ColorizeText(L["options:spells:icon-glow-always"], 0, 1, 0),
+				addonTable.colorize_text(L["options:spells:icon-glow"], 1, 1, 1),
+				addonTable.colorize_text(L["options:spells:icon-glow-threshold"], 0, 1, 1),
+				addonTable.colorize_text(L["options:spells:icon-glow-always"], 0, 1, 0),
 			});
 			checkboxGlow:SetOnClickHandler(function(self)
 				if (self:GetTriState() == 0) then
@@ -2407,7 +2401,7 @@ do
 					local v = tonumber(sliderGlowThreshold.editbox:GetText());
 					if (v == nil) then
 						sliderGlowThreshold.editbox:SetText(tostring(db.SpellCDs[selectedSpellName].glow));
-						Print(L["Value must be a number"]);
+						addonTable.Print(L["Value must be a number"]);
 					else
 						if (v > maxV) then
 							v = maxV;
@@ -2483,9 +2477,9 @@ do
 			editboxSpellID:SetScript("OnEnterPressed", function(self, value)
 				local text = self:GetText();
 				local t = StringToTableKeys(text);
-				db.SpellCDs[selectedSpellName].spellIDs = (table_count(t) > 0) and t or nil;
+				db.SpellCDs[selectedSpellName].spellIDs = (addonTable.table_count(t) > 0) and t or nil;
 				ReallocateAllIcons(true);
-				if (table_count(t) == 0) then
+				if (addonTable.table_count(t) == 0) then
 					self:SetText("");
 				end
 				self:ClearFocus();
@@ -2510,7 +2504,7 @@ do
 					local spellName = SpellNameByID[spellID];
 					if (spellName == selectedSpellName and not db.UnwantedDefaultSpells[spellName]) then
 						db.UnwantedDefaultSpells[spellName] = true;
-						Print(string_format(L["chat:default-spell-is-added-to-ignore-list"], GetSpellLink(spellID)));
+						addonTable.Print(string_format(L["chat:default-spell-is-added-to-ignore-list"], GetSpellLink(spellID)));
 						break;
 					end
 				end
@@ -2564,143 +2558,6 @@ do
 end
 
 -------------------------------------------------------------------------------------------------
------ Useful stuff
--------------------------------------------------------------------------------------------------
-do
-
-	function Print(...)
-		local text = "";
-		for i = 1, select("#", ...) do
-			text = text..tostring(select(i, ...)).." "
-		end
-		DEFAULT_CHAT_FRAME:AddMessage(format("NameplateCooldowns: %s", text), 0, 128, 128);
-	end
-
-	function deepcopy(object)
-		local lookup_table = {}
-		local function _copy(object)
-			if type(object) ~= "table" then
-				return object
-			elseif lookup_table[object] then
-				return lookup_table[object]
-			end
-			local new_table = {}
-			lookup_table[object] = new_table
-			for index, value in pairs(object) do
-				new_table[_copy(index)] = _copy(value)
-			end
-			return setmetatable(new_table, getmetatable(object))
-		end
-		return _copy(object)
-	end
-	
-	function table_contains_key(t, key)
-		for index in pairs(t) do
-			if (index == key) then
-				return true;
-			end
-		end
-		return false;
-	end
-	
-	function ColorizeText(text, r, g, b)
-		return string_format("|cff%02x%02x%02x%s|r", r*255, g*255, b*255, text);
-	end
-	
-	function table_any(t)
-		return next(t) ~= nil;
-	end
-	
-	function table_count(t)
-		local count = 0;
-		for i in pairs(t) do
-			count = count + 1;
-		end
-		return count;
-	end
-	
-	function msg(text)
-		if (StaticPopupDialogs["NCOOLDOWNS_MSG"] == nil) then
-			StaticPopupDialogs["NCOOLDOWNS_MSG"] = {
-				text = "NCOOLDOWNS_MSG",
-				button1 = OKAY,
-				timeout = 0,
-				whileDead = true,
-				hideOnEscape = true,
-				preferredIndex = 3,
-			};
-		end
-		StaticPopupDialogs["NCOOLDOWNS_MSG"].text = text;
-		StaticPopup_Show("NCOOLDOWNS_MSG");
-	end
-	
-	function msgWithQuestion(text, funcOnAccept, funcOnCancel)
-		local frameName = "NameplateCooldowns_msgWithQuestion";
-		if (StaticPopupDialogs[frameName] == nil) then
-			StaticPopupDialogs[frameName] = {
-				button1 = YES,
-				button2 = NO,
-				timeout = 0,
-				whileDead = true,
-				hideOnEscape = true,
-				preferredIndex = 3,
-			};
-		end
-		StaticPopupDialogs[frameName].text = text;
-		StaticPopupDialogs[frameName].OnAccept = funcOnAccept;
-		StaticPopupDialogs[frameName].OnCancel = funcOnCancel;
-		StaticPopup_Show(frameName);
-	end
-	
-	-- // CoroutineProcessor
-	do
-		CoroutineProcessor = {};
-		CoroutineProcessor.frame = CreateFrame("frame");
-		CoroutineProcessor.update = {};
-		CoroutineProcessor.size = 0;
-
-		function CoroutineProcessor.Queue(self, name, func)
-			if (not name) then
-				name = string_format("NIL%d", CoroutineProcessor.size + 1);
-			end
-			if (not CoroutineProcessor.update[name]) then
-				CoroutineProcessor.update[name] = func;
-				CoroutineProcessor.size = CoroutineProcessor.size + 1;
-				CoroutineProcessor.frame:Show();
-			end
-		end
-
-		function CoroutineProcessor.DeleteFromQueue(self, name)
-			if (CoroutineProcessor.update[name]) then
-				CoroutineProcessor.update[name] = nil;
-				CoroutineProcessor.size = CoroutineProcessor.size - 1;
-				if (CoroutineProcessor.size == 0) then
-					CoroutineProcessor.frame:Hide();
-				end
-			end
-		end
-
-		CoroutineProcessor.frame:Hide();
-		CoroutineProcessor.frame:SetScript("OnUpdate", function(self, elapsed)
-			local start = debugprofilestop();
-			local hasData = true;
-			while (debugprofilestop() - start < 16 and hasData) do
-				hasData = false;
-				for name, func in pairs(CoroutineProcessor.update) do
-					hasData = true;
-					if (coroutine.status(func) ~= "dead") then
-						local err, ret1, ret2 = assert(coroutine.resume(func));
-					else
-						CoroutineProcessor:DeleteFromQueue(name);
-					end
-				end
-			end
-		end);
-	end
-	
-end
-
--------------------------------------------------------------------------------------------------
 ----- Frame for events
 -------------------------------------------------------------------------------------------------
 do
@@ -2709,7 +2566,9 @@ do
 
 	EventFrame = CreateFrame("Frame");
 	EventFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
+	EventFrame:RegisterEvent("CHAT_MSG_ADDON");
 	EventFrame:SetScript("OnEvent", function(self, event, ...) self[event](...); end);
+	C_ChatInfo.RegisterAddonMessagePrefix("NC_prefix");
 	
 	EventFrame.COMBAT_LOG_EVENT_UNFILTERED = function()
 		local cTime = GetTime();
@@ -2720,13 +2579,12 @@ do
 				if (eventType == "SPELL_CAST_SUCCESS" or eventType == "SPELL_AURA_APPLIED" or eventType == "SPELL_MISSED" or eventType == "SPELL_SUMMON") then
 					entry.refSpellID = spellID;
 					entry.texture = SpellTextureByID[spellID];
-					local name = string_match(srcName, "[%P]+");
-					if (not charactersDB[name]) then charactersDB[name] = { }; end
+					if (not SpellsPerPlayerGUID[srcGUID]) then SpellsPerPlayerGUID[srcGUID] = { }; end
 					local expires = cTime + entry.cooldown;
-					charactersDB[name][spellName] = { ["spellName"] = spellName, ["expires"] = expires, ["texture"] = SpellTextureByID[spellID] };
-					for frame, charName in pairs(NameplatesVisible) do
-						if (charName == name) then
-							UpdateOnlyOneNameplate(frame, charName);
+					SpellsPerPlayerGUID[srcGUID][spellName] = { ["spellName"] = spellName, ["expires"] = expires, ["texture"] = SpellTextureByID[spellID] };
+					for frame, unitGUID in pairs(NameplatesVisible) do
+						if (unitGUID == srcGUID) then
+							UpdateOnlyOneNameplate(frame, unitGUID);
 							break;
 						end
 					end
@@ -2734,28 +2592,26 @@ do
 			end
 			-- reductions
 			if (Reductions[spellID] ~= nil and eventType == "SPELL_CAST_SUCCESS") then
-				local name = string_match(srcName, "[%P]+");
-				if (charactersDB[name]) then
+				if (SpellsPerPlayerGUID[srcGUID]) then
 					for _, sp in pairs(Reductions[spellID].spells) do
-						if (charactersDB[name][SpellNameByID[sp]] ~= nil) then
-							charactersDB[name][SpellNameByID[sp]].expires = charactersDB[name][SpellNameByID[sp]].expires - Reductions[spellID].reduction;
+						if (SpellsPerPlayerGUID[srcGUID][SpellNameByID[sp]] ~= nil) then
+							SpellsPerPlayerGUID[srcGUID][SpellNameByID[sp]].expires = SpellsPerPlayerGUID[srcGUID][SpellNameByID[sp]].expires - Reductions[spellID].reduction;
 						end
 					end
-					for frame, charName in pairs(NameplatesVisible) do
-						if (charName == name) then
-							UpdateOnlyOneNameplate(frame, charName);
+					for frame, unitGUID in pairs(NameplatesVisible) do
+						if (unitGUID == srcGUID) then
+							UpdateOnlyOneNameplate(frame, unitGUID);
 							break;
 						end
 					end
 				end
 			-- // pvptier 1/2 used, correcting cd of PvP trinket
 			elseif (spellID == SPELL_PVPADAPTATION and db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]] ~= nil and db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]].enabled and eventType == "SPELL_AURA_APPLIED") then
-				local name = string_match(srcName, "[%P]+");
-				if (charactersDB[name]) then
-					charactersDB[name][SpellNameByID[SPELL_PVPTRINKET]] = { ["spellName"] = SpellNameByID[SPELL_PVPTRINKET], ["expires"] = cTime + 60, ["texture"] = SpellTextureByID[SPELL_PVPTRINKET] };
-					for frame, charName in pairs(NameplatesVisible) do
-						if (charName == name) then
-							UpdateOnlyOneNameplate(frame, charName);
+				if (SpellsPerPlayerGUID[srcGUID]) then
+					SpellsPerPlayerGUID[srcGUID][SpellNameByID[SPELL_PVPTRINKET]] = { ["spellName"] = SpellNameByID[SPELL_PVPTRINKET], ["expires"] = cTime + 60, ["texture"] = SpellTextureByID[SPELL_PVPTRINKET] };
+					for frame, unitGUID in pairs(NameplatesVisible) do
+						if (unitGUID == srcGUID) then
+							UpdateOnlyOneNameplate(frame, unitGUID);
 							break;
 						end
 					end
@@ -2768,7 +2624,7 @@ do
 		if (OnStartup) then
 			OnStartup();
 		end
-		wipe(charactersDB);
+		wipe(SpellsPerPlayerGUID);
 		local inInstance, instanceType = IsInInstance();
 		if (not inInstance) then
 			InstanceType = instanceType;
@@ -2782,14 +2638,13 @@ do
 	EventFrame.NAME_PLATE_UNIT_ADDED = function(unitID)
 		local nameplate = C_NamePlate_GetNamePlateForUnit(unitID);
 		local unitGUID = UnitGUID(unitID);
-		local unitName = UnitName(unitID);
-		NameplatesVisible[nameplate] = unitName;
+		NameplatesVisible[nameplate] = unitGUID;
 		if (not Nameplates[nameplate]) then
 			nameplate.NCIcons = {};
 			nameplate.NCIconsCount = 0;	-- // it's faster than #nameplate.NCIcons
 			Nameplates[nameplate] = true;
 		end
-		UpdateOnlyOneNameplate(nameplate, unitName);
+		UpdateOnlyOneNameplate(nameplate, unitGUID);
 	end
 	
 	EventFrame.NAME_PLATE_UNIT_REMOVED = function(unitID)
@@ -2800,26 +2655,19 @@ do
 	EventFrame.PLAYER_TARGET_CHANGED = function()
 		ReallocateAllIcons(true);
 	end
-		
-end
-
--------------------------------------------------------------------------------------------------
------ Frame for fun
--------------------------------------------------------------------------------------------------
-local funFrame = CreateFrame("Frame");
-funFrame:RegisterEvent("CHAT_MSG_ADDON");
-funFrame:SetScript("OnEvent", function(self, event, ...)
-	local prefix, message, channel, sender = ...;
-	if (prefix == "NC_prefix") then
-		if (string_find(message, "reporting")) then
-			local _, toWhom = strsplit(":", message, 2);
-			local myName = UnitName("player").."-"..string_gsub(GetRealmName(), " ", "");
-			if (toWhom == myName and sender ~= myName) then
-				Print(sender.." is using NC");
+	
+	EventFrame.CHAT_MSG_ADDON = function(prefix, message, channel, sender)
+		if (prefix == "NC_prefix") then
+			if (string_find(message, "reporting")) then
+				local _, toWhom = strsplit(":", message, 2);
+				local myName = UnitName("player").."-"..string_gsub(GetRealmName(), " ", "");
+				if (toWhom == myName and sender ~= myName) then
+					addonTable.Print(sender.." is using NC");
+				end
+			elseif (string_find(message, "requesting")) then
+				C_ChatInfo.SendAddonMessage("NC_prefix", "reporting:"..sender, channel);
 			end
-		elseif (string_find(message, "requesting")) then
-			C_ChatInfo.SendAddonMessage("NC_prefix", "reporting:"..sender, channel);
 		end
 	end
-end);
-C_ChatInfo.RegisterAddonMessagePrefix("NC_prefix");
+
+end
