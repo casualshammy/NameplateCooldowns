@@ -7,7 +7,9 @@ addonTable.DefaultSpellsVersion = 9;
 
 addonTable.CDs = {
 	-- // other spells
-	-- // reviewed 2019/12/25
+	-- // reviewed 2020/10/15
+	[336126] = 120,		-- // Медальон гладиатора https://ru.wowhead.com/spell=336126
+	[283167] = 60,		-- // Адаптация https://ru.wowhead.com/spell=283167 (336139)
 	[28730] = 120,		-- // Arcane Torrent https://ru.wowhead.com/spell=28730
 	[50613] = 120,		-- // Arcane Torrent https://ru.wowhead.com/spell=50613
 	[80483] = 120,		-- // Arcane Torrent https://ru.wowhead.com/spell=80483
@@ -25,46 +27,45 @@ addonTable.CDs = {
 	[59752] = 180,		-- // Every Man for Himself https://ru.wowhead.com/spell=59752
 	[7744] = 120,		-- // Will of the Forsaken https://ru.wowhead.com/spell=7744
 	[68992] = 120,		-- // Darkflight https://ru.wowhead.com/spell=68992
-	[50613] = 120,		-- // Arcane Torrent https://ru.wowhead.com/spell=50613
 	[69041] = 90,		-- // Rocket Barrage https://ru.wowhead.com/spell=69041
-	[42292] = 120,		-- // PvP Trinket - присутствует в CLEU как Адаптация https://ru.wowhead.com/spell=42292
-	[195710] = 180,		-- // Почетный медальон https://ru.wowhead.com/spell=195710
-	[208683] = 120,		-- // Медальон гладиатора - присутствует в CLEU https://ru.wowhead.com/spell=208683
 	-- // hunter
-	-- // reviewed 2019/12/29
+	-- // reviewed 2020/10/15
 	[186265] = 144,		-- // Aspect of the Turtle https://ru.wowhead.com/spell=186265
-	[205691] = 120,		-- // Dire Beast: Basilisk https://ru.wowhead.com/spell=205691
 	[209789] = 30,		-- // Freezing Arrow https://ru.wowhead.com/spell=209789
 	[213691] = 30,		-- // Scatter Shot https://ru.wowhead.com/spell=213691
 	[53271] = 45,		-- // Master's Call https://ru.wowhead.com/spell=53271
-	[19574] = 90,		-- // Bestial Wrath https://ru.wowhead.com/spell=19574
+	[19574] = 76.5,		-- // Bestial Wrath https://ru.wowhead.com/spell=19574
 	[147362] = 24,		-- // Counter Shot https://ru.wowhead.com/spell=147362
-	[781] = 30,			-- // Disengage https://ru.wowhead.com/spell=781
-	[109304] = 105,		-- // Exhilaration https://ru.wowhead.com/spell=109304
-	[186387] = 30,		-- // Bursting Shot https://ru.wowhead.com/spell=186387
+	[781] = 20,			-- // Disengage https://ru.wowhead.com/spell=781
+	[109304] = 96,		-- // Exhilaration https://ru.wowhead.com/spell=109304
 	[187650] = 25,		-- // Freezing Trap - 15% https://ru.wowhead.com/spell=187650
 	[187707] = 15,		-- // Muzzle https://ru.wowhead.com/spell=187707
 	[109248] = 45,		-- // Binding Shot https://ru.wowhead.com/spell=109248
 	[19577] = 60,		-- // Intimidation https://ru.wowhead.com/spell=19577
-	[19386] = 45,		-- // Wyvern Sting https://ru.wowhead.com/spell=19386
 	[199483] = 60,		-- // Camouflage https://ru.wowhead.com/spell=199483
+	[1543] = 20,		-- // Осветительная ракета https://ru.wowhead.com/spell=1543
+	[212638] = 25,		-- // Сеть следопыта https://ru.wowhead.com/spell=212638
+	[202914] = 45,		-- // Укус паука https://ru.wowhead.com/spell=202914
+	[266779] = 96,		-- // Согласованная атака https://ru.wowhead.com/spell=266779
+	[190925] = 30,		-- // Гарпун https://ru.wowhead.com/spell=190925
+	[201430] = 120,		-- // Звериный натиск https://ru.wowhead.com/spell=201430
 	-- // warlock
-	-- // reviewed 2020/02/04
+	-- // reviewed 2020/10/15
 	[48020] = 30,		-- // Demonic Circle: Teleport https://ru.wowhead.com/spell=48020
 	[6789] = 45,		-- // Mortal Coil https://ru.wowhead.com/spell=6789
 	[5484] = 40,		-- // Howl of Terror https://ru.wowhead.com/spell=5484
-	[108359] = 120,		-- // Dark Regeneration https://ru.wowhead.com/spell=108359
 	[108416] = 60,		-- // Dark Pact https://ru.wowhead.com/spell=108416
 	[30283] = 45,		-- // Shadowfury https://ru.wowhead.com/spell=30283
 	[104773] = 180,		-- // Unending Resolve [-30sec] https://ru.wowhead.com/spell=104773
 	[19647] = 24,		-- // Spell Lock https://ru.wowhead.com/spell=19647
-	[7812] = 60,		-- // Sacrifice https://ru.wowhead.com/spell=7812
 	[89766] = 30,		-- // Axe Toss" https://ru.wowhead.com/spell=89766
 	[115781] = 24,		-- // Optical Blast https://ru.wowhead.com/spell=115781
 	[212295] = 45,		-- // Nether Ward https://ru.wowhead.com/spell=212295
 	[1122] = 60,		-- // Summon Infernal [-120sec] https://ru.wowhead.com/spell=1122
+	[335175] = 60,		-- // Summon Infernal (level 2) [-120sec] https://ru.wowhead.com/spell=335175
 	[212459] = 90,		-- // Call Fel Lord https://ru.wowhead.com/spell=212459
-	[212284] = 25,		-- // Firestone https://ru.wowhead.com/spell=212284
+	[221703] = 60,		-- // Круг заклинателей https://ru.wowhead.com/spell=221703
+	[212619] = 24,		-- // Вызов охотника Скверны https://ru.wowhead.com/spell=212619
 	-- // mage
 	-- // reviewed 2020/03/05
 	[122] = 30,			-- // Frost Nova https://ru.wowhead.com/spell=122
@@ -330,6 +331,7 @@ local interrupts = {
 	183752,	-- // Consume Magic
 	187707, -- // Muzzle
 	91802,	-- // Shambling Rush https://www.wowhead.com/spell=91802/shambling-rush
+	212619, -- // Вызов охотника Скверны
 };
 addonTable.Interrupts = { };
 for _, spellID in pairs(interrupts) do
@@ -345,11 +347,10 @@ end
 do
 
 	local trinkets = {
-		42292,
 		59752,
 		7744,
-		195710,				-- // Почетный медальон
-		208683,				-- // Медальон гладиатора
+		336126,
+		283167,
 	};
 	addonTable.Trinkets = { };
 	for _, spellID in pairs(trinkets) do
