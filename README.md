@@ -3,7 +3,7 @@ This AddOn will show you selected cooldowns of an enemies above their nameplates
 Compatible with Tidy Plates, PlateBuffs.
 
 ### Call to arms
-I'm looking for anyone who can help on translating NameplateCooldowns. If you are interested in it, please visit [localization portal](https://www.curseforge.com/wow/addons/nameplatecooldowns/localization).  
+I'm looking for anyone who can help on translating NameplateCooldowns. If you are interested in it, please visit [repostory](https://github.com/casualshammy/NameplateCooldowns/blob/master/LOCALIZATION-INFO.md). Basic knowledge of git and/or github is required.  
 Feel free to report about incorrect/missing cooldowns. Pull requests are highly appreciated.  
 
 ### Configuration

@@ -10,5 +10,6 @@ src\utilities.lua
 locales\localizations.xml
 defaultSpells.lua
 defaultSpells_Classic.lua
+src\database.lua
 NameplateCooldowns.lua
 NameplateCooldowns_Classic.lua

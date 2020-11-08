@@ -62,35 +62,15 @@ local ShowGUI, InitializeGUI, GUICategory_General, GUICategory_Profiles, GUICate
 -------------------------------------------------------------------------------------------------
 do
 
-	function GetDefaultDBEntryForSpell(spellID)
+	function GetDefaultDBEntryForSpell()
 		return {
 			["enabled"] = true,
 			["cooldown"] = 60,
 			["glow"] = nil,
-			["texture"] = SpellTextureByID[spellID],
-			["refSpellID"] = spellID,
 			["spellIDs"] = nil,
 		};
 	end
-	
-	local function MigrateDB(t)
-		if (next(t.CDsTable)) then
-			for spellID, enabled in pairs(t.CDsTable) do
-				local spellName = SpellNameByID[spellID];
-				if (t.SpellCDs[spellName] == nil and addonTable.CDs[spellID] ~= nil) then
-					t.SpellCDs[spellName] = GetDefaultDBEntryForSpell(spellID);
-					t.SpellCDs[spellName].enabled = enabled;
-					t.SpellCDs[spellName].cooldown = addonTable.CDs[spellID];
-					t.SpellCDs[spellName].spellIDs = { [spellID] = true; };
-				end
-			end
-			t.CDsTable = { };
-		end
-		if (t.TimerTextSize == nil) then
-			t.TimerTextSize = math_ceil(t.IconSize - t.IconSize/2);
-		end
-	end
-		
+
 	local function AddToBlizzOptions()
 		LibStub("AceConfig-3.0"):RegisterOptionsTable("NameplateCooldowns", {
 			name = "NameplateCooldowns",
@@ -140,10 +120,9 @@ do
 		local aceDBDefaults = {
 			profile = {
 				SpellCDs = { },
-				UnwantedDefaultSpells = { },
 				DBVersion = 0,
+				MigrationVersion = 0,
 				IconSpacing = 0,
-				CDsTable = { }, -- // obsolete
 				IconSize = 26,
 				IconXOffset = 0,
 				IconYOffset = 30,
@@ -183,45 +162,32 @@ do
 			},
 		};
 		aceDB = LibStub("AceDB-3.0"):New("NameplateCooldownsAceDB", aceDBDefaults);
-		MigrateDB(aceDB.profile);
+		db = aceDB.profile;
+		addonTable.db = aceDB.profile;
+		addonTable.MigrateDB();
 		AddToBlizzOptions();
 		aceDB.RegisterCallback("NameplateCooldowns", "OnProfileChanged", ReloadDB);
 		aceDB.RegisterCallback("NameplateCooldowns", "OnProfileCopied", ReloadDB);
 		aceDB.RegisterCallback("NameplateCooldowns", "OnProfileReset", ReloadDB);
-		db = aceDB.profile;
 	end
 	
 	local function OnStartup_AddNewAndUpdatedSpells()
 		if (db.DBVersion < addonTable.DefaultSpellsVersion) then
-			local spellsAlreadyInUserDb = { };
-			for spellID, spellCd in pairs(addonTable.CDs) do
-				local spellName = SpellNameByID[spellID];
-				if (spellName ~= nil and db.UnwantedDefaultSpells[spellName] == nil) then
-					if (db.SpellCDs[spellName] == nil) then
-						db.SpellCDs[spellName] = GetDefaultDBEntryForSpell(spellID);
-						db.SpellCDs[spellName].cooldown = spellCd;
-						db.SpellCDs[spellName].spellIDs = { [spellID] = true; };
-						addonTable.Print(format(L["New spell has been added: %s"], GetSpellLink(spellID)));
-					else
-						if (db.SpellCDs[spellName].cooldown ~= spellCd) then
-							spellsAlreadyInUserDb[spellName] = spellCd;
+			for class, spellsTable in pairs(addonTable.CDs) do
+				for spellID, spellCd in pairs(spellsTable) do
+					local spellName = SpellNameByID[spellID];
+					if (spellName ~= nil) then
+						if (db.SpellCDs[spellName] == nil) then
+							db.SpellCDs[spellName] = GetDefaultDBEntryForSpell();
+							db.SpellCDs[spellName].cooldown = spellCd;
+							db.SpellCDs[spellName].spellIDs = { [spellID] = true; };
+							db.SpellCDs[spellName].class = class;
+							addonTable.Print(format(L["New spell has been added: %s"], GetSpellLink(spellID)));
+						else
+							db.SpellCDs[spellName].cooldown = spellCd;
 						end
 					end
 				end
-			end
-			if (next(spellsAlreadyInUserDb) ~= nil) then
-				for spellName, spellCd in pairs(spellsAlreadyInUserDb) do
-					addonTable.Print(string_format(L["chat:print-updated-spells"], spellName, db.SpellCDs[spellName].cooldown, spellCd));
-				end
-				addonTable.msgWithQuestion(L["msg:question:import-existing-spells"], 
-					function()
-						for spellName, spellCd in pairs(spellsAlreadyInUserDb) do
-							local oldCooldown = db.SpellCDs[spellName].cooldown;
-							db.SpellCDs[spellName].cooldown = spellCd;
-						end
-					end,
-					function() end
-				);
 			end
 			db.DBVersion = addonTable.DefaultSpellsVersion;
 		end
@@ -686,12 +652,12 @@ do
 		db.SpellCDs = { };
 		for spellID, cd in pairs(_spellIDs) do
 			local spellName = SpellNameByID[spellID];
-			db.SpellCDs[spellName] = GetDefaultDBEntryForSpell(spellID);
+			db.SpellCDs[spellName] = GetDefaultDBEntryForSpell();
 			db.SpellCDs[spellName].enabled = true;
 			db.SpellCDs[spellName].cooldown = cd;
 			db.SpellCDs[spellName].spellIDs = { [spellID] = true; };
 		end
-		db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]] = GetDefaultDBEntryForSpell(SPELL_PVPTRINKET);
+		db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]] = GetDefaultDBEntryForSpell();
 		db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]].enabled = true;
 		db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]].cooldown = 120;
 		db.SpellCDs[SpellNameByID[SPELL_PVPTRINKET]].spellIDs = { [SPELL_PVPTRINKET] = true; };
@@ -726,6 +692,18 @@ end
 ----- GUI
 -------------------------------------------------------------------------------------------------
 do
+
+	local function GetIDAndTextureForSpell(spellName, spellInfo)
+		local spellID, textureID;
+		if (spellInfo.spellIDs ~= nil and next(spellInfo.spellIDs)) then
+			spellID = next(spellInfo.spellIDs);
+			textureID = SpellTextureByID[spellID];
+		else
+			spellID = next(AllSpellIDsAndIconsByName[spellName]);
+			textureID = SpellTextureByID[spellID];
+		end
+		return spellID, textureID;
+	end
 
 	function ShowGUI()
 		if (not InCombatLockdown()) then
@@ -1334,7 +1312,7 @@ do
 
 	function InitializeGUI()
 		GUIFrame = CreateFrame("Frame", "NC_GUIFrame", UIParent, BackdropTemplateMixin and "BackdropTemplate");
-		GUIFrame:SetHeight(450);
+		GUIFrame:SetHeight(490);
 		GUIFrame:SetWidth(540);
 		GUIFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 80);
 		GUIFrame:SetBackdrop({
@@ -1857,13 +1835,15 @@ do
 		local dropdownMenuSpells = LRD.CreateDropdownMenu();
 		local spellArea, editboxAddSpell, buttonAddSpell, dropdownSelectSpell, sliderCooldown, dropdownSpellShowType, editboxSpellID, buttonDeleteSpell, checkboxShowOnFriends,
 			checkboxShowOnEnemies, checkboxAllowMultipleInstances, selectSpell, checkboxPvPMode, checkboxEnabled, checkboxGlow, areaGlow, sliderGlowThreshold, areaCooldown, areaAuraType, areaIDs,
-			areaMaxAuraDurationFilter, sliderMaxAuraDurationFilter;
+			areaMaxAuraDurationFilter, sliderMaxAuraDurationFilter, dropdownClassSelector;
+		local selectedClass = addonTable.ALL_CLASSES;
 			
 		-- // building spell cache
 		do
 			
 			GUIFrame:HookScript("OnShow", function()
 				buttonAddSpell:Disable();
+				selectSpell:Disable();
 				local scanAllSpells = coroutine.create(function()
 					local misses = 0;
 					local id = 0;
@@ -1882,6 +1862,7 @@ do
 						coroutine.yield();
 					end
 					buttonAddSpell:Enable();
+					selectSpell:Enable();
 				end);
 				addonTable.coroutine_queue("scanAllSpells", scanAllSpells);
 			end);
@@ -1891,8 +1872,7 @@ do
 			end);
 			
 		end
-			
-			
+
 		-- // spellArea
 		do
 		
@@ -1937,7 +1917,7 @@ do
 			table_insert(controls, spellArea);
 		
 		end
-		
+
 		-- // editboxAddSpell, buttonAddSpell
 		do
 		
@@ -1977,33 +1957,37 @@ do
 				if (text == nil or text == "") then
 					addonTable.Print(L["Empty spell name!"]);
 				else
-					local spellName, refSpellID, userHasProvidedSpellName;
+					local spellName;
+					local spellID;
 					if (tonumber(text) ~= nil) then
-						userHasProvidedSpellName = true;
-						refSpellID = tonumber(text);
-						spellName = SpellNameByID[refSpellID];
+						spellID = tonumber(text);
+						spellName = SpellNameByID[spellID];
 					else
 						spellName = text;
 					end
 					if (spellName ~= nil) then
-						if (refSpellID == nil) then
-							if (AllSpellIDsAndIconsByName[spellName]) then
-								refSpellID = next(AllSpellIDsAndIconsByName[spellName]);
-							else
-								for _spellName, _spellInfo in pairs(AllSpellIDsAndIconsByName) do
+						local spellNameIsValid = spellID ~= nil;
+						if (spellID == nil) then
+							if (AllSpellIDsAndIconsByName[spellName] == nil) then
+								for _spellName in pairs(AllSpellIDsAndIconsByName) do
 									if (string_lower(_spellName) == string_lower(spellName)) then
-										refSpellID = next(_spellInfo);
-										spellName = SpellNameByID[refSpellID];
+										spellName = _spellName;
+										spellNameIsValid = true;
 									end
 								end
+							else
+								spellNameIsValid = true;
 							end
 						end
-						if (refSpellID ~= nil) then
+						if (spellNameIsValid) then
 							if (db.SpellCDs[spellName] ~= nil) then
 								addonTable.msg(format(L["Spell already exists (%s)"], spellName));
 							else
-								db.SpellCDs[spellName] = GetDefaultDBEntryForSpell(refSpellID);
-								if (userHasProvidedSpellName) then db.SpellCDs[spellName].spellIDs = { [refSpellID] = true }; end
+								db.SpellCDs[spellName] = GetDefaultDBEntryForSpell();
+								db.SpellCDs[spellName].class = addonTable.UNKNOWN_CLASS;
+								if (spellID ~= nil) then db.SpellCDs[spellName].spellIDs = { [spellID] = true }; end
+								selectedClass = addonTable.ALL_CLASSES;
+								_G[dropdownClassSelector:GetName().."Text"]:SetText(ALL);
 								selectSpell:Click();
 								local btn = dropdownMenuSpells:GetButtonByText(spellName);
 								if (btn ~= nil) then
@@ -2124,87 +2108,74 @@ do
 
 		end
 		
-		-- // selectSpell
-		do
-		
-			local function OnSpellSelected(buttonInfo)
-				for _, control in pairs(controls) do
-					control:Show();
-				end
-				selectedSpellName = buttonInfo.text;
-				selectSpell.Text:SetText(buttonInfo.text);
-				selectSpell:SetScript("OnEnter", function(self, ...)
-					GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT");
-					GameTooltip:SetSpellByID(buttonInfo.info.refSpellID);
-					GameTooltip:Show();
-				end);
-				selectSpell:HookScript("OnLeave", function(self, ...) GameTooltip:Hide(); end);
-				selectSpell.icon:SetTexture(buttonInfo.info.texture);
-				selectSpell.icon:Show();
-				checkboxEnabled:SetChecked(db.SpellCDs[selectedSpellName].enabled);
-				if (db.SpellCDs[selectedSpellName].glow == nil) then
-					checkboxGlow:SetTriState(0);
-					sliderGlowThreshold:Hide();
-					areaGlow:SetHeight(40);
-				elseif (db.SpellCDs[selectedSpellName].glow == GLOW_TIME_INFINITE) then
-					checkboxGlow:SetTriState(2);
-					sliderGlowThreshold:Hide();
-					areaGlow:SetHeight(40);
-				else
-					checkboxGlow:SetTriState(1);
-					sliderGlowThreshold.slider:SetValue(db.SpellCDs[selectedSpellName].glow);
-					areaGlow:SetHeight(80);
-				end
-				sliderCooldown.slider:SetValue(db.SpellCDs[selectedSpellName].cooldown);
-				if (db.SpellCDs[selectedSpellName].spellIDs) then
-					local t = { };
-					for key in pairs(db.SpellCDs[selectedSpellName].spellIDs) do
-						table_insert(t, key);
-					end
-					editboxSpellID:SetText(table.concat(t, ","));
-				else
-					editboxSpellID:SetText("");
-				end
+		local function HideGameTooltip()
+			GameTooltip:Hide();
+		end
+
+		local function ResetSelectSpell()
+			for _, control in pairs(controls) do
+				control:Hide();
 			end
-			
-			local function HideGameTooltip()
-				GameTooltip:Hide();
-			end
-			
-			local function ResetSelectSpell()
-				for _, control in pairs(controls) do
-					control:Hide();
-				end
-				selectSpell.Text:SetText(L["options:spells:click-to-select-spell"]);
-				selectSpell:SetScript("OnEnter", nil);
-				selectSpell:SetScript("OnLeave", nil);
-				selectSpell.icon:Hide();
-			end
-		
-			selectSpell = LRD.CreateButton();
-			selectSpell:SetParent(GUIFrame);
-			selectSpell:SetText(L["options:spells:click-to-select-spell"]);
-			selectSpell:SetWidth(285);
-			selectSpell:SetHeight(24);
-			selectSpell.icon = selectSpell:CreateTexture(nil, "OVERLAY");
-			selectSpell.icon:SetPoint("RIGHT", selectSpell.Text, "LEFT", -3, 0);
-			selectSpell.icon:SetWidth(20);
-			selectSpell.icon:SetHeight(20);
-			selectSpell.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93);
+			selectSpell.Text:SetText(L["options:spells:click-to-select-spell"]);
+			selectSpell:SetScript("OnEnter", nil);
+			selectSpell:SetScript("OnLeave", nil);
 			selectSpell.icon:Hide();
-			selectSpell:SetPoint("BOTTOMLEFT", spellArea, "TOPLEFT", 15, 5);
-			selectSpell:SetPoint("BOTTOMRIGHT", spellArea, "TOPRIGHT", -15, 5);
-			selectSpell:SetScript("OnClick", function(button)
+		end
+
+		local function OnSpellSelected(buttonInfo)
+			local spellID, spellTexture = GetIDAndTextureForSpell(buttonInfo.text, buttonInfo.info);
+			for _, control in pairs(controls) do
+				control:Show();
+			end
+			selectedSpellName = buttonInfo.text;
+			selectSpell.Text:SetText(buttonInfo.text);
+			selectSpell:SetScript("OnEnter", function(self, ...)
+				GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT");
+				GameTooltip:SetSpellByID(spellID);
+				GameTooltip:Show();
+			end);
+			selectSpell:HookScript("OnLeave", function(self, ...) GameTooltip:Hide(); end);
+			selectSpell.icon:SetTexture(spellTexture);
+			selectSpell.icon:Show();
+			checkboxEnabled:SetChecked(db.SpellCDs[selectedSpellName].enabled);
+			if (db.SpellCDs[selectedSpellName].glow == nil) then
+				checkboxGlow:SetTriState(0);
+				sliderGlowThreshold:Hide();
+				areaGlow:SetHeight(40);
+			elseif (db.SpellCDs[selectedSpellName].glow == GLOW_TIME_INFINITE) then
+				checkboxGlow:SetTriState(2);
+				sliderGlowThreshold:Hide();
+				areaGlow:SetHeight(40);
+			else
+				checkboxGlow:SetTriState(1);
+				sliderGlowThreshold.slider:SetValue(db.SpellCDs[selectedSpellName].glow);
+				areaGlow:SetHeight(80);
+			end
+			sliderCooldown.slider:SetValue(db.SpellCDs[selectedSpellName].cooldown);
+			if (db.SpellCDs[selectedSpellName].spellIDs) then
 				local t = { };
-				for spellName, spellInfo in pairs(db.SpellCDs) do
+				for key in pairs(db.SpellCDs[selectedSpellName].spellIDs) do
+					table_insert(t, key);
+				end
+				editboxSpellID:SetText(table.concat(t, ","));
+			else
+				editboxSpellID:SetText("");
+			end
+		end
+
+		local function GetListForSpells()
+			local t = { };
+			for spellName, spellInfo in pairs(db.SpellCDs) do
+				if (selectedClass == addonTable.ALL_CLASSES or selectedClass == spellInfo.class) then
+					local spellID, spellTexture = GetIDAndTextureForSpell(spellName, spellInfo);
 					table_insert(t, {
-						icon = spellInfo.texture,
+						icon = spellTexture,
 						text = spellName,
 						info = spellInfo,
 						disabled = not spellInfo.enabled,
 						onEnter = function(self)
 							GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-							GameTooltip:SetSpellByID(spellInfo.refSpellID);
+							GameTooltip:SetSpellByID(spellID);
 							GameTooltip:Show();
 						end,
 						onLeave = HideGameTooltip,
@@ -2223,11 +2194,31 @@ do
 						end,
 					});
 				end
-				table_sort(t, function(item1, item2) return item1.text < item2.text; end);
-				dropdownMenuSpells:SetList(t);
+			end
+			table_sort(t, function(item1, item2) return item1.text < item2.text; end);
+			return t;
+		end
+
+		-- // selectSpell
+		do
+			selectSpell = LRD.CreateButton();
+			selectSpell:SetParent(GUIFrame);
+			selectSpell:SetText(L["options:spells:click-to-select-spell"]);
+			selectSpell:SetWidth(285);
+			selectSpell:SetHeight(24);
+			selectSpell.icon = selectSpell:CreateTexture(nil, "OVERLAY");
+			selectSpell.icon:SetPoint("RIGHT", selectSpell.Text, "LEFT", -3, 0);
+			selectSpell.icon:SetWidth(20);
+			selectSpell.icon:SetHeight(20);
+			selectSpell.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93);
+			selectSpell.icon:Hide();
+			selectSpell:SetPoint("BOTTOMLEFT", spellArea, "TOPLEFT", 15, 5);
+			selectSpell:SetPoint("BOTTOMRIGHT", spellArea, "TOPRIGHT", -15, 5);
+			selectSpell:SetScript("OnClick", function(button)
+				dropdownMenuSpells:SetList(GetListForSpells());
 				dropdownMenuSpells:SetParent(button);
 				dropdownMenuSpells:ClearAllPoints();
-				dropdownMenuSpells:SetPoint("TOP", button, "BOTTOM", 0, 0);
+				dropdownMenuSpells:SetPoint("TOP", button, "BOTTOM", 0, -35);
 				dropdownMenuSpells:Show();
 				dropdownMenuSpells.searchBox:SetFocus();
 				dropdownMenuSpells.searchBox:SetText("");
@@ -2242,6 +2233,41 @@ do
 			
 		end
 		
+		-- // dropdownClassSelector
+		do
+			local classTokens = { };
+			local classes = { };
+			classTokens[#classTokens+1] = addonTable.ALL_CLASSES;
+			FillLocalizedClassList(classes);
+			for token in pairs(classes) do
+				classTokens[#classTokens+1] = token;
+			end
+			classTokens[#classTokens+1] = addonTable.UNKNOWN_CLASS;
+			classes[addonTable.UNKNOWN_CLASS] = OTHER;
+			classes[addonTable.ALL_CLASSES] = ALL;
+
+			dropdownClassSelector = CreateFrame("Frame", "NC.GUI.Spell.dropdownClassSelector", dropdownMenuSpells, "UIDropDownMenuTemplate");
+			UIDropDownMenu_SetWidth(dropdownClassSelector, 300);
+			dropdownClassSelector:SetPoint("TOP", selectSpell, "BOTTOM", 0, -5);
+			local info = {};
+			dropdownClassSelector.initialize = function()
+				wipe(info);
+				for _, classToken in pairs(classTokens) do
+					info.text = classes[classToken];
+					info.value = classToken;
+					info.func = function(self)
+						selectedClass = self.value;
+						dropdownMenuSpells:SetList(GetListForSpells());
+						_G[dropdownClassSelector:GetName().."Text"]:SetText(self:GetText());
+					end
+					info.checked = info.value == selectedClass;
+					UIDropDownMenu_AddButton(info);
+				end
+			end
+			_G[dropdownClassSelector:GetName().."Text"]:SetText(classes[selectedClass]);
+			table.insert(GUIFrame.Categories[index], dropdownClassSelector);
+		end
+
 		-- // checkboxEnabled
 		do
 			checkboxEnabled = LRD.CreateCheckBox();
@@ -2501,14 +2527,6 @@ do
 			buttonDeleteSpell:SetPoint("TOPRIGHT", areaIDs, "BOTTOMRIGHT", -10, -10);
 			buttonDeleteSpell:SetScript("OnClick", function(self, ...)
 				db.SpellCDs[selectedSpellName] = nil;
-				for spellID in pairs(addonTable.CDs) do
-					local spellName = SpellNameByID[spellID];
-					if (spellName == selectedSpellName and not db.UnwantedDefaultSpells[spellName]) then
-						db.UnwantedDefaultSpells[spellName] = true;
-						addonTable.Print(string_format(L["chat:default-spell-is-added-to-ignore-list"], GetSpellLink(spellID)));
-						break;
-					end
-				end
 				ReallocateAllIcons(true);
 				selectSpell.Text:SetText(L["options:spells:click-to-select-spell"]);
 				selectSpell.icon:SetTexture(nil);
@@ -2578,8 +2596,6 @@ do
 			local entry = db.SpellCDs[spellName];
 			if (entry and entry.enabled and (entry.spellIDs == nil or entry.spellIDs[spellID])) then
 				if (eventType == "SPELL_CAST_SUCCESS" or eventType == "SPELL_AURA_APPLIED" or eventType == "SPELL_MISSED" or eventType == "SPELL_SUMMON") then
-					entry.refSpellID = spellID;
-					entry.texture = SpellTextureByID[spellID];
 					if (not SpellsPerPlayerGUID[srcGUID]) then SpellsPerPlayerGUID[srcGUID] = { }; end
 					local expires = cTime + entry.cooldown;
 					SpellsPerPlayerGUID[srcGUID][spellName] = { ["spellName"] = spellName, ["expires"] = expires, ["texture"] = SpellTextureByID[spellID] };
