@@ -1,3 +1,6 @@
+-- luacheck: no max line length
+-- luacheck: globals LibStub
+
 local L = LibStub("AceLocale-3.0"):NewLocale("NameplateCooldowns", "itIT");
 L = L or {}
 --[[Translation missing --]]

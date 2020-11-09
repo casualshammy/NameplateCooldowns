@@ -3,9 +3,9 @@
 
 local _, addonTable = ...;
 
-local next, SpellNameByID, SpellTextureByID, math_ceil = next, addonTable.SpellNameByID, addonTable.SpellTextureByID, ceil;
+local next, SpellNameByID, math_ceil = next, addonTable.SpellNameByID, math.ceil;
 
-local function GetDefaultDBEntryForSpell(spellID)
+local function GetDefaultDBEntryForSpell()
     return {
         ["enabled"] = true,
         ["cooldown"] = 60,
@@ -21,7 +21,7 @@ local migrations = {
 			for spellID, enabled in pairs(db.CDsTable) do
                 local spellName = SpellNameByID[spellID];
                 local cooldown;
-                for class, spellsTable in pairs(addonTable.CDs) do
+                for _, spellsTable in pairs(addonTable.CDs) do
                     for defaultSpellID, defaultCd in pairs(spellsTable) do
                         if (spellID == defaultSpellID) then
                             cooldown = defaultCd;
@@ -58,7 +58,7 @@ local migrations = {
     end,
     [2] = function()
         local db = addonTable.db;
-        for spellName, spellInfo in pairs(db.SpellCDs) do
+        for _, spellInfo in pairs(db.SpellCDs) do
             spellInfo.texture = nil;
         end
     end,
@@ -96,5 +96,5 @@ function addonTable.MigrateDB()
 end
 
 function addonTable.ImportNewSpells()
-    
+
 end

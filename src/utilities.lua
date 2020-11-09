@@ -1,6 +1,8 @@
+-- luacheck: globals GetSpellTexture GetSpellInfo DEFAULT_CHAT_FRAME StaticPopupDialogs StaticPopup_Show OKAY YES NO CreateFrame debugprofilestop
+
 local _, addonTable = ...;
-local string_format, GetSpellTexture, GetSpellInfo, select, tostring, type, pairs, setmetatable, getmetatable = 
- format, GetSpellTexture, GetSpellInfo, select, tostring, type, pairs, setmetatable, getmetatable;
+local string_format, GetSpellTexture, GetSpellInfo, select, tostring, type, pairs, setmetatable, getmetatable, debugprofilestop =
+    string.format, GetSpellTexture, GetSpellInfo, select, tostring, type, pairs, setmetatable, getmetatable, debugprofilestop;
 
 function addonTable.Print(...)
     local text = "";
@@ -11,21 +13,21 @@ function addonTable.Print(...)
 end
 
 function addonTable.deepcopy(object)
-    local lookup_table = {}
-    local function _copy(object)
-        if type(object) ~= "table" then
-            return object
-        elseif lookup_table[object] then
-            return lookup_table[object]
-        end
-        local new_table = {}
-        lookup_table[object] = new_table
-        for index, value in pairs(object) do
-            new_table[_copy(index)] = _copy(value)
-        end
-        return setmetatable(new_table, getmetatable(object))
-    end
-    return _copy(object)
+	local lookup_table = {}
+	local function _copy(another_object)
+		if type(another_object) ~= "table" then
+			return another_object;
+		elseif lookup_table[another_object] then
+			return lookup_table[another_object];
+		end
+		local new_table = { };
+		lookup_table[another_object] = new_table;
+		for index, value in pairs(another_object) do
+			new_table[_copy(index)] = _copy(value);
+		end
+		return setmetatable(new_table, getmetatable(another_object));
+	end
+	return _copy(object);
 end
 
 function addonTable.colorize_text(text, r, g, b)
@@ -34,7 +36,7 @@ end
 
 function addonTable.table_count(t)
     local count = 0;
-    for i in pairs(t) do
+    for _ in pairs(t) do
         count = count + 1;
     end
     return count;
@@ -122,7 +124,7 @@ do
     end
 
     CoroutineProcessor.frame:Hide();
-    CoroutineProcessor.frame:SetScript("OnUpdate", function(self, elapsed)
+    CoroutineProcessor.frame:SetScript("OnUpdate", function()
         local start = debugprofilestop();
         local hasData = true;
         while (debugprofilestop() - start < 16 and hasData) do
@@ -130,7 +132,7 @@ do
             for name, func in pairs(CoroutineProcessor.update) do
                 hasData = true;
                 if (coroutine.status(func) ~= "dead") then
-                    local err, ret1, ret2 = assert(coroutine.resume(func));
+                    assert(coroutine.resume(func));
                 else
                     addonTable.coroutine_delete(name);
                 end

@@ -1,3 +1,6 @@
+-- luacheck: no max line length
+-- luacheck: globals LibStub
+
 local L = LibStub("AceLocale-3.0"):NewLocale("NameplateCooldowns", "deDE");
 L = L or {}
 L["anchor-point:bottom"] = "Unten"

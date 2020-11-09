@@ -1,3 +1,4 @@
+-- luacheck: no max line length
 -- luacheck: globals GetBuildInfo LibStub GetSpellInfo
 
 if (select(4, GetBuildInfo()) < 80200) then return end
