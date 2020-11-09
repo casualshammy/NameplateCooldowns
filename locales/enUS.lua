@@ -64,9 +64,7 @@ L["options:general:disable-addon-btn"] = "Disable addon"
 L["options:general:enable-addon-btn"] = "Enable addon"
 L["options:general:enable-only-for-target-nameplate"] = "Show the cooldowns on the current target nameplate only"
 L["options:general:full-opacity-always"] = "Icons are always completely opaque"
-L["options:general:full-opacity-always:tooltip"] = [=[If this option is enabled, the icons will 
-always be completely opaque. If not, the opacity
-will be the same as the health bar]=]
+L["options:general:full-opacity-always:tooltip"] = [=[If this option is enabled, the icons will always be completely opaque. If not, the opacity will be the same as the health bar]=]
 L["options:general:icon-grow-direction"] = "Icons' growth direction"
 L["options:general:ignore-nameplate-scale"] = "Ignore nameplate scale"
 L["options:general:ignore-nameplate-scale:tooltip"] = [=[If this option is checked, icon size will not

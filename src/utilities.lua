@@ -1,3 +1,4 @@
+-- luacheck: no max line length
 -- luacheck: globals GetSpellTexture GetSpellInfo DEFAULT_CHAT_FRAME StaticPopupDialogs StaticPopup_Show OKAY YES NO CreateFrame debugprofilestop
 
 local _, addonTable = ...;
