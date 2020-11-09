@@ -1,7 +1,9 @@
+-- luacheck: globals GetBuildInfo LibStub GetSpellInfo
+
 if (select(4, GetBuildInfo()) < 80200) then return end
 
 local _, addonTable = ...;
-local L = LibStub("AceLocale-3.0"):GetLocale("NameplateCooldowns");
+local GetSpellInfo = GetSpellInfo;
 
 addonTable.DefaultSpellsVersion = 10;
 
@@ -366,7 +368,7 @@ end
 
 -- // spells that reduce cooldown of other spells
 do
-	
+
 	local BIG_REDUCTION = 4*1000*1000;
 
 	addonTable.Reductions = {
