@@ -17,3 +17,6 @@ addonTable.SORT_MODE_INTERRUPT_OTHER = "interrupt-other";
 addonTable.GLOW_TIME_INFINITE = 4*1000*1000*1000;
 
 addonTable.INSTANCE_TYPE_UNKNOWN = "unknown";
+
+addonTable.UNKNOWN_CLASS = "MISC";
+addonTable.ALL_CLASSES = "ALL-CLASSES";

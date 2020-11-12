@@ -1,3 +1,5 @@
+-- luacheck: ignore
+
 if (select(4, GetBuildInfo()) > 20000) then return end
 
 local _, addonTable = ...;
