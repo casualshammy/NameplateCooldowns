@@ -385,96 +385,86 @@ do
 		return false;
 	end
 
-	local function Nameplate_SortAuras_mode1(item1, item2)
-		if (Trinkets[item1.spellName]) then
-			if (Trinkets[item2.spellName]) then
-				return item1.expires < item2.expires;
+	local CDSortFunctions = {
+		[SORT_MODE_NONE] = function() end,
+		[SORT_MODE_TRINKET_INTERRUPT_OTHER] = function(item1, item2)
+			if (Trinkets[item1.spellName]) then
+				if (Trinkets[item2.spellName]) then
+					return item1.expires < item2.expires;
+				else
+					return true;
+				end
+			elseif (Trinkets[item2.spellName]) then
+				return false;
+			elseif (Interrupts[item1.spellName]) then
+				if (Interrupts[item2.spellName]) then
+					return item1.expires < item2.expires;
+				else
+					return true;
+				end
+			elseif (Interrupts[item2.spellName]) then
+				return false;
 			else
-				return true;
-			end
-		elseif (Trinkets[item2.spellName]) then
-			return false;
-		elseif (Interrupts[item1.spellName]) then
-			if (Interrupts[item2.spellName]) then
 				return item1.expires < item2.expires;
-			else
-				return true;
 			end
-		elseif (Interrupts[item2.spellName]) then
-			return false;
-		else
-			return item1.expires < item2.expires;
-		end
-	end
-
-	local function Nameplate_SortAuras_mode2(item1, item2)
-		if (Interrupts[item1.spellName]) then
-			if (Interrupts[item2.spellName]) then
+		end,
+		[SORT_MODE_INTERRUPT_TRINKET_OTHER] = function(item1, item2)
+			if (Interrupts[item1.spellName]) then
+				if (Interrupts[item2.spellName]) then
+					return item1.expires < item2.expires;
+				else
+					return true;
+				end
+			elseif (Interrupts[item2.spellName]) then
+				return false;
+			elseif (Trinkets[item1.spellName]) then
+				if (Trinkets[item2.spellName]) then
+					return item1.expires < item2.expires;
+				else
+					return true;
+				end
+			elseif (Trinkets[item2.spellName]) then
+				return false;
+			else
 				return item1.expires < item2.expires;
-			else
-				return true;
 			end
-		elseif (Interrupts[item2.spellName]) then
-			return false;
-		elseif (Trinkets[item1.spellName]) then
-			if (Trinkets[item2.spellName]) then
+		end,
+		[SORT_MODE_TRINKET_OTHER] = function(item1, item2)
+			if (Trinkets[item1.spellName]) then
+				if (Trinkets[item2.spellName]) then
+					return item1.expires < item2.expires;
+				else
+					return true;
+				end
+			elseif (Trinkets[item2.spellName]) then
+				return false;
+			else
 				return item1.expires < item2.expires;
-			else
-				return true;
 			end
-		elseif (Trinkets[item2.spellName]) then
-			return false;
-		else
-			return item1.expires < item2.expires;
-		end
-	end
-
-	local function Nameplate_SortAuras_mode3(item1, item2)
-		if (Trinkets[item1.spellName]) then
-			if (Trinkets[item2.spellName]) then
+		end,
+		[SORT_MODE_INTERRUPT_OTHER] = function(item1, item2)
+			if (Interrupts[item1.spellName]) then
+				if (Interrupts[item2.spellName]) then
+					return item1.expires < item2.expires;
+				else
+					return true;
+				end
+			elseif (Interrupts[item2.spellName]) then
+				return false;
+			else
 				return item1.expires < item2.expires;
-			else
-				return true;
 			end
-		elseif (Trinkets[item2.spellName]) then
-			return false;
-		else
-			return item1.expires < item2.expires;
-		end
-	end
-
-	local function Nameplate_SortAuras_mode4(item1, item2)
-		if (Interrupts[item1.spellName]) then
-			if (Interrupts[item2.spellName]) then
-				return item1.expires < item2.expires;
-			else
-				return true;
-			end
-		elseif (Interrupts[item2.spellName]) then
-			return false;
-		else
-			return item1.expires < item2.expires;
-		end
-	end
+		end,
+	};
 
 	local function Nameplate_SortAuras(cds)
 		local t = { };
 		for spellName, spellInfo in pairs(cds) do
 			if (spellName ~= nil) then
-				table.insert(t, spellInfo);
+				t[#t+1] = spellInfo;
 			end
 		end
-		if (db.IconSortMode == SORT_MODE_NONE) then -- luacheck: ignore
-			-- // do nothing
-		elseif (db.IconSortMode == SORT_MODE_TRINKET_INTERRUPT_OTHER) then
-			table.sort(t, Nameplate_SortAuras_mode1);
-		elseif (db.IconSortMode == SORT_MODE_INTERRUPT_TRINKET_OTHER) then
-			table.sort(t, Nameplate_SortAuras_mode2);
-		elseif (db.IconSortMode == SORT_MODE_TRINKET_OTHER) then
-			table.sort(t, Nameplate_SortAuras_mode3);
-		elseif (db.IconSortMode == SORT_MODE_INTERRUPT_OTHER) then
-			table.sort(t, Nameplate_SortAuras_mode4);
-		end
+		table_sort(t, CDSortFunctions[db.IconSortMode]);
 		return t;
 	end
 
