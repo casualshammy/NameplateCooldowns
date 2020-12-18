@@ -53,34 +53,24 @@ L["msg:question:import-existing-spells"] = [=[NameplateCooldowns
 Es gibt aktualisierte Abklingzeiten für manche deiner Zauber. Möchtest du sie aktualisieren?]=]
 L["New spell has been added: %s"] = "Ein neuer Zauber wurde hinzugefügt: %s"
 L["Options are not available in combat!"] = "Einstellungen sind nicht im Kampf verfügbar"
---[[Translation missing --]]
-L["options:borders:show-blizz-borders"] = "Show Blizzard's borders around icons"
+L["options:borders:show-blizz-borders"] = "Blizzards Rahmen um Symbole anzeigen"
 L["options:category:borders"] = "Rahmen"
 L["options:category:spells"] = "Zauber"
 L["options:category:text"] = "Text"
 L["options:general:anchor-point"] = "Ankerpunkt"
---[[Translation missing --]]
-L["options:general:anchor-point-to-parent"] = "Anchor point (to parent)"
+L["options:general:anchor-point-to-parent"] = "Ankerpunkt (am Parent)"
 L["options:general:disable-addon-btn"] = "Addon deaktivieren"
 L["options:general:enable-addon-btn"] = "Addon aktivieren"
 L["options:general:enable-only-for-target-nameplate"] = "Die Abklingzeit nur auf der Namensplakette des aktuellen Ziels anzeigen"
---[[Translation missing --]]
-L["options:general:full-opacity-always"] = "Icons are always completely opaque"
---[[Translation missing --]]
-L["options:general:full-opacity-always:tooltip"] = [=[If this option is enabled, the icons will always be completely opaque. If not, the opacity will be the same as the health bar]=]
+L["options:general:full-opacity-always"] = "Symbole sind immer komplett undurchsichtig"
+L["options:general:full-opacity-always:tooltip"] = [=[Falls diese Option aktiviert ist, sin die Symbole immer komplett undurchsichtig. Falls nicht, entspricht die Transparenz die des Gesundheitsbalkens]=]
 L["options:general:icon-grow-direction"] = "Die Wuchsrichtung der Symbole"
 L["options:general:ignore-nameplate-scale"] = "Namensplakettenskalierung ignorieren"
---[[Translation missing --]]
-L["options:general:ignore-nameplate-scale:tooltip"] = [=[If this option is checked, icon size will not
-change accordingly to nameplate scale
-(for example, if nameplate of your target becomes bigger)]=]
---[[Translation missing --]]
-L["options:general:show-cd-on-allies"] = "Show cooldowns on nameplates of allies"
---[[Translation missing --]]
-L["options:general:show-inactive-cd"] = "Show inactive cooldowns"
---[[Translation missing --]]
-L["options:general:show-inactive-cd:tooltip"] = [=[Pay attention: you will NOT be able to see all available cooldowns!
-You will see ONLY those cooldowns that foe has already used]=]
+L["options:general:ignore-nameplate-scale:tooltip"] = [=[Falls diese Option aktiviert ist, ist die Größe des Symbols nicht abhängig von der Skalierung der Namensplakette. (Zum Beispiel falls die Namensplakette deines Ziels größer wird.)]=]
+L["options:general:show-cd-on-allies"] = "Abklingzeiten auf Namensplaketten von Verbündeten anzeigen"
+L["options:general:show-inactive-cd"] = "Inaktive Abklingzeiten anzeigen"
+L["options:general:show-inactive-cd:tooltip"] = [=[Beachte: Du wirst NICHT all verfügbaren Abklingzauber sehen!
+Du wirst NUR die Cooldowns sehen, die dieser Spieler bereits genutzt hat]=]
 L["options:general:space-between-icons"] = "Platz zwischen Symbolen (px)"
 L["options:profiles:open-profiles-dialog"] = "Profildialog öffnen"
 L["options:spells:add-new-spell"] = "Füge neuen Zauber hinzu (Name oder ID):"
@@ -100,16 +90,14 @@ L["options:spells:please-push-once-more"] = "Bitte drücke noch einmal"
 L["options:spells:track-only-this-spellid"] = [=[Nur diese Zauber-IDs verfolgen
 (kommasepariert)]=]
 L["options:text:anchor-point"] = "Ankerpunkt"
---[[Translation missing --]]
-L["options:text:anchor-to-icon"] = "Anchor to icon"
+L["options:text:anchor-to-icon"] = "Anker zum Symbol"
 L["options:text:color"] = "Schriftfarbe"
 L["options:text:font"] = "Schriftart"
 L["options:text:font-scale"] = "Schriftskalierung"
 L["options:text:font-size"] = "Schriftgröße"
---[[Translation missing --]]
-L["options:timer-text:scale-font-size"] = [=[Scale font size
-according to
-icon size]=]
+L["options:timer-text:scale-font-size"] = [=[Schriftgröße 
+gemäß Symbolgröße
+skalieren]=]
 L["Profile '%s' has been successfully deleted"] = "Profil '%s' wurde erfolgreich gelöscht."
 L["Profiles"] = "Profile"
 L["Show border around interrupts"] = "Rahmen um Unterbrechungen anzeigen"
