@@ -85,6 +85,16 @@ local migrations = {
         db.UnwantedDefaultSpells = nil;
         db.CDsTable = nil;
     end,
+    [5] = function()
+        local db = addonTable.db;
+        for spellName, spellInfo in pairs(db.SpellCDs) do
+            if (spellName == SpellNameByID[336126]) then
+                if (spellInfo.spellIDs ~= nil and not spellInfo.spellIDs[336126]) then
+                    spellInfo.spellIDs[336126] = true;
+                end
+            end
+        end
+    end,
 };
 
 function addonTable.MigrateDB()
