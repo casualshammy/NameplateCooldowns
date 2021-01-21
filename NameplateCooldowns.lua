@@ -691,8 +691,10 @@ do
 			spellID = next(spellInfo.spellIDs);
 			textureID = SpellTextureByID[spellID];
 		else
-			spellID = next(AllSpellIDsAndIconsByName[spellName]);
-			textureID = SpellTextureByID[spellID];
+			if (spellName ~= nil) then
+				spellID = next(AllSpellIDsAndIconsByName[spellName]);
+				textureID = SpellTextureByID[spellID];
+			end
 		end
 		return spellID, textureID;
 	end

@@ -6,7 +6,7 @@ if (select(4, GetBuildInfo()) < 80200) then return end
 local _, addonTable = ...;
 local GetSpellInfo = GetSpellInfo;
 
-addonTable.DefaultSpellsVersion = 10;
+addonTable.DefaultSpellsVersion = 11;
 
 addonTable.CDs = {
 	[addonTable.UNKNOWN_CLASS] = {
@@ -151,7 +151,7 @@ addonTable.CDs = {
 		[202370] = 30,					-- Mighty Ox Kick https://ru.wowhead.com/spell=202370
 		[116705] = 15,					-- Spear Hand Strike https://ru.wowhead.com/spell=116705
 		[115176] = 300 - 300/100*75,	-- Zen Meditation https://ru.wowhead.com/spell=115176
-		[122470] = 90-30,				-- Touch of Karma https://ru.wowhead.com/spell=122470
+		[122470] = 90,					-- Touch of Karma https://ru.wowhead.com/spell=122470
 		[116849] = 120-25-30,			-- Life Cocoon https://ru.wowhead.com/spell=116849
 		[123904] = 120-30,				-- Invoke Xuen, the White Tiger https://ru.wowhead.com/spell=123904
 		[198898] = 30,					-- Song of Chi-Ji https://ru.wowhead.com/spell=198898
