@@ -28,9 +28,11 @@ L["Data from '%s' has been successfully copied to '%s'"] = "Daten von '%s' wurde
 L["Delete"] = "Löschen"
 L["Delete profile:"] = "Profil löschen:"
 L["Disable test mode"] = "Testmodus deaktivieren"
-L["Enable test mode (need at least one visible nameplate)"] = "Testmodus aktivieren\\r\\n(es muss mindestens eine Namensplakette sichtbar sein)"
+L["Enable test mode (need at least one visible nameplate)"] = [[Testmodus aktivieren
+(es muss mindestens eine Namensplakette sichtbar sein)]]
 L["Filters"] = "Filter"
-L["filters.instance-types"] = "Stelle die Sichtbarkeit der Abklingzeiten abhängig von der Art der Instanzen ein."
+L["filters.instance-types"] = [[Stelle die Sichtbarkeit der Abklingzeiten
+abhängig von der Art der Instanzen ein.]]
 L["Font:"] = "Schriftart:"
 L["General"] = "Allgemein"
 L["general.sort-mode"] = "Sortieren nach:"
@@ -95,7 +97,7 @@ L["options:text:color"] = "Schriftfarbe"
 L["options:text:font"] = "Schriftart"
 L["options:text:font-scale"] = "Schriftskalierung"
 L["options:text:font-size"] = "Schriftgröße"
-L["options:timer-text:scale-font-size"] = [=[Schriftgröße 
+L["options:timer-text:scale-font-size"] = [=[Schriftgröße
 gemäß Symbolgröße
 skalieren]=]
 L["Profile '%s' has been successfully deleted"] = "Profil '%s' wurde erfolgreich gelöscht."
