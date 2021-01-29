@@ -3,7 +3,7 @@
 
 local _, addonTable = ...;
 
-local next, SpellNameByID = next, addonTable.SpellNameByID;
+local next, SpellNameByID, math_ceil = next, addonTable.SpellNameByID, math.ceil;
 
 local migrations = {
     [0] = function() end,
