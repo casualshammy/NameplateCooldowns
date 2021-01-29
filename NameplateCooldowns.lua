@@ -122,13 +122,14 @@ do
 
 	function InitializeDB()
 		-- // set defaults
+		local iconSize = 26;
 		local aceDBDefaults = {
 			profile = {
 				SpellCDs = { },
 				DBVersion = 0,
 				MigrationVersion = 0,
 				IconSpacing = 0,
-				IconSize = 26,
+				IconSize = iconSize,
 				IconXOffset = 0,
 				IconYOffset = 30,
 				FullOpacityAlways = false,
@@ -151,7 +152,7 @@ do
 				},
 				ShowOldBlizzardBorderAroundIcons = false,
 				FontScale = 1,
-				TimerTextSize = nil,
+				TimerTextSize = math_ceil(iconSize - iconSize/2),
 				TimerTextUseRelativeScale = true,
 				TimerTextAnchor = "CENTER",
 				TimerTextAnchorIcon = "CENTER",

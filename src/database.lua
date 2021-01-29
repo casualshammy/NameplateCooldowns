@@ -33,6 +33,9 @@ local migrations = {
             end
         end
         addonTable.db.SpellCDs = addonTable.deepcopy(tempTable);
+        if (db.TimerTextSize == nil) then
+			db.TimerTextSize = math_ceil(db.IconSize - db.IconSize/2);
+		end
     end,
 };
 
