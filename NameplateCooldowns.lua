@@ -54,9 +54,9 @@ local InstanceType = "none";
 local AllCooldowns = { };
 local GUIFrame, EventFrame, TestFrame, db, aceDB, ProfileOptionsFrame, LocalPlayerGUID;
 
-local _G, pairs, UIParent, string_gsub, string_find, bit_band, GetTime, math_ceil, table_insert, table_sort, C_Timer_After, string_lower, string_format, C_Timer_NewTimer, math_max, C_NamePlate_GetNamePlateForUnit, UnitGUID =
-	  _G, pairs, UIParent, string.gsub,	string.find, bit.band, GetTime, math.ceil, table.insert, table.sort, C_Timer.After, string.lower, string.format, C_Timer.NewTimer, math.max, C_NamePlate.GetNamePlateForUnit, UnitGUID;
-local wipe, format, GetSpellLink, IsInGroup, unpack, tinsert, GetSpellInfo, string_gmatch = wipe, string.format, GetSpellLink, IsInGroup, unpack, table.insert, GetSpellInfo, string.gmatch;
+local _G, pairs, UIParent, string_gsub, string_find, bit_band, GetTime, math_ceil, table_insert, table_sort, C_Timer_After, string_format, C_Timer_NewTimer, math_max, C_NamePlate_GetNamePlateForUnit, UnitGUID =
+	  _G, pairs, UIParent, string.gsub,	string.find, bit.band, GetTime, math.ceil, table.insert, table.sort, C_Timer.After, string.format, C_Timer.NewTimer, math.max, C_NamePlate.GetNamePlateForUnit, UnitGUID;
+local wipe, IsInGroup, unpack, tinsert, GetSpellInfo = wipe, IsInGroup, unpack, table.insert, GetSpellInfo;
 
 local OnStartup, InitializeDB, GetDefaultDBEntryForSpell;
 local AllocateIcon, ReallocateAllIcons, UpdateOnlyOneNameplate, HideCDIcon, ShowCDIcon;
@@ -179,7 +179,7 @@ do
 	function OnStartup()
 		LocalPlayerGUID = UnitGUID("player");
 		InitializeDB();
-		for class, cds in pairs(addonTable.CDs) do
+		for _, cds in pairs(addonTable.CDs) do
 			for spellId, cd in pairs(cds) do
 				AllCooldowns[spellId] = cd;
 				if (db.SpellCDs[spellId] == nil) then
@@ -626,7 +626,7 @@ do
 		_charactersDB = addonTable.deepcopy(SpellsPerPlayerGUID);
 		_spellCDs = addonTable.deepcopy(db.SpellCDs);
 		db.SpellCDs = { };
-		for spellID, cd in pairs(_spellIDs) do
+		for spellID in pairs(_spellIDs) do
 			db.SpellCDs[spellID] = GetDefaultDBEntryForSpell();
 			db.SpellCDs[spellID].enabled = true;
 		end
@@ -1951,7 +1951,7 @@ do
 		local function GetListForSpells()
 			local t = { };
 			for class, cds in pairs(addonTable.CDs) do
-				for spellID, cd in pairs(cds) do
+				for spellID in pairs(cds) do
 					if (selectedClass == addonTable.ALL_CLASSES or selectedClass == class) then
 						local spellInfo = db.SpellCDs[spellID] or GetDefaultDBEntryForSpell();
 						table_insert(t, {
@@ -2212,7 +2212,7 @@ do
 
 	EventFrame.COMBAT_LOG_EVENT_UNFILTERED = function()
 		local cTime = GetTime();
-		local _, eventType, _, srcGUID, _, srcFlags, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo();
+		local _, eventType, _, srcGUID, _, srcFlags, _, _, _, _, _, spellID = CombatLogGetCurrentEventInfo();
 		if (bit_band(srcFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0 or (db.ShowCDOnAllies == true and srcGUID ~= LocalPlayerGUID)) then
 			local entry = db.SpellCDs[spellID];
 			local cooldown = AllCooldowns[spellID];

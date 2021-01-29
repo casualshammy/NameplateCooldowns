@@ -2,7 +2,6 @@
 -- luacheck: globals GetBuildInfo LibStub GetSpellInfo
 
 local _, addonTable = ...;
-local GetSpellInfo = GetSpellInfo;
 
 addonTable.DefaultSpellsVersion = 11;
 

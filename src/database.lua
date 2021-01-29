@@ -3,7 +3,7 @@
 
 local _, addonTable = ...;
 
-local next, SpellNameByID, math_ceil = next, addonTable.SpellNameByID, math.ceil;
+local next, SpellNameByID = next, addonTable.SpellNameByID;
 
 local migrations = {
     [0] = function() end,
@@ -26,7 +26,7 @@ local migrations = {
     [6] = function()
         local db = addonTable.db;
         local tempTable = { };
-        for spellName, spellInfo in pairs(db.SpellCDs) do
+        for _, spellInfo in pairs(db.SpellCDs) do
             if (spellInfo.spellIDs ~= nil and next(spellInfo.spellIDs) ~= nil) then
                 local spellID = next(spellInfo.spellIDs);
                 tempTable[spellID] = { ["enabled"] = spellInfo.enabled, ["glow"] = spellInfo.glow };
