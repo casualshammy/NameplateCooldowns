@@ -1,7 +1,7 @@
 local _, addonTable = ...;
 
 addonTable.SPELL_PVPADAPTATION = 195901;
-addonTable.SPELL_PVPTRINKET = 42292;
+addonTable.SPELL_PVPTRINKET = 336126;
 
 addonTable.ICON_GROW_DIRECTION_RIGHT = "right";
 addonTable.ICON_GROW_DIRECTION_LEFT = "left";

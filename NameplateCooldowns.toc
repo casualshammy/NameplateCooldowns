@@ -8,8 +8,6 @@ embeds.xml
 src\constants.lua
 src\utilities.lua
 locales\localizations.xml
-defaultSpells.lua
-defaultSpells_Classic.lua
+src\default-spells.lua
 src\database.lua
 NameplateCooldowns.lua
-NameplateCooldowns_Classic.lua
