@@ -626,7 +626,6 @@ do
 	function EnableTestMode()
 		_charactersDB = addonTable.deepcopy(SpellsPerPlayerGUID);
 		_spellCDs = addonTable.deepcopy(db.SpellCDs);
-		-- db.SpellCDs = { };
 		for spellID in pairs(_spellIDs) do
 			db.SpellCDs[spellID] = GetDefaultDBEntryForSpell();
 			db.SpellCDs[spellID].enabled = true;
