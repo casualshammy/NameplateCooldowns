@@ -50,6 +50,7 @@ addonTable.CDs = {
 		[266779] = 96,		-- // Согласованная атака https://ru.wowhead.com/spell=266779
 		[190925] = 30,		-- // Гарпун https://ru.wowhead.com/spell=190925
 		[201430] = 120,		-- // Звериный натиск https://ru.wowhead.com/spell=201430
+		[308491] = 60,		-- Resonating Arrow https://www.wowhead.com/spell=308491/resonating-arrow
 	},
 	["WARLOCK"] = {
 		-- // reviewed 2020/10/15
@@ -68,6 +69,10 @@ addonTable.CDs = {
 		[212459] = 90,		-- // Call Fel Lord https://ru.wowhead.com/spell=212459
 		[221703] = 60,		-- // Круг заклинателей https://ru.wowhead.com/spell=221703
 		[212619] = 24,		-- // Вызов охотника Скверны https://ru.wowhead.com/spell=212619
+		[325640] = 60,		-- Soul Rot https://www.wowhead.com/spell=325640/soul-rot
+		[113860] = 120,		-- Dark Soul: Misery https://www.wowhead.com/spell=113860/dark-soul-misery
+		[113858] = 120,		-- Dark Soul: Instability https://www.wowhead.com/spell=113858/dark-soul-instability
+		[80240] = 30,		-- Havoc https://www.wowhead.com/spell=80240/havoc
 	},
 	["MAGE"] = {
 		-- // reviewed 2020/10/16
@@ -91,6 +96,7 @@ addonTable.CDs = {
 		[108978] = 60-30,	-- // Манипуляции со временем https://ru.wowhead.com/spell=108978
 		[212653] = 25,		-- // Мерцание https://ru.wowhead.com/spell=212653
 		[113724] = 45,		-- // Кольцо мороза https://ru.wowhead.com/spell=113724
+		[307443] = 30,		-- Radiant Spark https://www.wowhead.com/spell=307443/radiant-spark
 	},
 	["DEATHKNIGHT"] = {
 		-- // deathknight
@@ -114,6 +120,8 @@ addonTable.CDs = {
 		[48265]		= 45,			-- Поступь смерти https://ru.wowhead.com/spell=48265
 		[49039]		= 120,			-- Перерождение https://ru.wowhead.com/spell=49039
 		[275699]	= 90-15-45,		-- Апокалипсис https://ru.wowhead.com/spell=275699
+		[315443]	= 120,			-- Abomination Limb https://www.wowhead.com/spell=315443/abomination-limb
+		[212552]	= 60,			-- Wraith Walk https://www.wowhead.com/spell=212552/wraith-walk
 	},
 	["DRUID"] = {
 		-- // reviewed 2020/10/21
@@ -142,6 +150,8 @@ addonTable.CDs = {
 		[102359] = 30 - 30/100*10,				-- Mass Entanglement https://www.wowhead.com/spell=102359/mass-entanglement https://ru.wowhead.com/spell=102359
 		[99] = 30,								-- Парализующий рык https://ru.wowhead.com/spell=99
 		[319454] = 300,							-- Сердце дикой природы https://ru.wowhead.com/spell=319454
+		[323764] = 120,							-- Convoke the Spirits https://www.wowhead.com/spell=323764/convoke-the-spirits
+		[22842] = 36,							-- Frenzied Regeneration https://www.wowhead.com/spell=22842/frenzied-regeneration
 	},
 	["MONK"] = {
 		-- // reviewed 2020/10/22
@@ -186,6 +196,8 @@ addonTable.CDs = {
 		[205191] = 60,					-- Око за око https://ru.wowhead.com/spell=205191
 		[231895] = 120,					-- Священная война https://ru.wowhead.com/spell=231895
 		[115750] = 90,					-- Слепящий свет https://ru.wowhead.com/spell=115750
+		[316958] = 240,					-- Ashen Hallow https://www.wowhead.com/spell=316958/ashen-hallow
+		[184662] = 120-120/100*30,		-- Shield of Vengeance https://www.wowhead.com/spell=184662/shield-of-vengeance
 	},
 	["PRIEST"] = {
 		-- // reviewed 2020/10/24
@@ -208,6 +220,9 @@ addonTable.CDs = {
 		[316262] = 90,		-- Украденные мысли https://ru.wowhead.com/spell=316262
 		[328530] = 60,		-- Божественное вознесение https://ru.wowhead.com/spell=328530
 		[213610] = 30,		-- Священный оберег https://ru.wowhead.com/spell=213610
+		[323673] = 45,		-- Mindgames https://www.wowhead.com/spell=323673/mindgames
+		[32375] = 45,		-- Mass Dispel https://www.wowhead.com/spell=32375/mass-dispel
+		[15286] = 120-45,	-- Vampiric Embrace https://wowhead.com/spell=15286/vampiric-embrace
 	},
 	["ROGUE"] = {
 		-- // reviewed 2020/10/25
@@ -232,6 +247,10 @@ addonTable.CDs = {
 		[185311] = 30-5,			-- Алый фиал https://ru.wowhead.com/spell=185311
 		[185313] = 60,				-- Танец теней https://ru.wowhead.com/spell=185313
 		[343142] = 90,				-- Клинки Ужаса https://ru.wowhead.com/spell=343142
+		[137619] = 60,				-- Marked for Death https://www.wowhead.com/spell=137619/marked-for-death
+		[408] = 20,					-- Kidney Shot https://www.wowhead.com/spell=408/kidney-shot
+		[1776] = 15,				-- Gouge https://www.wowhead.com/spell=1776/gouge
+		[315341] = 45,				-- Between the Eyes https://www.wowhead.com/spell=315341/between-the-eyes
 	},
 	["SHAMAN"] = {
 		-- // reviewed 2020/10/28
@@ -267,6 +286,8 @@ addonTable.CDs = {
 		[305483] = 30,		-- Молния-лассо https://ru.wowhead.com/spell=305483
 		[192077] = 120,		-- Тотем ветряного порыва https://ru.wowhead.com/spell=192077
 		[197214] = 40,		-- Раскол https://ru.wowhead.com/spell=197214
+		[191634] = 60,		-- Stormkeeper https://www.wowhead.com/spell=191634/stormkeeper
+		[198838] = 60,		-- Earthen Wall Totem https://www.wowhead.com/spell=198838/earthen-wall-totem
 	},
 	["WARRIOR"] = {
 		-- // reviewed 2020/10/30
@@ -294,6 +315,9 @@ addonTable.CDs = {
 		[236320] = 90,				-- War Banner https://ru.wowhead.com/spell=236320
 		[198817] = 25,				-- Sharpen Blade https://ru.wowhead.com/spell=198817
 		[329038] = 20,				-- Кровавая ярость https://ru.wowhead.com/spell=329038
+		[307865] = 60,				-- Spear of Bastion https://www.wowhead.com/spell=307865/spear-of-bastion
+		[97462] = 180-120,			-- Rallying Cry https://www.wowhead.com/spell=97462/rallying-cry#modified-by
+		[3411] = 30,				-- Intervene https://www.wowhead.com/spell=3411/intervene
 	},
 	["DEMONHUNTER"] = {
 		-- // reviewed 2020/10/30
@@ -315,6 +339,8 @@ addonTable.CDs = {
 		[217832] = 45,						-- Imprison https://www.wowhead.com/spell=217832
 		[344867] = 60,						-- Кольцо Хаоса https://www.wowhead.com/spell=344867
 		[206649] = 45,						-- Глаз Леотераса https://www.wowhead.com/spell=206649
+		[323639] = 90,						-- The Hunt https://www.wowhead.com/spell=323639/the-hunt
+		[198013] = 30,						-- Eye Beam https://www.wowhead.com/spell=198013/eye-beam
 	},
 };
 

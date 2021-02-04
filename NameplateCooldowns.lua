@@ -180,11 +180,12 @@ do
 	function OnStartup()
 		LocalPlayerGUID = UnitGUID("player");
 		InitializeDB();
-		for _, cds in pairs(addonTable.CDs) do
+		for class, cds in pairs(addonTable.CDs) do
 			for spellId, cd in pairs(cds) do
 				AllCooldowns[spellId] = cd;
 				if (db.SpellCDs[spellId] == nil) then
 					db.SpellCDs[spellId] = GetDefaultDBEntryForSpell();
+					addonTable.Print(string_format(L["New spell has been added: %s"].." (%s)", GetSpellLink(spellId), class));
 				end
 			end
 		end
