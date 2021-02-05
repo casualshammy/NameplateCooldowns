@@ -198,6 +198,7 @@ addonTable.CDs = {
 		[115750] = 90,					-- Слепящий свет https://ru.wowhead.com/spell=115750
 		[316958] = 240,					-- Ashen Hallow https://www.wowhead.com/spell=316958/ashen-hallow
 		[184662] = 120-120/100*30,		-- Shield of Vengeance https://www.wowhead.com/spell=184662/shield-of-vengeance
+		[210294] = 30,					-- Divine Favor https://www.wowhead.com/spell=210294/divine-favor
 	},
 	["PRIEST"] = {
 		-- // reviewed 2020/10/24
