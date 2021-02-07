@@ -199,6 +199,7 @@ addonTable.CDs = {
 		[316958] = 240,					-- Ashen Hallow https://www.wowhead.com/spell=316958/ashen-hallow
 		[184662] = 120-120/100*30,		-- Shield of Vengeance https://www.wowhead.com/spell=184662/shield-of-vengeance
 		[210294] = 30,					-- Divine Favor https://www.wowhead.com/spell=210294/divine-favor
+		[304971] = 60,					-- Divine Toll https://www.wowhead.com/spell=304971/divine-toll
 	},
 	["PRIEST"] = {
 		-- // reviewed 2020/10/24
@@ -289,6 +290,7 @@ addonTable.CDs = {
 		[197214] = 40,		-- Раскол https://ru.wowhead.com/spell=197214
 		[191634] = 60,		-- Stormkeeper https://www.wowhead.com/spell=191634/stormkeeper
 		[198838] = 60,		-- Earthen Wall Totem https://www.wowhead.com/spell=198838/earthen-wall-totem
+		[320674] = 90,		-- Chain Harvest https://www.wowhead.com/spell=320674/chain-harvest
 	},
 	["WARRIOR"] = {
 		-- // reviewed 2020/10/30
