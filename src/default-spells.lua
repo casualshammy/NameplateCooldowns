@@ -7,9 +7,9 @@ addonTable.DefaultSpellsVersion = 11;
 
 addonTable.CDs = {
 	[addonTable.UNKNOWN_CLASS] = {
-		-- // reviewed 2020/10/15
+		-- // reviewed 2021/02/08
 		[336126] = 120,		-- // Медальон гладиатора https://ru.wowhead.com/spell=336126
-		[283167] = 60,		-- // Адаптация https://ru.wowhead.com/spell=283167 (336139)
+		[283167] = 60,		-- // Адаптация https://ru.wowhead.com/spell=283167
 		[28730] = 120,		-- // Arcane Torrent https://ru.wowhead.com/spell=28730
 		[50613] = 120,		-- // Arcane Torrent https://ru.wowhead.com/spell=50613
 		[80483] = 120,		-- // Arcane Torrent https://ru.wowhead.com/spell=80483
@@ -30,27 +30,27 @@ addonTable.CDs = {
 		[69041] = 90,		-- // Rocket Barrage https://ru.wowhead.com/spell=69041
 	},
 	["HUNTER"] = {
-		-- // reviewed 2020/10/15
-		[186265] = 144,		-- // Aspect of the Turtle https://ru.wowhead.com/spell=186265
-		[209789] = 30,		-- // Freezing Arrow https://ru.wowhead.com/spell=209789
-		[213691] = 30,		-- // Scatter Shot https://ru.wowhead.com/spell=213691
-		[53271] = 45,		-- // Master's Call https://ru.wowhead.com/spell=53271
-		[19574] = 76.5,		-- // Bestial Wrath https://ru.wowhead.com/spell=19574
-		[147362] = 24,		-- // Counter Shot https://ru.wowhead.com/spell=147362
-		[781] = 20,			-- // Disengage https://ru.wowhead.com/spell=781
-		[109304] = 96,		-- // Exhilaration https://ru.wowhead.com/spell=109304
-		[187650] = 25,		-- // Freezing Trap - 15% https://ru.wowhead.com/spell=187650
-		[187707] = 15,		-- // Muzzle https://ru.wowhead.com/spell=187707
-		[109248] = 45,		-- // Binding Shot https://ru.wowhead.com/spell=109248
-		[19577] = 60,		-- // Intimidation https://ru.wowhead.com/spell=19577
-		[199483] = 60,		-- // Camouflage https://ru.wowhead.com/spell=199483
-		[1543] = 20,		-- // Осветительная ракета https://ru.wowhead.com/spell=1543
-		[212638] = 25,		-- // Сеть следопыта https://ru.wowhead.com/spell=212638
-		[202914] = 45,		-- // Укус паука https://ru.wowhead.com/spell=202914
-		[266779] = 96,		-- // Согласованная атака https://ru.wowhead.com/spell=266779
-		[190925] = 30,		-- // Гарпун https://ru.wowhead.com/spell=190925
-		[201430] = 120,		-- // Звериный натиск https://ru.wowhead.com/spell=201430
-		[308491] = 60,		-- Resonating Arrow https://www.wowhead.com/spell=308491/resonating-arrow
+		-- // reviewed 2021/02/08
+		[186265] = 180-10-180/100*35,	-- // Aspect of the Turtle https://ru.wowhead.com/spell=186265
+		[209789] = 30,					-- // Freezing Arrow https://ru.wowhead.com/spell=209789
+		[213691] = 30,					-- // Scatter Shot https://ru.wowhead.com/spell=213691
+		[53271] = 45,					-- // Master's Call https://ru.wowhead.com/spell=53271
+		[19574] = 76.5,					-- // Bestial Wrath https://ru.wowhead.com/spell=19574
+		[147362] = 24,					-- // Counter Shot https://ru.wowhead.com/spell=147362
+		[781] = 20,						-- // Disengage https://ru.wowhead.com/spell=781
+		[109304] = 120,					-- // Exhilaration https://ru.wowhead.com/spell=109304
+		[187650] = 25,					-- // Freezing Trap - 15% https://ru.wowhead.com/spell=187650
+		[187707] = 15,					-- // Muzzle https://ru.wowhead.com/spell=187707
+		[109248] = 45,					-- // Binding Shot https://ru.wowhead.com/spell=109248
+		[19577] = 60,					-- // Intimidation https://ru.wowhead.com/spell=19577
+		[199483] = 60,					-- // Camouflage https://ru.wowhead.com/spell=199483
+		[1543] = 20,					-- // Осветительная ракета https://ru.wowhead.com/spell=1543
+		[212638] = 25,					-- // Сеть следопыта https://ru.wowhead.com/spell=212638
+		[202914] = 45,					-- // Укус паука https://ru.wowhead.com/spell=202914
+		[266779] = 120-120/100*35,		-- // Согласованная атака https://ru.wowhead.com/spell=266779
+		[190925] = 30,					-- // Гарпун https://ru.wowhead.com/spell=190925
+		[201430] = 120,					-- // Звериный натиск https://ru.wowhead.com/spell=201430
+		[308491] = 60,					-- Resonating Arrow https://www.wowhead.com/spell=308491/resonating-arrow
 	},
 	["WARLOCK"] = {
 		-- // reviewed 2020/10/15
@@ -184,7 +184,7 @@ addonTable.CDs = {
 		[1022] = 300 - 300/100*25,		-- Благословение защиты https://ru.wowhead.com/spell=1022
 		[31821] = 180,					-- Владение аурами https://ru.wowhead.com/spell=31821
 		[498] = 30,						-- Божественная защита https://ru.wowhead.com/spell=498
-		[6940] = 120 - 120/100*40,		-- Жертвенное благословение https://ru.wowhead.com/spell=6940
+		[6940] = 120,					-- Жертвенное благословение https://ru.wowhead.com/spell=6940
 		[853] = 60,						-- Молот правосудия https://www.wowhead.com/spell=853
 		[190784] = 60 - 60/100*50,		-- Божественный скакун https://ru.wowhead.com/spell=190784
 		[31884] = 180-60,				-- Гнев карателя https://ru.wowhead.com/spell=31884
@@ -225,6 +225,7 @@ addonTable.CDs = {
 		[323673] = 45,		-- Mindgames https://www.wowhead.com/spell=323673/mindgames
 		[32375] = 45,		-- Mass Dispel https://www.wowhead.com/spell=32375/mass-dispel
 		[15286] = 120-45,	-- Vampiric Embrace https://wowhead.com/spell=15286/vampiric-embrace
+		[47536] = 90,		-- Rapture https://www.wowhead.com/spell=47536
 	},
 	["ROGUE"] = {
 		-- // reviewed 2020/10/25
