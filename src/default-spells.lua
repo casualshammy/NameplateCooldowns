@@ -53,22 +53,21 @@ addonTable.CDs = {
 		[308491] = 60,					-- Resonating Arrow https://www.wowhead.com/spell=308491/resonating-arrow
 	},
 	["WARLOCK"] = {
-		-- // reviewed 2020/10/15
-		[48020] = 30,		-- // Demonic Circle: Teleport https://ru.wowhead.com/spell=48020
-		[6789] = 45,		-- // Mortal Coil https://ru.wowhead.com/spell=6789
-		[5484] = 40,		-- // Howl of Terror https://ru.wowhead.com/spell=5484
-		[108416] = 60,		-- // Dark Pact https://ru.wowhead.com/spell=108416
-		[30283] = 45,		-- // Shadowfury https://ru.wowhead.com/spell=30283
-		[104773] = 180,		-- // Unending Resolve [-30sec] https://ru.wowhead.com/spell=104773
-		[19647] = 24,		-- // Spell Lock https://ru.wowhead.com/spell=19647
-		[89766] = 30,		-- // Axe Toss" https://ru.wowhead.com/spell=89766
-		[115781] = 24,		-- // Optical Blast https://ru.wowhead.com/spell=115781
-		[212295] = 45,		-- // Nether Ward https://ru.wowhead.com/spell=212295
-		[1122] = 60,		-- // Summon Infernal [-120sec] https://ru.wowhead.com/spell=1122
-		[335175] = 60,		-- // Summon Infernal (level 2) [-120sec] https://ru.wowhead.com/spell=335175
-		[212459] = 90,		-- // Call Fel Lord https://ru.wowhead.com/spell=212459
-		[221703] = 60,		-- // Круг заклинателей https://ru.wowhead.com/spell=221703
-		[212619] = 24,		-- // Вызов охотника Скверны https://ru.wowhead.com/spell=212619
+		-- // reviewed 2021/02/09
+		[48020] = 30,		-- Demonic Circle: Teleport https://ru.wowhead.com/spell=48020
+		[6789] = 45,		-- Mortal Coil https://ru.wowhead.com/spell=6789
+		[5484] = 40,		-- Howl of Terror https://ru.wowhead.com/spell=5484
+		[108416] = 60,		-- Dark Pact https://ru.wowhead.com/spell=108416
+		[30283] = 60-15,	-- Shadowfury https://ru.wowhead.com/spell=30283
+		[104773] = 180,		-- Unending Resolve https://ru.wowhead.com/spell=104773
+		[19647] = 24,		-- Spell Lock https://ru.wowhead.com/spell=19647
+		[89766] = 30,		-- Axe Toss" https://ru.wowhead.com/spell=89766
+		[115781] = 24,		-- Optical Blast https://ru.wowhead.com/spell=115781
+		[212295] = 45,		-- Nether Ward https://ru.wowhead.com/spell=212295
+		[1122] = 180,		-- Summon Infernal https://ru.wowhead.com/spell=1122
+		[212459] = 90,		-- Call Fel Lord https://ru.wowhead.com/spell=212459
+		[221703] = 60,		-- Круг заклинателей https://ru.wowhead.com/spell=221703
+		[212619] = 24,		-- Вызов охотника Скверны https://ru.wowhead.com/spell=212619
 		[325640] = 60,		-- Soul Rot https://www.wowhead.com/spell=325640/soul-rot
 		[113860] = 120,		-- Dark Soul: Misery https://www.wowhead.com/spell=113860/dark-soul-misery
 		[113858] = 120,		-- Dark Soul: Instability https://www.wowhead.com/spell=113858/dark-soul-instability
