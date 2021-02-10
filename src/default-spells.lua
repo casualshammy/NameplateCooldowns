@@ -74,27 +74,27 @@ addonTable.CDs = {
 		[80240] = 30,		-- Havoc https://www.wowhead.com/spell=80240/havoc
 	},
 	["MAGE"] = {
-		-- // reviewed 2020/10/16
-		[122] = 30,			-- // Frost Nova https://ru.wowhead.com/spell=122
-		[1953] = 15,		-- // Blink https://ru.wowhead.com/spell=1953
-		[45438] = 240 - 30,	-- // Ice Block https://ru.wowhead.com/spell=45438
-		[2139] = 24,		-- // Counterspell https://ru.wowhead.com/spell=2139
-		[12042] = 120,		-- // Arcane Power https://ru.wowhead.com/spell=12042
-		[195676] = 30,		-- // Displacement https://ru.wowhead.com/spell=195676
-		[110959] = 120-45,	-- // Greater Invisibility https://ru.wowhead.com/spell=110959
-		[190319] = 120,		-- // Combustion https://ru.wowhead.com/spell=190319
-		[31661] = 20 - 2,	-- // Dragon's Breath https://ru.wowhead.com/spell=31661
-		[66] = 300,			-- // Invisibility https://ru.wowhead.com/spell=66
-		[84714] = 60,		-- // Frozen Orb https://ru.wowhead.com/spell=84714
-		[12472] = 180,		-- // Icy Veins https://ru.wowhead.com/spell=12472
-		[157980] = 25,		-- // Supernova https://ru.wowhead.com/spell=157980
-		[235219] = 300-30,	-- // Cold Snap https://ru.wowhead.com/spell=235219
-		[198111] = 45,		-- // Temporal Shield https://ru.wowhead.com/spell=198111
-		[55342] = 120,		-- // Зеркальное изображение https://ru.wowhead.com/spell=55342
-		[198144] = 60,		-- // Ледяной облик https://ru.wowhead.com/spell=198144
-		[108978] = 60-30,	-- // Манипуляции со временем https://ru.wowhead.com/spell=108978
-		[212653] = 25,		-- // Мерцание https://ru.wowhead.com/spell=212653
-		[113724] = 45,		-- // Кольцо мороза https://ru.wowhead.com/spell=113724
+		-- // reviewed 2021/02/10
+		[122] = 30,			-- Frost Nova https://ru.wowhead.com/spell=122
+		[1953] = 15,		-- Blink https://ru.wowhead.com/spell=1953
+		[45438] = 240 - 25,	-- Ice Block https://ru.wowhead.com/spell=45438
+		[2139] = 24,		-- Counterspell https://ru.wowhead.com/spell=2139
+		[12042] = 120,		-- Arcane Power https://ru.wowhead.com/spell=12042
+		[195676] = 30,		-- Displacement https://ru.wowhead.com/spell=195676
+		[110959] = 120-45,	-- Greater Invisibility https://ru.wowhead.com/spell=110959
+		[190319] = 120,		-- Combustion https://ru.wowhead.com/spell=190319
+		[31661] = 20 - 2,	-- Dragon's Breath https://ru.wowhead.com/spell=31661
+		[66] = 300,			-- Invisibility https://ru.wowhead.com/spell=66
+		[84714] = 60,		-- Frozen Orb https://ru.wowhead.com/spell=84714
+		[12472] = 180,		-- Icy Veins https://ru.wowhead.com/spell=12472
+		[157980] = 25,		-- Supernova https://ru.wowhead.com/spell=157980
+		[235219] = 300-30,	-- Cold Snap https://ru.wowhead.com/spell=235219
+		[198111] = 45,		-- Temporal Shield https://ru.wowhead.com/spell=198111
+		[55342] = 120,		-- Зеркальное изображение https://ru.wowhead.com/spell=55342
+		[198144] = 60,		-- Ледяной облик https://ru.wowhead.com/spell=198144
+		[108978] = 60,		-- Манипуляции со временем https://ru.wowhead.com/spell=108978
+		[212653] = 25,		-- Мерцание https://ru.wowhead.com/spell=212653
+		[113724] = 45,		-- Кольцо мороза https://ru.wowhead.com/spell=113724
 		[307443] = 30,		-- Radiant Spark https://www.wowhead.com/spell=307443/radiant-spark
 	},
 	["DEATHKNIGHT"] = {
