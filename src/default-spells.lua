@@ -98,22 +98,21 @@ addonTable.CDs = {
 		[307443] = 30,		-- Radiant Spark https://www.wowhead.com/spell=307443/radiant-spark
 	},
 	["DEATHKNIGHT"] = {
-		-- // deathknight
-		-- // reviewed 2020/10/19
+		-- // reviewed 2021/02/11
 		[47476] 	= 60,			-- Strangulate https://ru.wowhead.com/spell=47476
 		[108194] 	= 45,			-- Asphyxiate https://ru.wowhead.com/spell=108194
 		[48707] 	= 60-20,		-- Anti-Magic Shell https://ru.wowhead.com/spell=48707
-		[49576] 	= 25-5,			-- Death Grip	 https://ru.wowhead.com/spell=49576
+		[49576] 	= 25,			-- Death Grip	 https://ru.wowhead.com/spell=49576
 		[47528] 	= 15,			-- Mind Freeze https://ru.wowhead.com/spell=47528
 		[108199] 	= 120-30,		-- Gorefiend's Grasp (talent: Tightening Grasp) https://ru.wowhead.com/spell=108199
 		[51052] 	= 120,			-- Anti-Magic Zone https://ru.wowhead.com/spell=51052
-		[49206] 	= 180-20,		-- Summon Gargoyle https://ru.wowhead.com/spell=49206
-		[48792] 	= 180-15,		-- Icebound Fortitude https://ru.wowhead.com/spell=48792
+		[49206] 	= 180,			-- Summon Gargoyle https://ru.wowhead.com/spell=49206
+		[48792] 	= 180,			-- Icebound Fortitude https://ru.wowhead.com/spell=48792
 		[48743] 	= 120,			-- Death Pact https://ru.wowhead.com/spell=48743
 		[77606] 	= 20,			-- Dark Simulacrum https://ru.wowhead.com/spell=77606
 		[221562] 	= 45,			-- Asphyxiate https://ru.wowhead.com/spell=221562
 		[49028] 	= 120-120*0.5,	-- Dancing Rune Weapon https://ru.wowhead.com/spell=49028
-		[42650] 	= 480-240,		-- Army of the Dead https://ru.wowhead.com/spell=42650
+		[42650] 	= 480,			-- Army of the Dead https://ru.wowhead.com/spell=42650
 		[207167] 	= 60, 			-- Blinding Sleet https://ru.wowhead.com/spell=207167
 		[91802] 	= 30,			-- Shambling Rush https://www.wowhead.com/spell=91802/shambling-rush
 		[48265]		= 45,			-- Поступь смерти https://ru.wowhead.com/spell=48265
@@ -151,6 +150,7 @@ addonTable.CDs = {
 		[319454] = 300,							-- Сердце дикой природы https://ru.wowhead.com/spell=319454
 		[323764] = 120,							-- Convoke the Spirits https://www.wowhead.com/spell=323764/convoke-the-spirits
 		[22842] = 36,							-- Frenzied Regeneration https://www.wowhead.com/spell=22842/frenzied-regeneration
+		[88423] = 8,							-- Nature's Cure https://www.wowhead.com/spell=88423/natures-cure
 	},
 	["MONK"] = {
 		-- // reviewed 2020/10/22
@@ -171,6 +171,7 @@ addonTable.CDs = {
 		[322109] = 180-36,				-- Смертельное касание https://ru.wowhead.com/spell=322109
 		[233759] = 45,					-- Захват оружия https://ru.wowhead.com/spell=233759
 		[209584] = 45,					-- Чай дзен-концентрации https://ru.wowhead.com/spell=209584
+		[115450] = 8,					-- Detox https://www.wowhead.com/spell=115450/detox
 	},
 	["PALADIN"] = {
 		-- // reviewed 2020/10/23
@@ -199,6 +200,7 @@ addonTable.CDs = {
 		[184662] = 120-120/100*30,		-- Shield of Vengeance https://www.wowhead.com/spell=184662/shield-of-vengeance
 		[210294] = 30,					-- Divine Favor https://www.wowhead.com/spell=210294/divine-favor
 		[304971] = 60,					-- Divine Toll https://www.wowhead.com/spell=304971/divine-toll
+		[4987] = 8,						-- Cleanse https://www.wowhead.com/spell=4987/cleanse
 	},
 	["PRIEST"] = {
 		-- // reviewed 2020/10/24
@@ -225,6 +227,7 @@ addonTable.CDs = {
 		[32375] = 45,		-- Mass Dispel https://www.wowhead.com/spell=32375/mass-dispel
 		[15286] = 120-45,	-- Vampiric Embrace https://wowhead.com/spell=15286/vampiric-embrace
 		[47536] = 90,		-- Rapture https://www.wowhead.com/spell=47536
+		[527] = 8,			-- Purify https://www.wowhead.com/spell=527/purify
 	},
 	["ROGUE"] = {
 		-- // reviewed 2020/10/25
@@ -291,6 +294,7 @@ addonTable.CDs = {
 		[191634] = 60,		-- Stormkeeper https://www.wowhead.com/spell=191634/stormkeeper
 		[198838] = 60,		-- Earthen Wall Totem https://www.wowhead.com/spell=198838/earthen-wall-totem
 		[320674] = 90,		-- Chain Harvest https://www.wowhead.com/spell=320674/chain-harvest
+		[77130] = 8,		-- Purify Spirit https://www.wowhead.com/spell=77130/purify-spirit
 	},
 	["WARRIOR"] = {
 		-- // reviewed 2020/10/30
