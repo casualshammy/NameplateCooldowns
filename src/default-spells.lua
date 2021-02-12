@@ -174,25 +174,25 @@ addonTable.CDs = {
 		[115450] = 8,					-- Detox https://www.wowhead.com/spell=115450/detox
 	},
 	["PALADIN"] = {
-		-- // reviewed 2020/10/23
-		[642] = 300 - 300/100*60,		-- Божественный щит https://ru.wowhead.com/spell=642
-		[1044] = 25 - 25/100*25,		-- Благословенная свобода https://ru.wowhead.com/spell=1044
-		[633] = 600-300,				-- Возложение рук https://ru.wowhead.com/spell=633
+		-- // reviewed 2021/02/12
+		[642] = 300 - 300/100*30,		-- Божественный щит https://ru.wowhead.com/spell=642
+		[1044] = 25,					-- Благословенная свобода https://ru.wowhead.com/spell=1044
+		[633] = 600 - 600/100*30,		-- Возложение рук https://ru.wowhead.com/spell=633
 		[216331] = 120,					-- Рыцарь-мститель https://ru.wowhead.com/spell=216331
 		[228049] = 180,					-- Страж забытой королевы https://ru.wowhead.com/spell=228049
 		[210256] = 45,					-- Благословение святилища https://ru.wowhead.com/spell=210256
-		[1022] = 300 - 300/100*25,		-- Благословение защиты https://ru.wowhead.com/spell=1022
+		[1022] = 300,					-- Благословение защиты https://ru.wowhead.com/spell=1022
 		[31821] = 180,					-- Владение аурами https://ru.wowhead.com/spell=31821
-		[498] = 30,						-- Божественная защита https://ru.wowhead.com/spell=498
+		[498] = 60,						-- Божественная защита https://ru.wowhead.com/spell=498
 		[6940] = 120,					-- Жертвенное благословение https://ru.wowhead.com/spell=6940
 		[853] = 60,						-- Молот правосудия https://www.wowhead.com/spell=853
-		[190784] = 60 - 60/100*50,		-- Божественный скакун https://ru.wowhead.com/spell=190784
+		[190784] = 60,					-- Божественный скакун https://ru.wowhead.com/spell=190784
 		[31884] = 180-60,				-- Гнев карателя https://ru.wowhead.com/spell=31884
-		[86659] = 300-80-5,				-- Защитник древних королей https://ru.wowhead.com/spell=86659
+		[86659] = 300,					-- Защитник древних королей https://ru.wowhead.com/spell=86659
 		[31850] = 120 - 120/100*30,		-- Ревностный защитник https://ru.wowhead.com/spell=31850
 		[96231] = 15,					-- Укор https://ru.wowhead.com/spell=96231
 		[105809] = 180,					-- Святой каратель https://ru.wowhead.com/spell=105809
-		[204018] = 180 - 180/100*40,	-- Благословение защиты от заклинаний https://ru.wowhead.com/spell=204018
+		[204018] = 180,					-- Благословение защиты от заклинаний https://ru.wowhead.com/spell=204018
 		[205191] = 60,					-- Око за око https://ru.wowhead.com/spell=205191
 		[231895] = 120,					-- Священная война https://ru.wowhead.com/spell=231895
 		[115750] = 90,					-- Слепящий свет https://ru.wowhead.com/spell=115750
@@ -297,19 +297,19 @@ addonTable.CDs = {
 		[77130] = 8,		-- Purify Spirit https://www.wowhead.com/spell=77130/purify-spirit
 	},
 	["WARRIOR"] = {
-		-- // reviewed 2020/10/30
+		-- // reviewed 2021/02/12
 		[100] = 20,					-- Charge https://ru.wowhead.com/spell=100
 		[6552] = 15,				-- Pummel https://ru.wowhead.com/spell=6552
 		[23920] = 25,				-- Spell Reflection https://ru.wowhead.com/spell=23920
 		[46924] = 60,				-- Bladestorm https://ru.wowhead.com/spell=46924
-		[46968] = 40-15,			-- Shockwave https://ru.wowhead.com/spell=46968
+		[46968] = 40,				-- Shockwave https://ru.wowhead.com/spell=46968
 		[107574] = 90,				-- Avatar https://ru.wowhead.com/spell=107574
 		[5246] = 90,				-- Intimidating Shout https://ru.wowhead.com/spell=5246
-		[871] = 240-40-60,			-- Shield Wall https://ru.wowhead.com/spell=871
-		[118038] = 180-60,			-- Die by the Sword https://ru.wowhead.com/spell=118038
+		[871] = 240,				-- Shield Wall https://ru.wowhead.com/spell=871
+		[118038] = 180-60-20,		-- Die by the Sword https://ru.wowhead.com/spell=118038
 		[1719] = 90,				-- Recklessness https://www.wowhead.com/spell=1719
-		[6544] = 45-15,				-- Heroic Leap https://ru.wowhead.com/spell=6544
-		[12975] = 180-180/100*80,	-- Last Stand https://ru.wowhead.com/spell=12975
+		[6544] = 45,				-- Heroic Leap https://ru.wowhead.com/spell=6544
+		[12975] = 180-60,			-- Last Stand https://ru.wowhead.com/spell=12975
 		[18499] = 60,				-- Berserker Rage https://ru.wowhead.com/spell=18499
 		[107570] = 30,				-- Storm Bolt https://ru.wowhead.com/spell=107570
 		[227847] = 90-90/100*33,	-- Bladestorm https://ru.wowhead.com/spell=227847
