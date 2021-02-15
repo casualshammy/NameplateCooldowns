@@ -177,9 +177,8 @@ do
 		aceDB.RegisterCallback("NameplateCooldowns", "OnProfileReset", ReloadDB);
 	end
 
-	function OnStartup()
-		LocalPlayerGUID = UnitGUID("player");
-		InitializeDB();
+	function addonTable.BuildCooldownValues()
+		wipe(AllCooldowns);
 		for class, cds in pairs(addonTable.CDs) do
 			for spellId, cd in pairs(cds) do
 				AllCooldowns[spellId] = cd;
@@ -189,6 +188,17 @@ do
 				end
 			end
 		end
+		for spellID in pairs(AllCooldowns) do
+			if (db.SpellCDs[spellID] ~= nil and db.SpellCDs[spellID].customCD ~= nil) then
+				AllCooldowns[spellID] = db.SpellCDs[spellID].customCD;
+			end
+		end
+	end
+
+	function OnStartup()
+		LocalPlayerGUID = UnitGUID("player");
+		InitializeDB();
+		addonTable.BuildCooldownValues();
 		-- // starting OnUpdate()
 		EventFrame:SetScript("OnUpdate", function(_, elapsed)
 			ElapsedTimer = ElapsedTimer + elapsed;
@@ -1763,7 +1773,7 @@ do
 		local controls = { };
 		local selectedSpellId = 0;
 		local dropdownMenuSpells = LRD.CreateDropdownMenu();
-		local spellArea, selectSpell, checkboxEnabled, checkboxGlow, areaGlow, sliderGlowThreshold, dropdownClassSelector;
+		local spellArea, selectSpell, checkboxEnabled, checkboxGlow, areaGlow, sliderGlowThreshold, dropdownClassSelector, areaCustomCD, checkboxCustomCD, editboxCustomCD;
 		local selectedClass = addonTable.ALL_CLASSES;
 
 		-- // building spell cache
@@ -1928,6 +1938,7 @@ do
 			selectSpell:SetScript("OnEnter", function(self)
 				GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT");
 				GameTooltip:SetSpellByID(spellID);
+				GameTooltip:AddLine("NC CD: " .. AllCooldowns[spellID]);
 				GameTooltip:Show();
 			end);
 			selectSpell:HookScript("OnLeave", function() GameTooltip:Hide(); end);
@@ -1946,6 +1957,16 @@ do
 				checkboxGlow:SetTriState(1);
 				sliderGlowThreshold.slider:SetValue(db.SpellCDs[selectedSpellId].glow);
 				areaGlow:SetHeight(80);
+			end
+			if (db.SpellCDs[selectedSpellId].customCD ~= nil) then
+				checkboxCustomCD:SetChecked(true);
+				areaCustomCD:SetHeight(80);
+				editboxCustomCD:Show();
+				editboxCustomCD:SetText(tostring(db.SpellCDs[selectedSpellId].customCD));
+			else
+				checkboxCustomCD:SetChecked(false);
+				areaCustomCD:SetHeight(40);
+				editboxCustomCD:Hide();
 			end
 		end
 
@@ -2157,6 +2178,78 @@ do
 			sliderGlowThreshold.lowtext:SetText("1");
 			sliderGlowThreshold.hightext:SetText("30");
 			table_insert(controls, sliderGlowThreshold);
+		end
+
+		-- // areaCustomCD
+		do
+			areaCustomCD = CreateFrame("Frame", nil, spellArea.controlsFrame, BackdropTemplateMixin and "BackdropTemplate");
+			areaCustomCD:SetBackdrop({
+				bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
+				edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+				tile = 1,
+				tileSize = 16,
+				edgeSize = 16,
+				insets = { left = 4, right = 4, top = 4, bottom = 4 }
+			});
+			areaCustomCD:SetBackdropColor(0.1, 0.1, 0.2, 1);
+			areaCustomCD:SetBackdropBorderColor(0.8, 0.8, 0.9, 0.4);
+			areaCustomCD:SetPoint("TOPLEFT", areaGlow, "BOTTOMLEFT", 0, -10);
+			areaCustomCD:SetWidth(340);
+			areaCustomCD:SetHeight(80);
+			table_insert(controls, areaCustomCD);
+		end
+
+		-- // checkboxCustomCD
+		do
+			checkboxCustomCD = LRD.CreateCheckBox();
+			checkboxCustomCD:SetText(L["options:spells:custom-cooldown"]);
+			checkboxCustomCD:SetOnClickHandler(function(self)
+				if (not self:GetChecked()) then
+					db.SpellCDs[selectedSpellId].customCD = nil;
+					addonTable.BuildCooldownValues();
+					areaCustomCD:SetHeight(40);
+					editboxCustomCD:Hide();
+				else
+					areaCustomCD:SetHeight(80);
+					editboxCustomCD:Show();
+				end
+			end);
+			checkboxCustomCD:SetParent(areaCustomCD);
+			checkboxCustomCD:SetPoint("TOPLEFT", 10, -10);
+			table_insert(controls, checkboxCustomCD);
+		end
+
+		-- // editboxCustomCD
+		do
+			editboxCustomCD = CreateFrame("EditBox", nil, areaCustomCD, BackdropTemplateMixin and "BackdropTemplate");
+			editboxCustomCD:SetAutoFocus(false);
+			editboxCustomCD:SetFontObject(GameFontHighlightSmall);
+			editboxCustomCD.text = editboxCustomCD:CreateFontString(nil, "ARTWORK", "GameFontNormal");
+			editboxCustomCD.text:SetPoint("TOPLEFT", checkboxCustomCD, "BOTTOMRIGHT", 0, -10);
+			editboxCustomCD.text:SetText(L["options:spells:custom-cooldown-value"]);
+			editboxCustomCD:SetPoint("LEFT", editboxCustomCD.text, "RIGHT", 5, 0);
+			editboxCustomCD:SetPoint("RIGHT", areaCustomCD, "RIGHT", -15, 0);
+			editboxCustomCD:SetHeight(20);
+			editboxCustomCD:SetJustifyH("LEFT");
+			editboxCustomCD:EnableMouse(true);
+			editboxCustomCD:SetBackdrop({
+				bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
+				edgeFile = "Interface\\ChatFrame\\ChatFrameBackground",
+				tile = true, edgeSize = 1, tileSize = 5,
+			});
+			editboxCustomCD:SetBackdropColor(0, 0, 0, 0.5);
+			editboxCustomCD:SetBackdropBorderColor(0.3, 0.3, 0.30, 0.80);
+			editboxCustomCD:SetScript("OnEscapePressed", function() editboxCustomCD:ClearFocus(); end);
+			editboxCustomCD:SetScript("OnEnterPressed", function(self)
+				local text = self:GetText();
+				local value = tonumber(text);
+				if (value ~= nil) then
+					db.SpellCDs[selectedSpellId].customCD = value;
+					addonTable.BuildCooldownValues();
+				end
+				self:ClearFocus();
+			end);
+			table_insert(controls, editboxCustomCD);
 		end
 
 	end

@@ -7,9 +7,9 @@ addonTable.DefaultSpellsVersion = 11;
 
 addonTable.CDs = {
 	[addonTable.UNKNOWN_CLASS] = {
-		-- // reviewed 2020/10/15
+		-- // reviewed 2021/02/08
 		[336126] = 120,		-- // Медальон гладиатора https://ru.wowhead.com/spell=336126
-		[283167] = 60,		-- // Адаптация https://ru.wowhead.com/spell=283167 (336139)
+		[283167] = 60,		-- // Адаптация https://ru.wowhead.com/spell=283167
 		[28730] = 120,		-- // Arcane Torrent https://ru.wowhead.com/spell=28730
 		[50613] = 120,		-- // Arcane Torrent https://ru.wowhead.com/spell=50613
 		[80483] = 120,		-- // Arcane Torrent https://ru.wowhead.com/spell=80483
@@ -30,91 +30,89 @@ addonTable.CDs = {
 		[69041] = 90,		-- // Rocket Barrage https://ru.wowhead.com/spell=69041
 	},
 	["HUNTER"] = {
-		-- // reviewed 2020/10/15
-		[186265] = 144,		-- // Aspect of the Turtle https://ru.wowhead.com/spell=186265
-		[209789] = 30,		-- // Freezing Arrow https://ru.wowhead.com/spell=209789
-		[213691] = 30,		-- // Scatter Shot https://ru.wowhead.com/spell=213691
-		[53271] = 45,		-- // Master's Call https://ru.wowhead.com/spell=53271
-		[19574] = 76.5,		-- // Bestial Wrath https://ru.wowhead.com/spell=19574
-		[147362] = 24,		-- // Counter Shot https://ru.wowhead.com/spell=147362
-		[781] = 20,			-- // Disengage https://ru.wowhead.com/spell=781
-		[109304] = 96,		-- // Exhilaration https://ru.wowhead.com/spell=109304
-		[187650] = 25,		-- // Freezing Trap - 15% https://ru.wowhead.com/spell=187650
-		[187707] = 15,		-- // Muzzle https://ru.wowhead.com/spell=187707
-		[109248] = 45,		-- // Binding Shot https://ru.wowhead.com/spell=109248
-		[19577] = 60,		-- // Intimidation https://ru.wowhead.com/spell=19577
-		[199483] = 60,		-- // Camouflage https://ru.wowhead.com/spell=199483
-		[1543] = 20,		-- // Осветительная ракета https://ru.wowhead.com/spell=1543
-		[212638] = 25,		-- // Сеть следопыта https://ru.wowhead.com/spell=212638
-		[202914] = 45,		-- // Укус паука https://ru.wowhead.com/spell=202914
-		[266779] = 96,		-- // Согласованная атака https://ru.wowhead.com/spell=266779
-		[190925] = 30,		-- // Гарпун https://ru.wowhead.com/spell=190925
-		[201430] = 120,		-- // Звериный натиск https://ru.wowhead.com/spell=201430
-		[308491] = 60,		-- Resonating Arrow https://www.wowhead.com/spell=308491/resonating-arrow
+		-- // reviewed 2021/02/08
+		[186265] = 180-10-180/100*35,	-- // Aspect of the Turtle https://ru.wowhead.com/spell=186265
+		[209789] = 30,					-- // Freezing Arrow https://ru.wowhead.com/spell=209789
+		[213691] = 30,					-- // Scatter Shot https://ru.wowhead.com/spell=213691
+		[53271] = 45,					-- // Master's Call https://ru.wowhead.com/spell=53271
+		[19574] = 76.5,					-- // Bestial Wrath https://ru.wowhead.com/spell=19574
+		[147362] = 24,					-- // Counter Shot https://ru.wowhead.com/spell=147362
+		[781] = 20,						-- // Disengage https://ru.wowhead.com/spell=781
+		[109304] = 120,					-- // Exhilaration https://ru.wowhead.com/spell=109304
+		[187650] = 25,					-- // Freezing Trap - 15% https://ru.wowhead.com/spell=187650
+		[187707] = 15,					-- // Muzzle https://ru.wowhead.com/spell=187707
+		[109248] = 45,					-- // Binding Shot https://ru.wowhead.com/spell=109248
+		[19577] = 60,					-- // Intimidation https://ru.wowhead.com/spell=19577
+		[199483] = 60,					-- // Camouflage https://ru.wowhead.com/spell=199483
+		[1543] = 20,					-- // Осветительная ракета https://ru.wowhead.com/spell=1543
+		[212638] = 25,					-- // Сеть следопыта https://ru.wowhead.com/spell=212638
+		[202914] = 45,					-- // Укус паука https://ru.wowhead.com/spell=202914
+		[266779] = 120-120/100*35,		-- // Согласованная атака https://ru.wowhead.com/spell=266779
+		[190925] = 30,					-- // Гарпун https://ru.wowhead.com/spell=190925
+		[201430] = 120,					-- // Звериный натиск https://ru.wowhead.com/spell=201430
+		[308491] = 60,					-- Resonating Arrow https://www.wowhead.com/spell=308491/resonating-arrow
 	},
 	["WARLOCK"] = {
-		-- // reviewed 2020/10/15
-		[48020] = 30,		-- // Demonic Circle: Teleport https://ru.wowhead.com/spell=48020
-		[6789] = 45,		-- // Mortal Coil https://ru.wowhead.com/spell=6789
-		[5484] = 40,		-- // Howl of Terror https://ru.wowhead.com/spell=5484
-		[108416] = 60,		-- // Dark Pact https://ru.wowhead.com/spell=108416
-		[30283] = 45,		-- // Shadowfury https://ru.wowhead.com/spell=30283
-		[104773] = 180,		-- // Unending Resolve [-30sec] https://ru.wowhead.com/spell=104773
-		[19647] = 24,		-- // Spell Lock https://ru.wowhead.com/spell=19647
-		[89766] = 30,		-- // Axe Toss" https://ru.wowhead.com/spell=89766
-		[115781] = 24,		-- // Optical Blast https://ru.wowhead.com/spell=115781
-		[212295] = 45,		-- // Nether Ward https://ru.wowhead.com/spell=212295
-		[1122] = 60,		-- // Summon Infernal [-120sec] https://ru.wowhead.com/spell=1122
-		[335175] = 60,		-- // Summon Infernal (level 2) [-120sec] https://ru.wowhead.com/spell=335175
-		[212459] = 90,		-- // Call Fel Lord https://ru.wowhead.com/spell=212459
-		[221703] = 60,		-- // Круг заклинателей https://ru.wowhead.com/spell=221703
-		[212619] = 24,		-- // Вызов охотника Скверны https://ru.wowhead.com/spell=212619
+		-- // reviewed 2021/02/09
+		[48020] = 30,		-- Demonic Circle: Teleport https://ru.wowhead.com/spell=48020
+		[6789] = 45,		-- Mortal Coil https://ru.wowhead.com/spell=6789
+		[5484] = 40,		-- Howl of Terror https://ru.wowhead.com/spell=5484
+		[108416] = 60,		-- Dark Pact https://ru.wowhead.com/spell=108416
+		[30283] = 60-15,	-- Shadowfury https://ru.wowhead.com/spell=30283
+		[104773] = 180,		-- Unending Resolve https://ru.wowhead.com/spell=104773
+		[19647] = 24,		-- Spell Lock https://ru.wowhead.com/spell=19647
+		[89766] = 30,		-- Axe Toss" https://ru.wowhead.com/spell=89766
+		[115781] = 24,		-- Optical Blast https://ru.wowhead.com/spell=115781
+		[212295] = 45,		-- Nether Ward https://ru.wowhead.com/spell=212295
+		[1122] = 180,		-- Summon Infernal https://ru.wowhead.com/spell=1122
+		[212459] = 90,		-- Call Fel Lord https://ru.wowhead.com/spell=212459
+		[221703] = 60,		-- Круг заклинателей https://ru.wowhead.com/spell=221703
+		[212619] = 24,		-- Вызов охотника Скверны https://ru.wowhead.com/spell=212619
 		[325640] = 60,		-- Soul Rot https://www.wowhead.com/spell=325640/soul-rot
 		[113860] = 120,		-- Dark Soul: Misery https://www.wowhead.com/spell=113860/dark-soul-misery
 		[113858] = 120,		-- Dark Soul: Instability https://www.wowhead.com/spell=113858/dark-soul-instability
 		[80240] = 30,		-- Havoc https://www.wowhead.com/spell=80240/havoc
 	},
 	["MAGE"] = {
-		-- // reviewed 2020/10/16
-		[122] = 30,			-- // Frost Nova https://ru.wowhead.com/spell=122
-		[1953] = 15,		-- // Blink https://ru.wowhead.com/spell=1953
-		[45438] = 240 - 30,	-- // Ice Block https://ru.wowhead.com/spell=45438
-		[2139] = 24,		-- // Counterspell https://ru.wowhead.com/spell=2139
-		[12042] = 120,		-- // Arcane Power https://ru.wowhead.com/spell=12042
-		[195676] = 30,		-- // Displacement https://ru.wowhead.com/spell=195676
-		[110959] = 120-45,	-- // Greater Invisibility https://ru.wowhead.com/spell=110959
-		[190319] = 120,		-- // Combustion https://ru.wowhead.com/spell=190319
-		[31661] = 20 - 2,	-- // Dragon's Breath https://ru.wowhead.com/spell=31661
-		[66] = 300,			-- // Invisibility https://ru.wowhead.com/spell=66
-		[84714] = 60,		-- // Frozen Orb https://ru.wowhead.com/spell=84714
-		[12472] = 180,		-- // Icy Veins https://ru.wowhead.com/spell=12472
-		[157980] = 25,		-- // Supernova https://ru.wowhead.com/spell=157980
-		[235219] = 300-30,	-- // Cold Snap https://ru.wowhead.com/spell=235219
-		[198111] = 45,		-- // Temporal Shield https://ru.wowhead.com/spell=198111
-		[55342] = 120,		-- // Зеркальное изображение https://ru.wowhead.com/spell=55342
-		[198144] = 60,		-- // Ледяной облик https://ru.wowhead.com/spell=198144
-		[108978] = 60-30,	-- // Манипуляции со временем https://ru.wowhead.com/spell=108978
-		[212653] = 25,		-- // Мерцание https://ru.wowhead.com/spell=212653
-		[113724] = 45,		-- // Кольцо мороза https://ru.wowhead.com/spell=113724
+		-- // reviewed 2021/02/10
+		[122] = 30,			-- Frost Nova https://ru.wowhead.com/spell=122
+		[1953] = 15,		-- Blink https://ru.wowhead.com/spell=1953
+		[45438] = 240 - 25,	-- Ice Block https://ru.wowhead.com/spell=45438
+		[2139] = 24,		-- Counterspell https://ru.wowhead.com/spell=2139
+		[12042] = 120,		-- Arcane Power https://ru.wowhead.com/spell=12042
+		[195676] = 30,		-- Displacement https://ru.wowhead.com/spell=195676
+		[110959] = 120-45,	-- Greater Invisibility https://ru.wowhead.com/spell=110959
+		[190319] = 120,		-- Combustion https://ru.wowhead.com/spell=190319
+		[31661] = 20 - 2,	-- Dragon's Breath https://ru.wowhead.com/spell=31661
+		[66] = 300,			-- Invisibility https://ru.wowhead.com/spell=66
+		[84714] = 60,		-- Frozen Orb https://ru.wowhead.com/spell=84714
+		[12472] = 180,		-- Icy Veins https://ru.wowhead.com/spell=12472
+		[157980] = 25,		-- Supernova https://ru.wowhead.com/spell=157980
+		[235219] = 300-30,	-- Cold Snap https://ru.wowhead.com/spell=235219
+		[198111] = 45,		-- Temporal Shield https://ru.wowhead.com/spell=198111
+		[55342] = 120,		-- Зеркальное изображение https://ru.wowhead.com/spell=55342
+		[198144] = 60,		-- Ледяной облик https://ru.wowhead.com/spell=198144
+		[108978] = 60,		-- Манипуляции со временем https://ru.wowhead.com/spell=108978
+		[212653] = 25,		-- Мерцание https://ru.wowhead.com/spell=212653
+		[113724] = 45,		-- Кольцо мороза https://ru.wowhead.com/spell=113724
 		[307443] = 30,		-- Radiant Spark https://www.wowhead.com/spell=307443/radiant-spark
 	},
 	["DEATHKNIGHT"] = {
-		-- // deathknight
-		-- // reviewed 2020/10/19
+		-- // reviewed 2021/02/11
 		[47476] 	= 60,			-- Strangulate https://ru.wowhead.com/spell=47476
 		[108194] 	= 45,			-- Asphyxiate https://ru.wowhead.com/spell=108194
 		[48707] 	= 60-20,		-- Anti-Magic Shell https://ru.wowhead.com/spell=48707
-		[49576] 	= 25-5,			-- Death Grip	 https://ru.wowhead.com/spell=49576
+		[49576] 	= 25,			-- Death Grip	 https://ru.wowhead.com/spell=49576
 		[47528] 	= 15,			-- Mind Freeze https://ru.wowhead.com/spell=47528
 		[108199] 	= 120-30,		-- Gorefiend's Grasp (talent: Tightening Grasp) https://ru.wowhead.com/spell=108199
 		[51052] 	= 120,			-- Anti-Magic Zone https://ru.wowhead.com/spell=51052
-		[49206] 	= 180-20,		-- Summon Gargoyle https://ru.wowhead.com/spell=49206
-		[48792] 	= 180-15,		-- Icebound Fortitude https://ru.wowhead.com/spell=48792
+		[49206] 	= 180,			-- Summon Gargoyle https://ru.wowhead.com/spell=49206
+		[48792] 	= 180,			-- Icebound Fortitude https://ru.wowhead.com/spell=48792
 		[48743] 	= 120,			-- Death Pact https://ru.wowhead.com/spell=48743
 		[77606] 	= 20,			-- Dark Simulacrum https://ru.wowhead.com/spell=77606
 		[221562] 	= 45,			-- Asphyxiate https://ru.wowhead.com/spell=221562
 		[49028] 	= 120-120*0.5,	-- Dancing Rune Weapon https://ru.wowhead.com/spell=49028
-		[42650] 	= 480-240,		-- Army of the Dead https://ru.wowhead.com/spell=42650
+		[42650] 	= 480,			-- Army of the Dead https://ru.wowhead.com/spell=42650
 		[207167] 	= 60, 			-- Blinding Sleet https://ru.wowhead.com/spell=207167
 		[91802] 	= 30,			-- Shambling Rush https://www.wowhead.com/spell=91802/shambling-rush
 		[48265]		= 45,			-- Поступь смерти https://ru.wowhead.com/spell=48265
@@ -124,26 +122,26 @@ addonTable.CDs = {
 		[212552]	= 60,			-- Wraith Walk https://www.wowhead.com/spell=212552/wraith-walk
 	},
 	["DRUID"] = {
-		-- // reviewed 2020/10/21
+		-- // reviewed 2021/02/15
 		[1850] = 120,							-- Dash https://ru.wowhead.com/spell=1850
 		[20484] = 600,							-- Rebirth https://ru.wowhead.com/spell=20484
 		[209749] = 30,							-- Faerie Swarm https://ru.wowhead.com/spell=209749
 		[202246] = 25,							-- Overrun https://ru.wowhead.com/spell=202246
 		[22812] = 60 - 60/100*33 - 60/100*10,	-- Barkskin https://ru.wowhead.com/spell=22812
-		[194223] = 180 - 180/100*30,			-- Celestial Alignment https://ru.wowhead.com/spell=194223
+		[194223] = 180,							-- Celestial Alignment https://ru.wowhead.com/spell=194223
 		[78675] = 60-20,						-- Solar Beam https://ru.wowhead.com/spell=78675
-		[106951] = 180 - 180/100*30,			-- Berserk https://ru.wowhead.com/spell=106951
-		[50334] = 180 - 180/100*30,				-- Berserk https://ru.wowhead.com/spell=50334
+		[106951] = 180,							-- Berserk https://ru.wowhead.com/spell=106951
+		[50334] = 180,							-- Berserk https://ru.wowhead.com/spell=50334
 		[22570] = 20,							-- Maim https://ru.wowhead.com/spell=22570
 		[61336] = 180,							-- Survival Instincts x2 https://ru.wowhead.com/spell=61336
 		[102342] = 90,							-- Ironbark https://ru.wowhead.com/spell=102342
-		[740] = 180 - 180/100*30 - 60,			-- Tranquility https://ru.wowhead.com/spell=740
+		[740] = 180 - 60,						-- Tranquility https://ru.wowhead.com/spell=740
 		[102793] = 60,							-- Ursol's Vortex https://ru.wowhead.com/spell=102793
-		[102560] = 180 - 180/100*30,			-- Incarnation: Chosen of Elune https://ru.wowhead.com/spell=102560
+		[102560] = 180,							-- Incarnation: Chosen of Elune https://ru.wowhead.com/spell=102560
 		[108238] = 90,							-- Renewal https://ru.wowhead.com/spell=108238
-		[102543] = 180 - 180/100*30,			-- Incarnation: King of the Jungle https://ru.wowhead.com/spell=102543
-		[102558] = 180 - 180/100*30,			-- Incarnation: Guardian of Ursoc https://ru.wowhead.com/spell=102558
-		[33891] = 180 - 180/100*30,				-- Incarnation: Tree of Life https://ru.wowhead.com/spell=33891
+		[102543] = 180,							-- Incarnation: King of the Jungle https://ru.wowhead.com/spell=102543
+		[102558] = 180,							-- Incarnation: Guardian of Ursoc https://ru.wowhead.com/spell=102558
+		[33891] = 180,							-- Incarnation: Tree of Life https://ru.wowhead.com/spell=33891
 		[106839] = 15,							-- Skull Bash https://ru.wowhead.com/spell=106839
 		[5211]	= 60 - 60/100*10,				-- Mighty Bash https://ru.wowhead.com/spell=5211
 		[132469] = 30,							-- Typhoon https://www.wowhead.com/spell=132469/typhoon https://ru.wowhead.com/spell=132469
@@ -151,54 +149,63 @@ addonTable.CDs = {
 		[99] = 30,								-- Парализующий рык https://ru.wowhead.com/spell=99
 		[319454] = 300,							-- Сердце дикой природы https://ru.wowhead.com/spell=319454
 		[323764] = 120,							-- Convoke the Spirits https://www.wowhead.com/spell=323764/convoke-the-spirits
+		[323546] = 180,							-- Ravenous Frenzy https://www.wowhead.com/spell=323546/ravenous-frenzy
 		[22842] = 36,							-- Frenzied Regeneration https://www.wowhead.com/spell=22842/frenzied-regeneration
+		[88423] = 8,							-- Nature's Cure https://www.wowhead.com/spell=88423/natures-cure
 	},
 	["MONK"] = {
-		-- // reviewed 2020/10/22
+		-- // reviewed 2021/02/15
 		[202370] = 30,					-- Mighty Ox Kick https://ru.wowhead.com/spell=202370
 		[116705] = 15,					-- Spear Hand Strike https://ru.wowhead.com/spell=116705
 		[115176] = 300 - 300/100*75,	-- Zen Meditation https://ru.wowhead.com/spell=115176
 		[122470] = 90,					-- Touch of Karma https://ru.wowhead.com/spell=122470
-		[116849] = 120-25-30,			-- Life Cocoon https://ru.wowhead.com/spell=116849
-		[123904] = 120-30,				-- Invoke Xuen, the White Tiger https://ru.wowhead.com/spell=123904
+		[116849] = 120-40,				-- Life Cocoon https://ru.wowhead.com/spell=116849
+		[123904] = 120,					-- Invoke Xuen, the White Tiger https://ru.wowhead.com/spell=123904
 		[198898] = 30,					-- Song of Chi-Ji https://ru.wowhead.com/spell=198898
 		[115078] = 45-15,				-- Paralysis https://ru.wowhead.com/spell=115078
 		[119996] = 45-20,				-- Transcendence: Transfer https://ru.wowhead.com/spell=119996
 		[152173] = 90,					-- Serenity https://ru.wowhead.com/spell=152173
 		[122278] = 120,					-- Dampen Harm https://ru.wowhead.com/spell=122278
 		[122783] = 90,					-- Diffuse Magic https://ru.wowhead.com/spell=122783
-		[119381] = 60-10-5,				-- Leg Sweep https://www.wowhead.com/spell=119381
-		[116844] = 45-15,				-- Ring of Peace https://www.wowhead.com/spell=116844
-		[322109] = 180-36,				-- Смертельное касание https://ru.wowhead.com/spell=322109
+		[119381] = 60,					-- Leg Sweep https://www.wowhead.com/spell=119381
+		[116844] = 45,					-- Ring of Peace https://www.wowhead.com/spell=116844
+		[322109] = 180,					-- Смертельное касание https://ru.wowhead.com/spell=322109
 		[233759] = 45,					-- Захват оружия https://ru.wowhead.com/spell=233759
 		[209584] = 45,					-- Чай дзен-концентрации https://ru.wowhead.com/spell=209584
+		[115450] = 8,					-- Detox https://www.wowhead.com/spell=115450/detox
+		[310454] = 120,					-- Weapons of Order https://www.wowhead.com/spell=310454/weapons-of-order
+		[325216] = 60,					-- Bonedust Brew https://www.wowhead.com/spell=325216/bonedust-brew
+		[327104] = 60,					-- Faeline Stomp https://www.wowhead.com/spell=327104/faeline-stomp
+		[326860] = 180,					-- Fallen Order https://www.wowhead.com/spell=326860/fallen-order
 	},
 	["PALADIN"] = {
-		-- // reviewed 2020/10/23
-		[642] = 300 - 300/100*60,		-- Божественный щит https://ru.wowhead.com/spell=642
-		[1044] = 25 - 25/100*25,		-- Благословенная свобода https://ru.wowhead.com/spell=1044
-		[633] = 600-300,				-- Возложение рук https://ru.wowhead.com/spell=633
+		-- // reviewed 2021/02/12
+		[642] = 300 - 300/100*30,		-- Божественный щит https://ru.wowhead.com/spell=642
+		[1044] = 25,					-- Благословенная свобода https://ru.wowhead.com/spell=1044
+		[633] = 600 - 600/100*30,		-- Возложение рук https://ru.wowhead.com/spell=633
 		[216331] = 120,					-- Рыцарь-мститель https://ru.wowhead.com/spell=216331
 		[228049] = 180,					-- Страж забытой королевы https://ru.wowhead.com/spell=228049
 		[210256] = 45,					-- Благословение святилища https://ru.wowhead.com/spell=210256
-		[1022] = 300 - 300/100*25,		-- Благословение защиты https://ru.wowhead.com/spell=1022
+		[1022] = 300,					-- Благословение защиты https://ru.wowhead.com/spell=1022
 		[31821] = 180,					-- Владение аурами https://ru.wowhead.com/spell=31821
-		[498] = 30,						-- Божественная защита https://ru.wowhead.com/spell=498
-		[6940] = 120 - 120/100*40,		-- Жертвенное благословение https://ru.wowhead.com/spell=6940
+		[498] = 60,						-- Божественная защита https://ru.wowhead.com/spell=498
+		[6940] = 120,					-- Жертвенное благословение https://ru.wowhead.com/spell=6940
 		[853] = 60,						-- Молот правосудия https://www.wowhead.com/spell=853
-		[190784] = 60 - 60/100*50,		-- Божественный скакун https://ru.wowhead.com/spell=190784
+		[190784] = 60,					-- Божественный скакун https://ru.wowhead.com/spell=190784
 		[31884] = 180-60,				-- Гнев карателя https://ru.wowhead.com/spell=31884
-		[86659] = 300-80-5,				-- Защитник древних королей https://ru.wowhead.com/spell=86659
+		[86659] = 300,					-- Защитник древних королей https://ru.wowhead.com/spell=86659
 		[31850] = 120 - 120/100*30,		-- Ревностный защитник https://ru.wowhead.com/spell=31850
 		[96231] = 15,					-- Укор https://ru.wowhead.com/spell=96231
 		[105809] = 180,					-- Святой каратель https://ru.wowhead.com/spell=105809
-		[204018] = 180 - 180/100*40,	-- Благословение защиты от заклинаний https://ru.wowhead.com/spell=204018
+		[204018] = 180,					-- Благословение защиты от заклинаний https://ru.wowhead.com/spell=204018
 		[205191] = 60,					-- Око за око https://ru.wowhead.com/spell=205191
 		[231895] = 120,					-- Священная война https://ru.wowhead.com/spell=231895
 		[115750] = 90,					-- Слепящий свет https://ru.wowhead.com/spell=115750
 		[316958] = 240,					-- Ashen Hallow https://www.wowhead.com/spell=316958/ashen-hallow
 		[184662] = 120-120/100*30,		-- Shield of Vengeance https://www.wowhead.com/spell=184662/shield-of-vengeance
 		[210294] = 30,					-- Divine Favor https://www.wowhead.com/spell=210294/divine-favor
+		[304971] = 60,					-- Divine Toll https://www.wowhead.com/spell=304971/divine-toll
+		[4987] = 8,						-- Cleanse https://www.wowhead.com/spell=4987/cleanse
 	},
 	["PRIEST"] = {
 		-- // reviewed 2020/10/24
@@ -224,6 +231,8 @@ addonTable.CDs = {
 		[323673] = 45,		-- Mindgames https://www.wowhead.com/spell=323673/mindgames
 		[32375] = 45,		-- Mass Dispel https://www.wowhead.com/spell=32375/mass-dispel
 		[15286] = 120-45,	-- Vampiric Embrace https://wowhead.com/spell=15286/vampiric-embrace
+		[47536] = 90,		-- Rapture https://www.wowhead.com/spell=47536
+		[527] = 8,			-- Purify https://www.wowhead.com/spell=527/purify
 	},
 	["ROGUE"] = {
 		-- // reviewed 2020/10/25
@@ -289,21 +298,23 @@ addonTable.CDs = {
 		[197214] = 40,		-- Раскол https://ru.wowhead.com/spell=197214
 		[191634] = 60,		-- Stormkeeper https://www.wowhead.com/spell=191634/stormkeeper
 		[198838] = 60,		-- Earthen Wall Totem https://www.wowhead.com/spell=198838/earthen-wall-totem
+		[320674] = 90,		-- Chain Harvest https://www.wowhead.com/spell=320674/chain-harvest
+		[77130] = 8,		-- Purify Spirit https://www.wowhead.com/spell=77130/purify-spirit
 	},
 	["WARRIOR"] = {
-		-- // reviewed 2020/10/30
+		-- // reviewed 2021/02/12
 		[100] = 20,					-- Charge https://ru.wowhead.com/spell=100
 		[6552] = 15,				-- Pummel https://ru.wowhead.com/spell=6552
 		[23920] = 25,				-- Spell Reflection https://ru.wowhead.com/spell=23920
 		[46924] = 60,				-- Bladestorm https://ru.wowhead.com/spell=46924
-		[46968] = 40-15,			-- Shockwave https://ru.wowhead.com/spell=46968
+		[46968] = 40,				-- Shockwave https://ru.wowhead.com/spell=46968
 		[107574] = 90,				-- Avatar https://ru.wowhead.com/spell=107574
 		[5246] = 90,				-- Intimidating Shout https://ru.wowhead.com/spell=5246
-		[871] = 240-40-60,			-- Shield Wall https://ru.wowhead.com/spell=871
-		[118038] = 180-60,			-- Die by the Sword https://ru.wowhead.com/spell=118038
+		[871] = 240,				-- Shield Wall https://ru.wowhead.com/spell=871
+		[118038] = 180-60-20,		-- Die by the Sword https://ru.wowhead.com/spell=118038
 		[1719] = 90,				-- Recklessness https://www.wowhead.com/spell=1719
-		[6544] = 45-15,				-- Heroic Leap https://ru.wowhead.com/spell=6544
-		[12975] = 180-180/100*80,	-- Last Stand https://ru.wowhead.com/spell=12975
+		[6544] = 45,				-- Heroic Leap https://ru.wowhead.com/spell=6544
+		[12975] = 180-60,			-- Last Stand https://ru.wowhead.com/spell=12975
 		[18499] = 60,				-- Berserker Rage https://ru.wowhead.com/spell=18499
 		[107570] = 30,				-- Storm Bolt https://ru.wowhead.com/spell=107570
 		[227847] = 90-90/100*33,	-- Bladestorm https://ru.wowhead.com/spell=227847
