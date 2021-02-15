@@ -122,26 +122,26 @@ addonTable.CDs = {
 		[212552]	= 60,			-- Wraith Walk https://www.wowhead.com/spell=212552/wraith-walk
 	},
 	["DRUID"] = {
-		-- // reviewed 2020/10/21
+		-- // reviewed 2021/02/15
 		[1850] = 120,							-- Dash https://ru.wowhead.com/spell=1850
 		[20484] = 600,							-- Rebirth https://ru.wowhead.com/spell=20484
 		[209749] = 30,							-- Faerie Swarm https://ru.wowhead.com/spell=209749
 		[202246] = 25,							-- Overrun https://ru.wowhead.com/spell=202246
 		[22812] = 60 - 60/100*33 - 60/100*10,	-- Barkskin https://ru.wowhead.com/spell=22812
-		[194223] = 180 - 180/100*30,			-- Celestial Alignment https://ru.wowhead.com/spell=194223
+		[194223] = 180,							-- Celestial Alignment https://ru.wowhead.com/spell=194223
 		[78675] = 60-20,						-- Solar Beam https://ru.wowhead.com/spell=78675
-		[106951] = 180 - 180/100*30,			-- Berserk https://ru.wowhead.com/spell=106951
-		[50334] = 180 - 180/100*30,				-- Berserk https://ru.wowhead.com/spell=50334
+		[106951] = 180,							-- Berserk https://ru.wowhead.com/spell=106951
+		[50334] = 180,							-- Berserk https://ru.wowhead.com/spell=50334
 		[22570] = 20,							-- Maim https://ru.wowhead.com/spell=22570
 		[61336] = 180,							-- Survival Instincts x2 https://ru.wowhead.com/spell=61336
 		[102342] = 90,							-- Ironbark https://ru.wowhead.com/spell=102342
-		[740] = 180 - 180/100*30 - 60,			-- Tranquility https://ru.wowhead.com/spell=740
+		[740] = 180 - 60,						-- Tranquility https://ru.wowhead.com/spell=740
 		[102793] = 60,							-- Ursol's Vortex https://ru.wowhead.com/spell=102793
-		[102560] = 180 - 180/100*30,			-- Incarnation: Chosen of Elune https://ru.wowhead.com/spell=102560
+		[102560] = 180,							-- Incarnation: Chosen of Elune https://ru.wowhead.com/spell=102560
 		[108238] = 90,							-- Renewal https://ru.wowhead.com/spell=108238
-		[102543] = 180 - 180/100*30,			-- Incarnation: King of the Jungle https://ru.wowhead.com/spell=102543
-		[102558] = 180 - 180/100*30,			-- Incarnation: Guardian of Ursoc https://ru.wowhead.com/spell=102558
-		[33891] = 180 - 180/100*30,				-- Incarnation: Tree of Life https://ru.wowhead.com/spell=33891
+		[102543] = 180,							-- Incarnation: King of the Jungle https://ru.wowhead.com/spell=102543
+		[102558] = 180,							-- Incarnation: Guardian of Ursoc https://ru.wowhead.com/spell=102558
+		[33891] = 180,							-- Incarnation: Tree of Life https://ru.wowhead.com/spell=33891
 		[106839] = 15,							-- Skull Bash https://ru.wowhead.com/spell=106839
 		[5211]	= 60 - 60/100*10,				-- Mighty Bash https://ru.wowhead.com/spell=5211
 		[132469] = 30,							-- Typhoon https://www.wowhead.com/spell=132469/typhoon https://ru.wowhead.com/spell=132469
@@ -149,29 +149,34 @@ addonTable.CDs = {
 		[99] = 30,								-- Парализующий рык https://ru.wowhead.com/spell=99
 		[319454] = 300,							-- Сердце дикой природы https://ru.wowhead.com/spell=319454
 		[323764] = 120,							-- Convoke the Spirits https://www.wowhead.com/spell=323764/convoke-the-spirits
+		[323546] = 180,							-- Ravenous Frenzy https://www.wowhead.com/spell=323546/ravenous-frenzy
 		[22842] = 36,							-- Frenzied Regeneration https://www.wowhead.com/spell=22842/frenzied-regeneration
 		[88423] = 8,							-- Nature's Cure https://www.wowhead.com/spell=88423/natures-cure
 	},
 	["MONK"] = {
-		-- // reviewed 2020/10/22
+		-- // reviewed 2021/02/15
 		[202370] = 30,					-- Mighty Ox Kick https://ru.wowhead.com/spell=202370
 		[116705] = 15,					-- Spear Hand Strike https://ru.wowhead.com/spell=116705
 		[115176] = 300 - 300/100*75,	-- Zen Meditation https://ru.wowhead.com/spell=115176
 		[122470] = 90,					-- Touch of Karma https://ru.wowhead.com/spell=122470
-		[116849] = 120-25-30,			-- Life Cocoon https://ru.wowhead.com/spell=116849
-		[123904] = 120-30,				-- Invoke Xuen, the White Tiger https://ru.wowhead.com/spell=123904
+		[116849] = 120-40,				-- Life Cocoon https://ru.wowhead.com/spell=116849
+		[123904] = 120,					-- Invoke Xuen, the White Tiger https://ru.wowhead.com/spell=123904
 		[198898] = 30,					-- Song of Chi-Ji https://ru.wowhead.com/spell=198898
 		[115078] = 45-15,				-- Paralysis https://ru.wowhead.com/spell=115078
 		[119996] = 45-20,				-- Transcendence: Transfer https://ru.wowhead.com/spell=119996
 		[152173] = 90,					-- Serenity https://ru.wowhead.com/spell=152173
 		[122278] = 120,					-- Dampen Harm https://ru.wowhead.com/spell=122278
 		[122783] = 90,					-- Diffuse Magic https://ru.wowhead.com/spell=122783
-		[119381] = 60-10-5,				-- Leg Sweep https://www.wowhead.com/spell=119381
-		[116844] = 45-15,				-- Ring of Peace https://www.wowhead.com/spell=116844
-		[322109] = 180-36,				-- Смертельное касание https://ru.wowhead.com/spell=322109
+		[119381] = 60,					-- Leg Sweep https://www.wowhead.com/spell=119381
+		[116844] = 45,					-- Ring of Peace https://www.wowhead.com/spell=116844
+		[322109] = 180,					-- Смертельное касание https://ru.wowhead.com/spell=322109
 		[233759] = 45,					-- Захват оружия https://ru.wowhead.com/spell=233759
 		[209584] = 45,					-- Чай дзен-концентрации https://ru.wowhead.com/spell=209584
 		[115450] = 8,					-- Detox https://www.wowhead.com/spell=115450/detox
+		[310454] = 120,					-- Weapons of Order https://www.wowhead.com/spell=310454/weapons-of-order
+		[325216] = 60,					-- Bonedust Brew https://www.wowhead.com/spell=325216/bonedust-brew
+		[327104] = 60,					-- Faeline Stomp https://www.wowhead.com/spell=327104/faeline-stomp
+		[326860] = 180,					-- Fallen Order https://www.wowhead.com/spell=326860/fallen-order
 	},
 	["PALADIN"] = {
 		-- // reviewed 2021/02/12
