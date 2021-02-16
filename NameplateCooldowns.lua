@@ -232,6 +232,12 @@ do
 				end
 				addonTable.Print("Waiting for replies from " .. c);
 				C_ChatInfo.SendAddonMessage("NC_prefix", "requesting", c);
+			elseif (msg == "test") then
+				if (not TestFrame or not TestFrame:GetScript("OnUpdate")) then
+					EnableTestMode();
+				else
+					DisableTestMode();
+				end
 			else
 				ShowGUI();
 			end
@@ -537,6 +543,7 @@ do
 	end
 
 	function UpdateOnlyOneNameplate(frame, unitGUID)
+		if (unitGUID == LocalPlayerGUID) then return; end
 		local counter = 1;
 		if (GlobalFilterNameplate(unitGUID)) then
 			if (SpellsPerPlayerGUID[unitGUID]) then
@@ -2377,12 +2384,18 @@ do
 			nameplate.NCIconsCount = 0;	-- // it's faster than #nameplate.NCIcons
 			Nameplates[nameplate] = true;
 		end
+		if (nameplate.NCFrame ~= nil and unitGUID ~= LocalPlayerGUID) then
+			nameplate.NCFrame:Show();
+		end
 		UpdateOnlyOneNameplate(nameplate, unitGUID);
 	end
 
 	EventFrame.NAME_PLATE_UNIT_REMOVED = function(unitID)
 		local nameplate = C_NamePlate_GetNamePlateForUnit(unitID);
 		NameplatesVisible[nameplate] = nil;
+		if (nameplate.NCFrame ~= nil) then
+			nameplate.NCFrame:Hide();
+		end
 	end
 
 	EventFrame.PLAYER_TARGET_CHANGED = function()
