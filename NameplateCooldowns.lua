@@ -86,12 +86,7 @@ do
 					order = 1,
 					name = 'Open config dialog',
 					desc = nil,
-					func = function()
-						ShowGUI();
-						if (GUIFrame) then
-							InterfaceOptionsFrameCancel:Click();
-						end
-					end,
+					func = ShowGUI,
 				},
 			},
 		});
