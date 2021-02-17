@@ -270,8 +270,8 @@ addonTable.CDs = {
 		[328547] = 30,				-- Serrated Bone Spike https://www.wowhead.com/spell=328547/serrated-bone-spike
 	},
 	["SHAMAN"] = {
-		-- // reviewed 2020/10/28
-		[57994] = 12-3,		-- Wind Shear https://ru.wowhead.com/spell=57994
+		-- // reviewed 2021/02/17
+		[57994] = 12,		-- Wind Shear https://ru.wowhead.com/spell=57994
 		[51490] = 45-15,	-- Thunderstorm https://ru.wowhead.com/spell=51490
 		[51485] = 30,		-- Earthbind Totem https://ru.wowhead.com/spell=51485
 		[108280] = 180,		-- Healing Tide Totem https://ru.wowhead.com/spell=108280
@@ -297,9 +297,9 @@ addonTable.CDs = {
 		[204336] = 30,		-- Тотем заземления https://ru.wowhead.com/spell=204336
 		[204331] = 45,		-- Тотем контрудара https://ru.wowhead.com/spell=204331
 		[196884] = 30,		-- Свирепый выпад https://ru.wowhead.com/spell=196884
-		[192058] = 60-1,	-- Тотем выброса тока https://ru.wowhead.com/spell=192058
+		[192058] = 60,		-- Тотем выброса тока https://ru.wowhead.com/spell=192058
 		[207399] = 300,		-- Тотем защиты Предков https://ru.wowhead.com/spell=207399
-		[8143] = 60-1,		-- Тотем трепета https://ru.wowhead.com/spell=8143
+		[8143] = 60,		-- Тотем трепета https://ru.wowhead.com/spell=8143
 		[305483] = 30,		-- Молния-лассо https://ru.wowhead.com/spell=305483
 		[192077] = 120,		-- Тотем ветряного порыва https://ru.wowhead.com/spell=192077
 		[197214] = 40,		-- Раскол https://ru.wowhead.com/spell=197214
@@ -307,6 +307,9 @@ addonTable.CDs = {
 		[198838] = 60,		-- Earthen Wall Totem https://www.wowhead.com/spell=198838/earthen-wall-totem
 		[320674] = 90,		-- Chain Harvest https://www.wowhead.com/spell=320674/chain-harvest
 		[77130] = 8,		-- Purify Spirit https://www.wowhead.com/spell=77130/purify-spirit
+		[326059] = 45,		-- Primordial Wave https://www.wowhead.com/spell=326059/primordial-wave
+		[328923] = 120,		-- Fae Transfusion https://www.wowhead.com/spell=328923/fae-transfusion
+		[324386] = 60,		-- Vesper Totem https://www.wowhead.com/spell=324386/vesper-totem
 	},
 	["WARRIOR"] = {
 		-- // reviewed 2021/02/12
@@ -339,12 +342,12 @@ addonTable.CDs = {
 		[3411] = 30,				-- Intervene https://www.wowhead.com/spell=3411/intervene
 	},
 	["DEMONHUNTER"] = {
-		-- // reviewed 2020/10/30
-		[198589] = 60-60/100*25,			-- Blur https://ru.wowhead.com/spell=198589
+		-- // reviewed 2021/02/17
+		[198589] = 60-10,					-- Blur https://ru.wowhead.com/spell=198589
 		[179057] = 60-20,					-- Chaos Nova https://ru.wowhead.com/spell=179057
 		[183752] = 15,						-- Consume Magic https://ru.wowhead.com/spell=183752
-		[191427] = 300-60-120-300/100*15,	-- Metamorphosis https://ru.wowhead.com/spell=191427
-		[187827] = 300-60-120-300/100*15,	-- Metamorphosis https://ru.wowhead.com/spell=187827
+		[191427] = 300-60-120,				-- Metamorphosis https://ru.wowhead.com/spell=191427
+		[187827] = 300-60-120,				-- Metamorphosis https://ru.wowhead.com/spell=187827
 		[188501] = 60-30,					-- Spectral Sight https://ru.wowhead.com/spell=188501
 		[202138] = 90-90/100*25,			-- Sigil of Chains https://ru.wowhead.com/spell=202138
 		[207684] = 180-90-180/100*25,		-- Sigil of Misery https://ru.wowhead.com/spell=207684
@@ -356,10 +359,13 @@ addonTable.CDs = {
 		[206803] = 60,						-- Rain from Above https://ru.wowhead.com/spell=206803
 		[205630] = 60,						-- Illidan's Grasp https://ru.wowhead.com/spell=205630
 		[217832] = 45,						-- Imprison https://www.wowhead.com/spell=217832
-		[344867] = 60,						-- Кольцо Хаоса https://www.wowhead.com/spell=344867
+		[344867] = 60-20,					-- Кольцо Хаоса https://www.wowhead.com/spell=344867
 		[206649] = 45,						-- Глаз Леотераса https://www.wowhead.com/spell=206649
 		[323639] = 90,						-- The Hunt https://www.wowhead.com/spell=323639/the-hunt
 		[198013] = 30,						-- Eye Beam https://www.wowhead.com/spell=198013/eye-beam
+		[306830] = 60,						-- Elysian Decree https://www.wowhead.com/spell=306830/elysian-decree
+		[317009] = 60,						-- Sinful Brand https://www.wowhead.com/spell=317009/sinful-brand
+		[329554] = 120,						-- Fodder to the Flame https://www.wowhead.com/spell=329554/fodder-to-the-flame
 	},
 };
 
