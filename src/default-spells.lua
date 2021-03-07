@@ -3,8 +3,6 @@
 
 local _, addonTable = ...;
 
-addonTable.DefaultSpellsVersion = 11;
-
 addonTable.CDs = {
 	[addonTable.UNKNOWN_CLASS] = {
 		-- // reviewed 2021/02/08
