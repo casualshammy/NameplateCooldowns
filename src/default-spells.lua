@@ -26,6 +26,7 @@ addonTable.CDs = {
 		[7744] = 120,		-- // Will of the Forsaken https://ru.wowhead.com/spell=7744
 		[68992] = 120,		-- // Darkflight https://ru.wowhead.com/spell=68992
 		[69041] = 90,		-- // Rocket Barrage https://ru.wowhead.com/spell=69041
+		[265221] = 120,		-- // Fireblood https://www.wowhead.com/spell=265221/fireblood
 	},
 	["HUNTER"] = {
 		-- // reviewed 2021/02/08
