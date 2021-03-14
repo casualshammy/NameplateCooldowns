@@ -3,8 +3,6 @@
 
 local _, addonTable = ...;
 
-addonTable.DefaultSpellsVersion = 11;
-
 addonTable.CDs = {
 	[addonTable.UNKNOWN_CLASS] = {
 		-- // reviewed 2021/02/08
@@ -28,6 +26,7 @@ addonTable.CDs = {
 		[7744] = 120,		-- // Will of the Forsaken https://ru.wowhead.com/spell=7744
 		[68992] = 120,		-- // Darkflight https://ru.wowhead.com/spell=68992
 		[69041] = 90,		-- // Rocket Barrage https://ru.wowhead.com/spell=69041
+		[265221] = 120,		-- // Fireblood https://www.wowhead.com/spell=265221/fireblood
 	},
 	["HUNTER"] = {
 		-- // reviewed 2021/02/08
@@ -208,7 +207,7 @@ addonTable.CDs = {
 		[4987] = 8,						-- Cleanse https://www.wowhead.com/spell=4987/cleanse
 	},
 	["PRIEST"] = {
-		-- // reviewed 2020/10/24
+		-- // reviewed 2021/02/16
 		[64044] = 45,		-- Psychic Horror https://ru.wowhead.com/spell=64044
 		[8122] = 60-30,		-- Psychic Scream [-30sec] https://ru.wowhead.com/spell=8122
 		[15487] = 45-15,	-- Silence https://ru.wowhead.com/spell=15487
@@ -217,7 +216,7 @@ addonTable.CDs = {
 		[10060] = 120,		-- Power Infusion https://ru.wowhead.com/spell=10060
 		[88625] = 60,		-- Holy Word: Chastise https://ru.wowhead.com/spell=88625
 		[64843] = 180,		-- Divine Hymn https://ru.wowhead.com/spell=64843
-		[73325] = 90,		-- Leap of Faith https://ru.wowhead.com/spell=73325
+		[73325] = 90-20,	-- Leap of Faith https://ru.wowhead.com/spell=73325
 		[19236] = 90,		-- Desperate Prayer https://ru.wowhead.com/spell=19236
 		[62618] = 180-90,	-- Power Word: Barrier [-60sec] https://ru.wowhead.com/spell=62618
 		[47788] = 180-60,	-- Guardian Spirit [-60%] [max=120sec] https://ru.wowhead.com/spell=47788
@@ -233,38 +232,45 @@ addonTable.CDs = {
 		[15286] = 120-45,	-- Vampiric Embrace https://wowhead.com/spell=15286/vampiric-embrace
 		[47536] = 90,		-- Rapture https://www.wowhead.com/spell=47536
 		[527] = 8,			-- Purify https://www.wowhead.com/spell=527/purify
+		[327661] = 90,		-- Fae Guardians https://www.wowhead.com/spell=327661/fae-guardians
+		[325013] = 180,		-- Boon of the Ascended https://www.wowhead.com/spell=325013/boon-of-the-ascended
+		[324724] = 60,		-- Unholy Nova https://www.wowhead.com/spell=324724/unholy-nova
 	},
 	["ROGUE"] = {
-		-- // reviewed 2020/10/25
+		-- // reviewed 2021/02/16
 		[2094] = 120-30,			-- Blind https://ru.wowhead.com/spell=2094
 		[1766] = 15,				-- Kick https://ru.wowhead.com/spell=1766
 		[31224] = 120,				-- Cloak of Shadows https://www.wowhead.com/spell=31224
 		[1856] = 120-45,			-- Vanish https://www.wowhead.com/spell=1856
 		[2983] = 120-60,			-- Sprint" [-9sec] https://ru.wowhead.com/spell=2983
-		[36554] = 30-5-30/100*10,	-- Shadowstep https://ru.wowhead.com/spell=36554
+		[36554] = 30 - 30/100*10,	-- Shadowstep https://ru.wowhead.com/spell=36554
 		[5277] = 120,				-- Evasion https://ru.wowhead.com/spell=5277
 		[51690] = 120,				-- Killing Spree https://ru.wowhead.com/spell=51690
 		[79140] = 120,				-- Vendetta [-30sec] https://ru.wowhead.com/spell=79140
 		[13750] = 180,				-- Adrenaline Rush [-30sec] https://ru.wowhead.com/spell=13750
-		[195457] = 30,				-- Абордажный крюк https://ru.wowhead.com/spell=195457
+		[195457] = 60-15-15-6,		-- Абордажный крюк https://ru.wowhead.com/spell=195457
 		[31230] = 360,				-- Обман смерти https://ru.wowhead.com/spell=31230
 		[207777] = 45,				-- Долой оружие https://ru.wowhead.com/spell=207777
 		[207736] = 120,				-- Дуэль в тенях https://ru.wowhead.com/spell=207736
 		[212182] = 180,				-- Дымовая шашка https://ru.wowhead.com/spell=212182
 		[198529] = 120,				-- Кража доспехов https://ru.wowhead.com/spell=198529
 		[121471] = 180,				-- Теневые клинки https://ru.wowhead.com/spell=121471
-		[114018] = 360,				-- Скрывающий покров ru.wowhead.com/spell=114018
-		[185311] = 30-5,			-- Алый фиал https://ru.wowhead.com/spell=185311
+		[114018] = 360,				-- Скрывающий покров https://ru.wowhead.com/spell=114018
+		[185311] = 30,				-- Алый фиал https://ru.wowhead.com/spell=185311
 		[185313] = 60,				-- Танец теней https://ru.wowhead.com/spell=185313
 		[343142] = 90,				-- Клинки Ужаса https://ru.wowhead.com/spell=343142
 		[137619] = 60,				-- Marked for Death https://www.wowhead.com/spell=137619/marked-for-death
 		[408] = 20,					-- Kidney Shot https://www.wowhead.com/spell=408/kidney-shot
 		[1776] = 15,				-- Gouge https://www.wowhead.com/spell=1776/gouge
 		[315341] = 45,				-- Between the Eyes https://www.wowhead.com/spell=315341/between-the-eyes
+		[323547] = 45,				-- Echoing Reprimand https://www.wowhead.com/spell=323547/echoing-reprimand
+		[328305] = 90,				-- Sepsis https://www.wowhead.com/spell=328305/sepsis
+		[323654] = 90,				-- Flagellation https://www.wowhead.com/spell=323654/flagellation
+		[328547] = 30,				-- Serrated Bone Spike https://www.wowhead.com/spell=328547/serrated-bone-spike
 	},
 	["SHAMAN"] = {
-		-- // reviewed 2020/10/28
-		[57994] = 12-3,		-- Wind Shear https://ru.wowhead.com/spell=57994
+		-- // reviewed 2021/02/17
+		[57994] = 12,		-- Wind Shear https://ru.wowhead.com/spell=57994
 		[51490] = 45-15,	-- Thunderstorm https://ru.wowhead.com/spell=51490
 		[51485] = 30,		-- Earthbind Totem https://ru.wowhead.com/spell=51485
 		[108280] = 180,		-- Healing Tide Totem https://ru.wowhead.com/spell=108280
@@ -290,9 +296,9 @@ addonTable.CDs = {
 		[204336] = 30,		-- Тотем заземления https://ru.wowhead.com/spell=204336
 		[204331] = 45,		-- Тотем контрудара https://ru.wowhead.com/spell=204331
 		[196884] = 30,		-- Свирепый выпад https://ru.wowhead.com/spell=196884
-		[192058] = 60-1,	-- Тотем выброса тока https://ru.wowhead.com/spell=192058
+		[192058] = 60,		-- Тотем выброса тока https://ru.wowhead.com/spell=192058
 		[207399] = 300,		-- Тотем защиты Предков https://ru.wowhead.com/spell=207399
-		[8143] = 60-1,		-- Тотем трепета https://ru.wowhead.com/spell=8143
+		[8143] = 60,		-- Тотем трепета https://ru.wowhead.com/spell=8143
 		[305483] = 30,		-- Молния-лассо https://ru.wowhead.com/spell=305483
 		[192077] = 120,		-- Тотем ветряного порыва https://ru.wowhead.com/spell=192077
 		[197214] = 40,		-- Раскол https://ru.wowhead.com/spell=197214
@@ -300,6 +306,9 @@ addonTable.CDs = {
 		[198838] = 60,		-- Earthen Wall Totem https://www.wowhead.com/spell=198838/earthen-wall-totem
 		[320674] = 90,		-- Chain Harvest https://www.wowhead.com/spell=320674/chain-harvest
 		[77130] = 8,		-- Purify Spirit https://www.wowhead.com/spell=77130/purify-spirit
+		[326059] = 45,		-- Primordial Wave https://www.wowhead.com/spell=326059/primordial-wave
+		[328923] = 120,		-- Fae Transfusion https://www.wowhead.com/spell=328923/fae-transfusion
+		[324386] = 60,		-- Vesper Totem https://www.wowhead.com/spell=324386/vesper-totem
 	},
 	["WARRIOR"] = {
 		-- // reviewed 2021/02/12
@@ -332,12 +341,12 @@ addonTable.CDs = {
 		[3411] = 30,				-- Intervene https://www.wowhead.com/spell=3411/intervene
 	},
 	["DEMONHUNTER"] = {
-		-- // reviewed 2020/10/30
-		[198589] = 60-60/100*25,			-- Blur https://ru.wowhead.com/spell=198589
+		-- // reviewed 2021/02/17
+		[198589] = 60-10,					-- Blur https://ru.wowhead.com/spell=198589
 		[179057] = 60-20,					-- Chaos Nova https://ru.wowhead.com/spell=179057
 		[183752] = 15,						-- Consume Magic https://ru.wowhead.com/spell=183752
-		[191427] = 300-60-120-300/100*15,	-- Metamorphosis https://ru.wowhead.com/spell=191427
-		[187827] = 300-60-120-300/100*15,	-- Metamorphosis https://ru.wowhead.com/spell=187827
+		[191427] = 300-60-120,				-- Metamorphosis https://ru.wowhead.com/spell=191427
+		[187827] = 300-60-120,				-- Metamorphosis https://ru.wowhead.com/spell=187827
 		[188501] = 60-30,					-- Spectral Sight https://ru.wowhead.com/spell=188501
 		[202138] = 90-90/100*25,			-- Sigil of Chains https://ru.wowhead.com/spell=202138
 		[207684] = 180-90-180/100*25,		-- Sigil of Misery https://ru.wowhead.com/spell=207684
@@ -349,10 +358,13 @@ addonTable.CDs = {
 		[206803] = 60,						-- Rain from Above https://ru.wowhead.com/spell=206803
 		[205630] = 60,						-- Illidan's Grasp https://ru.wowhead.com/spell=205630
 		[217832] = 45,						-- Imprison https://www.wowhead.com/spell=217832
-		[344867] = 60,						-- Кольцо Хаоса https://www.wowhead.com/spell=344867
+		[344867] = 60-20,					-- Кольцо Хаоса https://www.wowhead.com/spell=344867
 		[206649] = 45,						-- Глаз Леотераса https://www.wowhead.com/spell=206649
 		[323639] = 90,						-- The Hunt https://www.wowhead.com/spell=323639/the-hunt
 		[198013] = 30,						-- Eye Beam https://www.wowhead.com/spell=198013/eye-beam
+		[306830] = 60,						-- Elysian Decree https://www.wowhead.com/spell=306830/elysian-decree
+		[317009] = 60,						-- Sinful Brand https://www.wowhead.com/spell=317009/sinful-brand
+		[329554] = 120,						-- Fodder to the Flame https://www.wowhead.com/spell=329554/fodder-to-the-flame
 	},
 };
 
@@ -414,6 +426,12 @@ do
 			["reduction"] = -120,
 			["spells"] = {
 				243435,			-- // Fortifying Brew https://www.wowhead.com/spell=243435/fortifying-brew
+			},
+		},
+		[585] = {	-- Кара https://ru.wowhead.com/spell=585/%D0%BA%D0%B0%D1%80%D0%B0
+			["reduction"] = -4,
+			["spells"] = {
+				88625,	-- Holy Word: Chastise https://ru.wowhead.com/spell=88625
 			},
 		},
 	};
