@@ -160,6 +160,7 @@ do
 				ShowCDOnAllies = false,
 				ShowInactiveCD = false,
 				IgnoreNameplateScale = false,
+				ShowCooldownTooltip = false,
 			},
 		};
 		aceDB = LibStub("AceDB-3.0"):New("NameplateCooldownsAceDB", aceDBDefaults);
@@ -248,6 +249,25 @@ end
 do
 
 	local glowInfo = { };
+
+	local iconTooltip = LRD.CreateTooltip();
+	local function SetCooldownTooltip(icon, spellID)
+		if (db.ShowCooldownTooltip and spellID ~= nil) then
+			icon:SetScript("OnEnter", function(self)
+				iconTooltip:ClearAllPoints();
+				iconTooltip:SetPoint("BOTTOM", self, "TOP", 0, 0);
+				iconTooltip:SetSpellById(spellID);
+				iconTooltip:Show();
+			end);
+			icon:SetScript("OnLeave", function()
+				iconTooltip:Hide();
+			end);
+		else
+			icon:SetScript("OnEnter", nil);
+			icon:SetScript("OnLeave", nil);
+		end
+	end
+	addonTable.SetCooldownTooltip = SetCooldownTooltip;
 
 	local function AllocateIcon_SetIconPlace(frame, icon, iconIndex)
 		icon:ClearAllPoints();
@@ -558,6 +578,7 @@ do
 						UpdateNameplate_SetGlow(icon, dbInfo.glow, remain, isActiveCD);
 						Nameplate_SetCooldown(icon, remain, isActiveCD);
 						Nameplate_SetBorder(icon, spellID, isActiveCD);
+						SetCooldownTooltip(icon, spellID);
 						if (not icon.shown) then
 							ShowCDIcon(icon, frame);
 						end
@@ -1682,6 +1703,23 @@ do
 			checkboxShowInactiveCD:SetChecked(db.ShowInactiveCD);
 			table.insert(GUIFrame.Categories[index], checkboxShowInactiveCD);
 			table_insert(GUIFrame.OnDBChangedHandlers, function() checkboxShowInactiveCD:SetChecked(db.ShowInactiveCD); end);
+		end
+
+		-- // checkboxCooldownTooltip
+		do
+			local checkboxCooldownTooltip = LRD.CreateCheckBox();
+			checkboxCooldownTooltip:SetText(L["options:general:show-cooldown-tooltip"]);
+			checkboxCooldownTooltip:SetOnClickHandler(function(this)
+				db.ShowCooldownTooltip = this:GetChecked();
+				OnUpdate();
+				GameTooltip:Hide();
+			end);
+			checkboxCooldownTooltip:SetChecked(db.ShowCooldownTooltip);
+			checkboxCooldownTooltip:SetParent(GUIFrame.outline);
+			checkboxCooldownTooltip:SetPoint("TOPLEFT", checkboxShowInactiveCD, "BOTTOMLEFT", 0, 0);
+			table_insert(GUIFrame.Categories[index], checkboxCooldownTooltip);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() checkboxCooldownTooltip:SetChecked(db.ShowCooldownTooltip); end);
+
 		end
 
 		-- // dropdownIconSortMode
