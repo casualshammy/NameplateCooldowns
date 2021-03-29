@@ -236,6 +236,7 @@ addonTable.CDs = {
 		[327661] = 90,		-- Fae Guardians https://www.wowhead.com/spell=327661/fae-guardians
 		[325013] = 180,		-- Boon of the Ascended https://www.wowhead.com/spell=325013/boon-of-the-ascended
 		[324724] = 60,		-- Unholy Nova https://www.wowhead.com/spell=324724/unholy-nova
+		[32379] = 20,		-- Shadow Word: Death https://www.wowhead.com/spell=32379
 	},
 	["ROGUE"] = {
 		-- // reviewed 2021/02/16
