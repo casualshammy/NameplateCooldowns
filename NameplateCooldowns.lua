@@ -1719,7 +1719,6 @@ do
 			checkboxCooldownTooltip:SetPoint("TOPLEFT", checkboxShowInactiveCD, "BOTTOMLEFT", 0, 0);
 			table_insert(GUIFrame.Categories[index], checkboxCooldownTooltip);
 			table_insert(GUIFrame.OnDBChangedHandlers, function() checkboxCooldownTooltip:SetChecked(db.ShowCooldownTooltip); end);
-
 		end
 
 		-- // dropdownIconSortMode
