@@ -1389,27 +1389,29 @@ do
 			[frameAnchors[9]] = L["anchor-point:bottomleft"]
 		};
 
-
-		local buttonEnableDisableAddon = LRD.CreateButton();
-		buttonEnableDisableAddon:SetParent(GUIFrame);
-		buttonEnableDisableAddon:SetText(db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]);
-		buttonEnableDisableAddon:SetWidth(340);
-		buttonEnableDisableAddon:SetHeight(20);
-		buttonEnableDisableAddon:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -5);
-		buttonEnableDisableAddon:SetScript("OnClick", function()
-			if (db.AddonEnabled) then
-				EventFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
-				wipe(SpellsPerPlayerGUID);
-			else
-				EventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
-			end
-			OnUpdate();
-			db.AddonEnabled = not db.AddonEnabled;
-			buttonEnableDisableAddon.Text:SetText(db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]);
-			addonTable.Print(db.AddonEnabled and L["chat:addon-is-enabled"] or L["chat:addon-is-disabled"]);
-		end);
-		table.insert(GUIFrame.Categories[index], buttonEnableDisableAddon);
-		table_insert(GUIFrame.OnDBChangedHandlers, function() buttonEnableDisableAddon.Text:SetText(db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]); end);
+		-- buttonEnableDisableAddon
+		do
+			local buttonEnableDisableAddon = LRD.CreateButton();
+			buttonEnableDisableAddon:SetParent(GUIFrame);
+			buttonEnableDisableAddon:SetText(db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]);
+			buttonEnableDisableAddon:SetWidth(340);
+			buttonEnableDisableAddon:SetHeight(20);
+			buttonEnableDisableAddon:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -5);
+			buttonEnableDisableAddon:SetScript("OnClick", function()
+				if (db.AddonEnabled) then
+					EventFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+					wipe(SpellsPerPlayerGUID);
+				else
+					EventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+				end
+				OnUpdate();
+				db.AddonEnabled = not db.AddonEnabled;
+				buttonEnableDisableAddon.Text:SetText(db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]);
+				addonTable.Print(db.AddonEnabled and L["chat:addon-is-enabled"] or L["chat:addon-is-disabled"]);
+			end);
+			table.insert(GUIFrame.Categories[index], buttonEnableDisableAddon);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() buttonEnableDisableAddon.Text:SetText(db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]); end);
+		end
 
 		local buttonSwitchTestMode = LRD.CreateButton();
 		buttonSwitchTestMode:SetParent(GUIFrame);
