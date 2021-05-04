@@ -62,7 +62,7 @@ local OnStartup, InitializeDB, GetDefaultDBEntryForSpell;
 local AllocateIcon, ReallocateAllIcons, UpdateOnlyOneNameplate, HideCDIcon, ShowCDIcon;
 local OnUpdate;
 local EnableTestMode, DisableTestMode;
-local ShowGUI, InitializeGUI, GUICategory_General, GUICategory_Profiles, GUICategory_Other, OnGUICategoryClick, ShowGUICategory, CreateGUICategory;
+local ShowGUI, InitializeGUI, GUICategory_General, GUICategory_Other, OnGUICategoryClick, ShowGUICategory, CreateGUICategory;
 
 -------------------------------------------------------------------------------------------------
 ----- Initialize
@@ -1341,7 +1341,7 @@ do
 		GUIFrame.Categories = {};
 		GUIFrame.SpellIcons = {};
 
-		for index, value in pairs({ L["General"], L["Filters"], L["options:category:borders"], L["options:category:text"], L["Profiles"], L["options:category:spells"] }) do
+		for index, value in pairs({ L["General"], L["Filters"], L["options:category:borders"], L["options:category:text"], L["options:category:spells"] }) do
 			local b = CreateGUICategory();
 			b.index = index;
 			b.text:SetText(value);
@@ -1362,8 +1362,6 @@ do
 				GUICategory_General(index, value);
 			elseif (value == L["Filters"]) then
 				GUICategory_Filters(index, value);
-			elseif (value == L["Profiles"]) then
-				GUICategory_Profiles(index, value);
 			elseif (value == L["options:category:borders"]) then
 				GUICategory_Borders(index, value);
 			elseif (value == L["options:category:text"]) then
@@ -1372,6 +1370,38 @@ do
 				GUICategory_Other(index, value);
 			end
 		end
+
+		local buttonTestMode;
+		do
+			buttonTestMode = LRD.CreateButton();
+			buttonTestMode:SetParent(GUIFrame.outline);
+			buttonTestMode:SetText(L["options:general:test-mode"]);
+			buttonTestMode:SetPoint("BOTTOMLEFT", GUIFrame.outline, "BOTTOMLEFT", 4, 4);
+			buttonTestMode:SetPoint("BOTTOMRIGHT", GUIFrame.outline, "BOTTOMRIGHT", -4, 4);
+			buttonTestMode:SetHeight(30);
+			buttonTestMode:SetScript("OnClick", function(self)
+				if (not TestFrame or not TestFrame:GetScript("OnUpdate")) then
+					EnableTestMode();
+				else
+					DisableTestMode();
+				end
+			end);
+		end
+	
+		local buttonProfiles;
+		do
+			buttonProfiles = LRD.CreateButton();
+			buttonProfiles:SetParent(GUIFrame.outline);
+			buttonProfiles:SetText(L["options:profiles"]);
+			buttonProfiles:SetHeight(30);
+			buttonProfiles:SetPoint("BOTTOMLEFT", buttonTestMode, "TOPLEFT", 0, 0);
+			buttonProfiles:SetPoint("BOTTOMRIGHT", buttonTestMode, "TOPRIGHT", 0, 0);
+			buttonProfiles:SetScript("OnClick", function()
+				InterfaceOptionsFrame_OpenToCategory(ProfileOptionsFrame);
+				GUIFrame:Hide();
+			end);
+		end
+
 	end
 
 	function GUICategory_General(index)
@@ -1389,94 +1419,55 @@ do
 			[frameAnchors[9]] = L["anchor-point:bottomleft"]
 		};
 
-		-- buttonEnableDisableAddon
+		local sliderIconSize;
 		do
-			local buttonEnableDisableAddon = LRD.CreateButton();
-			buttonEnableDisableAddon:SetParent(GUIFrame);
-			buttonEnableDisableAddon:SetText(db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]);
-			buttonEnableDisableAddon:SetWidth(340);
-			buttonEnableDisableAddon:SetHeight(20);
-			buttonEnableDisableAddon:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -5);
-			buttonEnableDisableAddon:SetScript("OnClick", function()
-				if (db.AddonEnabled) then
-					EventFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
-					wipe(SpellsPerPlayerGUID);
-				else
-					EventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
-				end
-				OnUpdate();
-				db.AddonEnabled = not db.AddonEnabled;
-				buttonEnableDisableAddon.Text:SetText(db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]);
-				addonTable.Print(db.AddonEnabled and L["chat:addon-is-enabled"] or L["chat:addon-is-disabled"]);
+			local minValue, maxValue = 1, 100;
+			sliderIconSize = LRD.CreateSlider();
+			sliderIconSize:SetParent(GUIFrame.outline);
+			sliderIconSize:SetHeight(100);
+			sliderIconSize:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -15);
+			sliderIconSize:SetPoint("TOPRIGHT", GUIFrame, "TOPRIGHT", -20, 0);
+			sliderIconSize:GetTextObject():SetText(L["Icon size"]);
+			sliderIconSize:GetBaseSliderObject():SetValueStep(1);
+			sliderIconSize:GetBaseSliderObject():SetMinMaxValues(minValue, maxValue);
+			sliderIconSize:GetBaseSliderObject():SetValue(db.IconSize);
+			sliderIconSize:GetBaseSliderObject():SetScript("OnValueChanged", function(_, value)
+				sliderIconSize:GetEditboxObject():SetText(tostring(math_ceil(value)));
+				db.IconSize = math_ceil(value);
+				ReallocateAllIcons(false);
 			end);
-			table.insert(GUIFrame.Categories[index], buttonEnableDisableAddon);
-			table_insert(GUIFrame.OnDBChangedHandlers, function() buttonEnableDisableAddon.Text:SetText(db.AddonEnabled and L["options:general:disable-addon-btn"] or L["options:general:enable-addon-btn"]); end);
-		end
-
-		local buttonSwitchTestMode = LRD.CreateButton();
-		buttonSwitchTestMode:SetParent(GUIFrame);
-		buttonSwitchTestMode:SetText(L["Enable test mode (need at least one visible nameplate)"]);
-		buttonSwitchTestMode:SetWidth(340);
-		buttonSwitchTestMode:SetHeight(20);
-		buttonSwitchTestMode:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -30);
-		buttonSwitchTestMode:SetScript("OnClick", function(self)
-			if (not TestFrame or not TestFrame:GetScript("OnUpdate")) then
-				EnableTestMode();
-				self.Text:SetText(L["Disable test mode"]);
-			else
-				DisableTestMode();
-				self.Text:SetText(L["Enable test mode (need at least one visible nameplate)"]);
-			end
-		end);
-		table.insert(GUIFrame.Categories[index], buttonSwitchTestMode);
-		table_insert(GUIFrame.OnDBChangedHandlers, function() buttonSwitchTestMode.Text:SetText(L["Enable test mode (need at least one visible nameplate)"]); end);
-
-		local sliderIconSize = LRD.CreateSlider();
-		sliderIconSize:SetParent(GUIFrame.outline);
-		sliderIconSize:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -60);
-		sliderIconSize:SetHeight(100);
-		sliderIconSize:SetWidth(155);
-		sliderIconSize:GetTextObject():SetText(L["Icon size"]);
-		sliderIconSize:GetBaseSliderObject():SetValueStep(1);
-		sliderIconSize:GetBaseSliderObject():SetMinMaxValues(1, 50);
-		sliderIconSize:GetBaseSliderObject():SetValue(db.IconSize);
-		sliderIconSize:GetBaseSliderObject():SetScript("OnValueChanged", function(_, value)
-			sliderIconSize:GetEditboxObject():SetText(tostring(math_ceil(value)));
-			db.IconSize = math_ceil(value);
-			ReallocateAllIcons(false);
-		end);
-		sliderIconSize:GetEditboxObject():SetText(tostring(db.IconSize));
-		sliderIconSize:GetEditboxObject():SetScript("OnEnterPressed", function()
-			if (sliderIconSize:GetEditboxObject():GetText() ~= "") then
-				local v = tonumber(sliderIconSize:GetEditboxObject():GetText());
-				if (v == nil) then
-					sliderIconSize:GetEditboxObject():SetText(tostring(db.IconSize));
-					addonTable.Print(L["Value must be a number"]);
-				else
-					if (v > 50) then
-						v = 50;
+			sliderIconSize:GetEditboxObject():SetText(tostring(db.IconSize));
+			sliderIconSize:GetEditboxObject():SetScript("OnEnterPressed", function()
+				if (sliderIconSize:GetEditboxObject():GetText() ~= "") then
+					local v = tonumber(sliderIconSize:GetEditboxObject():GetText());
+					if (v == nil) then
+						sliderIconSize:GetEditboxObject():SetText(tostring(db.IconSize));
+						addonTable.Print(L["Value must be a number"]);
+					else
+						if (v > maxValue) then
+							v = maxValue;
+						end
+						if (v < minValue) then
+							v = minValue;
+						end
+						sliderIconSize:GetBaseSliderObject():SetValue(v);
 					end
-					if (v < 1) then
-						v = 1;
-					end
-					sliderIconSize:GetBaseSliderObject():SetValue(v);
+					sliderIconSize:GetEditboxObject():ClearFocus();
 				end
-				sliderIconSize:GetEditboxObject():ClearFocus();
-			end
-		end);
-		sliderIconSize:GetLowTextObject():SetText("1");
-		sliderIconSize:GetHighTextObject():SetText("50");
-		table.insert(GUIFrame.Categories[index], sliderIconSize);
-		table_insert(GUIFrame.OnDBChangedHandlers, function() sliderIconSize:GetBaseSliderObject():SetValue(db.IconSize); sliderIconSize:GetEditboxObject():SetText(tostring(db.IconSize)); end);
+			end);
+			sliderIconSize:GetLowTextObject():SetText(tostring(minValue));
+			sliderIconSize:GetHighTextObject():SetText(tostring(maxValue));
+			table.insert(GUIFrame.Categories[index], sliderIconSize);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() sliderIconSize:GetBaseSliderObject():SetValue(db.IconSize); sliderIconSize:GetEditboxObject():SetText(tostring(db.IconSize)); end);
+		end
 
 		-- // sliderIconSpacing
 		do
-
 			local minValue, maxValue = 0, 50;
 			local sliderIconSpacing = LRD.CreateSlider();
 			sliderIconSpacing:SetParent(GUIFrame.outline);
-			sliderIconSpacing:SetWidth(155);
-			sliderIconSpacing:SetPoint("LEFT", sliderIconSize, "RIGHT", 30, 0);
+			sliderIconSpacing:SetWidth(sliderIconSize:GetWidth());
+			sliderIconSpacing:SetPoint("TOP", sliderIconSize, "BOTTOM", 0, 45);
 			sliderIconSpacing.label:SetText(L["options:general:space-between-icons"]);
 			sliderIconSpacing.slider:SetValueStep(1);
 			sliderIconSpacing.slider:SetMinMaxValues(minValue, maxValue);
@@ -1513,7 +1504,7 @@ do
 
 		local sliderIconXOffset = LRD.CreateSlider();
 		sliderIconXOffset:SetParent(GUIFrame.outline);
-		sliderIconXOffset:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -115);
+		sliderIconXOffset:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -120);
 		sliderIconXOffset:SetHeight(100);
 		sliderIconXOffset:SetWidth(155);
 		sliderIconXOffset:GetTextObject():SetText(L["Icon X-coord offset"]);
@@ -1553,7 +1544,7 @@ do
 		sliderIconYOffset:SetHeight(100);
 		sliderIconYOffset:SetWidth(155);
 		sliderIconYOffset:SetParent(GUIFrame.outline);
-		sliderIconYOffset:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 200, -115);
+		sliderIconYOffset:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 200, -120);
 		sliderIconYOffset:GetTextObject():SetText(L["Icon Y-coord offset"]);
 		sliderIconYOffset:GetBaseSliderObject():SetValueStep(1);
 		sliderIconYOffset:GetBaseSliderObject():SetMinMaxValues(-200, 200);
@@ -1794,20 +1785,6 @@ do
 			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownIconGrowDirection:GetName().."Text"]:SetText(iconGrowDirections[db.IconGrowDirection]); end);
 		end
 
-	end
-
-	function GUICategory_Profiles(index)
-		local button = LRD.CreateButton();
-		button:SetParent(GUIFrame);
-		button:SetText(L["options:profiles:open-profiles-dialog"]);
-		button:SetWidth(170);
-		button:SetHeight(40);
-		button:SetPoint("CENTER", GUIFrame, "CENTER", 70, 0);
-		button:SetScript("OnClick", function()
-			InterfaceOptionsFrame_OpenToCategory(ProfileOptionsFrame);
-			GUIFrame:Hide();
-		end);
-		table_insert(GUIFrame.Categories[index], button);
 	end
 
 	function GUICategory_Other(index)

@@ -3,6 +3,11 @@
 
 local L = LibStub("AceLocale-3.0"):NewLocale("NameplateCooldowns", "ruRU");
 L = L or {}
+--[===[@non-debug@
+@localization(locale="ruRU", format="lua_additive_table", handle-unlocalized="english", table-name="L")@
+--@end-non-debug@]===]
+--@debug@
+L = L or {}
 L["anchor-point:bottom"] = "Снизу"
 L["anchor-point:bottomleft"] = "Снизу слева"
 L["anchor-point:bottomright"] = "Снизу справа"
@@ -106,3 +111,4 @@ L["Show border around interrupts"] = "Показывать контур вокр
 L["Show border around trinkets"] = "Показывать контур вокруг тринкетов"
 L["Unknown spell: %s"] = "Неизвестное заклинание: %s"
 L["Value must be a number"] = "Значение должно быть числом"
+--@end-debug@
