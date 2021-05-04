@@ -2,12 +2,12 @@
 -- luacheck: globals LibStub
 
 local L = LibStub("AceLocale-3.0"):NewLocale("NameplateCooldowns", "enUS", true);
-L = L or {}
+L = L or {} -- luacheck: ignore
 --[===[@non-debug@
 @localization(locale="enUS", format="lua_additive_table", handle-unlocalized="english", table-name="L")@
 --@end-non-debug@]===]
 --@debug@
-L = L or {}
+L = L or {} -- luacheck: ignore
 L["anchor-point:bottom"] = "Bottom"
 L["anchor-point:bottomleft"] = "Bottom left"
 L["anchor-point:bottomright"] = "Bottom right"

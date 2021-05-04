@@ -1284,7 +1284,7 @@ do
 
 	function InitializeGUI()
 		GUIFrame = CreateFrame("Frame", "NC_GUIFrame", UIParent, BackdropTemplateMixin and "BackdropTemplate");
-		GUIFrame:SetHeight(490);
+		GUIFrame:SetHeight(540);
 		GUIFrame:SetWidth(540);
 		GUIFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 80);
 		GUIFrame:SetBackdrop({
@@ -1379,7 +1379,7 @@ do
 			buttonTestMode:SetPoint("BOTTOMLEFT", GUIFrame.outline, "BOTTOMLEFT", 4, 4);
 			buttonTestMode:SetPoint("BOTTOMRIGHT", GUIFrame.outline, "BOTTOMRIGHT", -4, 4);
 			buttonTestMode:SetHeight(30);
-			buttonTestMode:SetScript("OnClick", function(self)
+			buttonTestMode:SetScript("OnClick", function()
 				if (not TestFrame or not TestFrame:GetScript("OnUpdate")) then
 					EnableTestMode();
 				else
@@ -1387,7 +1387,7 @@ do
 				end
 			end);
 		end
-	
+
 		local buttonProfiles;
 		do
 			buttonProfiles = LRD.CreateButton();
@@ -1461,10 +1461,10 @@ do
 			table_insert(GUIFrame.OnDBChangedHandlers, function() sliderIconSize:GetBaseSliderObject():SetValue(db.IconSize); sliderIconSize:GetEditboxObject():SetText(tostring(db.IconSize)); end);
 		end
 
-		-- // sliderIconSpacing
+		local sliderIconSpacing;
 		do
 			local minValue, maxValue = 0, 50;
-			local sliderIconSpacing = LRD.CreateSlider();
+			sliderIconSpacing = LRD.CreateSlider();
 			sliderIconSpacing:SetParent(GUIFrame.outline);
 			sliderIconSpacing:SetWidth(sliderIconSize:GetWidth());
 			sliderIconSpacing:SetPoint("TOP", sliderIconSize, "BOTTOM", 0, 45);
@@ -1502,87 +1502,91 @@ do
 			table_insert(GUIFrame.OnDBChangedHandlers, function() sliderIconSpacing.slider:SetValue(db.IconSpacing); sliderIconSpacing.editbox:SetText(tostring(db.IconSpacing)); end);
 		end
 
-		local sliderIconXOffset = LRD.CreateSlider();
-		sliderIconXOffset:SetParent(GUIFrame.outline);
-		sliderIconXOffset:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -120);
-		sliderIconXOffset:SetHeight(100);
-		sliderIconXOffset:SetWidth(155);
-		sliderIconXOffset:GetTextObject():SetText(L["Icon X-coord offset"]);
-		sliderIconXOffset:GetBaseSliderObject():SetValueStep(1);
-		sliderIconXOffset:GetBaseSliderObject():SetMinMaxValues(-200, 200);
-		sliderIconXOffset:GetBaseSliderObject():SetValue(db.IconXOffset);
-		sliderIconXOffset:GetBaseSliderObject():SetScript("OnValueChanged", function(_, value)
-			sliderIconXOffset:GetEditboxObject():SetText(tostring(math_ceil(value)));
-			db.IconXOffset = math_ceil(value);
-			ReallocateAllIcons(false);
-		end);
-		sliderIconXOffset:GetEditboxObject():SetText(tostring(db.IconXOffset));
-		sliderIconXOffset:GetEditboxObject():SetScript("OnEnterPressed", function()
-			if (sliderIconXOffset:GetEditboxObject():GetText() ~= "") then
-				local v = tonumber(sliderIconXOffset:GetEditboxObject():GetText());
-				if (v == nil) then
-					sliderIconXOffset:GetEditboxObject():SetText(tostring(db.IconXOffset));
-					addonTable.Print(L["Value must be a number"]);
-				else
-					if (v > 200) then
-						v = 200;
-					end
-					if (v < -200) then
-						v = -200;
-					end
-					sliderIconXOffset:GetBaseSliderObject():SetValue(v);
-				end
-				sliderIconXOffset:GetEditboxObject():ClearFocus();
-			end
-		end);
-		sliderIconXOffset:GetLowTextObject():SetText("-200");
-		sliderIconXOffset:GetHighTextObject():SetText("200");
-		table.insert(GUIFrame.Categories[index], sliderIconXOffset);
-		table_insert(GUIFrame.OnDBChangedHandlers, function() sliderIconXOffset:GetBaseSliderObject():SetValue(db.IconXOffset); sliderIconXOffset:GetEditboxObject():SetText(tostring(db.IconXOffset)); end);
-
-		local sliderIconYOffset = LRD.CreateSlider();
-		sliderIconYOffset:SetHeight(100);
-		sliderIconYOffset:SetWidth(155);
-		sliderIconYOffset:SetParent(GUIFrame.outline);
-		sliderIconYOffset:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 200, -120);
-		sliderIconYOffset:GetTextObject():SetText(L["Icon Y-coord offset"]);
-		sliderIconYOffset:GetBaseSliderObject():SetValueStep(1);
-		sliderIconYOffset:GetBaseSliderObject():SetMinMaxValues(-200, 200);
-		sliderIconYOffset:GetBaseSliderObject():SetValue(db.IconYOffset);
-		sliderIconYOffset:GetBaseSliderObject():SetScript("OnValueChanged", function(_, value)
-			sliderIconYOffset:GetEditboxObject():SetText(tostring(math_ceil(value)));
-			db.IconYOffset = math_ceil(value);
-			ReallocateAllIcons(false);
-		end);
-		sliderIconYOffset:GetEditboxObject():SetText(tostring(db.IconYOffset));
-		sliderIconYOffset:GetEditboxObject():SetScript("OnEnterPressed", function()
-			if (sliderIconYOffset:GetEditboxObject():GetText() ~= "") then
-				local v = tonumber(sliderIconYOffset:GetEditboxObject():GetText());
-				if (v == nil) then
-					sliderIconYOffset:GetEditboxObject():SetText(tostring(db.IconYOffset));
-					addonTable.Print(L["Value must be a number"]);
-				else
-					if (v > 200) then
-						v = 200;
-					end
-					if (v < -200) then
-						v = -200;
-					end
-					sliderIconYOffset:GetBaseSliderObject():SetValue(v);
-				end
-				sliderIconYOffset:GetEditboxObject():ClearFocus();
-			end
-		end);
-		sliderIconYOffset:GetLowTextObject():SetText("-200");
-		sliderIconYOffset:GetHighTextObject():SetText("200");
-		table.insert(GUIFrame.Categories[index], sliderIconYOffset);
-		table_insert(GUIFrame.OnDBChangedHandlers, function() sliderIconYOffset:GetBaseSliderObject():SetValue(db.IconYOffset); sliderIconYOffset:GetEditboxObject():SetText(tostring(db.IconYOffset)); end);
-
-		-- // dropdownFrameAnchor
+		local sliderIconXOffset;
 		do
-			local dropdownFrameAnchor = CreateFrame("Frame", "NC.GUI.Fonts.DropdownFrameAnchor", GUIFrame, "UIDropDownMenuTemplate");
-			UIDropDownMenu_SetWidth(dropdownFrameAnchor, 140);
-			dropdownFrameAnchor:SetPoint("TOPLEFT", 155, -200);
+			sliderIconXOffset = LRD.CreateSlider();
+			sliderIconXOffset:SetParent(GUIFrame.outline);
+			sliderIconXOffset:SetPoint("TOP", sliderIconSpacing, "BOTTOM", 0, 45);
+			sliderIconXOffset:SetWidth(sliderIconSize:GetWidth());
+			sliderIconXOffset:GetTextObject():SetText(L["Icon X-coord offset"]);
+			sliderIconXOffset:GetBaseSliderObject():SetValueStep(1);
+			sliderIconXOffset:GetBaseSliderObject():SetMinMaxValues(-200, 200);
+			sliderIconXOffset:GetBaseSliderObject():SetValue(db.IconXOffset);
+			sliderIconXOffset:GetBaseSliderObject():SetScript("OnValueChanged", function(_, value)
+				sliderIconXOffset:GetEditboxObject():SetText(tostring(math_ceil(value)));
+				db.IconXOffset = math_ceil(value);
+				ReallocateAllIcons(false);
+			end);
+			sliderIconXOffset:GetEditboxObject():SetText(tostring(db.IconXOffset));
+			sliderIconXOffset:GetEditboxObject():SetScript("OnEnterPressed", function()
+				if (sliderIconXOffset:GetEditboxObject():GetText() ~= "") then
+					local v = tonumber(sliderIconXOffset:GetEditboxObject():GetText());
+					if (v == nil) then
+						sliderIconXOffset:GetEditboxObject():SetText(tostring(db.IconXOffset));
+						addonTable.Print(L["Value must be a number"]);
+					else
+						if (v > 200) then
+							v = 200;
+						end
+						if (v < -200) then
+							v = -200;
+						end
+						sliderIconXOffset:GetBaseSliderObject():SetValue(v);
+					end
+					sliderIconXOffset:GetEditboxObject():ClearFocus();
+				end
+			end);
+			sliderIconXOffset:GetLowTextObject():SetText("-200");
+			sliderIconXOffset:GetHighTextObject():SetText("200");
+			table.insert(GUIFrame.Categories[index], sliderIconXOffset);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() sliderIconXOffset:GetBaseSliderObject():SetValue(db.IconXOffset); sliderIconXOffset:GetEditboxObject():SetText(tostring(db.IconXOffset)); end);
+		end
+
+		local sliderIconYOffset;
+		do
+			sliderIconYOffset = LRD.CreateSlider();
+			sliderIconYOffset:SetWidth(sliderIconSize:GetWidth());
+			sliderIconYOffset:SetParent(GUIFrame.outline);
+			sliderIconYOffset:SetPoint("TOP", sliderIconXOffset, "BOTTOM", 0, 45);
+			sliderIconYOffset:GetTextObject():SetText(L["Icon Y-coord offset"]);
+			sliderIconYOffset:GetBaseSliderObject():SetValueStep(1);
+			sliderIconYOffset:GetBaseSliderObject():SetMinMaxValues(-200, 200);
+			sliderIconYOffset:GetBaseSliderObject():SetValue(db.IconYOffset);
+			sliderIconYOffset:GetBaseSliderObject():SetScript("OnValueChanged", function(_, value)
+				sliderIconYOffset:GetEditboxObject():SetText(tostring(math_ceil(value)));
+				db.IconYOffset = math_ceil(value);
+				ReallocateAllIcons(false);
+			end);
+			sliderIconYOffset:GetEditboxObject():SetText(tostring(db.IconYOffset));
+			sliderIconYOffset:GetEditboxObject():SetScript("OnEnterPressed", function()
+				if (sliderIconYOffset:GetEditboxObject():GetText() ~= "") then
+					local v = tonumber(sliderIconYOffset:GetEditboxObject():GetText());
+					if (v == nil) then
+						sliderIconYOffset:GetEditboxObject():SetText(tostring(db.IconYOffset));
+						addonTable.Print(L["Value must be a number"]);
+					else
+						if (v > 200) then
+							v = 200;
+						end
+						if (v < -200) then
+							v = -200;
+						end
+						sliderIconYOffset:GetBaseSliderObject():SetValue(v);
+					end
+					sliderIconYOffset:GetEditboxObject():ClearFocus();
+				end
+			end);
+			sliderIconYOffset:GetLowTextObject():SetText("-200");
+			sliderIconYOffset:GetHighTextObject():SetText("200");
+			table.insert(GUIFrame.Categories[index], sliderIconYOffset);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() sliderIconYOffset:GetBaseSliderObject():SetValue(db.IconYOffset); sliderIconYOffset:GetEditboxObject():SetText(tostring(db.IconYOffset)); end);
+		end
+
+		local dropdownFrameAnchor;
+		do
+			dropdownFrameAnchor = CreateFrame("Frame", "NC.GUI.Fonts.DropdownFrameAnchor", GUIFrame, "UIDropDownMenuTemplate");
+			UIDropDownMenu_SetWidth(dropdownFrameAnchor, 310);
+			dropdownFrameAnchor:SetPoint("TOP", sliderIconYOffset, "BOTTOM", 0, 45);
 			local info = {};
 			dropdownFrameAnchor.initialize = function()
 				wipe(info);
@@ -1606,11 +1610,11 @@ do
 			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownFrameAnchor:GetName() .. "Text"]:SetText(frameAnchorsLocalization[db.CDFrameAnchor]); end);
 		end
 
-		-- // dropdownFrameAnchorToParent
+		local dropdownFrameAnchorToParent
 		do
-			local dropdownFrameAnchorToParent = CreateFrame("Frame", "NC.GUI.Fonts.DropdownFrameAnchorToParent", GUIFrame, "UIDropDownMenuTemplate");
-			UIDropDownMenu_SetWidth(dropdownFrameAnchorToParent, 140);
-			dropdownFrameAnchorToParent:SetPoint("TOPLEFT", 315, -200);
+			dropdownFrameAnchorToParent = CreateFrame("Frame", "NC.GUI.Fonts.DropdownFrameAnchorToParent", GUIFrame, "UIDropDownMenuTemplate");
+			UIDropDownMenu_SetWidth(dropdownFrameAnchorToParent, 310);
+			dropdownFrameAnchorToParent:SetPoint("TOP", dropdownFrameAnchor, "BOTTOM", 0, -5);
 			local info = {};
 			dropdownFrameAnchorToParent.initialize = function()
 				wipe(info);
@@ -1634,6 +1638,77 @@ do
 			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownFrameAnchorToParent:GetName() .. "Text"]:SetText(frameAnchorsLocalization[db.CDFrameAnchorToParent]); end);
 		end
 
+		local dropdownIconSortMode;
+		do
+			local sortModes = {
+				[SORT_MODE_NONE] = "none",
+				[SORT_MODE_TRINKET_INTERRUPT_OTHER] = "trinkets, then interrupts, then other spells",
+				[SORT_MODE_INTERRUPT_TRINKET_OTHER] = "interrupts, then trinkets, then other spells",
+				[SORT_MODE_TRINKET_OTHER] = "trinkets, then other spells",
+				[SORT_MODE_INTERRUPT_OTHER] = "interrupts, then other spells",
+			};
+
+			dropdownIconSortMode = CreateFrame("Frame", "NC.GUI.General.DropdownIconSortMode", GUIFrame, "UIDropDownMenuTemplate");
+			UIDropDownMenu_SetWidth(dropdownIconSortMode, 310);
+			dropdownIconSortMode:SetPoint("TOP", dropdownFrameAnchorToParent, "BOTTOM", 0, -5);
+			local info = {};
+			dropdownIconSortMode.initialize = function()
+				wipe(info);
+				for sortMode, sortModeL in pairs(sortModes) do
+					info.text = sortModeL;
+					info.value = sortMode;
+					info.func = function(self)
+						db.IconSortMode = self.value;
+						_G[dropdownIconSortMode:GetName().."Text"]:SetText(self:GetText());
+					end
+					info.checked = (db.IconSortMode == info.value);
+					UIDropDownMenu_AddButton(info);
+				end
+			end
+			_G[dropdownIconSortMode:GetName().."Text"]:SetText(sortModes[db.IconSortMode]);
+			dropdownIconSortMode.text = dropdownIconSortMode:CreateFontString("NC.GUI.General.DropdownIconSortMode.Label", "ARTWORK", "GameFontNormalSmall");
+			dropdownIconSortMode.text:SetPoint("LEFT", 20, 15);
+			dropdownIconSortMode.text:SetText(L["general.sort-mode"]);
+			table.insert(GUIFrame.Categories[index], dropdownIconSortMode);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownIconSortMode:GetName().."Text"]:SetText(sortModes[db.IconSortMode]); end);
+		end
+
+		local dropdownIconGrowDirection;
+		do
+
+			local iconGrowDirections = {
+				[ICON_GROW_DIRECTION_RIGHT] = L["icon-grow-direction:right"],
+				[ICON_GROW_DIRECTION_LEFT] = L["icon-grow-direction:left"],
+				[ICON_GROW_DIRECTION_UP] = L["icon-grow-direction:up"],
+				[ICON_GROW_DIRECTION_DOWN] = L["icon-grow-direction:down"],
+			};
+
+			dropdownIconGrowDirection = CreateFrame("Frame", "NC.GUI.General.DropdownIconGrowDirection", GUIFrame, "UIDropDownMenuTemplate");
+			UIDropDownMenu_SetWidth(dropdownIconGrowDirection, 310);
+			dropdownIconGrowDirection:SetPoint("TOP", dropdownIconSortMode, "BOTTOM", 0, -5);
+			local info = {};
+			dropdownIconGrowDirection.initialize = function()
+				wipe(info);
+				for direction, directionL in pairs(iconGrowDirections) do
+					info.text = directionL;
+					info.value = direction;
+					info.func = function(self)
+						db.IconGrowDirection = self.value;
+						_G[dropdownIconGrowDirection:GetName().."Text"]:SetText(self:GetText());
+						ReallocateAllIcons(false);
+					end
+					info.checked = (db.IconGrowDirection == info.value);
+					UIDropDownMenu_AddButton(info);
+				end
+			end
+			_G[dropdownIconGrowDirection:GetName().."Text"]:SetText(iconGrowDirections[db.IconGrowDirection]);
+			dropdownIconGrowDirection.text = dropdownIconGrowDirection:CreateFontString("NC.GUI.General.DropdownIconGrowDirection.Label", "ARTWORK", "GameFontNormalSmall");
+			dropdownIconGrowDirection.text:SetPoint("LEFT", 20, 15);
+			dropdownIconGrowDirection.text:SetText(L["options:general:icon-grow-direction"]);
+			table.insert(GUIFrame.Categories[index], dropdownIconGrowDirection);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownIconGrowDirection:GetName().."Text"]:SetText(iconGrowDirections[db.IconGrowDirection]); end);
+		end
+
 		-- // checkBoxFullOpacityAlways
 		do
 			checkBoxFullOpacityAlways = LRD.CreateCheckBox();
@@ -1644,7 +1719,7 @@ do
 				ReallocateAllIcons(true);
 			end);
 			checkBoxFullOpacityAlways:SetParent(GUIFrame.outline);
-			checkBoxFullOpacityAlways:SetPoint("TOPLEFT", 155, -320);
+			checkBoxFullOpacityAlways:SetPoint("TOPLEFT", dropdownIconGrowDirection, "BOTTOMLEFT", 0, -10);
 			checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways);
 			table.insert(GUIFrame.Categories[index], checkBoxFullOpacityAlways);
 			table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxFullOpacityAlways:SetChecked(db.FullOpacityAlways); end);
@@ -1712,77 +1787,6 @@ do
 			checkboxCooldownTooltip:SetPoint("TOPLEFT", checkboxShowInactiveCD, "BOTTOMLEFT", 0, 0);
 			table_insert(GUIFrame.Categories[index], checkboxCooldownTooltip);
 			table_insert(GUIFrame.OnDBChangedHandlers, function() checkboxCooldownTooltip:SetChecked(db.ShowCooldownTooltip); end);
-		end
-
-		-- // dropdownIconSortMode
-		do
-			local sortModes = {
-				[SORT_MODE_NONE] = "none",
-				[SORT_MODE_TRINKET_INTERRUPT_OTHER] = "trinkets, then interrupts, then other spells",
-				[SORT_MODE_INTERRUPT_TRINKET_OTHER] = "interrupts, then trinkets, then other spells",
-				[SORT_MODE_TRINKET_OTHER] = "trinkets, then other spells",
-				[SORT_MODE_INTERRUPT_OTHER] = "interrupts, then other spells",
-			};
-
-			local dropdownIconSortMode = CreateFrame("Frame", "NC.GUI.General.DropdownIconSortMode", GUIFrame, "UIDropDownMenuTemplate");
-			UIDropDownMenu_SetWidth(dropdownIconSortMode, 300);
-			dropdownIconSortMode:SetPoint("TOPLEFT", 155, -280);
-			local info = {};
-			dropdownIconSortMode.initialize = function()
-				wipe(info);
-				for sortMode, sortModeL in pairs(sortModes) do
-					info.text = sortModeL;
-					info.value = sortMode;
-					info.func = function(self)
-						db.IconSortMode = self.value;
-						_G[dropdownIconSortMode:GetName().."Text"]:SetText(self:GetText());
-					end
-					info.checked = (db.IconSortMode == info.value);
-					UIDropDownMenu_AddButton(info);
-				end
-			end
-			_G[dropdownIconSortMode:GetName().."Text"]:SetText(sortModes[db.IconSortMode]);
-			dropdownIconSortMode.text = dropdownIconSortMode:CreateFontString("NC.GUI.General.DropdownIconSortMode.Label", "ARTWORK", "GameFontNormalSmall");
-			dropdownIconSortMode.text:SetPoint("LEFT", 20, 15);
-			dropdownIconSortMode.text:SetText(L["general.sort-mode"]);
-			table.insert(GUIFrame.Categories[index], dropdownIconSortMode);
-			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownIconSortMode:GetName().."Text"]:SetText(sortModes[db.IconSortMode]); end);
-		end
-
-		-- // dropdownIconGrowDirection
-		do
-
-			local iconGrowDirections = {
-				[ICON_GROW_DIRECTION_RIGHT] = L["icon-grow-direction:right"],
-				[ICON_GROW_DIRECTION_LEFT] = L["icon-grow-direction:left"],
-				[ICON_GROW_DIRECTION_UP] = L["icon-grow-direction:up"],
-				[ICON_GROW_DIRECTION_DOWN] = L["icon-grow-direction:down"],
-			};
-
-			local dropdownIconGrowDirection = CreateFrame("Frame", "NC.GUI.General.DropdownIconGrowDirection", GUIFrame, "UIDropDownMenuTemplate");
-			UIDropDownMenu_SetWidth(dropdownIconGrowDirection, 300);
-			dropdownIconGrowDirection:SetPoint("TOPLEFT", 155, -240);
-			local info = {};
-			dropdownIconGrowDirection.initialize = function()
-				wipe(info);
-				for direction, directionL in pairs(iconGrowDirections) do
-					info.text = directionL;
-					info.value = direction;
-					info.func = function(self)
-						db.IconGrowDirection = self.value;
-						_G[dropdownIconGrowDirection:GetName().."Text"]:SetText(self:GetText());
-						ReallocateAllIcons(false);
-					end
-					info.checked = (db.IconGrowDirection == info.value);
-					UIDropDownMenu_AddButton(info);
-				end
-			end
-			_G[dropdownIconGrowDirection:GetName().."Text"]:SetText(iconGrowDirections[db.IconGrowDirection]);
-			dropdownIconGrowDirection.text = dropdownIconGrowDirection:CreateFontString("NC.GUI.General.DropdownIconGrowDirection.Label", "ARTWORK", "GameFontNormalSmall");
-			dropdownIconGrowDirection.text:SetPoint("LEFT", 20, 15);
-			dropdownIconGrowDirection.text:SetText(L["options:general:icon-grow-direction"]);
-			table.insert(GUIFrame.Categories[index], dropdownIconGrowDirection);
-			table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownIconGrowDirection:GetName().."Text"]:SetText(iconGrowDirections[db.IconGrowDirection]); end);
 		end
 
 	end
