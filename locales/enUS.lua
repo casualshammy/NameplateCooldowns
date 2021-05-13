@@ -2,7 +2,12 @@
 -- luacheck: globals LibStub
 
 local L = LibStub("AceLocale-3.0"):NewLocale("NameplateCooldowns", "enUS", true);
-L = L or {}
+L = L or {} -- luacheck: ignore
+--[===[@non-debug@
+@localization(locale="enUS", format="lua_additive_table", handle-unlocalized="english", table-name="L")@
+--@end-non-debug@]===]
+--@debug@
+L = L or {} -- luacheck: ignore
 L["anchor-point:bottom"] = "Bottom"
 L["anchor-point:bottomleft"] = "Bottom left"
 L["anchor-point:bottomright"] = "Bottom right"
@@ -14,9 +19,7 @@ L["anchor-point:topleft"] = "Top left"
 L["anchor-point:topright"] = "Top right"
 L["anchor-point:x-offset"] = "X offset"
 L["anchor-point:y-offset"] = "Y offset"
-L["chat:addon-is-disabled"] = "Addon is disabled"
 L["chat:addon-is-disabled-note"] = "Please note: this addon is disabled. You can enable it in options dialog (/nc)"
-L["chat:addon-is-enabled"] = "Addon is enabled"
 L["chat:default-spell-is-added-to-ignore-list"] = "Default spell is added to ignore list: %s. You will not receive cooldown time updates for this spell."
 L["chat:enable-only-for-target-nameplate"] = "Cooldowns will be shown on target nameplate only"
 L["chat:print-updated-spells"] = "%s: your cooldown: %s sec, new cooldown: %s sec"
@@ -27,8 +30,6 @@ L["Current profile: [%s]"] = "Current profile: [%s]"
 L["Data from '%s' has been successfully copied to '%s'"] = "Data from '%s' has been successfully copied to '%s'"
 L["Delete"] = "Delete"
 L["Delete profile:"] = "Delete profile:"
-L["Disable test mode"] = "Disable test mode"
-L["Enable test mode (need at least one visible nameplate)"] = "Enable test mode (need at least one visible nameplate)"
 L["Filters"] = "Filters"
 L["filters.instance-types"] = [=[Set the visibility of the cooldowns
 in different types of locations]=]
@@ -60,8 +61,6 @@ L["options:category:spells"] = "Spells"
 L["options:category:text"] = "Text"
 L["options:general:anchor-point"] = "Anchor point"
 L["options:general:anchor-point-to-parent"] = "Anchor point (to parent)"
-L["options:general:disable-addon-btn"] = "Disable addon"
-L["options:general:enable-addon-btn"] = "Enable addon"
 L["options:general:enable-only-for-target-nameplate"] = "Show the cooldowns on the current target nameplate only"
 L["options:general:full-opacity-always"] = "Icons are always completely opaque"
 L["options:general:full-opacity-always:tooltip"] = [=[If this option is enabled, the icons will always be completely opaque. If not, the opacity will be the same as the health bar]=]
@@ -75,7 +74,6 @@ L["options:general:show-inactive-cd"] = "Show inactive cooldowns"
 L["options:general:show-inactive-cd:tooltip"] = [=[Pay attention: you will NOT be able to see all available cooldowns!
 You will see ONLY those cooldowns that foe has already used]=]
 L["options:general:space-between-icons"] = "Space between icons (px)"
-L["options:profiles:open-profiles-dialog"] = "Open profiles dialog"
 L["options:spells:add-new-spell"] = "Add new spell (name or id):"
 L["options:spells:add-spell"] = "Add spell"
 L["options:spells:click-to-select-spell"] = "Click to select spell"
@@ -102,7 +100,6 @@ L["options:timer-text:scale-font-size"] = [=[Scale font size
 according to
 icon size]=]
 L["Profile '%s' has been successfully deleted"] = "Profile '%s' has been successfully deleted"
-L["Profiles"] = "Profiles"
 L["Show border around interrupts"] = "Show border around interrupts"
 L["Show border around trinkets"] = "Show border around trinkets"
 L["Unknown spell: %s"] = "Unknown spell: %s"
@@ -110,3 +107,6 @@ L["Value must be a number"] = "Value must be a number"
 L["options:spells:custom-cooldown"] = "Custom cooldown value"
 L["options:spells:custom-cooldown-value"] = "Cooldown (sec)"
 L["options:general:show-cooldown-tooltip"] = "Show cooldown tooltip"
+L["options:general:test-mode"] = "Test mode"
+L["options:profiles"] = "Profiles"
+--@end-debug@
