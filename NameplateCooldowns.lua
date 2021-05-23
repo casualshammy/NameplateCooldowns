@@ -5,8 +5,6 @@
 -- luacheck: globals InterfaceOptionsFrame_OpenToCategory GetSpellInfo GameFontHighlightSmall hooksecurefunc ALL GameTooltip FillLocalizedClassList
 -- luacheck: globals OTHER PlaySound SOUNDKIT COMBATLOG_OBJECT_REACTION_HOSTILE CombatLogGetCurrentEventInfo IsInInstance strsplit UnitName GetRealmName
 
-if (select(4, GetBuildInfo()) < 80200) then return end
-
 local _, addonTable = ...;
 local Interrupts = addonTable.Interrupts;
 local Trinkets = addonTable.Trinkets;
@@ -177,16 +175,26 @@ do
 		wipe(AllCooldowns);
 		for class, cds in pairs(addonTable.CDs) do
 			for spellId, cd in pairs(cds) do
-				AllCooldowns[spellId] = cd;
-				if (db.SpellCDs[spellId] == nil) then
-					db.SpellCDs[spellId] = GetDefaultDBEntryForSpell();
-					addonTable.Print(string_format(L["New spell has been added: %s"].." (%s)", GetSpellLink(spellId), class));
+				if (SpellNameByID[spellId] ~= nil) then
+					AllCooldowns[spellId] = cd;
+					if (db.SpellCDs[spellId] == nil) then
+						db.SpellCDs[spellId] = GetDefaultDBEntryForSpell();
+						addonTable.Print(string_format(L["New spell has been added: %s"].." (%s)", GetSpellLink(spellId) or SpellNameByID[spellId], class));
+					end
 				end
 			end
 		end
 		for spellID in pairs(AllCooldowns) do
 			if (db.SpellCDs[spellID] ~= nil and db.SpellCDs[spellID].customCD ~= nil) then
 				AllCooldowns[spellID] = db.SpellCDs[spellID].customCD;
+			end
+		end
+		
+		-- delete invalid spells
+		for spellId, spellData in pairs(db.SpellCDs) do
+			if (SpellNameByID[spellId] == nil) then
+				db.SpellCDs[spellId] = nil;
+				print("Spell with id:" .. tostring(spellId) .. " seems to be invalid, removing from db...");
 			end
 		end
 	end
@@ -1996,29 +2004,31 @@ do
 			local t = { };
 			for class, cds in pairs(addonTable.CDs) do
 				for spellID in pairs(cds) do
-					if (selectedClass == addonTable.ALL_CLASSES or selectedClass == class) then
-						local spellInfo = db.SpellCDs[spellID] or GetDefaultDBEntryForSpell();
-						table_insert(t, {
-							icon = SpellTextureByID[spellID],
-							text = SpellNameByID[spellID],
-							info = spellID,
-							disabled = not spellInfo.enabled,
-							onEnter = function(self)
-								GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-								GameTooltip:SetSpellByID(spellID);
-								GameTooltip:AddLine("NC CD: " .. AllCooldowns[spellID]);
-								GameTooltip:Show();
-							end,
-							onLeave = HideGameTooltip,
-							func = OnSpellSelected,
-							checkBoxEnabled = true,
-							checkBoxState = spellInfo.enabled,
-							onCheckBoxClick = function(checkbox)
-								db.SpellCDs[spellID].enabled = checkbox:GetChecked();
-								ReallocateAllIcons(true);
-								dropdownMenuSpells:GetButtonByText(SpellNameByID[spellID]):SetGray(not checkbox:GetChecked());
-							end,
-						});
+					if (SpellNameByID[spellID] ~= nil) then
+						if (selectedClass == addonTable.ALL_CLASSES or selectedClass == class) then
+							local spellInfo = db.SpellCDs[spellID] or GetDefaultDBEntryForSpell();
+							table_insert(t, {
+								icon = SpellTextureByID[spellID],
+								text = SpellNameByID[spellID],
+								info = spellID,
+								disabled = not spellInfo.enabled,
+								onEnter = function(self)
+									GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+									GameTooltip:SetSpellByID(spellID);
+									GameTooltip:AddLine("NC CD: " .. AllCooldowns[spellID]);
+									GameTooltip:Show();
+								end,
+								onLeave = HideGameTooltip,
+								func = OnSpellSelected,
+								checkBoxEnabled = true,
+								checkBoxState = spellInfo.enabled,
+								onCheckBoxClick = function(checkbox)
+									db.SpellCDs[spellID].enabled = checkbox:GetChecked();
+									ReallocateAllIcons(true);
+									dropdownMenuSpells:GetButtonByText(SpellNameByID[spellID]):SetGray(not checkbox:GetChecked());
+								end,
+							});
+						end
 					end
 				end
 			end
@@ -2432,3 +2442,4 @@ do
 	end
 
 end
+
