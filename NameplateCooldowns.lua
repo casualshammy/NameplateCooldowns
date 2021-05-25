@@ -2032,7 +2032,13 @@ do
 					end
 				end
 			end
-			table_sort(t, function(item1, item2) return item1.text < item2.text; end);
+			table_sort(t, function(item1, item2)
+				if (item1.text == item2.text) then
+					return item1.info < item2.info;
+				else
+					return item1.text < item2.text;
+				end
+			end);
 			return t;
 		end
 
