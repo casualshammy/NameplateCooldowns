@@ -117,36 +117,39 @@ addonTable.CDs = {
 		[33933] = 30 - 4,				-- Взрывная волна https://ru.tbc.wowhead.com/spell=33933
 	},
 	["DRUID"] = {
-		-- // reviewed 2021/02/15
-		[1850] = 120,							-- Dash https://ru.tbc.wowhead.com/spell=1850
-		[20484] = 600,							-- Rebirth https://ru.tbc.wowhead.com/spell=20484
-		[209749] = 30,							-- Faerie Swarm https://ru.tbc.wowhead.com/spell=209749
-		[202246] = 25,							-- Overrun https://ru.tbc.wowhead.com/spell=202246
-		[22812] = 60 - 60/100*33 - 60/100*10,	-- Barkskin https://ru.tbc.wowhead.com/spell=22812
-		[194223] = 180,							-- Celestial Alignment https://ru.tbc.wowhead.com/spell=194223
-		[78675] = 60-20,						-- Solar Beam https://ru.tbc.wowhead.com/spell=78675
-		[106951] = 180,							-- Berserk https://ru.tbc.wowhead.com/spell=106951
-		[50334] = 180,							-- Berserk https://ru.tbc.wowhead.com/spell=50334
-		[22570] = 20,							-- Maim https://ru.tbc.wowhead.com/spell=22570
-		[61336] = 180,							-- Survival Instincts x2 https://ru.tbc.wowhead.com/spell=61336
-		[102342] = 90,							-- Ironbark https://ru.tbc.wowhead.com/spell=102342
-		[740] = 180 - 60,						-- Tranquility https://ru.tbc.wowhead.com/spell=740
-		[102793] = 60,							-- Ursol's Vortex https://ru.tbc.wowhead.com/spell=102793
-		[102560] = 180,							-- Incarnation: Chosen of Elune https://ru.tbc.wowhead.com/spell=102560
-		[108238] = 90,							-- Renewal https://ru.tbc.wowhead.com/spell=108238
-		[102543] = 180,							-- Incarnation: King of the Jungle https://ru.tbc.wowhead.com/spell=102543
-		[102558] = 180,							-- Incarnation: Guardian of Ursoc https://ru.tbc.wowhead.com/spell=102558
-		[33891] = 180,							-- Incarnation: Tree of Life https://ru.tbc.wowhead.com/spell=33891
-		[106839] = 15,							-- Skull Bash https://ru.tbc.wowhead.com/spell=106839
-		[5211]	= 60 - 60/100*10,				-- Mighty Bash https://ru.tbc.wowhead.com/spell=5211
-		[132469] = 30,							-- Typhoon https://ru.tbc.wowhead.com/spell=132469/typhoon https://ru.tbc.wowhead.com/spell=132469
-		[102359] = 30 - 30/100*10,				-- Mass Entanglement https://ru.tbc.wowhead.com/spell=102359/mass-entanglement https://ru.tbc.wowhead.com/spell=102359
-		[99] = 30,								-- Парализующий рык https://ru.tbc.wowhead.com/spell=99
-		[319454] = 300,							-- Сердце дикой природы https://ru.tbc.wowhead.com/spell=319454
-		[323764] = 120,							-- Convoke the Spirits https://ru.tbc.wowhead.com/spell=323764/convoke-the-spirits
-		[323546] = 180,							-- Ravenous Frenzy https://ru.tbc.wowhead.com/spell=323546/ravenous-frenzy
-		[22842] = 36,							-- Frenzied Regeneration https://ru.tbc.wowhead.com/spell=22842/frenzied-regeneration
-		[88423] = 8,							-- Nature's Cure https://ru.tbc.wowhead.com/spell=88423/natures-cure
+		-- // reviewed 2021/05/26
+		[22812] = 60,	-- Дубовая кожа https://ru.tbc.wowhead.com/spell=22812
+		[5211] = 60,	-- Оглушить https://ru.tbc.wowhead.com/spell=5211
+		[6798] = 60,	-- Оглушить https://ru.tbc.wowhead.com/spell=6798
+		[8983] = 60,	-- Оглушить https://ru.tbc.wowhead.com/spell=8983
+		[20484] = 1200 - 300,	-- Возрождение https://ru.tbc.wowhead.com/spell=20484
+		[20739] = 1200 - 300,	-- Возрождение https://ru.tbc.wowhead.com/spell=20739
+		[20742] = 1200 - 300,	-- Возрождение https://ru.tbc.wowhead.com/spell=20742
+		[20747] = 1200 - 300,	-- Возрождение https://ru.tbc.wowhead.com/spell=20747
+		[20748] = 1200 - 300,	-- Возрождение https://ru.tbc.wowhead.com/spell=20748
+		[26994] = 1200 - 300,	-- Возрождение https://ru.tbc.wowhead.com/spell=26994
+		[740] = 600 - 300,		-- Спокойствие https://ru.tbc.wowhead.com/spell=740
+		[8918] = 600 - 300,		-- Спокойствие https://ru.tbc.wowhead.com/spell=8918
+		[9862] = 600 - 300,		-- Спокойствие https://ru.tbc.wowhead.com/spell=9862
+		[9863] = 600 - 300,		-- Спокойствие https://ru.tbc.wowhead.com/spell=9863
+		[26983] = 600 - 300,	-- Спокойствие https://ru.tbc.wowhead.com/spell=26983
+		[22842] = 180,			-- Неистовое восстановление	https://ru.tbc.wowhead.com/spell=22842
+		[22895] = 180,			-- Неистовое восстановление	https://ru.tbc.wowhead.com/spell=22895
+		[22896] = 180,			-- Неистовое восстановление	https://ru.tbc.wowhead.com/spell=22896
+		[26999] = 180,			-- Неистовое восстановление	https://ru.tbc.wowhead.com/spell=26999
+		[33831] = 180,			-- Сила Природы https://ru.tbc.wowhead.com/spell=33831
+		[16979] = 15,			-- Звериная атака https://ru.tbc.wowhead.com/spell=16979
+		[17116] = 180 - 24,		-- Природная стремительность https://ru.tbc.wowhead.com/spell=17116
+		[16689] = 60,			-- Природный захват https://ru.tbc.wowhead.com/spell=16689
+		[16810] = 60,			-- Природный захват https://ru.tbc.wowhead.com/spell=16810
+		[16811] = 60,			-- Природный захват https://ru.tbc.wowhead.com/spell=16811
+		[16812] = 60,			-- Природный захват https://ru.tbc.wowhead.com/spell=16812
+		[16813] = 60,			-- Природный захват https://ru.tbc.wowhead.com/spell=16813
+		[17329] = 60,			-- Природный захват https://ru.tbc.wowhead.com/spell=17329
+		[27009] = 60,			-- Природный захват https://ru.tbc.wowhead.com/spell=27009
+		[1850] = 300,			-- Порыв https://ru.tbc.wowhead.com/spell=1850
+		[9821] = 300,			-- Порыв https://ru.tbc.wowhead.com/spell=9821
+		[33357] = 300,			-- Порыв https://ru.tbc.wowhead.com/spell=33357
 	},
 	["PALADIN"] = {
 		-- // reviewed 2021/02/12
@@ -319,6 +322,8 @@ addonTable.Interrupts = {
 	[19244] = true,	-- Запрет чар https://ru.tbc.wowhead.com/spell=19244
 	[19647] = true,	-- Запрет чар https://ru.tbc.wowhead.com/spell=19647
 	[2139] = true,	-- Антимагия https://ru.tbc.wowhead.com/spell=2139
+	[16979] = true,	-- Звериная атака https://ru.tbc.wowhead.com/spell=16979
+
 
 	[47528] = true,	-- // Mind Freeze
 	[106839] = true,	-- // Skull Bash

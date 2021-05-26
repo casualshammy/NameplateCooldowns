@@ -189,9 +189,9 @@ do
 				AllCooldowns[spellID] = db.SpellCDs[spellID].customCD;
 			end
 		end
-		
+
 		-- delete invalid spells
-		for spellId, spellData in pairs(db.SpellCDs) do
+		for spellId in pairs(db.SpellCDs) do
 			if (SpellNameByID[spellId] == nil) then
 				db.SpellCDs[spellId] = nil;
 				print("Spell with id:" .. tostring(spellId) .. " seems to be invalid, removing from db...");
