@@ -118,10 +118,10 @@ addonTable.CDs = {
 	},
 	["DRUID"] = {
 		-- // reviewed 2021/05/26
-		[22812] = 60,	-- Дубовая кожа https://ru.tbc.wowhead.com/spell=22812
-		[5211] = 60,	-- Оглушить https://ru.tbc.wowhead.com/spell=5211
-		[6798] = 60,	-- Оглушить https://ru.tbc.wowhead.com/spell=6798
-		[8983] = 60,	-- Оглушить https://ru.tbc.wowhead.com/spell=8983
+		[22812] = 60,			-- Дубовая кожа https://ru.tbc.wowhead.com/spell=22812
+		[5211] = 60,			-- Оглушить https://ru.tbc.wowhead.com/spell=5211
+		[6798] = 60,			-- Оглушить https://ru.tbc.wowhead.com/spell=6798
+		[8983] = 60,			-- Оглушить https://ru.tbc.wowhead.com/spell=8983
 		[20484] = 1200 - 300,	-- Возрождение https://ru.tbc.wowhead.com/spell=20484
 		[20739] = 1200 - 300,	-- Возрождение https://ru.tbc.wowhead.com/spell=20739
 		[20742] = 1200 - 300,	-- Возрождение https://ru.tbc.wowhead.com/spell=20742
@@ -152,33 +152,33 @@ addonTable.CDs = {
 		[33357] = 300,			-- Порыв https://ru.tbc.wowhead.com/spell=33357
 	},
 	["PALADIN"] = {
-		-- // reviewed 2021/02/12
-		[642] = 300 - 300/100*30,		-- Божественный щит https://ru.tbc.wowhead.com/spell=642
-		[1044] = 25,					-- Благословенная свобода https://ru.tbc.wowhead.com/spell=1044
-		[633] = 600 - 600/100*30,		-- Возложение рук https://ru.tbc.wowhead.com/spell=633
-		[216331] = 120,					-- Рыцарь-мститель https://ru.tbc.wowhead.com/spell=216331
-		[228049] = 180,					-- Страж забытой королевы https://ru.tbc.wowhead.com/spell=228049
-		[210256] = 45,					-- Благословение святилища https://ru.tbc.wowhead.com/spell=210256
-		[1022] = 300,					-- Благословение защиты https://ru.tbc.wowhead.com/spell=1022
-		[31821] = 180,					-- Владение аурами https://ru.tbc.wowhead.com/spell=31821
-		[498] = 60,						-- Божественная защита https://ru.tbc.wowhead.com/spell=498
-		[6940] = 120,					-- Жертвенное благословение https://ru.tbc.wowhead.com/spell=6940
-		[853] = 60,						-- Молот правосудия https://ru.tbc.wowhead.com/spell=853
-		[190784] = 60,					-- Божественный скакун https://ru.tbc.wowhead.com/spell=190784
-		[31884] = 180-60,				-- Гнев карателя https://ru.tbc.wowhead.com/spell=31884
-		[86659] = 300,					-- Защитник древних королей https://ru.tbc.wowhead.com/spell=86659
-		[31850] = 120 - 120/100*30,		-- Ревностный защитник https://ru.tbc.wowhead.com/spell=31850
-		[96231] = 15,					-- Укор https://ru.tbc.wowhead.com/spell=96231
-		[105809] = 180,					-- Святой каратель https://ru.tbc.wowhead.com/spell=105809
-		[204018] = 180,					-- Благословение защиты от заклинаний https://ru.tbc.wowhead.com/spell=204018
-		[205191] = 60,					-- Око за око https://ru.tbc.wowhead.com/spell=205191
-		[231895] = 120,					-- Священная война https://ru.tbc.wowhead.com/spell=231895
-		[115750] = 90,					-- Слепящий свет https://ru.tbc.wowhead.com/spell=115750
-		[316958] = 240,					-- Ashen Hallow https://ru.tbc.wowhead.com/spell=316958/ashen-hallow
-		[184662] = 120-120/100*30,		-- Shield of Vengeance https://ru.tbc.wowhead.com/spell=184662/shield-of-vengeance
-		[210294] = 30,					-- Divine Favor https://ru.tbc.wowhead.com/spell=210294/divine-favor
-		[304971] = 60,					-- Divine Toll https://ru.tbc.wowhead.com/spell=304971/divine-toll
-		[4987] = 8,						-- Cleanse https://ru.tbc.wowhead.com/spell=4987/cleanse
+		-- // reviewed 2021/05/27
+		[31884] = 180,					-- Гнев карателя https://ru.tbc.wowhead.com/spell=31884
+		[19752] = 3600,					-- Божественное вмешательство https://ru.tbc.wowhead.com/spell=19752
+		[642] = 300 - 60,				-- Божественный щит https://ru.tbc.wowhead.com/spell=642
+		[1020] = 300 - 60,				-- Божественный щит https://ru.tbc.wowhead.com/spell=1020
+		[1044] = 25,					-- Благословение cвободы https://ru.tbc.wowhead.com/spell=1044
+		[498] = 300,					-- Божественная защита https://ru.tbc.wowhead.com/spell=498
+		[5573] = 300,					-- Божественная защита https://ru.tbc.wowhead.com/spell=5573
+		[1022] = 300 - 120,				-- Благословение защиты https://ru.tbc.wowhead.com/spell=1022
+		[5599] = 300 - 120,				-- Благословение защиты https://ru.tbc.wowhead.com/spell=5599
+		[10278] = 300 - 120,			-- Благословение защиты https://ru.tbc.wowhead.com/spell=10278
+		[10326] = 30,					-- Изгнание зла https://ru.tbc.wowhead.com/spell=10326
+		[6940] = 30,					-- Благословение жертвенности https://ru.tbc.wowhead.com/spell=6940
+		[20729] = 30,					-- Благословение жертвенности https://ru.tbc.wowhead.com/spell=20729
+		[27147] = 30,					-- Благословение жертвенности https://ru.tbc.wowhead.com/spell=27147
+		[27148] = 30,					-- Благословение жертвенности https://ru.tbc.wowhead.com/spell=27148
+		[853] = 60 - 15 - 10,			-- Молот правосудия https://ru.tbc.wowhead.com/spell=853
+		[5588] = 60 - 15 - 10,			-- Молот правосудия https://ru.tbc.wowhead.com/spell=5588
+		[5589] = 60 - 15 - 10,			-- Молот правосудия https://ru.tbc.wowhead.com/spell=5589
+		[10308] = 60 - 15 - 10,			-- Молот правосудия https://ru.tbc.wowhead.com/spell=10308
+		[633] = 3600 - 20*60 - 12*60,	-- Возложение рук https://ru.tbc.wowhead.com/spell=633
+		[2800] = 3600 - 20*60 - 12*60,	-- Возложение рук https://ru.tbc.wowhead.com/spell=2800
+		[10310] = 3600 - 20*60 - 12*60,	-- Возложение рук https://ru.tbc.wowhead.com/spell=10310
+		[27154] = 3600 - 20*60 - 12*60,	-- Возложение рук https://ru.tbc.wowhead.com/spell=27154
+		[2878] = 30,					-- Изгнание нежити https://ru.tbc.wowhead.com/spell=2878
+		[5627] = 30,					-- Изгнание нежити https://ru.tbc.wowhead.com/spell=5627
+		[20066] = 60,					-- Покаяние https://ru.tbc.wowhead.com/spell=20066
 	},
 	["PRIEST"] = {
 		-- // reviewed 2021/02/16
@@ -358,12 +358,16 @@ do
 
 	local allHunterSpells = {};
 	for spellId in pairs(addonTable.CDs.HUNTER) do
-		allHunterSpells[#allHunterSpells + 1] = spellId;
+		if (spellId ~= 23989) then
+			allHunterSpells[#allHunterSpells + 1] = spellId;
+		end
 	end
 
 	local allMageSpells = {};
 	for spellId in pairs(addonTable.CDs.MAGE) do
-		allMageSpells[#allMageSpells + 1] = spellId;
+		if (spellId ~= 12472) then
+			allMageSpells[#allMageSpells + 1] = spellId;
+		end
 	end
 
 	addonTable.Reductions = {
