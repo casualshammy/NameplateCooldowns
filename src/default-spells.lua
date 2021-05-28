@@ -181,35 +181,45 @@ addonTable.CDs = {
 		[20066] = 60,					-- Покаяние https://ru.tbc.wowhead.com/spell=20066
 	},
 	["PRIEST"] = {
-		-- // reviewed 2021/02/16
-		[64044] = 45,		-- Psychic Horror https://ru.tbc.wowhead.com/spell=64044
-		[8122] = 60-30,		-- Psychic Scream [-30sec] https://ru.tbc.wowhead.com/spell=8122
-		[15487] = 45-15,	-- Silence https://ru.tbc.wowhead.com/spell=15487
-		[47585] = 120-30,	-- Dispersion https://ru.tbc.wowhead.com/spell=47585
-		[33206] = 180-120,	-- Pain Suppression [-30sec] https://ru.tbc.wowhead.com/spell=33206
-		[10060] = 120,		-- Power Infusion https://ru.tbc.wowhead.com/spell=10060
-		[88625] = 60,		-- Holy Word: Chastise https://ru.tbc.wowhead.com/spell=88625
-		[64843] = 180,		-- Divine Hymn https://ru.tbc.wowhead.com/spell=64843
-		[73325] = 90-20,	-- Leap of Faith https://ru.tbc.wowhead.com/spell=73325
-		[19236] = 90,		-- Desperate Prayer https://ru.tbc.wowhead.com/spell=19236
-		[62618] = 180-90,	-- Power Word: Barrier [-60sec] https://ru.tbc.wowhead.com/spell=62618
-		[47788] = 180-60,	-- Guardian Spirit [-60%] [max=120sec] https://ru.tbc.wowhead.com/spell=47788
-		[108968] = 300,		-- Вхождение в Бездну https://ru.tbc.wowhead.com/spell=108968
-		[213602] = 45,		-- Улучшенный уход в тень https://ru.tbc.wowhead.com/spell=213602
-		[205369] = 30,		-- Мыслебомба https://ru.tbc.wowhead.com/spell=205369
-		[204263] = 45,		-- Сияющая мощь https://ru.tbc.wowhead.com/spell=204263
-		[316262] = 90,		-- Украденные мысли https://ru.tbc.wowhead.com/spell=316262
-		[328530] = 60,		-- Божественное вознесение https://ru.tbc.wowhead.com/spell=328530
-		[213610] = 30,		-- Священный оберег https://ru.tbc.wowhead.com/spell=213610
-		[323673] = 45,		-- Mindgames https://ru.tbc.wowhead.com/spell=323673/mindgames
-		[32375] = 45,		-- Mass Dispel https://ru.tbc.wowhead.com/spell=32375/mass-dispel
-		[15286] = 120-45,	-- Vampiric Embrace https://wowhead.com/spell=15286/vampiric-embrace
-		[47536] = 90,		-- Rapture https://ru.tbc.wowhead.com/spell=47536
-		[527] = 8,			-- Purify https://ru.tbc.wowhead.com/spell=527/purify
-		[327661] = 90,		-- Fae Guardians https://ru.tbc.wowhead.com/spell=327661/fae-guardians
-		[325013] = 180,		-- Boon of the Ascended https://ru.tbc.wowhead.com/spell=325013/boon-of-the-ascended
-		[324724] = 60,		-- Unholy Nova https://ru.tbc.wowhead.com/spell=324724/unholy-nova
-		[32379] = 20,		-- Shadow Word: Death https://ru.tbc.wowhead.com/spell=32379
+		-- // reviewed 2021/05/28
+		[6346] = 180,			-- Защита от страха https://ru.tbc.wowhead.com/spell=6346
+		[34433] = 300,			-- Исчадие Тьмы https://ru.tbc.wowhead.com/spell=34433
+		[2651] = 180,			-- Благодать Элуны https://ru.tbc.wowhead.com/spell=2651
+		[44041] = 30,			-- Воздаяние https://ru.tbc.wowhead.com/spell=44041
+		[44043] = 30,			-- Воздаяние https://ru.tbc.wowhead.com/spell=44043
+		[44044] = 30,			-- Воздаяние https://ru.tbc.wowhead.com/spell=44044
+		[44045] = 30,			-- Воздаяние https://ru.tbc.wowhead.com/spell=44045
+		[44046] = 30,			-- Воздаяние https://ru.tbc.wowhead.com/spell=44046
+		[44047] = 30,			-- Воздаяние https://ru.tbc.wowhead.com/spell=44047
+		[586] = 30 - 2 - 6,		-- Уход в тень https://ru.tbc.wowhead.com/spell=586
+		[9578] = 30 - 2 - 6,	-- Уход в тень https://ru.tbc.wowhead.com/spell=9578
+		[9579] = 30 - 2 - 6,	-- Уход в тень https://ru.tbc.wowhead.com/spell=9579
+		[9592] = 30 - 2 - 6,	-- Уход в тень https://ru.tbc.wowhead.com/spell=9592
+		[10941] = 30 - 2 - 6,	-- Уход в тень https://ru.tbc.wowhead.com/spell=10941
+		[10942] = 30 - 2 - 6,	-- Уход в тень https://ru.tbc.wowhead.com/spell=10942
+		[25429] = 30 - 2 - 6,	-- Уход в тень https://ru.tbc.wowhead.com/spell=25429
+		[13908] = 600,			-- Молитва отчаяния https://ru.tbc.wowhead.com/spell=13908
+		[19236] = 600,			-- Молитва отчаяния https://ru.tbc.wowhead.com/spell=19236
+		[19238] = 600,			-- Молитва отчаяния https://ru.tbc.wowhead.com/spell=19238
+		[19240] = 600,			-- Молитва отчаяния https://ru.tbc.wowhead.com/spell=19240
+		[19241] = 600,			-- Молитва отчаяния https://ru.tbc.wowhead.com/spell=19241
+		[19242] = 600,			-- Молитва отчаяния https://ru.tbc.wowhead.com/spell=19242
+		[19243] = 600,			-- Молитва отчаяния https://ru.tbc.wowhead.com/spell=19243
+		[25437] = 600,			-- Молитва отчаяния https://ru.tbc.wowhead.com/spell=25437
+		[8122] = 30 - 3,		-- Ментальный крик https://ru.tbc.wowhead.com/spell=8122
+		[8124] = 30 - 3,		-- Ментальный крик https://ru.tbc.wowhead.com/spell=8124
+		[10888] = 30 - 3,		-- Ментальный крик https://ru.tbc.wowhead.com/spell=10888
+		[10890] = 30 - 3,		-- Ментальный крик https://ru.tbc.wowhead.com/spell=10890
+		[13896] = 180,			-- Ответная реакция https://ru.tbc.wowhead.com/spell=13896
+		[19271] = 180,			-- Ответная реакция https://ru.tbc.wowhead.com/spell=19271
+		[19273] = 180,			-- Ответная реакция https://ru.tbc.wowhead.com/spell=19273
+		[19274] = 180,			-- Ответная реакция https://ru.tbc.wowhead.com/spell=19274
+		[19275] = 180,			-- Ответная реакция https://ru.tbc.wowhead.com/spell=19275
+		[25441] = 180,			-- Ответная реакция https://ru.tbc.wowhead.com/spell=25441
+		[15487] = 45,			-- Молчание https://ru.tbc.wowhead.com/spell=15487
+		[14751] = 180,			-- Внутреннее сосредоточение https://ru.tbc.wowhead.com/spell=14751
+		[10060] = 180,			-- Придание сил https://ru.tbc.wowhead.com/spell=10060
+		[33206] = 120,			-- Подавление боли https://ru.tbc.wowhead.com/spell=33206
 	},
 	["ROGUE"] = {
 		-- // reviewed 2021/02/16
@@ -323,6 +333,7 @@ addonTable.Interrupts = {
 	[19647] = true,	-- Запрет чар https://ru.tbc.wowhead.com/spell=19647
 	[2139] = true,	-- Антимагия https://ru.tbc.wowhead.com/spell=2139
 	[16979] = true,	-- Звериная атака https://ru.tbc.wowhead.com/spell=16979
+	[15487] = true,	-- Молчание https://ru.tbc.wowhead.com/spell=15487
 
 
 	[47528] = true,	-- // Mind Freeze
