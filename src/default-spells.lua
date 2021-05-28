@@ -338,13 +338,10 @@ addonTable.Interrupts = {
 
 	[47528] = true,	-- // Mind Freeze
 	[106839] = true,	-- // Skull Bash
-	[2139] = true,	-- // Counterspell
 	[96231] = true,	-- // Rebuke
-	[15487] = true,	-- // Silence
 	[1766] = true,	-- // Kick
 	[57994] = true,	-- // Wind Shear
 	[6552] = true,	-- // Pummel
-	[19647] = true,	-- // Spell Lock https://ru.tbc.wowhead.com/spell=19647
 	[147362] = true,	-- // Counter Shot
 	[116705] = true, -- // Spear Hand Strike
 	[115781] = true,	-- // Optical Blast
