@@ -222,36 +222,39 @@ addonTable.CDs = {
 		[33206] = 120,			-- Подавление боли https://ru.tbc.wowhead.com/spell=33206
 	},
 	["ROGUE"] = {
-		-- // reviewed 2021/02/16
-		[2094] = 120-30,			-- Blind https://ru.tbc.wowhead.com/spell=2094
-		[1766] = 15,				-- Kick https://ru.tbc.wowhead.com/spell=1766
-		[31224] = 120,				-- Cloak of Shadows https://ru.tbc.wowhead.com/spell=31224
-		[1856] = 120-45,			-- Vanish https://ru.tbc.wowhead.com/spell=1856
-		[2983] = 120-60,			-- Sprint" [-9sec] https://ru.tbc.wowhead.com/spell=2983
-		[36554] = 30 - 30/100*10,	-- Shadowstep https://ru.tbc.wowhead.com/spell=36554
-		[5277] = 120,				-- Evasion https://ru.tbc.wowhead.com/spell=5277
-		[51690] = 120,				-- Killing Spree https://ru.tbc.wowhead.com/spell=51690
-		[79140] = 120,				-- Vendetta [-30sec] https://ru.tbc.wowhead.com/spell=79140
-		[13750] = 180,				-- Adrenaline Rush [-30sec] https://ru.tbc.wowhead.com/spell=13750
-		[195457] = 60-15-15-6,		-- Абордажный крюк https://ru.tbc.wowhead.com/spell=195457
-		[31230] = 360,				-- Обман смерти https://ru.tbc.wowhead.com/spell=31230
-		[207777] = 45,				-- Долой оружие https://ru.tbc.wowhead.com/spell=207777
-		[207736] = 120,				-- Дуэль в тенях https://ru.tbc.wowhead.com/spell=207736
-		[212182] = 180,				-- Дымовая шашка https://ru.tbc.wowhead.com/spell=212182
-		[198529] = 120,				-- Кража доспехов https://ru.tbc.wowhead.com/spell=198529
-		[121471] = 180,				-- Теневые клинки https://ru.tbc.wowhead.com/spell=121471
-		[114018] = 360,				-- Скрывающий покров https://ru.tbc.wowhead.com/spell=114018
-		[185311] = 30,				-- Алый фиал https://ru.tbc.wowhead.com/spell=185311
-		[185313] = 60,				-- Танец теней https://ru.tbc.wowhead.com/spell=185313
-		[343142] = 90,				-- Клинки Ужаса https://ru.tbc.wowhead.com/spell=343142
-		[137619] = 60,				-- Marked for Death https://ru.tbc.wowhead.com/spell=137619/marked-for-death
-		[408] = 20,					-- Kidney Shot https://ru.tbc.wowhead.com/spell=408/kidney-shot
-		[1776] = 15,				-- Gouge https://ru.tbc.wowhead.com/spell=1776/gouge
-		[315341] = 45,				-- Between the Eyes https://ru.tbc.wowhead.com/spell=315341/between-the-eyes
-		[323547] = 45,				-- Echoing Reprimand https://ru.tbc.wowhead.com/spell=323547/echoing-reprimand
-		[328305] = 90,				-- Sepsis https://ru.tbc.wowhead.com/spell=328305/sepsis
-		[323654] = 90,				-- Flagellation https://ru.tbc.wowhead.com/spell=323654/flagellation
-		[328547] = 30,				-- Serrated Bone Spike https://ru.tbc.wowhead.com/spell=328547/serrated-bone-spike
+		-- // reviewed 2021/05/29
+		[31224] = 60,	-- Плащ теней https://ru.tbc.wowhead.com/spell=31224
+		[2094] = 180 - 90 - 5,	-- Ослепление https://ru.tbc.wowhead.com/spell=2094
+		[1856] = 300 - 90 - 30,	-- Исчезновение https://ru.tbc.wowhead.com/spell=1856
+		[1857] = 300 - 90 - 30,	-- Исчезновение https://ru.tbc.wowhead.com/spell=1857
+		[26889] = 300 - 90 - 30,	-- Исчезновение https://ru.tbc.wowhead.com/spell=26889
+		[408] = 20,					-- Удар по почкам https://ru.tbc.wowhead.com/spell=408
+		[8643] = 20,				-- Удар по почкам https://ru.tbc.wowhead.com/spell=8643
+		[1766] = 10 - 0.5,			-- Пинок https://ru.tbc.wowhead.com/spell=1766
+		[1767] = 10 - 0.5,			-- Пинок https://ru.tbc.wowhead.com/spell=1767
+		[1768] = 10 - 0.5,			-- Пинок https://ru.tbc.wowhead.com/spell=1768
+		[1769] = 10 - 0.5,			-- Пинок https://ru.tbc.wowhead.com/spell=1769
+		[38768] = 10 - 0.5,			-- Пинок https://ru.tbc.wowhead.com/spell=38768
+		[2983] = 300 - 90,			-- Спринт https://ru.tbc.wowhead.com/spell=2983
+		[8696] = 300 - 90,			-- Спринт https://ru.tbc.wowhead.com/spell=8696
+		[11305] = 300 - 90,			-- Спринт https://ru.tbc.wowhead.com/spell=11305
+		[5277] = 300 - 90,			-- Ускользание https://ru.tbc.wowhead.com/spell=5277
+		[26669] = 300 - 90,			-- Ускользание https://ru.tbc.wowhead.com/spell=26669
+		[1784] = 10 - 5,			-- Незаметность https://ru.tbc.wowhead.com/spell=1784
+		[1785] = 10 - 5,			-- Незаметность https://ru.tbc.wowhead.com/spell=1785
+		[1786] = 10 - 5,			-- Незаметность https://ru.tbc.wowhead.com/spell=1786
+		[1787] = 10 - 5,			-- Незаметность https://ru.tbc.wowhead.com/spell=1787
+		[1776] = 10,				-- Парализующий удар https://ru.tbc.wowhead.com/spell=1776
+		[1777] = 10,				-- Парализующий удар https://ru.tbc.wowhead.com/spell=1777
+		[8629] = 10,				-- Парализующий удар https://ru.tbc.wowhead.com/spell=8629
+		[11285] = 10,				-- Парализующий удар https://ru.tbc.wowhead.com/spell=11285
+		[11286] = 10,				-- Парализующий удар https://ru.tbc.wowhead.com/spell=11286
+		[38764] = 10,				-- Парализующий удар https://ru.tbc.wowhead.com/spell=38764
+		[36554] = 30,				-- Шаг сквозь тень https://ru.tbc.wowhead.com/spell=36554
+		[13750] = 300,				-- Выброс адреналина https://ru.tbc.wowhead.com/spell=13750
+		[13877] = 120,				-- Шквал клинков https://ru.tbc.wowhead.com/spell=13877
+		[14185] = 600,				-- Подготовка https://ru.tbc.wowhead.com/spell=14185
+		[14177] = 180,				-- Хладнокровие https://ru.tbc.wowhead.com/spell=14177
 	},
 	["SHAMAN"] = {
 		-- // reviewed 2021/02/17
@@ -334,12 +337,16 @@ addonTable.Interrupts = {
 	[2139] = true,	-- Антимагия https://ru.tbc.wowhead.com/spell=2139
 	[16979] = true,	-- Звериная атака https://ru.tbc.wowhead.com/spell=16979
 	[15487] = true,	-- Молчание https://ru.tbc.wowhead.com/spell=15487
+	[1766] = true,	-- Пинок https://ru.tbc.wowhead.com/spell=1766
+	[1767] = true,	-- Пинок https://ru.tbc.wowhead.com/spell=1767
+	[1768] = true,	-- Пинок https://ru.tbc.wowhead.com/spell=1768
+	[1769] = true,	-- Пинок https://ru.tbc.wowhead.com/spell=1769
+	[38768] = true,	-- Пинок https://ru.tbc.wowhead.com/spell=38768
 
 
 	[47528] = true,	-- // Mind Freeze
 	[106839] = true,	-- // Skull Bash
 	[96231] = true,	-- // Rebuke
-	[1766] = true,	-- // Kick
 	[57994] = true,	-- // Wind Shear
 	[6552] = true,	-- // Pummel
 	[147362] = true,	-- // Counter Shot
@@ -378,6 +385,13 @@ do
 		end
 	end
 
+	local allRogueSpells = {};
+	for spellId in pairs(addonTable.CDs.ROGUE) do
+		if (spellId ~= 14185) then
+			allRogueSpells[#allRogueSpells + 1] = spellId;
+		end
+	end
+
 	addonTable.Reductions = {
 		[23989] = {	-- HUNTER: Готовность https://ru.tbc.wowhead.com/spell=23989
 			["reduction"] = BIG_REDUCTION,
@@ -386,6 +400,10 @@ do
 		[12472] = {	-- MAGE: Стылая кровь https://ru.tbc.wowhead.com/spell=12472
 			["reduction"] = BIG_REDUCTION,
 			["spells"] = allMageSpells,
+		},
+		[14185] = {	-- ROGUE: Подготовка https://ru.tbc.wowhead.com/spell=14185
+			["reduction"] = BIG_REDUCTION,
+			["spells"] = allRogueSpells,
 		},
 
 		-- [275773] = { -- // holy paladin's judgment https://www.wowhead.com/spell=275773/judgment
