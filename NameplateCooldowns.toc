@@ -3,6 +3,8 @@
 ## Notes: Shows the cooldowns of enemy players above their nameplates
 ## SavedVariables: NameplateCooldownsAceDB
 ## Version: @project-version@
+## X-Curse-Project-ID: 66866
+## X-Wago-ID: 0mNwjlGo
 
 embeds.xml
 src\constants.lua
