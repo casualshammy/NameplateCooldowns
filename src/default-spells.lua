@@ -257,46 +257,25 @@ addonTable.CDs = {
 		[14177] = 180,				-- Хладнокровие https://ru.tbc.wowhead.com/spell=14177
 	},
 	["SHAMAN"] = {
-		-- // reviewed 2021/02/17
-		[57994] = 12,		-- Wind Shear https://ru.tbc.wowhead.com/spell=57994
-		[51490] = 45-15,	-- Thunderstorm https://ru.tbc.wowhead.com/spell=51490
-		[51485] = 30,		-- Earthbind Totem https://ru.tbc.wowhead.com/spell=51485
-		[108280] = 180,		-- Healing Tide Totem https://ru.tbc.wowhead.com/spell=108280
-		[98008] = 180,		-- Spirit Link Totem https://ru.tbc.wowhead.com/spell=98008
-		[32182] = 60,		-- Heroism https://ru.tbc.wowhead.com/spell=32182
-		[2825] = 60,		-- Bloodlust https://ru.tbc.wowhead.com/spell=2825
-		[51533] = 90,		-- Feral Spirit https://ru.tbc.wowhead.com/spell=51533
-		[79206] = 120-60,	-- Spiritwalker's Grace https://ru.tbc.wowhead.com/spell=79206
-		[114050] = 180,		-- Elemental Ascendance https://ru.tbc.wowhead.com/spell=114050
-		[114051] = 180,		-- Enhancement Ascendance https://ru.tbc.wowhead.com/spell=114051
-		[114052] = 180,		-- Restoration Ascendance https://ru.tbc.wowhead.com/spell=114052
-		[108271] = 90,		-- Астральный сдвиг https://ru.tbc.wowhead.com/spell=108271
-		[51514] = 10,		-- Hex https://ru.tbc.wowhead.com/spell=51514
-		[210873] = 10,		-- Hex https://ru.tbc.wowhead.com/spell=210873
-		[211004] = 10,		-- Hex https://ru.tbc.wowhead.com/spell=211004
-		[211010] = 10,		-- Hex https://ru.tbc.wowhead.com/spell=211010
-		[211015] = 10,		-- Hex https://ru.tbc.wowhead.com/spell=211015
-		[269352] = 10,		-- Hex https://ru.tbc.wowhead.com/spell=269352
-		[277778] = 10,		-- Hex https://ru.tbc.wowhead.com/spell=277778
-		[277784] = 10,		-- Hex https://ru.tbc.wowhead.com/spell=277784
-		[309328] = 10,		-- Hex https://ru.tbc.wowhead.com/spell=309328
-		[210918] = 45,		-- Астральный облик https://ru.tbc.wowhead.com/spell=210918
-		[204336] = 30,		-- Тотем заземления https://ru.tbc.wowhead.com/spell=204336
-		[204331] = 45,		-- Тотем контрудара https://ru.tbc.wowhead.com/spell=204331
-		[196884] = 30,		-- Свирепый выпад https://ru.tbc.wowhead.com/spell=196884
-		[192058] = 60,		-- Тотем выброса тока https://ru.tbc.wowhead.com/spell=192058
-		[207399] = 300,		-- Тотем защиты Предков https://ru.tbc.wowhead.com/spell=207399
-		[8143] = 60,		-- Тотем трепета https://ru.tbc.wowhead.com/spell=8143
-		[305483] = 30,		-- Молния-лассо https://ru.tbc.wowhead.com/spell=305483
-		[192077] = 120,		-- Тотем ветряного порыва https://ru.tbc.wowhead.com/spell=192077
-		[197214] = 40,		-- Раскол https://ru.tbc.wowhead.com/spell=197214
-		[191634] = 60,		-- Stormkeeper https://ru.tbc.wowhead.com/spell=191634/stormkeeper
-		[198838] = 60,		-- Earthen Wall Totem https://ru.tbc.wowhead.com/spell=198838/earthen-wall-totem
-		[320674] = 90,		-- Chain Harvest https://ru.tbc.wowhead.com/spell=320674/chain-harvest
-		[77130] = 8,		-- Purify Spirit https://ru.tbc.wowhead.com/spell=77130/purify-spirit
-		[326059] = 45,		-- Primordial Wave https://ru.tbc.wowhead.com/spell=326059/primordial-wave
-		[328923] = 120,		-- Fae Transfusion https://ru.tbc.wowhead.com/spell=328923/fae-transfusion
-		[324386] = 60,		-- Vesper Totem https://ru.tbc.wowhead.com/spell=324386/vesper-totem
+		-- // reviewed 2021/05/30
+		[2825] = 600,		-- Кровожадность https://ru.tbc.wowhead.com/spell=2825
+		[32182] = 600,		-- Героизм https://ru.tbc.wowhead.com/spell=32182
+		[2894] = 1200,		-- Тотем элементаля огня https://ru.tbc.wowhead.com/spell=2894
+		[8177] = 15 - 1.5,	-- Тотем заземления https://ru.tbc.wowhead.com/spell=8177
+		[2062] = 1200,		-- Тотем элементаля земли https://ru.tbc.wowhead.com/spell=2062
+		[8042] = 6 - 1,		-- Земной шок https://ru.tbc.wowhead.com/spell=8042
+		[8044] = 6 - 1,		-- Земной шок https://ru.tbc.wowhead.com/spell=8044
+		[8045] = 6 - 1,		-- Земной шок https://ru.tbc.wowhead.com/spell=8045
+		[8046] = 6 - 1,		-- Земной шок https://ru.tbc.wowhead.com/spell=8046
+		[10412] = 6 - 1,	-- Земной шок https://ru.tbc.wowhead.com/spell=10412
+		[10413] = 6 - 1,	-- Земной шок https://ru.tbc.wowhead.com/spell=10413
+		[10414] = 6 - 1,	-- Земной шок https://ru.tbc.wowhead.com/spell=10414
+		[25454] = 6 - 1,	-- Земной шок https://ru.tbc.wowhead.com/spell=25454
+		[2484] = 15,		-- Тотем оков земли https://ru.tbc.wowhead.com/spell=2484
+		[30823] = 120,		-- Ярость шамана https://ru.tbc.wowhead.com/spell=30823
+		[16190] = 300,		-- Тотем прилива маны https://ru.tbc.wowhead.com/spell=16190
+		[16166] = 180,		-- Покорение стихий https://ru.tbc.wowhead.com/spell=16166
+		[16188] = 180,		-- Природная стремительность https://ru.tbc.wowhead.com/spell=16188
 	},
 	["WARRIOR"] = {
 		-- // reviewed 2021/02/12
@@ -342,6 +321,14 @@ addonTable.Interrupts = {
 	[1768] = true,	-- Пинок https://ru.tbc.wowhead.com/spell=1768
 	[1769] = true,	-- Пинок https://ru.tbc.wowhead.com/spell=1769
 	[38768] = true,	-- Пинок https://ru.tbc.wowhead.com/spell=38768
+	[8042] = true,	-- Земной шок https://ru.tbc.wowhead.com/spell=8042
+	[8044] = true,	-- Земной шок https://ru.tbc.wowhead.com/spell=8044
+	[8045] = true,	-- Земной шок https://ru.tbc.wowhead.com/spell=8045
+	[8046] = true,	-- Земной шок https://ru.tbc.wowhead.com/spell=8046
+	[10412] = true,-- Земной шок https://ru.tbc.wowhead.com/spell=10412
+	[10413] = true,-- Земной шок https://ru.tbc.wowhead.com/spell=10413
+	[10414] = true,-- Земной шок https://ru.tbc.wowhead.com/spell=10414
+	[25454] = true,-- Земной шок https://ru.tbc.wowhead.com/spell=25454
 
 
 	[47528] = true,	-- // Mind Freeze
