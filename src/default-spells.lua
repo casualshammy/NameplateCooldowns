@@ -5,16 +5,21 @@ local _, addonTable = ...;
 
 addonTable.CDs = {
 	[addonTable.UNKNOWN_CLASS] = {
-		-- // reviewed 2021/02/08
+		-- // reviewed 2021/05/31
+		[42292] = 120,		-- PvP trinket
 		[28730] = 120,		-- // Arcane Torrent https://ru.tbc.wowhead.com/spell=28730
 		[25046] = 120,		-- // Arcane Torrent https://ru.tbc.wowhead.com/spell=25046
 		[20572] = 120,		-- // Blood Fury https://ru.tbc.wowhead.com/spell=20572
 		[33702] = 120,		-- // Blood Fury https://ru.tbc.wowhead.com/spell=33702
 		[33697] = 120,		-- // Blood Fury https://ru.tbc.wowhead.com/spell=33697
-		[26297] = 180,		-- // Berserking https://ru.tbc.wowhead.com/spell=26297
-		[20594] = 120,		-- // Stoneform https://ru.tbc.wowhead.com/spell=20594
-		[20589] = 60,		-- // Escape Artist https://ru.tbc.wowhead.com/spell=20589
 		[7744] = 120,		-- // Will of the Forsaken https://ru.tbc.wowhead.com/spell=7744
+		[20549] = 120,		-- Громовая поступь https://ru.tbc.wowhead.com/spell=20549
+		[20554] = 180,		-- Боевое исступление https://ru.tbc.wowhead.com/spell=20554
+		[26296] = 180,		-- Боевое исступление https://ru.tbc.wowhead.com/spell=26296
+		[26297] = 180,		-- Боевое исступление https://ru.tbc.wowhead.com/spell=26297
+		[20589] = 1.75*60,	-- Мастер побега https://ru.tbc.wowhead.com/spell=20589
+		[20594] = 180,		-- Каменная форма https://ru.tbc.wowhead.com/spell=20594
+		[20600] = 180,		-- Внимательность https://ru.tbc.wowhead.com/spell=20600
 	},
 	["HUNTER"] = {
 		-- // reviewed 2021/05/24
@@ -278,34 +283,29 @@ addonTable.CDs = {
 		[16188] = 180,		-- Природная стремительность https://ru.tbc.wowhead.com/spell=16188
 	},
 	["WARRIOR"] = {
-		-- // reviewed 2021/02/12
-		[100] = 20,					-- Charge https://ru.tbc.wowhead.com/spell=100
-		[6552] = 15,				-- Pummel https://ru.tbc.wowhead.com/spell=6552
-		[23920] = 25,				-- Spell Reflection https://ru.tbc.wowhead.com/spell=23920
-		[46924] = 60,				-- Bladestorm https://ru.tbc.wowhead.com/spell=46924
-		[46968] = 40,				-- Shockwave https://ru.tbc.wowhead.com/spell=46968
-		[107574] = 90,				-- Avatar https://ru.tbc.wowhead.com/spell=107574
-		[5246] = 90,				-- Intimidating Shout https://ru.tbc.wowhead.com/spell=5246
-		[871] = 240,				-- Shield Wall https://ru.tbc.wowhead.com/spell=871
-		[118038] = 180-60-20,		-- Die by the Sword https://ru.tbc.wowhead.com/spell=118038
-		[1719] = 90,				-- Recklessness https://ru.tbc.wowhead.com/spell=1719
-		[6544] = 45,				-- Heroic Leap https://ru.tbc.wowhead.com/spell=6544
-		[12975] = 180-60,			-- Last Stand https://ru.tbc.wowhead.com/spell=12975
-		[18499] = 60,				-- Berserker Rage https://ru.tbc.wowhead.com/spell=18499
-		[107570] = 30,				-- Storm Bolt https://ru.tbc.wowhead.com/spell=107570
-		[227847] = 90-90/100*33,	-- Bladestorm https://ru.tbc.wowhead.com/spell=227847
-		[184364] = 180-60,			-- Enraged Regeneration https://ru.tbc.wowhead.com/spell=184364
-		[206572] = 20,				-- Dragon Charge https://ru.tbc.wowhead.com/spell=206572
-		[236077] = 45,				-- Disarm https://ru.tbc.wowhead.com/spell=236077
-		[167105] = 90-45,			-- Colossus Smash https://ru.tbc.wowhead.com/spell=167105
-		[262161] = 45,				-- Warbreaker https://ru.tbc.wowhead.com/spell=262161
-		[236273] = 60,				-- Duel https://ru.tbc.wowhead.com/spell=236273
-		[236320] = 90,				-- War Banner https://ru.tbc.wowhead.com/spell=236320
-		[198817] = 25,				-- Sharpen Blade https://ru.tbc.wowhead.com/spell=198817
-		[329038] = 20,				-- Кровавая ярость https://ru.tbc.wowhead.com/spell=329038
-		[307865] = 60,				-- Spear of Bastion https://ru.tbc.wowhead.com/spell=307865/spear-of-bastion
-		[97462] = 180-120,			-- Rallying Cry https://ru.tbc.wowhead.com/spell=97462/rallying-cry#modified-by
-		[3411] = 30,				-- Intervene https://ru.tbc.wowhead.com/spell=3411/intervene
+		-- // reviewed 2021/05/31
+		[23920] = 10,		-- Отражение заклинаний https://ru.tbc.wowhead.com/spell=23920
+		[3411] = 30,		-- Вмешательство https://ru.tbc.wowhead.com/spell=3411
+		[1719] = 20*60,		-- Безрассудство https://ru.tbc.wowhead.com/spell=1719
+		[871] = 20*60,		-- Глухая оборона https://ru.tbc.wowhead.com/spell=871
+		[6552] = 10,		-- Зуботычина https://ru.tbc.wowhead.com/spell=6552
+		[6554] = 10,		-- Зуботычина https://ru.tbc.wowhead.com/spell=6554
+		[676] = 60,			-- Разоружение https://ru.tbc.wowhead.com/spell=676
+		[18499] = 30,		-- Ярость берсерка https://ru.tbc.wowhead.com/spell=18499
+		[20230] = 20*60,	-- Возмездие https://ru.tbc.wowhead.com/spell=20230
+		[5246] = 180 - 15,	-- Устрашающий крик https://ru.tbc.wowhead.com/spell=5246
+		[20252] = 30 - 10,	-- Перехват https://ru.tbc.wowhead.com/spell=20252
+		[20616] = 30 - 10,	-- Перехват https://ru.tbc.wowhead.com/spell=20616
+		[20617] = 30 - 10,	-- Перехват https://ru.tbc.wowhead.com/spell=20617
+		[25272] = 30 - 10,	-- Перехват https://ru.tbc.wowhead.com/spell=25272
+		[25275] = 30 - 10,	-- Перехват https://ru.tbc.wowhead.com/spell=25275
+		[72] = 12,			-- Удар щитом https://ru.tbc.wowhead.com/spell=72
+		[1671] = 12,		-- Удар щитом https://ru.tbc.wowhead.com/spell=1671
+		[1672] = 12,		-- Удар щитом https://ru.tbc.wowhead.com/spell=1672
+		[29704] = 12,		-- Удар щитом https://ru.tbc.wowhead.com/spell=29704
+		[12292] = 180,		-- Инстинкт смерти https://ru.tbc.wowhead.com/spell=12292
+		[12975] = 8*60,		-- Ни шагу назад https://ru.tbc.wowhead.com/spell=12975
+		[12809] = 45,		-- Оглушающий удар https://ru.tbc.wowhead.com/spell=12809
 	},
 };
 
@@ -325,32 +325,21 @@ addonTable.Interrupts = {
 	[8044] = true,	-- Земной шок https://ru.tbc.wowhead.com/spell=8044
 	[8045] = true,	-- Земной шок https://ru.tbc.wowhead.com/spell=8045
 	[8046] = true,	-- Земной шок https://ru.tbc.wowhead.com/spell=8046
-	[10412] = true,-- Земной шок https://ru.tbc.wowhead.com/spell=10412
-	[10413] = true,-- Земной шок https://ru.tbc.wowhead.com/spell=10413
-	[10414] = true,-- Земной шок https://ru.tbc.wowhead.com/spell=10414
-	[25454] = true,-- Земной шок https://ru.tbc.wowhead.com/spell=25454
-
-
-	[47528] = true,	-- // Mind Freeze
-	[106839] = true,	-- // Skull Bash
-	[96231] = true,	-- // Rebuke
-	[57994] = true,	-- // Wind Shear
-	[6552] = true,	-- // Pummel
-	[147362] = true,	-- // Counter Shot
-	[116705] = true, -- // Spear Hand Strike
-	[115781] = true,	-- // Optical Blast
-	[183752] = true,	-- // Consume Magic
-	[187707] = true, -- // Muzzle
-	[91802] = true,	-- // Shambling Rush https://ru.tbc.wowhead.com/spell=91802/shambling-rush
-	[212619] = true, -- // Вызов охотника Скверны
-	[78675] = true,	-- // Столп солнечного света
+	[10412] = true,	-- Земной шок https://ru.tbc.wowhead.com/spell=10412
+	[10413] = true,	-- Земной шок https://ru.tbc.wowhead.com/spell=10413
+	[10414] = true,	-- Земной шок https://ru.tbc.wowhead.com/spell=10414
+	[25454] = true,	-- Земной шок https://ru.tbc.wowhead.com/spell=25454
+	[6552] = true,	-- Зуботычина https://ru.tbc.wowhead.com/spell=6552
+	[6554] = true,	-- Зуботычина https://ru.tbc.wowhead.com/spell=6554
+	[72] = true,	-- Удар щитом https://ru.tbc.wowhead.com/spell=72
+	[1671] = true,	-- Удар щитом https://ru.tbc.wowhead.com/spell=1671
+	[1672] = true,	-- Удар щитом https://ru.tbc.wowhead.com/spell=1672
+	[29704] = true,	-- Удар щитом https://ru.tbc.wowhead.com/spell=29704
 };
 
 addonTable.Trinkets = {
-	[59752] = true,
+	[42292] = true,
 	[7744] = true,
-	[336126] = true,
-	[283167] = true,
 };
 
 -- // spells that reduce cooldown of other spells
@@ -391,40 +380,6 @@ do
 		[14185] = {	-- ROGUE: Подготовка https://ru.tbc.wowhead.com/spell=14185
 			["reduction"] = BIG_REDUCTION,
 			["spells"] = allRogueSpells,
-		},
-
-		-- [275773] = { -- // holy paladin's judgment https://www.wowhead.com/spell=275773/judgment
-			-- ["reduction"] = 10,
-			-- ["spells"] = { 853 },
-		-- },
-		-- [275779] = { -- // protection paladin's judgment https://ru.tbc.wowhead.com/spell=275779/judgment
-			-- ["reduction"] = 6,
-			-- ["spells"] = { 853 },
-		-- },
-		[195676] = { -- // Displacement https://ru.tbc.wowhead.com/spell=195676/%D1%81%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D0%B5
-			["reduction"] = BIG_REDUCTION,
-			["spells"] = { 1953 }, -- // Blink
-		},
-		[235219] = { -- // Cold Snap https://ru.tbc.wowhead.com/spell=235219/%D1%85%D0%BE%D0%BB%D0%BE%D0%B4%D0%BD%D0%B0%D1%8F-%D1%85%D0%B2%D0%B0%D1%82%D0%BA%D0%B0
-			["reduction"] = BIG_REDUCTION,
-			["spells"] = {
-				122,			-- // Frost Nova
-				120,			-- // Cone of Cold
-				11426,			-- // Ice Barrier
-				45438,			-- // Ice Block
-			},
-		},
-		[115203] = { -- // Fortifying Brew https://ru.tbc.wowhead.com/spell=115203/fortifying-brew
-			["reduction"] = -120,
-			["spells"] = {
-				243435,			-- // Fortifying Brew https://ru.tbc.wowhead.com/spell=243435/fortifying-brew
-			},
-		},
-		[585] = {	-- Кара https://ru.tbc.wowhead.com/spell=585/%D0%BA%D0%B0%D1%80%D0%B0
-			["reduction"] = -4,
-			["spells"] = {
-				88625,	-- Holy Word: Chastise https://ru.tbc.wowhead.com/spell=88625
-			},
 		},
 	};
 
