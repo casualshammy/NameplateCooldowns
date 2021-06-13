@@ -159,6 +159,7 @@ do
 				ShowInactiveCD = false,
 				IgnoreNameplateScale = false,
 				ShowCooldownTooltip = false,
+				InverseLogic = false,
 			},
 		};
 		aceDB = LibStub("AceDB-3.0"):New("NameplateCooldownsAceDB", aceDBDefaults);
@@ -543,7 +544,12 @@ do
 
 	local function Nameplate_SetCooldown(icon, remain, isActive)
 		if (isActive) then
-			local text = (remain >= 60) and (math_ceil(remain/60).."m") or math_ceil(remain);
+			local text;
+			if (db.InverseLogic) then
+				text = "";
+			else
+				text = (remain >= 60) and (math_ceil(remain/60).."m") or math_ceil(remain);
+			end
 			if (icon.text ~= text) then
 				icon.cooldownText:SetText(text);
 				icon.text = text;
@@ -575,6 +581,9 @@ do
 				for _, spellInfo in pairs(sortedCDs) do
 					local spellID = spellInfo.spellID;
 					local isActiveCD = spellInfo.expires > currentTime;
+					if (db.InverseLogic) then
+						isActiveCD = not isActiveCD;
+					end
 					local dbInfo = db.SpellCDs[spellID];
 					if (dbInfo and dbInfo.enabled and (db.ShowInactiveCD or isActiveCD)) then
 						if (counter > frame.NCIconsCount) then
@@ -1781,9 +1790,9 @@ do
 			table_insert(GUIFrame.OnDBChangedHandlers, function() checkboxShowInactiveCD:SetChecked(db.ShowInactiveCD); end);
 		end
 
-		-- // checkboxCooldownTooltip
+		local checkboxCooldownTooltip;
 		do
-			local checkboxCooldownTooltip = LRD.CreateCheckBox();
+			checkboxCooldownTooltip = LRD.CreateCheckBox();
 			checkboxCooldownTooltip:SetText(L["options:general:show-cooldown-tooltip"]);
 			checkboxCooldownTooltip:SetOnClickHandler(function(this)
 				db.ShowCooldownTooltip = this:GetChecked();
@@ -1795,6 +1804,22 @@ do
 			checkboxCooldownTooltip:SetPoint("TOPLEFT", checkboxShowInactiveCD, "BOTTOMLEFT", 0, 0);
 			table_insert(GUIFrame.Categories[index], checkboxCooldownTooltip);
 			table_insert(GUIFrame.OnDBChangedHandlers, function() checkboxCooldownTooltip:SetChecked(db.ShowCooldownTooltip); end);
+		end
+
+		local checkboxInverseLogic;
+		do
+			checkboxInverseLogic = LRD.CreateCheckBox();
+			checkboxInverseLogic:SetText(L["options:general:inverse-logic"]);
+			LRD.SetTooltip(checkboxInverseLogic, L["options:general:inverse-logic:tooltip"]);
+			checkboxInverseLogic:SetOnClickHandler(function(this)
+				db.InverseLogic = this:GetChecked();
+				OnUpdate();
+			end);
+			checkboxInverseLogic:SetChecked(db.InverseLogic);
+			checkboxInverseLogic:SetParent(GUIFrame.outline);
+			checkboxInverseLogic:SetPoint("TOPLEFT", checkboxCooldownTooltip, "BOTTOMLEFT", 0, 0);
+			table_insert(GUIFrame.Categories[index], checkboxInverseLogic);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() checkboxInverseLogic:SetChecked(db.InverseLogic); end);
 		end
 
 	end
