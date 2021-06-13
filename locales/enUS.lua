@@ -109,4 +109,6 @@ L["options:spells:custom-cooldown-value"] = "Cooldown (sec)"
 L["options:general:show-cooldown-tooltip"] = "Show cooldown tooltip"
 L["options:general:test-mode"] = "Test mode"
 L["options:profiles"] = "Profiles"
+L["options:general:inverse-logic"] = "Inverse logic"
+L["options:general:inverse-logic:tooltip"] = "Display icon if player IS ABLE to cast certain spell"
 --@end-debug@
