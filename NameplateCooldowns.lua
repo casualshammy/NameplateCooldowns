@@ -59,7 +59,6 @@ local wipe, IsInGroup, unpack, tinsert, GetSpellInfo = wipe, IsInGroup, unpack, 
 local OnStartup, InitializeDB, GetDefaultDBEntryForSpell;
 local AllocateIcon, ReallocateAllIcons, UpdateOnlyOneNameplate, HideCDIcon, ShowCDIcon;
 local OnUpdate;
-local EnableTestMode, DisableTestMode;
 local ShowGUI, InitializeGUI, GUICategory_General, GUICategory_Other, OnGUICategoryClick, ShowGUICategory, CreateGUICategory;
 
 -------------------------------------------------------------------------------------------------
@@ -103,7 +102,7 @@ do
 			EventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 		end
 		if (TestFrame and TestFrame:GetScript("OnUpdate") ~= nil) then
-			DisableTestMode();
+			addonTable.DisableTestMode();
 		end
 		OnUpdate();
 		if (GUIFrame) then
@@ -238,10 +237,10 @@ do
 				addonTable.Print("Waiting for replies from " .. c);
 				C_ChatInfo.SendAddonMessage("NC_prefix", "requesting", c);
 			elseif (msg == "test") then
-				if (not TestFrame or not TestFrame:GetScript("OnUpdate")) then
-					EnableTestMode();
+				if (not addonTable.TestModeActive) then
+					addonTable.EnableTestMode();
 				else
-					DisableTestMode();
+					addonTable.DisableTestMode();
 				end
 			else
 				ShowGUI();
@@ -674,7 +673,7 @@ do
 		end
 	end
 
-	function EnableTestMode()
+	function addonTable.EnableTestMode()
 		_charactersDB = addonTable.deepcopy(SpellsPerPlayerGUID);
 		_spellCDs = addonTable.deepcopy(db.SpellCDs);
 		for spellID in pairs(_spellIDs) do
@@ -686,7 +685,7 @@ do
 		db.SpellCDs[SPELL_PVPTRINKET].glow = GLOW_TIME_INFINITE;
 		if (not TestFrame) then
 			TestFrame = CreateFrame("frame");
-			TestFrame:SetScript("OnEvent", function() DisableTestMode(); end);
+			TestFrame:SetScript("OnEvent", function() addonTable.DisableTestMode(); end);
 		end
 		TestFrame:SetScript("OnUpdate", function(_, elapsed)
 			_t = _t + elapsed;
@@ -698,14 +697,16 @@ do
 		TestFrame:RegisterEvent("PLAYER_LOGOUT");
 		refreshCDs(); 	-- // for instant start
 		OnUpdate();		-- // for instant start
+		addonTable.TestModeActive = true;
 	end
 
-	function DisableTestMode()
+	function addonTable.DisableTestMode()
 		TestFrame:SetScript("OnUpdate", nil);
 		TestFrame:UnregisterEvent("PLAYER_LOGOUT");
 		SpellsPerPlayerGUID = addonTable.deepcopy(_charactersDB);
 		db.SpellCDs = addonTable.deepcopy(_spellCDs);
 		OnUpdate();		-- // for instant start
+		addonTable.TestModeActive = false;
 	end
 
 end
@@ -1397,10 +1398,10 @@ do
 			buttonTestMode:SetPoint("BOTTOMRIGHT", GUIFrame.outline, "BOTTOMRIGHT", -4, 4);
 			buttonTestMode:SetHeight(30);
 			buttonTestMode:SetScript("OnClick", function()
-				if (not TestFrame or not TestFrame:GetScript("OnUpdate")) then
-					EnableTestMode();
+				if (not addonTable.TestModeActive) then
+					addonTable.EnableTestMode();
 				else
-					DisableTestMode();
+					addonTable.DisableTestMode();
 				end
 			end);
 		end
@@ -1852,7 +1853,9 @@ do
 						end
 						coroutine.yield();
 					end
-					selectSpell:Enable();
+					if (not addonTable.TestModeActive) then
+						selectSpell:Enable();
+					end
 				end);
 				addonTable.coroutine_queue("scanAllSpells", scanAllSpells);
 			end);
@@ -2308,6 +2311,18 @@ do
 			end);
 			table_insert(controls, editboxCustomCD);
 		end
+
+		hooksecurefunc(addonTable, "EnableTestMode", function()
+			selectSpell:Disable();
+			if (selectSpell:IsVisible()) then
+				for _, button in pairs(GUIFrame.CategoryButtons) do
+					if (button.text:GetText() == L["options:category:spells"]) then
+						button:Click();
+					end
+				end
+			end
+		end);
+		hooksecurefunc(addonTable, "DisableTestMode", function() selectSpell:Enable(); end);
 
 	end
 
