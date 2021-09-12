@@ -542,13 +542,8 @@ do
 	end
 
 	local function Nameplate_SetCooldown(icon, remain, isActive)
-		if (isActive) then
-			local text;
-			if (db.InverseLogic) then
-				text = "";
-			else
-				text = (remain >= 60) and (math_ceil(remain/60).."m") or math_ceil(remain);
-			end
+		if (remain > 0 and (isActive or db.InverseLogic)) then
+			local text = (remain >= 60) and (math_ceil(remain/60).."m") or math_ceil(remain);
 			if (icon.text ~= text) then
 				icon.cooldownText:SetText(text);
 				icon.text = text;
@@ -653,7 +648,7 @@ do
 	local _spellIDs = {
 		[2139] 		= 24,
 		[108194] 	= 45,
-		[100] 		= 17,
+		[100] 		= -17,
 	};
 
 	local function refreshCDs()
