@@ -7,6 +7,7 @@ addonTable.CDs = {
 	[addonTable.UNKNOWN_CLASS] = {
 		-- // reviewed 2021/02/08
 		[336126] = 120,		-- // Медальон гладиатора https://ru.wowhead.com/spell=336126
+		[42292] = 120,		-- // PvP-аксессуар https://ru.wowhead.com/spell=42292
 		[283167] = 60,		-- // Адаптация https://ru.wowhead.com/spell=283167
 		[28730] = 120,		-- // Arcane Torrent https://ru.wowhead.com/spell=28730
 		[50613] = 120,		-- // Arcane Torrent https://ru.wowhead.com/spell=50613
