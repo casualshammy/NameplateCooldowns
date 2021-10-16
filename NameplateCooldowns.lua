@@ -97,9 +97,11 @@ do
 		db = aceDB.profile;
 		if (db.AddonEnabled) then
 			EventFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+			EventFrame:UnregisterEvent("UNIT_SPELLCAST_SUCCEEDED");
 			wipe(SpellsPerPlayerGUID);
 		else
 			EventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+			EventFrame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED");
 		end
 		if (TestFrame and TestFrame:GetScript("OnUpdate") ~= nil) then
 			addonTable.DisableTestMode();
@@ -214,6 +216,7 @@ do
 		-- // starting listening for events
 		if (db.AddonEnabled) then
 			EventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+			EventFrame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED");
 		else
 			addonTable.Print(L["chat:addon-is-disabled-note"]);
 		end
@@ -2425,6 +2428,26 @@ do
 							UpdateOnlyOneNameplate(frame, unitGUID);
 							break;
 						end
+					end
+				end
+			end
+		end
+	end
+
+	EventFrame.UNIT_SPELLCAST_SUCCEEDED = function(unitId, _, spellId)
+		if (addonTable.Trinkets[spellId]) then
+			local entry = db.SpellCDs[spellId];
+			local cooldown = AllCooldowns[spellId];
+			if (cooldown ~= nil and entry and entry.enabled) then
+				local cTime = GetTime();
+				local srcGuid = UnitGUID(unitId);
+				if (not SpellsPerPlayerGUID[srcGuid]) then SpellsPerPlayerGUID[srcGuid] = { }; end
+				local expires = cTime + cooldown;
+				SpellsPerPlayerGUID[srcGuid][spellId] = { ["spellID"] = spellId, ["expires"] = expires, ["texture"] = SpellTextureByID[spellId] };
+				for frame, unitGUID in pairs(NameplatesVisible) do
+					if (unitGUID == srcGuid) then
+						UpdateOnlyOneNameplate(frame, unitGUID);
+						break;
 					end
 				end
 			end
