@@ -361,25 +361,30 @@ do
 		end
 	end
 
-	local allRogueSpells = {};
-	for spellId in pairs(addonTable.CDs.ROGUE) do
-		if (spellId ~= 14185) then
-			allRogueSpells[#allRogueSpells + 1] = spellId;
-		end
-	end
+	local roguePreparationCds = {};
+	table.insert(roguePreparationCds, 26669); 	-- Evasion
+	table.insert(roguePreparationCds, 2983); 	-- Sprint
+	table.insert(roguePreparationCds, 11305); 	-- Sprint
+	table.insert(roguePreparationCds, 8696); 	-- Sprint
+	table.insert(roguePreparationCds, 1856); 	-- Vanish
+	table.insert(roguePreparationCds, 26889); 	-- Vanish
+	table.insert(roguePreparationCds, 1857); 	-- Vanish
+	table.insert(roguePreparationCds, 14177); 	-- Cold Blood
+	table.insert(roguePreparationCds, 36554); 	-- Shadowstep
+	table.insert(roguePreparationCds, 14183); 	-- Premeditation
 
 	addonTable.Reductions = {
 		[23989] = {	-- HUNTER: Готовность https://ru.tbc.wowhead.com/spell=23989
 			["reduction"] = BIG_REDUCTION,
 			["spells"] = allHunterSpells,
 		},
-		[12472] = {	-- MAGE: Стылая кровь https://ru.tbc.wowhead.com/spell=12472
+		[11958] = {	-- MAGE: Стылая кровь https://ru.tbc.wowhead.com/spell=12472
 			["reduction"] = BIG_REDUCTION,
 			["spells"] = allMageSpells,
 		},
 		[14185] = {	-- ROGUE: Подготовка https://ru.tbc.wowhead.com/spell=14185
 			["reduction"] = BIG_REDUCTION,
-			["spells"] = allRogueSpells,
+			["spells"] = roguePreparationCds,
 		},
 	};
 
