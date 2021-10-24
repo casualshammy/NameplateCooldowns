@@ -62,6 +62,7 @@ addonTable.CDs = {
 		[30283] = 60-15,	-- Shadowfury https://ru.wowhead.com/spell=30283
 		[104773] = 180,		-- Unending Resolve https://ru.wowhead.com/spell=104773
 		[19647] = 24,		-- Spell Lock https://ru.wowhead.com/spell=19647
+		[132409] = 24,		-- Spell Lock (demon sacrificed) https://ru.wowhead.com/spell=132409
 		[89766] = 30,		-- Axe Toss" https://ru.wowhead.com/spell=89766
 		[115781] = 24,		-- Optical Blast https://ru.wowhead.com/spell=115781
 		[212295] = 45,		-- Nether Ward https://ru.wowhead.com/spell=212295
@@ -381,6 +382,7 @@ addonTable.Interrupts = {
 	[57994] = true,	-- // Wind Shear
 	[6552] = true,	-- // Pummel
 	[19647] = true,	-- // Spell Lock https://ru.wowhead.com/spell=19647
+	[132409] = true, -- Spell Lock (demon sacrificed) https://ru.wowhead.com/spell=132409
 	[147362] = true,	-- // Counter Shot
 	[116705] = true, -- // Spear Hand Strike
 	[115781] = true,	-- // Optical Blast
