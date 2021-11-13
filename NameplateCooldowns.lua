@@ -4,6 +4,7 @@
 -- luacheck: globals unpack InCombatLockdown ColorPickerFrame BackdropTemplateMixin UIDropDownMenu_SetWidth UIDropDownMenu_AddButton GameFontNormal
 -- luacheck: globals InterfaceOptionsFrame_OpenToCategory GetSpellInfo GameFontHighlightSmall hooksecurefunc ALL GameTooltip FillLocalizedClassList
 -- luacheck: globals OTHER PlaySound SOUNDKIT COMBATLOG_OBJECT_REACTION_HOSTILE CombatLogGetCurrentEventInfo IsInInstance strsplit UnitName GetRealmName
+-- luacheck: globals UnitReaction
 
 local _, addonTable = ...;
 local Interrupts = addonTable.Interrupts;
@@ -54,7 +55,7 @@ local GUIFrame, EventFrame, TestFrame, db, aceDB, ProfileOptionsFrame, LocalPlay
 
 local _G, pairs, UIParent, string_gsub, string_find, bit_band, GetTime, math_ceil, table_insert, table_sort, C_Timer_After, string_format, C_Timer_NewTimer, math_max, C_NamePlate_GetNamePlateForUnit, UnitGUID =
 	  _G, pairs, UIParent, string.gsub,	string.find, bit.band, GetTime, math.ceil, table.insert, table.sort, C_Timer.After, string.format, C_Timer.NewTimer, math.max, C_NamePlate.GetNamePlateForUnit, UnitGUID;
-local wipe, IsInGroup, unpack, tinsert, GetSpellInfo = wipe, IsInGroup, unpack, table.insert, GetSpellInfo;
+local wipe, IsInGroup, unpack, tinsert, GetSpellInfo, UnitReaction = wipe, IsInGroup, unpack, table.insert, GetSpellInfo, UnitReaction;
 
 local OnStartup, InitializeDB, GetDefaultDBEntryForSpell;
 local AllocateIcon, ReallocateAllIcons, UpdateOnlyOneNameplate, HideCDIcon, ShowCDIcon;
@@ -2436,18 +2437,21 @@ do
 
 	EventFrame.UNIT_SPELLCAST_SUCCEEDED = function(unitId, _, spellId)
 		if (addonTable.Trinkets[spellId]) then
-			local entry = db.SpellCDs[spellId];
-			local cooldown = AllCooldowns[spellId];
-			if (cooldown ~= nil and entry and entry.enabled) then
-				local cTime = GetTime();
-				local srcGuid = UnitGUID(unitId);
-				if (not SpellsPerPlayerGUID[srcGuid]) then SpellsPerPlayerGUID[srcGuid] = { }; end
-				local expires = cTime + cooldown;
-				SpellsPerPlayerGUID[srcGuid][spellId] = { ["spellID"] = spellId, ["expires"] = expires, ["texture"] = SpellTextureByID[spellId] };
-				for frame, unitGUID in pairs(NameplatesVisible) do
-					if (unitGUID == srcGuid) then
-						UpdateOnlyOneNameplate(frame, unitGUID);
-						break;
+			local unitIsFriend = (UnitReaction("player", unitId) or 0) > 4; -- 4 = neutral
+			if (not unitIsFriend or (db.ShowCDOnAllies == true and UnitGUID(unitId) ~= LocalPlayerGUID)) then
+				local entry = db.SpellCDs[spellId];
+				local cooldown = AllCooldowns[spellId];
+				if (cooldown ~= nil and entry and entry.enabled) then
+					local cTime = GetTime();
+					local srcGuid = UnitGUID(unitId);
+					if (not SpellsPerPlayerGUID[srcGuid]) then SpellsPerPlayerGUID[srcGuid] = { }; end
+					local expires = cTime + cooldown;
+					SpellsPerPlayerGUID[srcGuid][spellId] = { ["spellID"] = spellId, ["expires"] = expires, ["texture"] = SpellTextureByID[spellId] };
+					for frame, unitGUID in pairs(NameplatesVisible) do
+						if (unitGUID == srcGuid) then
+							UpdateOnlyOneNameplate(frame, unitGUID);
+							break;
+						end
 					end
 				end
 			end
