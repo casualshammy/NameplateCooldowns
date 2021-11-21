@@ -122,6 +122,7 @@ addonTable.CDs = {
 		[275699]	= 90-15-45,		-- Апокалипсис https://ru.wowhead.com/spell=275699
 		[315443]	= 120,			-- Abomination Limb https://www.wowhead.com/spell=315443/abomination-limb
 		[212552]	= 60,			-- Wraith Walk https://www.wowhead.com/spell=212552/wraith-walk
+		[204160]	= 45,			-- Chill Streak https://www.wowhead.com/spell=204160/chill-streak
 	},
 	["DRUID"] = {
 		-- // reviewed 2021/02/15
