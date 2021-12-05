@@ -3,6 +3,8 @@
 
 local _, addonTable = ...;
 
+addonTable.HUNTER_FEIGN_DEATH = 5384;
+
 addonTable.CDs = {
 	[addonTable.UNKNOWN_CLASS] = {
 		-- // reviewed 2021/02/08

@@ -4,6 +4,7 @@
 -- luacheck: globals unpack InCombatLockdown ColorPickerFrame BackdropTemplateMixin UIDropDownMenu_SetWidth UIDropDownMenu_AddButton GameFontNormal
 -- luacheck: globals InterfaceOptionsFrame_OpenToCategory GetSpellInfo GameFontHighlightSmall hooksecurefunc ALL GameTooltip FillLocalizedClassList
 -- luacheck: globals OTHER PlaySound SOUNDKIT COMBATLOG_OBJECT_REACTION_HOSTILE CombatLogGetCurrentEventInfo IsInInstance strsplit UnitName GetRealmName
+-- luacheck: globals UnitReaction UnitAura
 
 local _, addonTable = ...;
 local Interrupts = addonTable.Interrupts;
@@ -27,6 +28,7 @@ end
 -- Consts
 local SPELL_PVPADAPTATION, SPELL_PVPTRINKET, ICON_GROW_DIRECTION_RIGHT, ICON_GROW_DIRECTION_LEFT, ICON_GROW_DIRECTION_UP, ICON_GROW_DIRECTION_DOWN, SORT_MODE_NONE;
 local SORT_MODE_TRINKET_INTERRUPT_OTHER, SORT_MODE_INTERRUPT_TRINKET_OTHER, SORT_MODE_TRINKET_OTHER, SORT_MODE_INTERRUPT_OTHER, GLOW_TIME_INFINITE, INSTANCE_TYPE_UNKNOWN;
+local HUNTER_FEIGN_DEATH;
 do
 	SPELL_PVPADAPTATION, SPELL_PVPTRINKET = addonTable.SPELL_PVPADAPTATION, addonTable.SPELL_PVPTRINKET;
 	ICON_GROW_DIRECTION_RIGHT, ICON_GROW_DIRECTION_LEFT, ICON_GROW_DIRECTION_UP, ICON_GROW_DIRECTION_DOWN =
@@ -35,6 +37,7 @@ do
 		addonTable.SORT_MODE_NONE, addonTable.SORT_MODE_TRINKET_INTERRUPT_OTHER, addonTable.SORT_MODE_INTERRUPT_TRINKET_OTHER, addonTable.SORT_MODE_TRINKET_OTHER, addonTable.SORT_MODE_INTERRUPT_OTHER;
 	GLOW_TIME_INFINITE = addonTable.GLOW_TIME_INFINITE;
 	INSTANCE_TYPE_UNKNOWN = addonTable.INSTANCE_TYPE_UNKNOWN;
+	HUNTER_FEIGN_DEATH = addonTable.HUNTER_FEIGN_DEATH;
 end
 
 -- Utilities
@@ -51,10 +54,11 @@ local NameplatesVisible = {};
 local InstanceType = "none";
 local AllCooldowns = { };
 local GUIFrame, EventFrame, TestFrame, db, aceDB, ProfileOptionsFrame, LocalPlayerGUID;
+local FeignDeathGUIDs = {};
 
 local _G, pairs, UIParent, string_gsub, string_find, bit_band, GetTime, math_ceil, table_insert, table_sort, C_Timer_After, string_format, C_Timer_NewTimer, math_max, C_NamePlate_GetNamePlateForUnit, UnitGUID =
 	  _G, pairs, UIParent, string.gsub,	string.find, bit.band, GetTime, math.ceil, table.insert, table.sort, C_Timer.After, string.format, C_Timer.NewTimer, math.max, C_NamePlate.GetNamePlateForUnit, UnitGUID;
-local wipe, IsInGroup, unpack, tinsert, GetSpellInfo = wipe, IsInGroup, unpack, table.insert, GetSpellInfo;
+local wipe, IsInGroup, unpack, tinsert, GetSpellInfo, UnitReaction, UnitAura = wipe, IsInGroup, unpack, table.insert, GetSpellInfo, UnitReaction, UnitAura;
 
 local OnStartup, InitializeDB, GetDefaultDBEntryForSpell;
 local AllocateIcon, ReallocateAllIcons, UpdateOnlyOneNameplate, HideCDIcon, ShowCDIcon;
@@ -223,6 +227,7 @@ do
 		end
 		EventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED");
 		EventFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
+		EventFrame:RegisterEvent("UNIT_AURA");
 		SLASH_NAMEPLATECOOLDOWNS1 = '/nc';
 		SlashCmdList["NAMEPLATECOOLDOWNS"] = function(msg)
 			if (msg == "t" or msg == "ver") then
@@ -2415,6 +2420,43 @@ do
 							break;
 						end
 					end
+				end
+			end
+		end
+	end
+
+	EventFrame.UNIT_AURA = function(_unitID)
+		local feignDeath = db.SpellCDs[HUNTER_FEIGN_DEATH];
+		local cooldown = AllCooldowns[HUNTER_FEIGN_DEATH];
+		if (cooldown ~= nil and feignDeath and feignDeath.enabled) then
+			local unitIsFriend = (UnitReaction("player", _unitID) or 0) > 4; -- 4 = neutral
+			local unitGUID = UnitGUID(_unitID);
+			if (not unitIsFriend or (db.ShowCDOnAllies == true and unitGUID ~= LocalPlayerGUID)) then
+				local feignDeathFound = false;
+				for auraIndex = 1, 40 do
+					local spellName, _, _, _, _, _, _, _, _, spellId = UnitAura(_unitID, auraIndex);
+					if (spellName == nil) then
+						break;
+					end
+					if (spellId == HUNTER_FEIGN_DEATH) then
+						feignDeathFound = true;
+						break;
+					end
+				end
+				if (FeignDeathGUIDs[unitGUID] and not feignDeathFound) then
+					local cTime = GetTime();
+					if (not SpellsPerPlayerGUID[unitGUID]) then SpellsPerPlayerGUID[unitGUID] = { }; end
+					local expires = cTime + cooldown;
+					SpellsPerPlayerGUID[unitGUID][HUNTER_FEIGN_DEATH] = { ["spellID"] = HUNTER_FEIGN_DEATH, ["expires"] = expires, ["texture"] = SpellTextureByID[HUNTER_FEIGN_DEATH] };
+					for frame, plateUnitGUID in pairs(NameplatesVisible) do
+						if (unitGUID == plateUnitGUID) then
+							UpdateOnlyOneNameplate(frame, unitGUID);
+							break;
+						end
+					end
+					FeignDeathGUIDs[unitGUID] = nil;
+				elseif (not FeignDeathGUIDs[unitGUID] and feignDeathFound) then
+					FeignDeathGUIDs[unitGUID] = true;
 				end
 			end
 		end
