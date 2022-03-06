@@ -111,4 +111,6 @@ L["options:general:test-mode"] = "Test mode"
 L["options:profiles"] = "Profiles"
 L["options:general:inverse-logic"] = "Inverse logic"
 L["options:general:inverse-logic:tooltip"] = "Display icon if player IS ABLE to cast certain spell"
+L["options:general:show-cooldown-animation"] = "Enable cooldown animation"
+L["options:general:show-cooldown-animation:tooltip"] = "Enables spin animation on cooldown icons"
 --@end-debug@

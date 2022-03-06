@@ -163,6 +163,7 @@ do
 				IgnoreNameplateScale = false,
 				ShowCooldownTooltip = false,
 				InverseLogic = false,
+				ShowCooldownAnimation = false,
 			},
 		};
 		aceDB = LibStub("AceDB-3.0"):New("NameplateCooldownsAceDB", aceDBDefaults);
@@ -345,6 +346,13 @@ do
 		icon:SetHeight(db.IconSize);
 		AllocateIcon_SetIconPlace(frame, icon);
 		icon:Hide();
+
+		icon.cooldownFrame = CreateFrame("Cooldown", nil, icon, "CooldownFrameTemplate");
+		icon.cooldownFrame:SetAllPoints(icon);
+		icon.cooldownFrame:SetReverse(true);
+		icon.cooldownFrame:SetHideCountdownNumbers(true);
+		icon.cooldownFrame.noCooldownCount = true; -- refuse OmniCC
+
 		icon.texture = icon:CreateTexture(nil, "BORDER");
 		icon.texture:SetAllPoints(icon);
 		if (not db.ShowOldBlizzardBorderAroundIcons) then
@@ -546,16 +554,33 @@ do
 		end
 	end
 
-	local function Nameplate_SetCooldown(icon, remain, isActive)
+	local function Nameplate_SetCooldown(icon, remain, started, cooldownLength, isActive)
 		if (remain > 0 and (isActive or db.InverseLogic)) then
 			local text = (remain >= 60) and (math_ceil(remain/60).."m") or math_ceil(remain);
 			if (icon.text ~= text) then
 				icon.cooldownText:SetText(text);
 				icon.text = text;
+				if (not db.ShowCooldownAnimation or not isActive or db.InverseLogic) then
+					icon.cooldownText:SetParent(icon);
+				else
+					icon.cooldownText:SetParent(icon.cooldownFrame);
+				end
 			end
 		elseif (icon.text ~= "") then
 			icon.cooldownText:SetText("");
 			icon.text = "";
+		end
+
+		-- cooldown animation
+		if (db.ShowCooldownAnimation and isActive and not db.InverseLogic) then
+			if (started ~= icon.cooldownStarted or cooldownLength ~= icon.cooldownLength) then
+				icon.cooldownFrame:SetCooldown(started, cooldownLength);
+				icon.cooldownFrame:Show();
+				icon.cooldownStarted = started;
+				icon.cooldownLength = cooldownLength;
+			end
+		else
+			icon.cooldownFrame:Hide();
 		end
 	end
 
@@ -592,7 +617,8 @@ do
 						UpdateOnlyOneNameplate_SetTexture(icon, spellInfo.texture, isActiveCD);
 						local remain = spellInfo.expires - currentTime;
 						UpdateNameplate_SetGlow(icon, dbInfo.glow, remain, isActiveCD);
-						Nameplate_SetCooldown(icon, remain, isActiveCD);
+						local cooldown = AllCooldowns[spellID];
+						Nameplate_SetCooldown(icon, remain, spellInfo.started, cooldown, isActiveCD);
 						Nameplate_SetBorder(icon, spellID, isActiveCD);
 						SetCooldownTooltip(icon, spellID);
 						if (not icon.shown) then
@@ -660,13 +686,13 @@ do
 		local cTime = GetTime();
 		for _, unitGUID in pairs(NameplatesVisible) do
 			if (not SpellsPerPlayerGUID[unitGUID]) then SpellsPerPlayerGUID[unitGUID] = { }; end
-			SpellsPerPlayerGUID[unitGUID][SPELL_PVPTRINKET] = { ["spellID"] = SPELL_PVPTRINKET, ["expires"] = cTime + 120, ["texture"] = SpellTextureByID[SPELL_PVPTRINKET] }; -- // 2m test
+			SpellsPerPlayerGUID[unitGUID][SPELL_PVPTRINKET] = { ["spellID"] = SPELL_PVPTRINKET, ["expires"] = cTime + 120, ["texture"] = SpellTextureByID[SPELL_PVPTRINKET], ["started"] = cTime }; -- // 2m test
 			for spellID, cd in pairs(_spellIDs) do
 				if (not SpellsPerPlayerGUID[unitGUID][spellID]) then
-					SpellsPerPlayerGUID[unitGUID][spellID] = { ["spellID"] = spellID, ["expires"] = cTime + cd, ["texture"] = SpellTextureByID[spellID] };
+					SpellsPerPlayerGUID[unitGUID][spellID] = { ["spellID"] = spellID, ["expires"] = cTime + cd, ["texture"] = SpellTextureByID[spellID], ["started"] = cTime };
 				else
 					if (cTime - SpellsPerPlayerGUID[unitGUID][spellID]["expires"] > 0) then
-						SpellsPerPlayerGUID[unitGUID][spellID] = { ["spellID"] = spellID, ["expires"] = cTime + cd, ["texture"] = SpellTextureByID[spellID] };
+						SpellsPerPlayerGUID[unitGUID][spellID] = { ["spellID"] = spellID, ["expires"] = cTime + cd, ["texture"] = SpellTextureByID[spellID], ["started"] = cTime };
 					end
 				end
 			end
@@ -1302,7 +1328,7 @@ do
 
 	function InitializeGUI()
 		GUIFrame = CreateFrame("Frame", "NC_GUIFrame", UIParent, BackdropTemplateMixin and "BackdropTemplate");
-		GUIFrame:SetHeight(540);
+		GUIFrame:SetHeight(560);
 		GUIFrame:SetWidth(540);
 		GUIFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 80);
 		GUIFrame:SetBackdrop({
@@ -1821,6 +1847,22 @@ do
 			checkboxInverseLogic:SetPoint("TOPLEFT", checkboxCooldownTooltip, "BOTTOMLEFT", 0, 0);
 			table_insert(GUIFrame.Categories[index], checkboxInverseLogic);
 			table_insert(GUIFrame.OnDBChangedHandlers, function() checkboxInverseLogic:SetChecked(db.InverseLogic); end);
+		end
+
+		local checkboxCooldown;
+		do
+			checkboxCooldown = LRD.CreateCheckBox();
+			checkboxCooldown:SetText(L["options:general:show-cooldown-animation"]);
+			LRD.SetTooltip(checkboxCooldown, L["options:general:show-cooldown-animation:tooltip"]);
+			checkboxCooldown:SetOnClickHandler(function(this)
+				db.ShowCooldownAnimation = this:GetChecked();
+				OnUpdate();
+			end);
+			checkboxCooldown:SetChecked(db.ShowCooldownAnimation);
+			checkboxCooldown:SetParent(GUIFrame.outline);
+			checkboxCooldown:SetPoint("TOPLEFT", checkboxInverseLogic, "BOTTOMLEFT", 0, 0);
+			table_insert(GUIFrame.Categories[index], checkboxCooldown);
+			table_insert(GUIFrame.OnDBChangedHandlers, function() checkboxCooldown:SetChecked(db.ShowCooldownAnimation); end);
 		end
 
 	end
@@ -2386,7 +2428,7 @@ do
 				if (eventType == "SPELL_CAST_SUCCESS" or eventType == "SPELL_AURA_APPLIED" or eventType == "SPELL_MISSED" or eventType == "SPELL_SUMMON") then
 					if (not SpellsPerPlayerGUID[srcGUID]) then SpellsPerPlayerGUID[srcGUID] = { }; end
 					local expires = cTime + cooldown;
-					SpellsPerPlayerGUID[srcGUID][spellID] = { ["spellID"] = spellID, ["expires"] = expires, ["texture"] = SpellTextureByID[spellID] };
+					SpellsPerPlayerGUID[srcGUID][spellID] = { ["spellID"] = spellID, ["expires"] = expires, ["texture"] = SpellTextureByID[spellID], ["started"] = cTime };
 					for frame, unitGUID in pairs(NameplatesVisible) do
 						if (unitGUID == srcGUID) then
 							UpdateOnlyOneNameplate(frame, unitGUID);
