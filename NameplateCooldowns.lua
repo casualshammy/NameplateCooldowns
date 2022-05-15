@@ -2455,7 +2455,7 @@ do
 			-- // pvptier 1/2 used, correcting cd of PvP trinket
 			elseif (spellID == SPELL_PVPADAPTATION and db.SpellCDs[SPELL_PVPTRINKET] ~= nil and db.SpellCDs[SPELL_PVPTRINKET].enabled and eventType == "SPELL_AURA_APPLIED") then
 				if (SpellsPerPlayerGUID[srcGUID]) then
-					SpellsPerPlayerGUID[srcGUID][SPELL_PVPTRINKET] = { ["spellID"] = SPELL_PVPTRINKET, ["expires"] = cTime + 60, ["texture"] = SpellTextureByID[SPELL_PVPTRINKET] };
+					SpellsPerPlayerGUID[srcGUID][SPELL_PVPTRINKET] = { ["spellID"] = SPELL_PVPTRINKET, ["expires"] = cTime + 60, ["texture"] = SpellTextureByID[SPELL_PVPTRINKET], ["started"] = cTime };
 					for frame, unitGUID in pairs(NameplatesVisible) do
 						if (unitGUID == srcGUID) then
 							UpdateOnlyOneNameplate(frame, unitGUID);
@@ -2489,7 +2489,7 @@ do
 					local cTime = GetTime();
 					if (not SpellsPerPlayerGUID[unitGUID]) then SpellsPerPlayerGUID[unitGUID] = { }; end
 					local expires = cTime + cooldown;
-					SpellsPerPlayerGUID[unitGUID][HUNTER_FEIGN_DEATH] = { ["spellID"] = HUNTER_FEIGN_DEATH, ["expires"] = expires, ["texture"] = SpellTextureByID[HUNTER_FEIGN_DEATH] };
+					SpellsPerPlayerGUID[unitGUID][HUNTER_FEIGN_DEATH] = { ["spellID"] = HUNTER_FEIGN_DEATH, ["expires"] = expires, ["texture"] = SpellTextureByID[HUNTER_FEIGN_DEATH], ["started"] = cTime };
 					for frame, plateUnitGUID in pairs(NameplatesVisible) do
 						if (unitGUID == plateUnitGUID) then
 							UpdateOnlyOneNameplate(frame, unitGUID);
