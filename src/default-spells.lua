@@ -54,6 +54,7 @@ addonTable.CDs = {
 		[201430] = 120,					-- // Звериный натиск https://ru.wowhead.com/spell=201430
 		[308491] = 60,					-- Resonating Arrow https://www.wowhead.com/spell=308491/resonating-arrow
 		[5384] = 15,					-- Feign Death https://www.wowhead.com/spell=5384/feign-death
+		[53480] = 60,					-- Roar of Sacrifice https://www.wowhead.com/spell=53480/roar-of-sacrifice
 	},
 	["WARLOCK"] = {
 		-- // reviewed 2021/02/09
