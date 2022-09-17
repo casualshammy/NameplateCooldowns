@@ -1,4 +1,4 @@
-name: Package
+name: Package-WotLK
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - '**'
 
 jobs:
-  release:
+  release-wotlk:
     runs-on: ubuntu-latest
     env:
       CF_API_KEY: ${{ secrets.CF_API_KEY }}
@@ -18,4 +18,5 @@ jobs:
         
       - name: Package and release
         uses: BigWigsMods/packager@v1
-        
+        with:
+            args: -g wrath
