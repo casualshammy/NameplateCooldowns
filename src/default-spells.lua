@@ -4,6 +4,7 @@
 local _, addonTable = ...;
 
 addonTable.HUNTER_FEIGN_DEATH = 5384;
+addonTable.SPELL_PVPTRINKET = 42292;
 
 addonTable.CDs = {
 	[addonTable.UNKNOWN_CLASS] = {
@@ -27,11 +28,24 @@ addonTable.CDs = {
 		-- // reviewed 2021/02/08
 		[53271] = 60,					-- // Master's Call https://www.wowhead.com/wotlk/ru/spell=53271
 		[19574] = 120,					-- // Bestial Wrath https://www.wowhead.com/wotlk/ru/spell=19574
-		[781] = 25,						-- // Disengage https://www.wowhead.com/wotlk/ru/spell=781
 		[19577] = 60,					-- // Intimidation https://www.wowhead.com/wotlk/ru/spell=19577
-		[1543] = 20,					-- // Осветительная ракета https://www.wowhead.com/wotlk/ru/spell=1543
 		[5384] = 30,					-- Feign Death https://www.wowhead.com/wotlk/ru/spell=5384/feign-death
 		[53480] = 60,					-- Roar of Sacrifice https://www.wowhead.com/wotlk/ru/spell=53480/roar-of-sacrifice
+		[34026] = 60,					-- Kill Command https://www.wowhead.com/wotlk/spell=34026/kill-command
+		[1513] = 30,					-- Scare Beast 1 https://www.wowhead.com/wotlk/spell=1513
+		[14326] = 30,					-- Scare Beast 2 https://www.wowhead.com/wotlk/spell=14326
+		[14327] = 30,					-- Scare Beast 3 https://www.wowhead.com/wotlk/spell=14327
+		[3045] = 5*60,					-- Rapid Fire https://www.wowhead.com/wotlk/spell=3045
+		[1543] = 20,					-- Flare https://www.wowhead.com/wotlk/spell=1543
+		[19263] = 90,					-- Deterrence https://www.wowhead.com/wotlk/spell=19263
+		[60192] = 30,					-- Freezing Arrow https://www.wowhead.com/wotlk/spell=60192
+		[1499] = 30,					-- Freezing Trap 1 https://www.wowhead.com/wotlk/spell=1499
+		[14310] = 30,					-- Freezing Trap 2 https://www.wowhead.com/wotlk/spell=14310
+		[14311] = 30,					-- Freezing Trap 3 https://www.wowhead.com/wotlk/spell=14311
+		[13809] = 30,					-- Frost Trap https://www.wowhead.com/wotlk/spell=13809
+		[34490] = 20,					-- Silencing Shot https://www.wowhead.com/wotlk/spell=34490
+		[23989] = 3*60,					-- Readiness https://www.wowhead.com/wotlk/spell=23989
+		[19503] = 30,					-- Scatter Shot https://www.wowhead.com/wotlk/spell=19503
 	},
 	["WARLOCK"] = {
 		-- // reviewed 2021/02/09
@@ -118,6 +132,9 @@ addonTable.CDs = {
 		[13750] = 180,				-- Adrenaline Rush [-30sec] https://www.wowhead.com/wotlk/ru/spell=13750
 		[408] = 20,					-- Kidney Shot https://www.wowhead.com/wotlk/ru/spell=408/kidney-shot
 		[1776] = 10,				-- Gouge https://www.wowhead.com/wotlk/ru/spell=1776/gouge
+		[31228] = 60,				-- Cheat Death https://www.wowhead.com/wotlk/spell=31228/cheat-death
+		[31229] = 60,				-- Cheat Death https://www.wowhead.com/wotlk/spell=31229/cheat-death
+		[31230] = 60,				-- Cheat Death https://www.wowhead.com/wotlk/spell=31230/cheat-death
 	},
 	["SHAMAN"] = {
 		-- // reviewed 2021/02/17
@@ -153,11 +170,13 @@ addonTable.Interrupts = {
 	[57994] = true,		-- // Wind Shear
 	[6552] = true,		-- // Pummel
 	[19647] = true,		-- // Spell Lock https://www.wowhead.com/wotlk/ru/spell=19647
+	[34490] = true,		-- Silencing Shot https://www.wowhead.com/wotlk/spell=34490
 };
 
 addonTable.Trinkets = {
 	[59752] = true,
 	[7744] = true,
+	[42292] = true,
 };
 
 -- // spells that reduce cooldown of other spells
@@ -197,6 +216,29 @@ do
 			["reduction"] = -4,
 			["spells"] = {
 				88625,	-- Holy Word: Chastise https://www.wowhead.com/wotlk/ru/spell=88625
+			},
+		},
+		[23989] = { -- Readiness https://www.wowhead.com/wotlk/spell=23989
+			["reduction"] = BIG_REDUCTION,
+			["spells"] = {
+				53271,
+				19577,
+				5384,
+				53480,
+				34026,
+				1513,
+				14326,
+				14327,
+				3045,
+				1543,
+				19263,
+				60192,
+				1499,
+				14310,
+				14311,
+				13809,
+				34490,
+				19503,
 			},
 		},
 	};

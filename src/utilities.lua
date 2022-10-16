@@ -1,9 +1,11 @@
 -- luacheck: no max line length
 -- luacheck: globals GetSpellTexture GetSpellInfo DEFAULT_CHAT_FRAME StaticPopupDialogs StaticPopup_Show OKAY YES NO CreateFrame debugprofilestop
+-- luacheck: globals UnitFactionGroup
 
 local _, addonTable = ...;
 local string_format, GetSpellTexture, GetSpellInfo, select, tostring, type, pairs, setmetatable, getmetatable, debugprofilestop =
     string.format, GetSpellTexture, GetSpellInfo, select, tostring, type, pairs, setmetatable, getmetatable, debugprofilestop;
+local UnitFactionGroup = UnitFactionGroup;
 
 function addonTable.Print(...)
     local text = "";
@@ -77,14 +79,21 @@ function addonTable.msgWithQuestion(text, funcOnAccept, funcOnCancel)
     StaticPopup_Show(frameName);
 end
 
-addonTable.SpellTextureByID = setmetatable({
-	[addonTable.SPELL_PVPTRINKET] =	1322720,
-    [42292] =                       1322720,
-	[200166] =				        1247262,
-}, {
-	__index = function(t, key)
-		local texture = GetSpellTexture(key);
-		t[key] = texture;
+addonTable.SpellTextureByID = setmetatable({}, {
+	__index = function(t, spellId)
+        local texture;
+        if (spellId == addonTable.SPELL_PVPTRINKET) then
+            local faction = UnitFactionGroup("player");
+            if (faction == "Alliance") then
+                texture = 133452;
+            else
+                texture = 133453;
+            end
+        else
+            texture = GetSpellTexture(spellId);
+        end
+
+		t[spellId] = texture;
 		return texture;
 	end
 });
