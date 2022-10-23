@@ -25,62 +25,106 @@ addonTable.CDs = {
 		[7744] = 120,		-- // Will of the Forsaken https://www.wowhead.com/wotlk/ru/spell=7744
 	},
 	["HUNTER"] = {
-		-- // reviewed 2021/02/08
+		-- // reviewed 2022/10/16
 		[53271] = 60,					-- // Master's Call https://www.wowhead.com/wotlk/ru/spell=53271
-		[19574] = 120,					-- // Bestial Wrath https://www.wowhead.com/wotlk/ru/spell=19574
-		[19577] = 60,					-- // Intimidation https://www.wowhead.com/wotlk/ru/spell=19577
-		[5384] = 30,					-- Feign Death https://www.wowhead.com/wotlk/ru/spell=5384/feign-death
+		[19574] = 60,					-- // Bestial Wrath https://www.wowhead.com/wotlk/ru/spell=19574
+		[19577] = 40,					-- // Intimidation https://www.wowhead.com/wotlk/ru/spell=19577
+		[5384] = 25,					-- Feign Death https://www.wowhead.com/wotlk/ru/spell=5384/feign-death
 		[53480] = 60,					-- Roar of Sacrifice https://www.wowhead.com/wotlk/ru/spell=53480/roar-of-sacrifice
-		[34026] = 60,					-- Kill Command https://www.wowhead.com/wotlk/spell=34026/kill-command
+		[34026] = 30,					-- Kill Command https://www.wowhead.com/wotlk/spell=34026/kill-command
 		[1513] = 30,					-- Scare Beast 1 https://www.wowhead.com/wotlk/spell=1513
 		[14326] = 30,					-- Scare Beast 2 https://www.wowhead.com/wotlk/spell=14326
 		[14327] = 30,					-- Scare Beast 3 https://www.wowhead.com/wotlk/spell=14327
-		[3045] = 5*60,					-- Rapid Fire https://www.wowhead.com/wotlk/spell=3045
+		[3045] = 3*60,					-- Rapid Fire https://www.wowhead.com/wotlk/spell=3045
 		[1543] = 20,					-- Flare https://www.wowhead.com/wotlk/spell=1543
-		[19263] = 90,					-- Deterrence https://www.wowhead.com/wotlk/spell=19263
+		[19263] = 80,					-- Deterrence https://www.wowhead.com/wotlk/spell=19263
 		[60192] = 30,					-- Freezing Arrow https://www.wowhead.com/wotlk/spell=60192
-		[1499] = 30,					-- Freezing Trap 1 https://www.wowhead.com/wotlk/spell=1499
-		[14310] = 30,					-- Freezing Trap 2 https://www.wowhead.com/wotlk/spell=14310
-		[14311] = 30,					-- Freezing Trap 3 https://www.wowhead.com/wotlk/spell=14311
-		[13809] = 30,					-- Frost Trap https://www.wowhead.com/wotlk/spell=13809
+		[1499] = 20,					-- Freezing Trap 1 https://www.wowhead.com/wotlk/spell=1499
+		[14310] = 20,					-- Freezing Trap 2 https://www.wowhead.com/wotlk/spell=14310
+		[14311] = 20,					-- Freezing Trap 3 https://www.wowhead.com/wotlk/spell=14311
+		[13809] = 20,					-- Frost Trap https://www.wowhead.com/wotlk/spell=13809
 		[34490] = 20,					-- Silencing Shot https://www.wowhead.com/wotlk/spell=34490
 		[23989] = 3*60,					-- Readiness https://www.wowhead.com/wotlk/spell=23989
 		[19503] = 30,					-- Scatter Shot https://www.wowhead.com/wotlk/spell=19503
 	},
 	["WARLOCK"] = {
-		-- // reviewed 2021/02/09
-		[48020] = 30,		-- Demonic Circle: Teleport https://www.wowhead.com/wotlk/ru/spell=48020
-		[6789] = 120,		-- Mortal Coil https://www.wowhead.com/wotlk/ru/spell=6789
-		[5484] = 40,		-- Howl of Terror https://www.wowhead.com/wotlk/ru/spell=5484
+		-- // reviewed 2022/10/18
+		[48020] = 26,		-- Demonic Circle: Teleport https://www.wowhead.com/wotlk/ru/spell=48020
+		[6789] = 120,		-- Death Coil 1 https://www.wowhead.com/wotlk/ru/spell=6789
+		[17925] = 120,		-- Death Coil 2 https://www.wowhead.com/wotlk/ru/spell=17925
+		[17926] = 120,		-- Death Coil 3 https://www.wowhead.com/wotlk/ru/spell=17926
+		[27223] = 120,		-- Death Coil 4 https://www.wowhead.com/wotlk/ru/spell=27223
+		[47859] = 120,		-- Death Coil 5 https://www.wowhead.com/wotlk/ru/spell=47859
+		[47860] = 120,		-- Death Coil 6 https://www.wowhead.com/wotlk/ru/spell=47860
+		[5484] = 32,		-- Howl of Terror 1 https://www.wowhead.com/wotlk/ru/spell=5484
+		[17928] = 32,		-- Howl of Terror 2 https://www.wowhead.com/wotlk/ru/spell=17928
 		[30283] = 20,		-- Shadowfury https://www.wowhead.com/wotlk/ru/spell=30283
 		[19647] = 24,		-- Spell Lock https://www.wowhead.com/wotlk/ru/spell=19647
 		[1122] = 600,		-- Summon Infernal https://www.wowhead.com/wotlk/ru/spell=1122
+		[54785] = 45,		-- Demon Charge https://www.wowhead.com/wotlk/ru/spell=54785
+		[47193] = 60,		-- Demonic Empowerment https://www.wowhead.com/wotlk/ru/spell=47193
+		[59672] = 3*60,		-- Metamorphosis https://www.wowhead.com/wotlk/ru/spell=59672
+		[18708] = 2*60,		-- Fel Domination https://www.wowhead.com/wotlk/ru/spell=18708
 	},
 	["MAGE"] = {
-		-- // reviewed 2021/02/10
-		[122] = 25,			-- Frost Nova https://www.wowhead.com/wotlk/ru/spell=122
-		[1953] = 15,		-- Blink https://www.wowhead.com/wotlk/ru/spell=1953
-		[45438] = 300,		-- Ice Block https://www.wowhead.com/wotlk/ru/spell=45438
-		[2139] = 24,		-- Counterspell https://www.wowhead.com/wotlk/ru/spell=2139
-		[12042] = 120,		-- Arcane Power https://www.wowhead.com/wotlk/ru/spell=12042
+		-- // reviewed 2022/10/19
+		[122] = 20,			-- Frost Nova 1 https://www.wowhead.com/wotlk/ru/spell=122
+		[865] = 20,			-- Frost Nova 2 https://www.wowhead.com/wotlk/ru/spell=865
+		[6131] = 20,		-- Frost Nova 3 https://www.wowhead.com/wotlk/ru/spell=6131
+		[10230] = 20,		-- Frost Nova 4 https://www.wowhead.com/wotlk/ru/spell=10230
+		[27088] = 20,		-- Frost Nova 5 https://www.wowhead.com/wotlk/ru/spell=27088
+		[42917] = 20,		-- Frost Nova 6 https://www.wowhead.com/wotlk/ru/spell=42917
+		[120] = 8,			-- Cone of Cold 1 https://www.wowhead.com/wotlk/ru/spell=120
+		[8492] = 8,			-- Cone of Cold 2 https://www.wowhead.com/wotlk/ru/spell=8492
+		[10159] = 8,		-- Cone of Cold 3 https://www.wowhead.com/wotlk/ru/spell=10159
+		[10160] = 8,		-- Cone of Cold 4 https://www.wowhead.com/wotlk/ru/spell=10160
+		[10161] = 8,		-- Cone of Cold 5 https://www.wowhead.com/wotlk/ru/spell=10161
+		[27087] = 8,		-- Cone of Cold 6 https://www.wowhead.com/wotlk/ru/spell=27087
+		[42930] = 8,		-- Cone of Cold 7 https://www.wowhead.com/wotlk/ru/spell=42930
+		[42931] = 8,		-- Cone of Cold 8 https://www.wowhead.com/wotlk/ru/spell=42931
+		[6143] = 30,		-- Frost Ward 1 https://www.wowhead.com/wotlk/ru/spell=6143
+		[8461] = 30,		-- Frost Ward 2 https://www.wowhead.com/wotlk/ru/spell=8461
+		[8462] = 30,		-- Frost Ward 3 https://www.wowhead.com/wotlk/ru/spell=8462
+		[10177] = 30,		-- Frost Ward 4 https://www.wowhead.com/wotlk/ru/spell=10177
+		[28609] = 30,		-- Frost Ward 5 https://www.wowhead.com/wotlk/ru/spell=28609
+		[32796] = 30,		-- Frost Ward 6 https://www.wowhead.com/wotlk/ru/spell=32796
+		[43012] = 30,		-- Frost Ward 7 https://www.wowhead.com/wotlk/ru/spell=43012
+		[1953] = 13,		-- Blink https://www.wowhead.com/wotlk/ru/spell=1953
+		[45438] = 4*60,		-- Ice Block https://www.wowhead.com/wotlk/ru/spell=45438
+		[2139] = 22,		-- Counterspell https://www.wowhead.com/wotlk/ru/spell=2139
+		[12042] = 80,		-- Arcane Power https://www.wowhead.com/wotlk/ru/spell=12042
 		[31661] = 20,		-- Dragon's Breath https://www.wowhead.com/wotlk/ru/spell=31661
-		[66] = 180,			-- Invisibility https://www.wowhead.com/wotlk/ru/spell=66
-		[12472] = 180,		-- Icy Veins https://www.wowhead.com/wotlk/ru/spell=12472
+		[66] = 2*60,		-- Invisibility https://www.wowhead.com/wotlk/ru/spell=66
 		[55342] = 180,		-- Зеркальное изображение https://www.wowhead.com/wotlk/ru/spell=55342
+		[12051] = 2*60,		-- Evocation https://www.wowhead.com/wotlk/ru/spell=12051
+		[12043] = 80,		-- Presence of Mind https://www.wowhead.com/wotlk/ru/spell=12043
+		[11129] = 120,		-- Combustion https://www.wowhead.com/wotlk/ru/spell=11129
+		[12472] = 144,		-- Icy Veins https://www.wowhead.com/wotlk/ru/spell=12472
+		[44572] = 30,		-- Deep Freeze https://www.wowhead.com/wotlk/ru/spell=44572
+		[11958] = 384,		-- Cold Snap https://www.wowhead.com/wotlk/ru/spell=11958
 	},
 	["DEATHKNIGHT"] = {
-		-- // reviewed 2021/02/11
-		[47476] 	= 120,			-- Strangulate https://www.wowhead.com/wotlk/ru/spell=47476
-		[48707] 	= 45,			-- Anti-Magic Shell https://www.wowhead.com/wotlk/ru/spell=48707
-		[49576] 	= 35,			-- Death Grip	 https://www.wowhead.com/wotlk/ru/spell=49576
-		[47528] 	= 10,			-- Mind Freeze https://www.wowhead.com/wotlk/ru/spell=47528
-		[51052] 	= 120,			-- Anti-Magic Zone https://www.wowhead.com/wotlk/ru/spell=51052
-		[49206] 	= 180,			-- Summon Gargoyle https://www.wowhead.com/wotlk/ru/spell=49206
-		[48792] 	= 120,			-- Icebound Fortitude https://www.wowhead.com/wotlk/ru/spell=48792
-		[48743] 	= 120,			-- Death Pact https://www.wowhead.com/wotlk/ru/spell=48743
-		[49028] 	= 90,			-- Dancing Rune Weapon https://www.wowhead.com/wotlk/ru/spell=49028
-		[42650] 	= 600,			-- Army of the Dead https://www.wowhead.com/wotlk/ru/spell=42650
-		[49039]		= 120,			-- Перерождение https://www.wowhead.com/wotlk/ru/spell=49039
+		-- // reviewed 2022/10/22
+		[47476]		= 100,			-- Strangulate https://www.wowhead.com/wotlk/ru/spell=47476
+		[48743]		= 120,			-- Death Pact https://www.wowhead.com/wotlk/ru/spell=48743
+		[48792]		= 120,			-- Icebound Fortitude https://www.wowhead.com/wotlk/ru/spell=48792
+		[47568]		= 5*60,			-- Empower Rune Weapon https://www.wowhead.com/wotlk/ru/spell=47568
+		[47528]		= 10,			-- Mind Freeze https://www.wowhead.com/wotlk/ru/spell=47528
+		[42650]		= 6*60,			-- Army of the Dead https://www.wowhead.com/wotlk/ru/spell=42650
+		[48707]		= 45,			-- Anti-Magic Shell https://www.wowhead.com/wotlk/ru/spell=48707
+		[46584]		= 90,			-- Raise Dead https://www.wowhead.com/wotlk/ru/spell=46584
+		[49576]		= 20,			-- Death Grip https://www.wowhead.com/wotlk/ru/spell=49576
+		[61999]		= 10*60,		-- Raise Ally https://www.wowhead.com/wotlk/ru/spell=61999
+		[49016]		= 3*60,			-- Unholy Frenzy https://www.wowhead.com/wotlk/ru/spell=49016
+		[55233]		= 50,			-- Vampiric Blood https://www.wowhead.com/wotlk/ru/spell=55233
+		[49028]		= 90,			-- Dancing Rune Weapon https://www.wowhead.com/wotlk/ru/spell=49028
+		[49005]		= 3*60,			-- Mark of Blood https://www.wowhead.com/wotlk/ru/spell=49005
+		[48982]		= 30,			-- Rune Tap https://www.wowhead.com/wotlk/ru/spell=48982
+		[49039]		= 120,			-- Lichborne https://www.wowhead.com/wotlk/ru/spell=49039
+		[51271]		= 50,			-- Unbreakable Armor https://www.wowhead.com/wotlk/ru/spell=51271
+		[49206]		= 3*60,			-- Summon Gargoyle https://www.wowhead.com/wotlk/ru/spell=49206
+		[49222]		= 50,			-- Bone Shield https://www.wowhead.com/wotlk/ru/spell=49222
+		[51052]		= 120,			-- Anti-Magic Zone https://www.wowhead.com/wotlk/ru/spell=51052
 	},
 	["DRUID"] = {
 		-- // reviewed 2021/02/15
@@ -171,6 +215,7 @@ addonTable.Interrupts = {
 	[6552] = true,		-- // Pummel
 	[19647] = true,		-- // Spell Lock https://www.wowhead.com/wotlk/ru/spell=19647
 	[34490] = true,		-- Silencing Shot https://www.wowhead.com/wotlk/spell=34490
+	[47476] = true,		-- Strangulate
 };
 
 addonTable.Trinkets = {
@@ -241,6 +286,46 @@ do
 				19503,
 			},
 		},
+		[45438] = { -- Ice Block https://www.wowhead.com/wotlk/ru/spell=45438
+			["reduction"] = BIG_REDUCTION,
+			["spells"] = {
+				122,
+				865,
+				6131,
+				10230,
+				27088,
+				42917,
+			},
+		},
+		[11958] = { -- Cold Snap https://www.wowhead.com/wotlk/ru/spell=11958
+			["reduction"] = BIG_REDUCTION,
+			["spells"] = {
+				122,
+				865,
+				6131,
+				10230,
+				27088,
+				42917,
+				120,
+				8492,
+				10159,
+				10160,
+				10161,
+				27087,
+				42930,
+				42931,
+				6143,
+				8461,
+				8462,
+				10177,
+				28609,
+				32796,
+				43012,
+				45438,
+				12472,
+				44572,
+			},
+		}
 	};
 
 end
