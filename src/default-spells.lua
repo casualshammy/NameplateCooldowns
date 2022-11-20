@@ -241,21 +241,33 @@ addonTable.CDs = {
 		[48173] = 120,		-- Desperate Prayer 1 https://www.wowhead.com/wotlk/spell=48173
 	},
 	["ROGUE"] = {
-		-- // reviewed 2021/02/16
-		[2094] = 180,				-- Blind https://www.wowhead.com/wotlk/ru/spell=2094
-		[1766] = 10,				-- Kick https://www.wowhead.com/wotlk/ru/spell=1766
-		[31224] = 90,				-- Cloak of Shadows https://www.wowhead.com/wotlk/ru/spell=31224
-		[1856] = 180,				-- Vanish https://www.wowhead.com/wotlk/ru/spell=1856
-		[2983] = 180,				-- Sprint" [-9sec] https://www.wowhead.com/wotlk/ru/spell=2983
-		[36554] = 30,				-- Shadowstep https://www.wowhead.com/wotlk/ru/spell=36554
-		[5277] = 180,				-- Evasion https://www.wowhead.com/wotlk/ru/spell=5277
-		[51690] = 120,				-- Killing Spree https://www.wowhead.com/wotlk/ru/spell=51690
-		[13750] = 180,				-- Adrenaline Rush [-30sec] https://www.wowhead.com/wotlk/ru/spell=13750
-		[408] = 20,					-- Kidney Shot https://www.wowhead.com/wotlk/ru/spell=408/kidney-shot
-		[1776] = 10,				-- Gouge https://www.wowhead.com/wotlk/ru/spell=1776/gouge
+		-- // reviewed 2022/11/20
 		[31228] = 60,				-- Cheat Death https://www.wowhead.com/wotlk/spell=31228/cheat-death
 		[31229] = 60,				-- Cheat Death https://www.wowhead.com/wotlk/spell=31229/cheat-death
 		[31230] = 60,				-- Cheat Death https://www.wowhead.com/wotlk/spell=31230/cheat-death
+		[51722] = 60,				-- Dismantle https://www.wowhead.com/wotlk/spell=51722
+		[31224] = 60,				-- Cloak of Shadows https://www.wowhead.com/wotlk/spell=31224
+		[2094] = 120,				-- Blind https://www.wowhead.com/wotlk/spell=2094
+		[1776] = 9,					-- Gouge https://www.wowhead.com/wotlk/spell=1776
+		[1766] = 9.5,				-- Kick https://www.wowhead.com/wotlk/spell=1766
+		[1856] = 90,				-- Vanish 1 https://www.wowhead.com/wotlk/spell=1856
+		[1857] = 90,				-- Vanish 2 https://www.wowhead.com/wotlk/spell=1857
+		[26889] = 90,				-- Vanish 3 https://www.wowhead.com/wotlk/spell=26889
+		[408] = 20,					-- Kidney Shot 1 https://www.wowhead.com/wotlk/spell=408
+		[8643] = 20,				-- Kidney Shot 2 https://www.wowhead.com/wotlk/spell=8643
+		[5277] = 120,				-- Evasion 1 https://www.wowhead.com/wotlk/spell=5277
+		[26669] = 120,				-- Evasion 2 https://www.wowhead.com/wotlk/spell=26669
+		[2983] = 120,				-- Sprint 1 https://www.wowhead.com/wotlk/spell=2983
+		[8696] = 120,				-- Sprint 2 https://www.wowhead.com/wotlk/spell=8696
+		[11305] = 120,				-- Sprint 3 https://www.wowhead.com/wotlk/spell=11305
+		[51690] = 120,				-- Killing Spree https://www.wowhead.com/wotlk/spell=51690
+		[13877] = 120,				-- Blade Flurry https://www.wowhead.com/wotlk/spell=13877
+		[51713] = 60,				-- Shadow Dance https://www.wowhead.com/wotlk/spell=51713
+		[14177] = 180,				-- Cold Blood https://www.wowhead.com/wotlk/spell=14177
+		[13750] = 180,				-- Adrenaline Rush https://www.wowhead.com/wotlk/spell=13750
+		[36554] = 20,				-- Shadowstep https://www.wowhead.com/wotlk/spell=36554
+		[14185] = 5*60,				-- Preparation https://www.wowhead.com/wotlk/spell=14185
+		[14183] = 20,				-- Premeditation https://www.wowhead.com/wotlk/spell=14183
 	},
 	["SHAMAN"] = {
 		-- // reviewed 2021/02/17
@@ -403,7 +415,22 @@ do
 				12472,
 				44572,
 			},
-		}
+		},
+		[14185] = { -- Preparation https://www.wowhead.com/wotlk/ru/spell=14185
+			["reduction"] = BIG_REDUCTION,
+			["spells"] = {
+				5277,
+				26669,
+				2983,
+				8696,
+				11305,
+				1856,
+				1857,
+				26889,
+				14177,
+				36554,
+			},
+		},
 	};
 
 end
