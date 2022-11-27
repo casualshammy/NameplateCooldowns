@@ -2414,6 +2414,7 @@ do
 
 	EventFrame = CreateFrame("Frame");
 	EventFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
+	EventFrame:RegisterEvent("PVP_MATCH_ACTIVE");
 	EventFrame:RegisterEvent("CHAT_MSG_ADDON");
 	EventFrame:SetScript("OnEvent", function(self, event, ...) self[event](...); end);
 	C_ChatInfo.RegisterAddonMessagePrefix("NC_prefix");
@@ -2558,6 +2559,10 @@ do
 				C_ChatInfo.SendAddonMessage("NC_prefix", "reporting:"..sender, channel);
 			end
 		end
+	end
+
+	EventFrame.PLAYER_TARGET_CHANGED = function()
+		wipe(SpellsPerPlayerGUID);
 	end
 
 end
