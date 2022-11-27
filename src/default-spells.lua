@@ -271,27 +271,52 @@ addonTable.CDs = {
 	},
 	["SHAMAN"] = {
 		-- // reviewed 2021/02/17
-		[57994] = 6,		-- Wind Shear https://www.wowhead.com/wotlk/ru/spell=57994
-		[51490] = 45,		-- Thunderstorm https://www.wowhead.com/wotlk/ru/spell=51490
-		[32182] = 300,		-- Heroism https://www.wowhead.com/wotlk/ru/spell=32182
-		[2825] = 300,		-- Bloodlust https://www.wowhead.com/wotlk/ru/spell=2825
-		[51533] = 180,		-- Feral Spirit https://www.wowhead.com/wotlk/ru/spell=51533
-		[51514] = 45,		-- Hex https://www.wowhead.com/wotlk/ru/spell=51514
+		[2825] = 5*60,		-- Bloodlust https://www.wowhead.com/wotlk/spell=2825
+		[32182] = 5*60,		-- Heroism https://www.wowhead.com/wotlk/spell=32182
+		[57994] = 5,		-- Wind Shear https://www.wowhead.com/wotlk/spell=57994
+		[2894] = 5*60,		-- Fire Elemental Totem https://www.wowhead.com/wotlk/spell=2894
+		[2062] = 5*60,		-- Earth Elemental Totem https://www.wowhead.com/wotlk/spell=2062
+		[51514] = 45,		-- Hex https://www.wowhead.com/wotlk/spell=51514
+		[2484] = 15,		-- Earthbind Totem https://www.wowhead.com/wotlk/spell=2484
+		[8177] = 13.5,		-- Grounding Totem https://www.wowhead.com/wotlk/spell=8177
+		[51533] = 3*60,		-- Feral Spirit https://www.wowhead.com/wotlk/spell=51533
+		[16166] = 150,		-- Elemental Mastery https://www.wowhead.com/wotlk/spell=16166
+		[51490] = 35,		-- Thunderstorm 1 https://www.wowhead.com/wotlk/spell=51490
+		[59156] = 35,		-- Thunderstorm 2 https://www.wowhead.com/wotlk/spell=59156
+		[59158] = 35,		-- Thunderstorm 3 https://www.wowhead.com/wotlk/spell=59158
+		[59159] = 35,		-- Thunderstorm 4 https://www.wowhead.com/wotlk/spell=59159
+		[16190] = 5*60,		-- Mana Tide Totem https://www.wowhead.com/wotlk/spell=16190
+		[30823] = 60,		-- Shamanistic Rage https://www.wowhead.com/wotlk/spell=30823
+		[16188] = 96,		-- Nature's Swiftness https://www.wowhead.com/wotlk/spell=16188
 	},
 	["WARRIOR"] = {
 		-- // reviewed 2021/02/12
-		[100] = 15,					-- Charge https://www.wowhead.com/wotlk/ru/spell=100
+		[64382] = 5*60,				-- Shattering Throw https://www.wowhead.com/wotlk/ru/spell=64382
+		[1719] = 201,				-- Recklessness https://www.wowhead.com/wotlk/ru/spell=1719
+		[871] = 120,				-- Shield Wall https://www.wowhead.com/wotlk/ru/spell=871
+		[57755] = 60,				-- Heroic Throw https://www.wowhead.com/wotlk/ru/spell=57755
+		[55694] = 3*60,				-- Enraged Regeneration https://www.wowhead.com/wotlk/ru/spell=55694
+		[2565] = 40,				-- Shield Block https://www.wowhead.com/wotlk/ru/spell=2565
+		[3411] = 30,				-- Intervene https://www.wowhead.com/wotlk/ru/spell=3411
+		[20230] = 4*60,				-- Retaliation https://www.wowhead.com/wotlk/ru/spell=20230
+		[18499] = 20,				-- Berserker Rage https://www.wowhead.com/wotlk/ru/spell=18499
+		[2687] = 40,				-- Bloodrage https://www.wowhead.com/wotlk/ru/spell=2687
+		[23920] = 9,				-- Spell Reflection https://www.wowhead.com/wotlk/ru/spell=23920
 		[6552] = 10,				-- Pummel https://www.wowhead.com/wotlk/ru/spell=6552
-		[23920] = 10,				-- Spell Reflection https://www.wowhead.com/wotlk/ru/spell=23920
-		[46924] = 90,				-- Bladestorm https://www.wowhead.com/wotlk/ru/spell=46924
-		[46968] = 20,				-- Shockwave https://www.wowhead.com/wotlk/ru/spell=46968
-		[5246] = 120,				-- Intimidating Shout https://www.wowhead.com/wotlk/ru/spell=5246
-		[871] = 300,				-- Shield Wall https://www.wowhead.com/wotlk/ru/spell=871
-		[1719] = 300,				-- Recklessness https://www.wowhead.com/wotlk/ru/spell=1719
+		[100] = 15,					-- Charge https://www.wowhead.com/wotlk/ru/spell=100
+		[11578] = 15,				-- Charge https://www.wowhead.com/wotlk/ru/spell=11578
+		[20252] = 20,				-- Intercept https://www.wowhead.com/wotlk/ru/spell=20252
+		[676] = 40,					-- Disarm https://www.wowhead.com/wotlk/ru/spell=676
+		[72] = 12,					-- Shield Bash https://www.wowhead.com/wotlk/ru/spell=72
+		[1161] = 120,				-- Challenging Shout https://www.wowhead.com/wotlk/ru/spell=1161
+		[5246] = 105,				-- Intimidating Shout https://www.wowhead.com/wotlk/ru/spell=5246
+		[46924] = 75,				-- Bladestorm https://www.wowhead.com/wotlk/ru/spell=46924
+		[46968] = 17,				-- Shockwave https://www.wowhead.com/wotlk/ru/spell=46968
+		[12292] = 120,				-- Death Wish https://www.wowhead.com/wotlk/ru/spell=12292
+		[60970] = 45,				-- Heroic Fury https://www.wowhead.com/wotlk/ru/spell=60970
+		[12975] = 120,				-- Last Stand https://www.wowhead.com/wotlk/ru/spell=12975
+		[12809] = 30,				-- Concussion Blow https://www.wowhead.com/wotlk/ru/spell=12809
 		[6544] = 45,				-- Heroic Leap https://www.wowhead.com/wotlk/ru/spell=6544
-		[12975] = 180,				-- Last Stand https://www.wowhead.com/wotlk/ru/spell=12975
-		[18499] = 30,				-- Berserker Rage https://www.wowhead.com/wotlk/ru/spell=18499
-		[3411] = 30,				-- Intervene https://www.wowhead.com/wotlk/ru/spell=3411/intervene
 	},
 };
 
@@ -302,6 +327,7 @@ addonTable.Interrupts = {
 	[1766] = true,		-- // Kick
 	[57994] = true,		-- // Wind Shear
 	[6552] = true,		-- // Pummel
+	[72] = true,		-- Shield Bash https://www.wowhead.com/wotlk/ru/spell=72
 	[19647] = true,		-- // Spell Lock https://www.wowhead.com/wotlk/ru/spell=19647
 	[34490] = true,		-- Silencing Shot https://www.wowhead.com/wotlk/spell=34490
 	[47476] = true,		-- Strangulate
@@ -320,39 +346,6 @@ do
 	local BIG_REDUCTION = 4*1000*1000;
 
 	addonTable.Reductions = {
-		-- [275773] = { -- // holy paladin's judgment https://www.wowhead.com/spell=275773/judgment
-			-- ["reduction"] = 10,
-			-- ["spells"] = { 853 },
-		-- },
-		-- [275779] = { -- // protection paladin's judgment https://www.wowhead.com/spell=275779/judgment
-			-- ["reduction"] = 6,
-			-- ["spells"] = { 853 },
-		-- },
-		[195676] = { -- // Displacement https://www.wowhead.com/wotlk/ru/spell=195676/%D1%81%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D0%B5
-			["reduction"] = BIG_REDUCTION,
-			["spells"] = { 1953 }, -- // Blink
-		},
-		[235219] = { -- // Cold Snap https://www.wowhead.com/wotlk/ru/spell=235219/%D1%85%D0%BE%D0%BB%D0%BE%D0%B4%D0%BD%D0%B0%D1%8F-%D1%85%D0%B2%D0%B0%D1%82%D0%BA%D0%B0
-			["reduction"] = BIG_REDUCTION,
-			["spells"] = {
-				122,			-- // Frost Nova
-				120,			-- // Cone of Cold
-				11426,			-- // Ice Barrier
-				45438,			-- // Ice Block
-			},
-		},
-		[115203] = { -- // Fortifying Brew https://www.wowhead.com/spell=115203/fortifying-brew
-			["reduction"] = -120,
-			["spells"] = {
-				243435,			-- // Fortifying Brew https://www.wowhead.com/spell=243435/fortifying-brew
-			},
-		},
-		[585] = {	-- Кара https://www.wowhead.com/wotlk/ru/spell=585/%D0%BA%D0%B0%D1%80%D0%B0
-			["reduction"] = -4,
-			["spells"] = {
-				88625,	-- Holy Word: Chastise https://www.wowhead.com/wotlk/ru/spell=88625
-			},
-		},
 		[23989] = { -- Readiness https://www.wowhead.com/wotlk/spell=23989
 			["reduction"] = BIG_REDUCTION,
 			["spells"] = {
