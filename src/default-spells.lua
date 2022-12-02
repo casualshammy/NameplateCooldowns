@@ -374,6 +374,35 @@ addonTable.CDs = {
 		[317009] = 60,						-- Sinful Brand https://www.wowhead.com/spell=317009/sinful-brand
 		[329554] = 120,						-- Fodder to the Flame https://www.wowhead.com/spell=329554/fodder-to-the-flame
 	},
+	["EVOKER"] = {
+		-- // reviewed 2022/12/02
+		[357210] = 60,					-- Deep Breath https://www.wowhead.com/spell=357210/deep-breath
+		[390386] = 300,					-- Fury of the Aspects https://www.wowhead.com/spell=390386
+		[358267] = 35,					-- Hover https://www.wowhead.com/spell=358267
+		[375087] = 120,					-- Dragonrage https://www.wowhead.com/spell=375087
+		[360995] = 24,					-- Verdant Embrace https://www.wowhead.com/spell=360995
+		[370665] = 60,					-- Rescue https://www.wowhead.com/spell=370665
+		[363534] = 240,					-- Rewind https://www.wowhead.com/spell=363534
+		[370553] = 120,					-- Tip the Scales https://www.wowhead.com/spell=370553
+		[351338] = 20,					-- Quell https://www.wowhead.com/spell=351338
+		[374348] = 60,					-- Renewing Blaze https://www.wowhead.com/spell=374348
+		[357170] = 60,					-- Time Dilation https://www.wowhead.com/spell=357170
+		[370537] = 90,					-- Stasis https://www.wowhead.com/spell=370537
+		[374251] = 60,					-- Cauterizing Flame https://www.wowhead.com/spell=374251
+		[372048] = 120,					-- Oppressing Roar https://www.wowhead.com/spell=372048
+		[374968] = 120,					-- Time Spiral https://www.wowhead.com/spell=374968
+		[363916] = 90,					-- Obsidian Scales https://www.wowhead.com/spell=363916
+		[374227] = 120,					-- Zephyr https://www.wowhead.com/spell=374227
+		[360806] = 15,					-- Sleep Walk https://www.wowhead.com/spell=360806
+		[359816] = 120,					-- Dream Flight https://www.wowhead.com/spell=359816
+		[358385] = 60,					-- Landslide https://www.wowhead.com/spell=358385
+		[370960] = 180,					-- Emerald Communion https://www.wowhead.com/spell=370960
+		[378464] = 90,					-- Nullifying Shroud https://www.wowhead.com/spell=378464
+		[377509] = 90,					-- Dream Projection https://www.wowhead.com/spell=377509
+		[383005] = 90,					-- Chrono Loop https://www.wowhead.com/spell=383005
+		[370388] = 90,					-- Swoop Up https://www.wowhead.com/spell=370388
+		[378441] = 120,					-- Time Stop https://www.wowhead.com/spell=378441
+	},
 };
 
 addonTable.Interrupts = {
@@ -395,6 +424,7 @@ addonTable.Interrupts = {
 	[91802] = true,	-- // Shambling Rush https://www.wowhead.com/spell=91802/shambling-rush
 	[212619] = true, -- // Вызов охотника Скверны
 	[78675] = true,	-- // Столп солнечного света
+	[351338] = true,	-- Quell https://www.wowhead.com/spell=351338
 };
 
 addonTable.Trinkets = {
