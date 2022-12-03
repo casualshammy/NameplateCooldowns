@@ -2561,7 +2561,7 @@ do
 		end
 	end
 
-	EventFrame.PLAYER_TARGET_CHANGED = function()
+	EventFrame.PVP_MATCH_ACTIVE = function()
 		wipe(SpellsPerPlayerGUID);
 	end
 
