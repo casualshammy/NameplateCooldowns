@@ -12,4 +12,5 @@ src\utilities.lua
 locales\localizations.xml
 src\default-spells.lua
 src\database.lua
+src\options-gui.lua
 NameplateCooldowns.lua
