@@ -126,86 +126,102 @@ addonTable.CDs = {
 		[198144] = 60,		-- Ice Form https://www.wowhead.com/spell=198144
 	},
 	["DEATHKNIGHT"] = {
-		-- // reviewed 2021/02/11
-		[47476] 	= 60,			-- Strangulate https://www.wowhead.com/spell=47476
-		[108194] 	= 45,			-- Asphyxiate https://www.wowhead.com/spell=108194
-		[48707] 	= 60-20,		-- Anti-Magic Shell https://www.wowhead.com/spell=48707
+		-- // reviewed 2023/01/17
+		[91802] 	= 30,			-- Shambling Rush https://www.wowhead.com/spell=91802
+		[275699]	= 30,			-- Апокалипсис https://www.wowhead.com/spell=275699
+		[48265]		= 45,			-- Death's Advance https://www.wowhead.com/spell=48265
 		[49576] 	= 25,			-- Death Grip	 https://www.wowhead.com/spell=49576
-		[47528] 	= 15,			-- Mind Freeze https://www.wowhead.com/spell=47528
-		[108199] 	= 120-30,		-- Gorefiend's Grasp (talent: Tightening Grasp) https://www.wowhead.com/spell=108199
-		[51052] 	= 120,			-- Anti-Magic Zone https://www.wowhead.com/spell=51052
-		[49206] 	= 180,			-- Summon Gargoyle https://www.wowhead.com/spell=49206
-		[48792] 	= 180,			-- Icebound Fortitude https://www.wowhead.com/spell=48792
-		[48743] 	= 120,			-- Death Pact https://www.wowhead.com/spell=48743
-		[77606] 	= 20,			-- Dark Simulacrum https://www.wowhead.com/spell=77606
-		[221562] 	= 45,			-- Asphyxiate https://www.wowhead.com/spell=221562
-		[49028] 	= 120-120*0.5,	-- Dancing Rune Weapon https://www.wowhead.com/spell=49028
-		[42650] 	= 480,			-- Army of the Dead https://www.wowhead.com/spell=42650
-		[207167] 	= 60, 			-- Blinding Sleet https://www.wowhead.com/spell=207167
-		[91802] 	= 30,			-- Shambling Rush https://www.wowhead.com/spell=91802/shambling-rush
-		[48265]		= 45,			-- Поступь смерти https://www.wowhead.com/spell=48265
 		[49039]		= 120,			-- Перерождение https://www.wowhead.com/spell=49039
-		[275699]	= 90-15-45,		-- Апокалипсис https://www.wowhead.com/spell=275699
-		[315443]	= 120,			-- Abomination Limb https://www.wowhead.com/spell=315443/abomination-limb
-		[212552]	= 60,			-- Wraith Walk https://www.wowhead.com/spell=212552/wraith-walk
-		[204160]	= 45,			-- Chill Streak https://www.wowhead.com/spell=204160/chill-streak
+		[51052] 	= 120,			-- Anti-Magic Zone https://www.wowhead.com/spell=51052
+		[42650] 	= 240,			-- Army of the Dead https://www.wowhead.com/spell=42650
+		[49206] 	= 180,			-- Summon Gargoyle https://www.wowhead.com/spell=49206
+		[212552]	= 45,			-- Wraith Walk https://www.wowhead.com/spell=212552
+		[49028] 	= 60,			-- Dancing Rune Weapon https://www.wowhead.com/spell=49028
+		[207289] 	= 90,			-- Unholy Assault https://www.wowhead.com/spell=207289
+		[108194] 	= 45,			-- Asphyxiate https://www.wowhead.com/spell=108194
+		[221562] 	= 45,			-- Asphyxiate https://www.wowhead.com/spell=221562
+		[108199] 	= 90,			-- Gorefiend's Grasp https://www.wowhead.com/spell=108199
+		[114556] 	= 240,			-- Purgatory https://www.wowhead.com/spell=114556
+		[207167] 	= 60, 			-- Blinding Sleet https://www.wowhead.com/spell=207167
+		[48792] 	= 120,			-- Icebound Fortitude https://www.wowhead.com/spell=48792
+		[48707] 	= 40,			-- Anti-Magic Shell https://www.wowhead.com/spell=48707
+		[383269]	= 120,			-- Abomination Limb https://www.wowhead.com/spell=383269
+		[47528] 	= 15,			-- Mind Freeze https://www.wowhead.com/spell=47528
+		[55233] 	= 90,			-- Vampiric Blood https://www.wowhead.com/spell=55233
+		[392962] 	= 120,			-- Empower Rune Weapon https://www.wowhead.com/spell=392962
+		[392963] 	= 120,			-- Empower Rune Weapon https://www.wowhead.com/spell=392963
+		[48743] 	= 120,			-- Death Pact https://www.wowhead.com/spell=48743
+		[288853] 	= 90,			-- Raise Abomination https://www.wowhead.com/spell=288853
+		[77606] 	= 20,			-- Dark Simulacrum https://www.wowhead.com/spell=77606
+		[47476] 	= 60,			-- Strangulate https://www.wowhead.com/spell=47476
 	},
 	["DRUID"] = {
-		-- // reviewed 2021/02/15
+		-- // reviewed 2023/01/18
 		[1850] = 120,							-- Dash https://www.wowhead.com/spell=1850
 		[20484] = 600,							-- Rebirth https://www.wowhead.com/spell=20484
-		[209749] = 30,							-- Faerie Swarm https://www.wowhead.com/spell=209749
-		[202246] = 25,							-- Overrun https://www.wowhead.com/spell=202246
-		[22812] = 60 - 60/100*33 - 60/100*10,	-- Barkskin https://www.wowhead.com/spell=22812
 		[194223] = 180,							-- Celestial Alignment https://www.wowhead.com/spell=194223
-		[78675] = 60-20,						-- Solar Beam https://www.wowhead.com/spell=78675
 		[106951] = 180,							-- Berserk https://www.wowhead.com/spell=106951
-		[50334] = 180,							-- Berserk https://www.wowhead.com/spell=50334
 		[22570] = 20,							-- Maim https://www.wowhead.com/spell=22570
 		[61336] = 180,							-- Survival Instincts x2 https://www.wowhead.com/spell=61336
-		[102342] = 90,							-- Ironbark https://www.wowhead.com/spell=102342
-		[740] = 180 - 60,						-- Tranquility https://www.wowhead.com/spell=740
 		[102793] = 60,							-- Ursol's Vortex https://www.wowhead.com/spell=102793
-		[102560] = 180,							-- Incarnation: Chosen of Elune https://www.wowhead.com/spell=102560
 		[108238] = 90,							-- Renewal https://www.wowhead.com/spell=108238
 		[102543] = 180,							-- Incarnation: King of the Jungle https://www.wowhead.com/spell=102543
 		[102558] = 180,							-- Incarnation: Guardian of Ursoc https://www.wowhead.com/spell=102558
 		[33891] = 180,							-- Incarnation: Tree of Life https://www.wowhead.com/spell=33891
 		[106839] = 15,							-- Skull Bash https://www.wowhead.com/spell=106839
-		[5211]	= 60 - 60/100*10,				-- Mighty Bash https://www.wowhead.com/spell=5211
 		[132469] = 30,							-- Typhoon https://www.wowhead.com/spell=132469/typhoon https://www.wowhead.com/spell=132469
-		[102359] = 30 - 30/100*10,				-- Mass Entanglement https://www.wowhead.com/spell=102359/mass-entanglement https://www.wowhead.com/spell=102359
 		[99] = 30,								-- Парализующий рык https://www.wowhead.com/spell=99
 		[319454] = 300,							-- Сердце дикой природы https://www.wowhead.com/spell=319454
 		[323764] = 120,							-- Convoke the Spirits https://www.wowhead.com/spell=323764/convoke-the-spirits
 		[323546] = 180,							-- Ravenous Frenzy https://www.wowhead.com/spell=323546/ravenous-frenzy
 		[22842] = 36,							-- Frenzied Regeneration https://www.wowhead.com/spell=22842/frenzied-regeneration
 		[88423] = 8,							-- Nature's Cure https://www.wowhead.com/spell=88423/natures-cure
+		[78675] = 40,							-- Solar Beam https://www.wowhead.com/spell=78675
+		[102359] = 30,							-- Mass Entanglement https://www.wowhead.com/spell=102359/mass-entanglement https://www.wowhead.com/spell=102359
+		[5211]	= 60,							-- Mighty Bash https://www.wowhead.com/spell=5211
+		[102560] = 120,							-- Incarnation: Chosen of Elune https://www.wowhead.com/spell=102560
+		[102342] = 70,							-- Ironbark https://www.wowhead.com/spell=102342
+		[740] = 120,							-- Tranquility https://www.wowhead.com/spell=740
+		[22812] = 51,							-- Barkskin https://www.wowhead.com/spell=22812
+		[205636] = 60,							-- Force of Nature https://www.wowhead.com/spell=205636
+		[102401] = 15,							-- Wild Charge https://www.wowhead.com/spell=102401
+		[252216] = 45,							-- Tiger Dash https://www.wowhead.com/spell=252216
+		[2782] = 8,								-- Remove Corruption https://www.wowhead.com/spell=2782
+		[106898] = 60,							-- Stampeding Roar https://www.wowhead.com/spell=106898
+		[329042] = 120,							-- Emerald Slumber https://www.wowhead.com/spell=329042
+		[209749] = 30,							-- Faerie Swarm https://www.wowhead.com/spell=209749
+		[202246] = 25,							-- Overrun https://www.wowhead.com/spell=202246
+		[354654] = 60,							-- Grove Protection https://www.wowhead.com/spell=354654
 	},
 	["MONK"] = {
-		-- // reviewed 2021/02/15
-		[202370] = 30,					-- Mighty Ox Kick https://www.wowhead.com/spell=202370
-		[116705] = 15,					-- Spear Hand Strike https://www.wowhead.com/spell=116705
-		[115176] = 300 - 300/100*75,	-- Zen Meditation https://www.wowhead.com/spell=115176
-		[122470] = 90,					-- Touch of Karma https://www.wowhead.com/spell=122470
-		[116849] = 120-40,				-- Life Cocoon https://www.wowhead.com/spell=116849
-		[123904] = 120,					-- Invoke Xuen, the White Tiger https://www.wowhead.com/spell=123904
-		[198898] = 30,					-- Song of Chi-Ji https://www.wowhead.com/spell=198898
-		[115078] = 45-15,				-- Paralysis https://www.wowhead.com/spell=115078
-		[119996] = 45-20,				-- Transcendence: Transfer https://www.wowhead.com/spell=119996
-		[152173] = 90,					-- Serenity https://www.wowhead.com/spell=152173
-		[122278] = 120,					-- Dampen Harm https://www.wowhead.com/spell=122278
+		-- // reviewed 2023/01/20
+		[119996] = 30,					-- Transcendence: Transfer https://www.wowhead.com/spell=119996
+		[119381] = 50,					-- Leg Sweep https://www.wowhead.com/spell=119381
+		[322109] = 60,					-- Touch of Death https://www.wowhead.com/spell=322109
+		[169340] = 90,					-- Touch of Fatality https://www.wowhead.com/spell=169340
+		[115450] = 8,					-- Detox https://www.wowhead.com/spell=115450
+		[137639] = 90,					-- Storm, Earth, and Fire https://www.wowhead.com/spell=137639
+		[115078] = 30,					-- Paralysis https://www.wowhead.com/spell=115078
 		[122783] = 90,					-- Diffuse Magic https://www.wowhead.com/spell=122783
-		[119381] = 60,					-- Leg Sweep https://www.wowhead.com/spell=119381
+		[116849] = 75,					-- Life Cocoon https://www.wowhead.com/spell=116849
+		[122470] = 90,					-- Touch of Karma https://www.wowhead.com/spell=122470
+		[113656] = 24,					-- Fists of Fury https://www.wowhead.com/spell=113656
+		[123904] = 120,					-- Invoke Xuen, the White Tiger https://www.wowhead.com/spell=123904
+		[152173] = 90,					-- Serenity https://www.wowhead.com/spell=152173
 		[116844] = 45,					-- Ring of Peace https://www.wowhead.com/spell=116844
-		[322109] = 180,					-- Смертельное касание https://www.wowhead.com/spell=322109
-		[233759] = 45,					-- Захват оружия https://www.wowhead.com/spell=233759
-		[209584] = 45,					-- Чай дзен-концентрации https://www.wowhead.com/spell=209584
-		[115450] = 8,					-- Detox https://www.wowhead.com/spell=115450/detox
-		[310454] = 120,					-- Weapons of Order https://www.wowhead.com/spell=310454/weapons-of-order
-		[325216] = 60,					-- Bonedust Brew https://www.wowhead.com/spell=325216/bonedust-brew
-		[327104] = 60,					-- Faeline Stomp https://www.wowhead.com/spell=327104/faeline-stomp
-		[326860] = 180,					-- Fallen Order https://www.wowhead.com/spell=326860/fallen-order
+		[115310] = 90,					-- Revival https://www.wowhead.com/spell=115310
+		[115176] = 75,					-- Zen Meditation https://www.wowhead.com/spell=115176
+		[122278] = 120,					-- Dampen Harm https://www.wowhead.com/spell=122278
+		[116841] = 30,					-- Tiger's Lust https://www.wowhead.com/spell=116841
+		[116705] = 15,					-- Spear Hand Strike https://www.wowhead.com/spell=116705
+		[198898] = 30,					-- Song of Chi-Ji https://www.wowhead.com/spell=198898
+		[218164] = 8,					-- Detox https://www.wowhead.com/spell=218164
+		[388615] = 90,					-- Restoral https://www.wowhead.com/spell=388615
+		[324312] = 30,					-- Clash https://www.wowhead.com/spell=324312
+		[233759] = 45,					-- Grapple Weapon https://www.wowhead.com/spell=233759
+		[209584] = 30,					-- Zen Focus Tea https://www.wowhead.com/spell=209584
+		[202370] = 30,					-- Mighty Ox Kick https://www.wowhead.com/spell=202370
+		[354540] = 90,					-- Nimble Brew https://www.wowhead.com/spell=354540
 	},
 	["PALADIN"] = {
 		-- // reviewed 2021/02/12
