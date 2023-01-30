@@ -224,96 +224,98 @@ addonTable.CDs = {
 		[354540] = 90,					-- Nimble Brew https://www.wowhead.com/spell=354540
 	},
 	["PALADIN"] = {
-		-- // reviewed 2021/02/12
-		[642] = 300 - 300/100*30,		-- Божественный щит https://www.wowhead.com/spell=642
-		[1044] = 25,					-- Благословенная свобода https://www.wowhead.com/spell=1044
-		[633] = 600 - 600/100*30,		-- Возложение рук https://www.wowhead.com/spell=633
-		[216331] = 120,					-- Рыцарь-мститель https://www.wowhead.com/spell=216331
-		[228049] = 180,					-- Страж забытой королевы https://www.wowhead.com/spell=228049
-		[210256] = 45,					-- Благословение святилища https://www.wowhead.com/spell=210256
-		[1022] = 300,					-- Благословение защиты https://www.wowhead.com/spell=1022
-		[31821] = 180,					-- Владение аурами https://www.wowhead.com/spell=31821
-		[498] = 60,						-- Божественная защита https://www.wowhead.com/spell=498
-		[6940] = 120,					-- Жертвенное благословение https://www.wowhead.com/spell=6940
-		[853] = 60,						-- Молот правосудия https://www.wowhead.com/spell=853
-		[190784] = 60,					-- Божественный скакун https://www.wowhead.com/spell=190784
-		[31884] = 180-60,				-- Гнев карателя https://www.wowhead.com/spell=31884
-		[86659] = 300,					-- Защитник древних королей https://www.wowhead.com/spell=86659
-		[31850] = 120 - 120/100*30,		-- Ревностный защитник https://www.wowhead.com/spell=31850
-		[96231] = 15,					-- Укор https://www.wowhead.com/spell=96231
-		[105809] = 180,					-- Святой каратель https://www.wowhead.com/spell=105809
-		[204018] = 180,					-- Благословение защиты от заклинаний https://www.wowhead.com/spell=204018
-		[205191] = 60,					-- Око за око https://www.wowhead.com/spell=205191
-		[231895] = 120,					-- Священная война https://www.wowhead.com/spell=231895
-		[115750] = 90,					-- Слепящий свет https://www.wowhead.com/spell=115750
-		[316958] = 240,					-- Ashen Hallow https://www.wowhead.com/spell=316958/ashen-hallow
-		[184662] = 120-120/100*30,		-- Shield of Vengeance https://www.wowhead.com/spell=184662/shield-of-vengeance
-		[210294] = 30,					-- Divine Favor https://www.wowhead.com/spell=210294/divine-favor
-		[304971] = 60,					-- Divine Toll https://www.wowhead.com/spell=304971/divine-toll
-		[4987] = 8,						-- Cleanse https://www.wowhead.com/spell=4987/cleanse
+		-- // reviewed 2023/01/23
+		[210294] = 45,					-- Divine Favor https://www.wowhead.com/spell=210294
+		[642] = 210,					-- Divine Shield https://www.wowhead.com/spell=642
+		[31884] = 60,					-- Avenging Wrath https://www.wowhead.com/spell=31884
+		[853] = 60,						-- Hammer of Justice https://www.wowhead.com/spell=853
+		[4987] = 8,						-- Cleanse https://www.wowhead.com/spell=4987
+		[216331] = 120,					-- Avenging Crusader https://www.wowhead.com/spell=216331
+		[1022] = 300,					-- Blessing of Protection https://www.wowhead.com/spell=1022
+		[498] = 40,						-- Divine Protection https://www.wowhead.com/spell=498
+		[6940] = 120,					-- Blessing of Sacrifice https://www.wowhead.com/spell=6940
+		[31821] = 90,					-- Aura Mastery https://www.wowhead.com/spell=31821
+		[231895] = 120,					-- Crusade https://www.wowhead.com/spell=231895
+		[20066] = 15,					-- Repentance https://www.wowhead.com/spell=20066
+		[633] = 240,					-- Lay on Hands https://www.wowhead.com/spell=633
+		[184662] = 60,					-- Shield of Vengeance https://www.wowhead.com/spell=184662
+		[1044] = 25,					-- Blessing of Freedom https://www.wowhead.com/spell=1044
+		[31850] = 80,					-- Ardent Defender https://www.wowhead.com/spell=31850
+		[86659] = 300,					-- Guardian of Ancient Kings https://www.wowhead.com/spell=86659
+		[96231] = 15,					-- Rebuke https://www.wowhead.com/spell=96231
+		[204018] = 200,					-- Blessing of Spellwarding https://www.wowhead.com/spell=204018
+		[190784] = 45,					-- Divine Steed https://www.wowhead.com/spell=190784
+		[115750] = 90,					-- Blinding Light https://www.wowhead.com/spell=115750
+		[105809] = 180,					-- Holy Avenger https://www.wowhead.com/spell=105809
+		[205191] = 60,					-- Eye for an Eye https://www.wowhead.com/spell=205191
+		[389539] = 120,					-- Sentinel https://www.wowhead.com/spell=389539
+		[213644] = 8,					-- Cleanse Toxins https://www.wowhead.com/spell=213644
+		[210256] = 45,					-- Blessing of Sanctuary https://www.wowhead.com/spell=210256
+		[228049] = 300,					-- Guardian of the Forgotten Queen https://www.wowhead.com/spell=228049
 	},
 	["PRIEST"] = {
-		-- // reviewed 2021/02/16
-		[64044] = 45,		-- Psychic Horror https://www.wowhead.com/spell=64044
-		[8122] = 60-30,		-- Psychic Scream [-30sec] https://www.wowhead.com/spell=8122
-		[15487] = 45-15,	-- Silence https://www.wowhead.com/spell=15487
-		[47585] = 120-30,	-- Dispersion https://www.wowhead.com/spell=47585
-		[33206] = 180-120,	-- Pain Suppression [-30sec] https://www.wowhead.com/spell=33206
-		[10060] = 120,		-- Power Infusion https://www.wowhead.com/spell=10060
-		[88625] = 60,		-- Holy Word: Chastise https://www.wowhead.com/spell=88625
-		[64843] = 180,		-- Divine Hymn https://www.wowhead.com/spell=64843
-		[73325] = 90-20,	-- Leap of Faith https://www.wowhead.com/spell=73325
-		[19236] = 90,		-- Desperate Prayer https://www.wowhead.com/spell=19236
-		[62618] = 180-90,	-- Power Word: Barrier [-60sec] https://www.wowhead.com/spell=62618
-		[47788] = 180-60,	-- Guardian Spirit [-60%] [max=120sec] https://www.wowhead.com/spell=47788
-		[108968] = 300,		-- Вхождение в Бездну https://www.wowhead.com/spell=108968
-		[213602] = 45,		-- Улучшенный уход в тень https://www.wowhead.com/spell=213602
-		[205369] = 30,		-- Мыслебомба https://www.wowhead.com/spell=205369
-		[204263] = 45,		-- Сияющая мощь https://www.wowhead.com/spell=204263
-		[316262] = 90,		-- Украденные мысли https://www.wowhead.com/spell=316262
-		[328530] = 60,		-- Божественное вознесение https://www.wowhead.com/spell=328530
-		[213610] = 30,		-- Священный оберег https://www.wowhead.com/spell=213610
-		[323673] = 45,		-- Mindgames https://www.wowhead.com/spell=323673/mindgames
-		[32375] = 45,		-- Mass Dispel https://www.wowhead.com/spell=32375/mass-dispel
-		[15286] = 120-45,	-- Vampiric Embrace https://wowhead.com/spell=15286/vampiric-embrace
+		-- // reviewed 2023/01/24
+		[32375] = 20,		-- Mass Dispel https://www.wowhead.com/spell=32375/mass-dispel
 		[47536] = 90,		-- Rapture https://www.wowhead.com/spell=47536
-		[527] = 8,			-- Purify https://www.wowhead.com/spell=527/purify
-		[327661] = 90,		-- Fae Guardians https://www.wowhead.com/spell=327661/fae-guardians
-		[325013] = 180,		-- Boon of the Ascended https://www.wowhead.com/spell=325013/boon-of-the-ascended
-		[324724] = 60,		-- Unholy Nova https://www.wowhead.com/spell=324724/unholy-nova
 		[32379] = 20,		-- Shadow Word: Death https://www.wowhead.com/spell=32379
+		[19236] = 90,		-- Desperate Prayer https://www.wowhead.com/spell=19236
+		[8122] = 30,		-- Psychic Scream https://www.wowhead.com/spell=8122
+		[527] = 8,			-- Purify https://www.wowhead.com/spell=527
+		[10060] = 120,		-- Power Infusion https://www.wowhead.com/spell=10060
+		[33206] = 60,		-- Pain Suppression https://www.wowhead.com/spell=33206
+		[15286] = 60,		-- Vampiric Embrace https://www.wowhead.com/spell=15286
+		[34433] = 180,		-- Shadowfiend https://www.wowhead.com/spell=34433
+		[123040] = 60,		-- Mindbender https://www.wowhead.com/spell=123040
+		[47788] = 120,		-- Guardian Spirit https://www.wowhead.com/spell=47788
+		[64843] = 180,		-- Divine Hymn https://www.wowhead.com/spell=64843
+		[73325] = 60,		-- Leap of Faith https://www.wowhead.com/spell=73325
+		[62618] = 90,		-- Power Word: Barrier https://www.wowhead.com/spell=62618
+		[373481] = 10,		-- Power Word: Life https://www.wowhead.com/spell=373481
+		[15487] = 30,		-- Silence https://www.wowhead.com/spell=15487
+		[2050] = 20,		-- Holy Word: Serenity https://www.wowhead.com/spell=2050
+		[375901] = 45,		-- Mindgames https://www.wowhead.com/spell=375901
+		[108968] = 300,		-- Void Shift https://www.wowhead.com/spell=108968
+		[120517] = 25,		-- Halo https://www.wowhead.com/spell=120517
+		[88625] = 60,		-- Holy Word: Chastise https://www.wowhead.com/spell=88625
+		[213634] = 8,		-- Purify Disease https://www.wowhead.com/spell=213634
+		[200174] = 60,		-- Mindbender https://www.wowhead.com/spell=200174
+		[47585] = 120,		-- Dispersion https://www.wowhead.com/spell=47585
+		[120644] = 25,		-- Halo https://www.wowhead.com/spell=120644
+		[205364] = 30,		-- Dominate Mind https://www.wowhead.com/spell=205364
+		[108920] = 60,		-- Void Tendrils https://www.wowhead.com/spell=108920
+		[372835] = 180,		-- Lightwell https://www.wowhead.com/spell=372835
+		[64044] = 45,		-- Psychic Horror https://www.wowhead.com/spell=64044
+		[197268] = 90,		-- Ray of Hope https://www.wowhead.com/spell=197268
+		[211522] = 45,		-- Psyfiend https://www.wowhead.com/spell=211522
+		[316262] = 90,		-- Thoughtsteal https://www.wowhead.com/spell=316262
+		[328530] = 60,		-- Divine Ascension https://www.wowhead.com/spell=328530
+		[213610] = 45,		-- Holy Ward https://www.wowhead.com/spell=213610
 	},
 	["ROGUE"] = {
 		-- // reviewed 2021/02/16
-		[2094] = 120-30,			-- Blind https://www.wowhead.com/spell=2094
-		[1766] = 15,				-- Kick https://www.wowhead.com/spell=1766
-		[31224] = 120,				-- Cloak of Shadows https://www.wowhead.com/spell=31224
-		[1856] = 120-45,			-- Vanish https://www.wowhead.com/spell=1856
-		[2983] = 120-60,			-- Sprint" [-9sec] https://www.wowhead.com/spell=2983
-		[36554] = 30 - 30/100*10,	-- Shadowstep https://www.wowhead.com/spell=36554
-		[5277] = 120,				-- Evasion https://www.wowhead.com/spell=5277
-		[51690] = 120,				-- Killing Spree https://www.wowhead.com/spell=51690
-		[79140] = 120,				-- Vendetta [-30sec] https://www.wowhead.com/spell=79140
-		[13750] = 180,				-- Adrenaline Rush [-30sec] https://www.wowhead.com/spell=13750
-		[195457] = 60-15-15-6,		-- Абордажный крюк https://www.wowhead.com/spell=195457
-		[31230] = 360,				-- Обман смерти https://www.wowhead.com/spell=31230
-		[207777] = 45,				-- Долой оружие https://www.wowhead.com/spell=207777
-		[207736] = 120,				-- Дуэль в тенях https://www.wowhead.com/spell=207736
-		[212182] = 180,				-- Дымовая шашка https://www.wowhead.com/spell=212182
-		[198529] = 120,				-- Кража доспехов https://www.wowhead.com/spell=198529
-		[121471] = 180,				-- Теневые клинки https://www.wowhead.com/spell=121471
-		[114018] = 360,				-- Скрывающий покров https://www.wowhead.com/spell=114018
-		[185311] = 30,				-- Алый фиал https://www.wowhead.com/spell=185311
+		[36554] = 20,				-- Shadowstep https://www.wowhead.com/spell=36554
 		[185313] = 60,				-- Танец теней https://www.wowhead.com/spell=185313
-		[343142] = 90,				-- Клинки Ужаса https://www.wowhead.com/spell=343142
-		[137619] = 60,				-- Marked for Death https://www.wowhead.com/spell=137619/marked-for-death
-		[408] = 20,					-- Kidney Shot https://www.wowhead.com/spell=408/kidney-shot
-		[1776] = 15,				-- Gouge https://www.wowhead.com/spell=1776/gouge
 		[315341] = 45,				-- Between the Eyes https://www.wowhead.com/spell=315341/between-the-eyes
-		[323547] = 45,				-- Echoing Reprimand https://www.wowhead.com/spell=323547/echoing-reprimand
-		[328305] = 90,				-- Sepsis https://www.wowhead.com/spell=328305/sepsis
-		[323654] = 90,				-- Flagellation https://www.wowhead.com/spell=323654/flagellation
-		[328547] = 30,				-- Serrated Bone Spike https://www.wowhead.com/spell=328547/serrated-bone-spike
+		[1856] = 80,				-- Vanish https://www.wowhead.com/spell=1856
+		[114018] = 360,				-- Shroud of Concealment https://www.wowhead.com/spell=114018
+		[408] = 20,					-- Kidney Shot https://www.wowhead.com/spell=408
+		[1766] = 14,				-- Kick https://www.wowhead.com/spell=1766
+		[2983] = 60,				-- Sprint https://www.wowhead.com/spell=2983
+		[13750] = 180,				-- Adrenaline Rush https://www.wowhead.com/spell=13750
+		[31224] = 120,				-- Cloak of Shadows https://www.wowhead.com/spell=31224
+		[2094] = 90,				-- Blind https://www.wowhead.com/spell=2094
+		[31230] = 360,				-- Cheat Death https://www.wowhead.com/spell=31230
+		[5277] = 120,				-- Evasion https://www.wowhead.com/spell=5277
+		[1776] = 20,				-- Gouge https://www.wowhead.com/spell=1776
+		[51690] = 120,				-- Killing Spree https://www.wowhead.com/spell=51690
+		[121471] = 80,				-- Shadow Blades https://www.wowhead.com/spell=121471
+		[271877] = 45,				-- Blade Rush https://www.wowhead.com/spell=271877
+		[343142] = 120,				-- Dreadblades https://www.wowhead.com/spell=343142
+		[195457] = 30,				-- Grappling Hook https://www.wowhead.com/spell=195457
+		[207736] = 120,				-- Shadowy Duel https://www.wowhead.com/spell=207736
+		[212182] = 180,				-- Smoke Bomb https://www.wowhead.com/spell=212182
+		[359053] = 120,				-- Smoke Bomb https://www.wowhead.com/spell=359053
+		[207777] = 45,				-- Dismantle https://www.wowhead.com/spell=207777
 	},
 	["SHAMAN"] = {
 		-- // reviewed 2021/02/17
@@ -478,15 +480,12 @@ do
 
 	local BIG_REDUCTION = 4*1000*1000;
 
+	local allRogueSpells = {};
+	for spellId in pairs(addonTable.CDs["ROGUE"]) do
+		allRogueSpells[#allRogueSpells+1] = spellId;
+	end
+
 	addonTable.Reductions = {
-		-- [275773] = { -- // holy paladin's judgment https://www.wowhead.com/spell=275773/judgment
-			-- ["reduction"] = 10,
-			-- ["spells"] = { 853 },
-		-- },
-		-- [275779] = { -- // protection paladin's judgment https://www.wowhead.com/spell=275779/judgment
-			-- ["reduction"] = 6,
-			-- ["spells"] = { 853 },
-		-- },
 		[195676] = { -- // Displacement https://www.wowhead.com/spell=195676/%D1%81%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D0%B5
 			["reduction"] = BIG_REDUCTION,
 			["spells"] = { 1953 }, -- // Blink
@@ -501,15 +500,38 @@ do
 			},
 		},
 		[115203] = { -- // Fortifying Brew https://www.wowhead.com/spell=115203/fortifying-brew
-			["reduction"] = -120,
+			["reduction"] = 120,
 			["spells"] = {
 				243435,			-- // Fortifying Brew https://www.wowhead.com/spell=243435/fortifying-brew
 			},
 		},
 		[585] = {	-- Кара https://www.wowhead.com/spell=585/%D0%BA%D0%B0%D1%80%D0%B0
-			["reduction"] = -4,
+			["reduction"] = 4,
 			["spells"] = {
 				88625,	-- Holy Word: Chastise https://www.wowhead.com/spell=88625
+			},
+		},
+		[200183] = {	-- Apotheosis https://www.wowhead.com/spell=200183
+			["reduction"] = BIG_REDUCTION,
+			["spells"] = {
+				2050,	-- Holy Word: Serenity https://www.wowhead.com/spell=2050
+				88625,	-- Holy Word: Chastise https://www.wowhead.com/spell=88625
+			},
+		},
+		[1856] = {	-- Vanish https://www.wowhead.com/spell=1856
+			["reduction"] = 15,
+			["spells"] = allRogueSpells,
+		},
+		[143914] = {	-- Readiness https://www.wowhead.com/spell=143914
+			["reduction"] = BIG_REDUCTION,
+			["spells"] = {
+				13750,
+				51690,
+				121471,
+				31224,
+				5277,
+				212182,
+				359053,
 			},
 		},
 	};
