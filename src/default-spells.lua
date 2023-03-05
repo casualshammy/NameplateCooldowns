@@ -252,6 +252,8 @@ addonTable.CDs = {
 		[213644] = 8,					-- Cleanse Toxins https://www.wowhead.com/spell=213644
 		[210256] = 45,					-- Blessing of Sanctuary https://www.wowhead.com/spell=210256
 		[228049] = 300,					-- Guardian of the Forgotten Queen https://www.wowhead.com/spell=228049
+		[375576] = 60,					-- Divine Toll https://www.wowhead.com/spell=375576
+		[343721] = 60,					-- Final Reckoning https://www.wowhead.com/spell=343721
 	},
 	["PRIEST"] = {
 		-- // reviewed 2023/01/24
@@ -292,7 +294,7 @@ addonTable.CDs = {
 		[213610] = 45,		-- Holy Ward https://www.wowhead.com/spell=213610
 	},
 	["ROGUE"] = {
-		-- // reviewed 2021/02/16
+		-- // reviewed 2023/01/30
 		[36554] = 20,				-- Shadowstep https://www.wowhead.com/spell=36554
 		[185313] = 60,				-- Танец теней https://www.wowhead.com/spell=185313
 		[315341] = 45,				-- Between the Eyes https://www.wowhead.com/spell=315341/between-the-eyes
@@ -318,46 +320,61 @@ addonTable.CDs = {
 		[207777] = 45,				-- Dismantle https://www.wowhead.com/spell=207777
 	},
 	["SHAMAN"] = {
-		-- // reviewed 2021/02/17
-		[57994] = 12,		-- Wind Shear https://www.wowhead.com/spell=57994
-		[51490] = 45-15,	-- Thunderstorm https://www.wowhead.com/spell=51490
-		[51485] = 30,		-- Earthbind Totem https://www.wowhead.com/spell=51485
-		[108280] = 180,		-- Healing Tide Totem https://www.wowhead.com/spell=108280
-		[98008] = 180,		-- Spirit Link Totem https://www.wowhead.com/spell=98008
-		[32182] = 60,		-- Heroism https://www.wowhead.com/spell=32182
-		[2825] = 60,		-- Bloodlust https://www.wowhead.com/spell=2825
-		[51533] = 90,		-- Feral Spirit https://www.wowhead.com/spell=51533
-		[79206] = 120-60,	-- Spiritwalker's Grace https://www.wowhead.com/spell=79206
-		[114050] = 180,		-- Elemental Ascendance https://www.wowhead.com/spell=114050
-		[114051] = 180,		-- Enhancement Ascendance https://www.wowhead.com/spell=114051
-		[114052] = 180,		-- Restoration Ascendance https://www.wowhead.com/spell=114052
-		[108271] = 90,		-- Астральный сдвиг https://www.wowhead.com/spell=108271
-		[51514] = 10,		-- Hex https://www.wowhead.com/spell=51514
-		[210873] = 10,		-- Hex https://www.wowhead.com/spell=210873
-		[211004] = 10,		-- Hex https://www.wowhead.com/spell=211004
-		[211010] = 10,		-- Hex https://www.wowhead.com/spell=211010
-		[211015] = 10,		-- Hex https://www.wowhead.com/spell=211015
-		[269352] = 10,		-- Hex https://www.wowhead.com/spell=269352
-		[277778] = 10,		-- Hex https://www.wowhead.com/spell=277778
-		[277784] = 10,		-- Hex https://www.wowhead.com/spell=277784
-		[309328] = 10,		-- Hex https://www.wowhead.com/spell=309328
-		[210918] = 45,		-- Астральный облик https://www.wowhead.com/spell=210918
-		[204336] = 30,		-- Тотем заземления https://www.wowhead.com/spell=204336
-		[204331] = 45,		-- Тотем контрудара https://www.wowhead.com/spell=204331
+		-- // reviewed 2023/03/03
+		[79206] = 90,		-- Spiritwalker's Grace https://www.wowhead.com/spell=79206
 		[196884] = 30,		-- Свирепый выпад https://www.wowhead.com/spell=196884
-		[192058] = 60,		-- Тотем выброса тока https://www.wowhead.com/spell=192058
-		[207399] = 300,		-- Тотем защиты Предков https://www.wowhead.com/spell=207399
-		[8143] = 60,		-- Тотем трепета https://www.wowhead.com/spell=8143
-		[305483] = 30,		-- Молния-лассо https://www.wowhead.com/spell=305483
-		[192077] = 120,		-- Тотем ветряного порыва https://www.wowhead.com/spell=192077
-		[197214] = 40,		-- Раскол https://www.wowhead.com/spell=197214
-		[191634] = 60,		-- Stormkeeper https://www.wowhead.com/spell=191634/stormkeeper
-		[198838] = 60,		-- Earthen Wall Totem https://www.wowhead.com/spell=198838/earthen-wall-totem
+		[198838] = 57,		-- Earthen Wall Totem https://www.wowhead.com/spell=198838
 		[320674] = 90,		-- Chain Harvest https://www.wowhead.com/spell=320674/chain-harvest
-		[77130] = 8,		-- Purify Spirit https://www.wowhead.com/spell=77130/purify-spirit
 		[326059] = 45,		-- Primordial Wave https://www.wowhead.com/spell=326059/primordial-wave
 		[328923] = 120,		-- Fae Transfusion https://www.wowhead.com/spell=328923/fae-transfusion
 		[324386] = 60,		-- Vesper Totem https://www.wowhead.com/spell=324386/vesper-totem
+		[51514] = 20,		-- Hex https://www.wowhead.com/spell=51514
+		[210873] = 20,		-- Hex https://www.wowhead.com/spell=210873
+		[211004] = 20,		-- Hex https://www.wowhead.com/spell=211004
+		[211010] = 20,		-- Hex https://www.wowhead.com/spell=211010
+		[211015] = 20,		-- Hex https://www.wowhead.com/spell=211015
+		[269352] = 20,		-- Hex https://www.wowhead.com/spell=269352
+		[277778] = 20,		-- Hex https://www.wowhead.com/spell=277778
+		[277784] = 20,		-- Hex https://www.wowhead.com/spell=277784
+		[309328] = 20,		-- Hex https://www.wowhead.com/spell=309328
+		[32182] = 60,		-- Heroism https://www.wowhead.com/spell=32182
+		[2825] = 60,		-- Bloodlust https://www.wowhead.com/spell=2825
+		[20608] = 450,		-- Reincarnation https://www.wowhead.com/spell=20608
+		[77130] = 8,		-- Purify Spirit https://www.wowhead.com/spell=77130
+		[51886] = 8,		-- Cleanse Spirit https://www.wowhead.com/spell=51886
+		[108281] = 120,		-- Ancestral Guidance https://www.wowhead.com/spell=108281
+		[108280] = 90,		-- Healing Tide Totem https://www.wowhead.com/spell=108280
+		[192249] = 150,		-- Storm Elemental https://www.wowhead.com/spell=192249
+		[198067] = 150,		-- Fire Elemental https://www.wowhead.com/spell=198067
+		[98008] = 180,		-- Spirit Link Totem https://www.wowhead.com/spell=98008
+		[114050] = 180,		-- Elemental Ascendance https://www.wowhead.com/spell=114050
+		[114051] = 180,		-- Enhancement Ascendance https://www.wowhead.com/spell=114051
+		[114052] = 180,		-- Restoration Ascendance https://www.wowhead.com/spell=114052
+		[51533] = 90,		-- Feral Spirit https://www.wowhead.com/spell=51533
+		[51485] = 57,		-- Earthgrab Totem https://www.wowhead.com/spell=51485
+		[8143] = 57,		-- Тотем трепета https://www.wowhead.com/spell=8143
+		[108271] = 90,		-- Астральный сдвиг https://www.wowhead.com/spell=108271
+		[192058] = 57,		-- Тотем выброса тока https://www.wowhead.com/spell=192058
+		[192077] = 117,		-- Тотем ветряного порыва https://www.wowhead.com/spell=192077
+		[191634] = 60,		-- Stormkeeper https://www.wowhead.com/spell=191634
+		[320137] = 60,		-- Stormkeeper https://www.wowhead.com/spell=320137
+		[383009] = 60,		-- Stormkeeper https://www.wowhead.com/spell=383009
+		[392763] = 60,		-- Stormkeeper https://www.wowhead.com/spell=392763
+		[392714] = 60,		-- Stormkeeper https://www.wowhead.com/spell=392714
+		[207399] = 297,		-- Тотем защиты Предков https://www.wowhead.com/spell=207399
+		[192063] = 25,		-- Gust of Wind https://www.wowhead.com/spell=192063
+		[57994] = 12,		-- Wind Shear https://www.wowhead.com/spell=57994
+		[197214] = 40,		-- Раскол https://www.wowhead.com/spell=197214
+		[378081] = 60,		-- Nature's Swiftness https://www.wowhead.com/spell=378081
+		[51490] = 25,		-- Thunderstorm https://www.wowhead.com/spell=51490
+		[305483] = 45,		-- Молния-лассо https://www.wowhead.com/spell=305483
+		[58875] = 52,		-- Spirit Walk https://www.wowhead.com/spell=58875
+		[383019] = 57,		-- Tranquil Air Totem https://www.wowhead.com/spell=383019
+		[204336] = 24,		-- Grounding Totem https://www.wowhead.com/spell=204336
+		[204331] = 42,		-- Counterstrike Totem https://www.wowhead.com/spell=204331
+		[204366] = 45,		-- Thundercharge https://www.wowhead.com/spell=204366
+		[355580] = 57,		-- Static Field Totem https://www.wowhead.com/spell=355580
+		[210918] = 60,		-- Ethereal Form https://www.wowhead.com/spell=210918
 	},
 	["WARRIOR"] = {
 		-- // reviewed 2021/02/12
