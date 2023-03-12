@@ -377,34 +377,41 @@ addonTable.CDs = {
 		[210918] = 60,		-- Ethereal Form https://www.wowhead.com/spell=210918
 	},
 	["WARRIOR"] = {
-		-- // reviewed 2021/02/12
+		-- // reviewed 2023/03/09
 		[100] = 20,					-- Charge https://www.wowhead.com/spell=100
-		[6552] = 15,				-- Pummel https://www.wowhead.com/spell=6552
-		[23920] = 25,				-- Spell Reflection https://www.wowhead.com/spell=23920
-		[46924] = 60,				-- Bladestorm https://www.wowhead.com/spell=46924
-		[46968] = 40,				-- Shockwave https://www.wowhead.com/spell=46968
-		[107574] = 90,				-- Avatar https://www.wowhead.com/spell=107574
-		[5246] = 90,				-- Intimidating Shout https://www.wowhead.com/spell=5246
-		[871] = 240,				-- Shield Wall https://www.wowhead.com/spell=871
-		[118038] = 180-60-20,		-- Die by the Sword https://www.wowhead.com/spell=118038
+		[6552] = 13,				-- Pummel https://www.wowhead.com/spell=6552
 		[1719] = 90,				-- Recklessness https://www.wowhead.com/spell=1719
+		[23920] = 25,				-- Spell Reflection https://www.wowhead.com/spell=23920
+		[227847] = 60,				-- Bladestorm https://www.wowhead.com/spell=227847
+		[167105] = 45,				-- Colossus Smash https://www.wowhead.com/spell=167105
+		[118038] = 90,				-- Die by the Sword https://www.wowhead.com/spell=118038
+		[5246] = 90,				-- Intimidating Shout https://www.wowhead.com/spell=5246
 		[6544] = 45,				-- Heroic Leap https://www.wowhead.com/spell=6544
-		[12975] = 180-60,			-- Last Stand https://www.wowhead.com/spell=12975
-		[18499] = 60,				-- Berserker Rage https://www.wowhead.com/spell=18499
+		[107574] = 90,				-- Avatar https://www.wowhead.com/spell=107574
+		[401150] = 90,				-- Avatar https://www.wowhead.com/spell=401150
+		[871] = 150,				-- Shield Wall https://www.wowhead.com/spell=871
 		[107570] = 30,				-- Storm Bolt https://www.wowhead.com/spell=107570
-		[227847] = 90-90/100*33,	-- Bladestorm https://www.wowhead.com/spell=227847
-		[184364] = 180-60,			-- Enraged Regeneration https://www.wowhead.com/spell=184364
-		[206572] = 20,				-- Dragon Charge https://www.wowhead.com/spell=206572
-		[236077] = 45,				-- Disarm https://www.wowhead.com/spell=236077
-		[167105] = 90-45,			-- Colossus Smash https://www.wowhead.com/spell=167105
+		[12975] = 120,				-- Last Stand https://www.wowhead.com/spell=12975
 		[262161] = 45,				-- Warbreaker https://www.wowhead.com/spell=262161
-		[236273] = 60,				-- Duel https://www.wowhead.com/spell=236273
-		[236320] = 90,				-- War Banner https://www.wowhead.com/spell=236320
-		[198817] = 25,				-- Sharpen Blade https://www.wowhead.com/spell=198817
-		[329038] = 20,				-- Кровавая ярость https://www.wowhead.com/spell=329038
-		[307865] = 60,				-- Spear of Bastion https://www.wowhead.com/spell=307865/spear-of-bastion
-		[97462] = 180-120,			-- Rallying Cry https://www.wowhead.com/spell=97462/rallying-cry#modified-by
 		[3411] = 30,				-- Intervene https://www.wowhead.com/spell=3411/intervene
+		[18499] = 60,				-- Berserker Rage https://www.wowhead.com/spell=18499
+		[46968] = 40,				-- Shockwave https://www.wowhead.com/spell=46968
+		[184364] = 30,				-- Enraged Regeneration https://www.wowhead.com/spell=184364
+		[392966] = 90,				-- Spell Block https://www.wowhead.com/spell=392966
+		[376079] = 90,				-- Spear of Bastion https://www.wowhead.com/spell=376079
+		[307865] = 60,				-- Spear of Bastion https://www.wowhead.com/spell=307865
+		[118000] = 30,				-- Dragon Roar https://www.wowhead.com/spell=118000
+		[383762] = 180,				-- Bitter Immunity https://www.wowhead.com/spell=383762
+		[385952] = 45,				-- Shield Charge https://www.wowhead.com/spell=385952
+		[64382] = 90,				-- Shattering Throw https://www.wowhead.com/spell=64382
+		[386071] = 90,				-- Disrupting Shout https://www.wowhead.com/spell=386071
+		[46924] = 60,				-- Bladestorm https://www.wowhead.com/spell=46924
+		[384100] = 60,				-- Berserker Shout https://www.wowhead.com/spell=384100
+		[236320] = 90,				-- War Banner https://www.wowhead.com/spell=236320
+		[236077] = 45,				-- Disarm https://www.wowhead.com/spell=236077
+		[206572] = 20,				-- Dragon Charge https://www.wowhead.com/spell=206572
+		[329038] = 20,				-- Кровавая ярость https://www.wowhead.com/spell=329038
+		[97462] = 120,				-- Rallying Cry https://www.wowhead.com/spell=97462
 	},
 	["DEMONHUNTER"] = {
 		-- // reviewed 2021/02/17
