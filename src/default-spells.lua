@@ -414,30 +414,32 @@ addonTable.CDs = {
 		[97462] = 120,				-- Rallying Cry https://www.wowhead.com/spell=97462
 	},
 	["DEMONHUNTER"] = {
-		-- // reviewed 2021/02/17
-		[198589] = 60-10,					-- Blur https://www.wowhead.com/spell=198589
-		[179057] = 60-20,					-- Chaos Nova https://www.wowhead.com/spell=179057
-		[183752] = 15,						-- Consume Magic https://www.wowhead.com/spell=183752
-		[191427] = 300-60-120,				-- Metamorphosis https://www.wowhead.com/spell=191427
-		[187827] = 300-60-120,				-- Metamorphosis https://www.wowhead.com/spell=187827
-		[188501] = 60-30,					-- Spectral Sight https://www.wowhead.com/spell=188501
-		[202138] = 90-90/100*25,			-- Sigil of Chains https://www.wowhead.com/spell=202138
-		[207684] = 180-90-180/100*25,		-- Sigil of Misery https://www.wowhead.com/spell=207684
-		[202137] = 120-60-120/100*25,		-- Sigil of Silence https://www.wowhead.com/spell=202137
-		[211881] = 30,						-- Fel Eruption https://www.wowhead.com/spell=211881
-		[196555] = 180,						-- Netherwalk https://www.wowhead.com/spell=196555
-		[205629] = 20,						-- Demonic Trample https://www.wowhead.com/spell=205629
-		[205604] = 60,						-- Reverse Magic https://www.wowhead.com/spell=205604
-		[206803] = 60,						-- Rain from Above https://www.wowhead.com/spell=206803
-		[205630] = 60,						-- Illidan's Grasp https://www.wowhead.com/spell=205630
-		[217832] = 45,						-- Imprison https://www.wowhead.com/spell=217832
-		[344867] = 60-20,					-- Кольцо Хаоса https://www.wowhead.com/spell=344867
-		[206649] = 45,						-- Глаз Леотераса https://www.wowhead.com/spell=206649
-		[323639] = 90,						-- The Hunt https://www.wowhead.com/spell=323639/the-hunt
-		[198013] = 30,						-- Eye Beam https://www.wowhead.com/spell=198013/eye-beam
-		[306830] = 60,						-- Elysian Decree https://www.wowhead.com/spell=306830/elysian-decree
-		[317009] = 60,						-- Sinful Brand https://www.wowhead.com/spell=317009/sinful-brand
-		[329554] = 120,						-- Fodder to the Flame https://www.wowhead.com/spell=329554/fodder-to-the-flame
+		-- // reviewed 2023/04/07
+		[191427] = 180,			-- Metamorphosis https://www.wowhead.com/spell=191427
+		[183752] = 15,			-- Disrupt https://www.wowhead.com/spell=183752
+		[188501] = 30,			-- Spectral Sight https://www.wowhead.com/spell=188501
+		[195072] = 10,			-- Fel Rush https://www.wowhead.com/spell=195072
+		[198589] = 30,			-- Blur https://www.wowhead.com/spell=198589
+		[187827] = 180,			-- Metamorphosis https://www.wowhead.com/spell=187827
+		[189110] = 20,			-- Infernal Strike https://www.wowhead.com/spell=189110
+		[198793] = 15,			-- Vengeful Retreat https://www.wowhead.com/spell=198793
+		[207684] = 60,			-- Sigil of Misery https://www.wowhead.com/spell=207684
+		[217832] = 45,			-- Imprison https://www.wowhead.com/spell=217832
+		[204021] = 60,			-- Fiery Brand https://www.wowhead.com/spell=204021
+		[196718] = 180,			-- Darkness https://www.wowhead.com/spell=196718
+		[211881] = 30,			-- Fel Eruption https://www.wowhead.com/spell=211881
+		[179057] = 48,			-- Chaos Nova https://www.wowhead.com/spell=179057
+		[196555] = 180,			-- Netherwalk https://www.wowhead.com/spell=196555
+		[202137] = 30,			-- Sigil of Silence https://www.wowhead.com/spell=202137
+		[232893] = 15,			-- Felblade https://www.wowhead.com/spell=232893
+		[390163] = 60,			-- Elysian Decree https://www.wowhead.com/spell=390163
+		[263648] = 30,			-- Soul Barrier https://www.wowhead.com/spell=263648
+		[206803] = 60,			-- Rain from Above https://www.wowhead.com/spell=206803
+		[205604] = 60,			-- Reverse Magic https://www.wowhead.com/spell=205604
+		[205630] = 60,			-- Illidan's Grasp https://www.wowhead.com/spell=205630
+		[205629] = 20,			-- Demonic Trample https://www.wowhead.com/spell=205629
+		[202138] = 30,			-- Sigil of Chains https://www.wowhead.com/spell=202138
+		[198013] = 40,			-- Eye Beam https://www.wowhead.com/spell=198013/eye-beam
 	},
 	["EVOKER"] = {
 		-- // reviewed 2022/12/02
