@@ -125,6 +125,7 @@ addonTable.CDs = {
 		[49206]		= 3*60,			-- Summon Gargoyle https://www.wowhead.com/wotlk/ru/spell=49206
 		[49222]		= 50,			-- Bone Shield https://www.wowhead.com/wotlk/ru/spell=49222
 		[51052]		= 120,			-- Anti-Magic Zone https://www.wowhead.com/wotlk/ru/spell=51052
+		[47481]		= 60,			-- Gnaw https://www.wowhead.com/wotlk/ru/spell=47481
 	},
 	["DRUID"] = {
 		-- // reviewed 2022/10/27
@@ -205,6 +206,13 @@ addonTable.CDs = {
 		[20216] = 105,					-- Divine Favor https://www.wowhead.com/wotlk/spell=20216
 		[64205] = 120,					-- Divine Sacrifice https://www.wowhead.com/wotlk/spell=64205
 		[20066] = 60,					-- Repentance https://www.wowhead.com/wotlk/spell=20066
+		[20473] = 5,					-- Holy Shock 1 https://www.wowhead.com/wotlk/spell=20473
+		[20929] = 5,					-- Holy Shock 2 https://www.wowhead.com/wotlk/spell=20929
+		[20930] = 5,					-- Holy Shock 3 https://www.wowhead.com/wotlk/spell=20930
+		[27174] = 5,					-- Holy Shock 4 https://www.wowhead.com/wotlk/spell=27174
+		[33072] = 5,					-- Holy Shock 5 https://www.wowhead.com/wotlk/spell=33072
+		[48824] = 5,					-- Holy Shock 6 https://www.wowhead.com/wotlk/spell=48824
+		[48825] = 5,					-- Holy Shock 7 https://www.wowhead.com/wotlk/spell=48825
 	},
 	["PRIEST"] = {
 		-- // reviewed 2022/10/29
