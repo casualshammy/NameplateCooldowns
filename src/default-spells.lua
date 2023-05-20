@@ -58,7 +58,11 @@ addonTable.CDs = {
 		[47860] = 120,		-- Death Coil 6 https://www.wowhead.com/wotlk/ru/spell=47860
 		[5484] = 32,		-- Howl of Terror 1 https://www.wowhead.com/wotlk/ru/spell=5484
 		[17928] = 32,		-- Howl of Terror 2 https://www.wowhead.com/wotlk/ru/spell=17928
-		[30283] = 20,		-- Shadowfury https://www.wowhead.com/wotlk/ru/spell=30283
+		[30283] = 20,		-- Shadowfury 1 https://www.wowhead.com/wotlk/ru/spell=30283
+		[30413] = 20,		-- Shadowfury 2 https://www.wowhead.com/wotlk/ru/spell=30413
+		[30414] = 20,		-- Shadowfury 3 https://www.wowhead.com/wotlk/ru/spell=30414
+		[47846] = 20,		-- Shadowfury 4 https://www.wowhead.com/wotlk/ru/spell=47846
+		[47847] = 20,		-- Shadowfury 5 https://www.wowhead.com/wotlk/ru/spell=47847
 		[19647] = 24,		-- Spell Lock https://www.wowhead.com/wotlk/ru/spell=19647
 		[1122] = 600,		-- Summon Infernal https://www.wowhead.com/wotlk/ru/spell=1122
 		[54785] = 45,		-- Demon Charge https://www.wowhead.com/wotlk/ru/spell=54785
