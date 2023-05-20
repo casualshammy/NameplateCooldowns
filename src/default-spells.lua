@@ -292,6 +292,8 @@ addonTable.CDs = {
 		[316262] = 90,		-- Thoughtsteal https://www.wowhead.com/spell=316262
 		[328530] = 60,		-- Divine Ascension https://www.wowhead.com/spell=328530
 		[213610] = 45,		-- Holy Ward https://www.wowhead.com/spell=213610
+		[228260] = 120,		-- Void Eruption https://www.wowhead.com/spell=228260
+		[391109] = 60,		-- Dark Ascension https://www.wowhead.com/spell=391109
 	},
 	["ROGUE"] = {
 		-- // reviewed 2023/01/30
