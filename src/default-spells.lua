@@ -46,6 +46,7 @@ addonTable.CDs = {
 		[34490] = 20,					-- Silencing Shot https://www.wowhead.com/wotlk/spell=34490
 		[23989] = 3*60,					-- Readiness https://www.wowhead.com/wotlk/spell=23989
 		[19503] = 30,					-- Scatter Shot https://www.wowhead.com/wotlk/spell=19503
+		[781] = 16,						-- Disengage https://www.wowhead.com/wotlk/spell=781
 	},
 	["WARLOCK"] = {
 		-- // reviewed 2022/10/18
