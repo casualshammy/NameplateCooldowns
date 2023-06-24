@@ -61,6 +61,7 @@ addonTable.CDs = {
 		[356719] = 60,					-- Chimaeral Sting https://www.wowhead.com/spell=356719
 		[53480] = 60,					-- Roar of Sacrifice https://www.wowhead.com/spell=53480
 		[212638] = 25,					-- Tracker's Net https://www.wowhead.com/spell=212638
+		[375891] = 45,					-- Death Chakram https://www.wowhead.com/spell=375891
 	},
 	["WARLOCK"] = {
 		-- // reviewed 2023/01/11
