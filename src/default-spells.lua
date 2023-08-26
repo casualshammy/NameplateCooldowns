@@ -167,10 +167,10 @@ addonTable.CDs = {
 		[26983] = 192,							-- Tranquility 5 https://www.wowhead.com/wotlk/ru/spell=26983
 		[48446] = 192,							-- Tranquility 6 https://www.wowhead.com/wotlk/ru/spell=48446
 		[48447] = 192,							-- Tranquility 7 https://www.wowhead.com/wotlk/ru/spell=48447
-		[48505] = 90,							-- Starfall 1 https://www.wowhead.com/wotlk/ru/spell=48505
-		[53199] = 90,							-- Starfall 1 https://www.wowhead.com/wotlk/ru/spell=53199
-		[53200] = 90,							-- Starfall 1 https://www.wowhead.com/wotlk/ru/spell=53200
-		[53201] = 90,							-- Starfall 1 https://www.wowhead.com/wotlk/ru/spell=53201
+		[48505] = 60,							-- Starfall 1 https://www.wowhead.com/wotlk/ru/spell=48505
+		[53199] = 60,							-- Starfall 2 https://www.wowhead.com/wotlk/ru/spell=53199
+		[53200] = 60,							-- Starfall 3 https://www.wowhead.com/wotlk/ru/spell=53200
+		[53201] = 60,							-- Starfall 4 https://www.wowhead.com/wotlk/ru/spell=53201
 		[33831] = 180,							-- Force of Nature https://www.wowhead.com/wotlk/ru/spell=33831
 		[50516] = 20,							-- Typhoon 1 https://www.wowhead.com/wotlk/ru/spell=50516
 		[53223] = 20,							-- Typhoon 2 https://www.wowhead.com/wotlk/ru/spell=53223
