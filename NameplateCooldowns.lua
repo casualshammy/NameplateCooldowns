@@ -4,7 +4,7 @@
 -- luacheck: globals unpack InCombatLockdown ColorPickerFrame BackdropTemplateMixin UIDropDownMenu_SetWidth UIDropDownMenu_AddButton GameFontNormal
 -- luacheck: globals InterfaceOptionsFrame_OpenToCategory GetSpellInfo GameFontHighlightSmall hooksecurefunc ALL GameTooltip FillLocalizedClassList
 -- luacheck: globals OTHER PlaySound SOUNDKIT COMBATLOG_OBJECT_REACTION_HOSTILE CombatLogGetCurrentEventInfo IsInInstance strsplit UnitName GetRealmName
--- luacheck: globals UnitReaction UnitAura
+-- luacheck: globals UnitReaction UnitAura GetInstanceInfo
 
 local _, addonTable = ...;
 local Interrupts = addonTable.Interrupts;
@@ -48,7 +48,7 @@ local SpellsPerPlayerGUID = { };
 local ElapsedTimer = 0;
 local Nameplates = {};
 local NameplatesVisible = {};
-local InstanceType = "none";
+local InstanceType = addonTable.INSTANCE_TYPE_NONE;
 local AllCooldowns = { };
 addonTable.AllCooldowns = AllCooldowns;
 local EventFrame, TestFrame, db, aceDB, LocalPlayerGUID;
@@ -57,6 +57,7 @@ local FeignDeathGUIDs = {};
 local pairs, string_gsub, string_find, bit_band, GetTime, math_ceil, table_sort, string_format, C_Timer_NewTimer, math_max, C_NamePlate_GetNamePlateForUnit, UnitGUID =
 	  pairs, string.gsub,	string.find, bit.band, GetTime, math.ceil, table.sort, string.format, C_Timer.NewTimer, math.max, C_NamePlate.GetNamePlateForUnit, UnitGUID;
 local wipe, IsInGroup, unpack, tinsert, UnitReaction, UnitAura = wipe, IsInGroup, unpack, table.insert, UnitReaction, UnitAura;
+local GetInstanceInfo, CTimerAfter = GetInstanceInfo, C_Timer.After;
 
 local OnStartup, InitializeDB;
 local AllocateIcon, ReallocateAllIcons, UpdateOnlyOneNameplate, HideCDIcon, ShowCDIcon;
@@ -846,14 +847,6 @@ do
 			OnStartup();
 		end
 		wipe(SpellsPerPlayerGUID);
-		local inInstance, instanceType = IsInInstance();
-		if (not inInstance) then
-			InstanceType = instanceType;
-		elseif (inInstance and instanceType == "none") then
-			InstanceType = INSTANCE_TYPE_UNKNOWN;
-		else
-			InstanceType = instanceType;
-		end
 	end
 
 	EventFrame.NAME_PLATE_UNIT_ADDED = function(unitID)
@@ -900,5 +893,35 @@ do
 	EventFrame.PVP_MATCH_ACTIVE = function()
 		wipe(SpellsPerPlayerGUID);
 	end
+
+	-- we do polling because 'GetInstanceInfo' works unstable
+	local function UpdateZoneType()
+		if (addonTable.UpdateAllNameplates == nil) then
+			return;
+		end
+
+		local newInstanceType;
+		local inInstance, instanceType = IsInInstance();
+		if (not inInstance) then
+			newInstanceType = instanceType;
+		elseif (inInstance and instanceType == "none") then
+			newInstanceType = addonTable.INSTANCE_TYPE_UNKNOWN;
+		elseif (inInstance and instanceType == "pvp") then
+			local maxInstanceGroup = select(5, GetInstanceInfo());
+			if (maxInstanceGroup == 40 or maxInstanceGroup == 35) then
+				newInstanceType = addonTable.INSTANCE_TYPE_PVP_BG_40PPL;
+			else
+				newInstanceType = instanceType;
+			end
+		else
+			newInstanceType = instanceType;
+		end
+		if (newInstanceType ~= InstanceType) then
+			InstanceType = newInstanceType;
+			addonTable.UpdateAllNameplates(false);
+		end
+		CTimerAfter(2, UpdateZoneType);
+	end
+	CTimerAfter(2, UpdateZoneType);
 
 end

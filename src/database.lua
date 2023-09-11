@@ -37,6 +37,12 @@ local migrations = {
 			db.TimerTextSize = math_ceil(db.IconSize - db.IconSize/2);
 		end
     end,
+    [7] = function()
+        local db = addonTable.db;
+        if (db.EnabledZoneTypes[addonTable.INSTANCE_TYPE_PVP]) then
+            db.EnabledZoneTypes[addonTable.INSTANCE_TYPE_PVP_BG_40PPL] = true;
+        end
+    end,
 };
 
 function addonTable.MigrateDB()

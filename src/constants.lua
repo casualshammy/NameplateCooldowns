@@ -16,7 +16,14 @@ addonTable.SORT_MODE_INTERRUPT_OTHER = "interrupt-other";
 
 addonTable.GLOW_TIME_INFINITE = 4*1000*1000*1000;
 
+addonTable.INSTANCE_TYPE_NONE = "none";
 addonTable.INSTANCE_TYPE_UNKNOWN = "unknown";
+addonTable.INSTANCE_TYPE_PVP = "pvp";
+addonTable.INSTANCE_TYPE_PVP_BG_40PPL = "pvp_bg_40ppl";
+addonTable.INSTANCE_TYPE_ARENA = "arena";
+addonTable.INSTANCE_TYPE_PARTY = "party";
+addonTable.INSTANCE_TYPE_RAID = "raid";
+addonTable.INSTANCE_TYPE_SCENARIO = "scenario";
 
 addonTable.UNKNOWN_CLASS = "MISC";
 addonTable.ALL_CLASSES = "ALL-CLASSES";
