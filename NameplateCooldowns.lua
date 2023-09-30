@@ -896,19 +896,12 @@ do
 
 	-- we do polling because 'GetInstanceInfo' works unstable
 	local function UpdateZoneType()
-		if (addonTable.UpdateAllNameplates == nil) then
-			return;
-		end
-
 		local newInstanceType;
-		local inInstance, instanceType = IsInInstance();
-		if (not inInstance) then
+		local _, instanceType, _, _, _, _, _, instanceID = GetInstanceInfo();
+		if (instanceType == nil or instanceType == addonTable.INSTANCE_TYPE_NONE) then
 			newInstanceType = instanceType;
-		elseif (inInstance and instanceType == "none") then
-			newInstanceType = addonTable.INSTANCE_TYPE_UNKNOWN;
-		elseif (inInstance and instanceType == "pvp") then
-			local maxInstanceGroup = select(5, GetInstanceInfo());
-			if (maxInstanceGroup == 40 or maxInstanceGroup == 35) then
+		elseif (instanceType == "pvp") then
+			if (addonTable.EPIC_BG_ZONE_IDS[instanceID]) then
 				newInstanceType = addonTable.INSTANCE_TYPE_PVP_BG_40PPL;
 			else
 				newInstanceType = instanceType;
@@ -918,7 +911,7 @@ do
 		end
 		if (newInstanceType ~= InstanceType) then
 			InstanceType = newInstanceType;
-			addonTable.UpdateAllNameplates(false);
+			ReallocateAllIcons(false);
 		end
 		CTimerAfter(2, UpdateZoneType);
 	end

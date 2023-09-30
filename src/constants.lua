@@ -27,3 +27,12 @@ addonTable.INSTANCE_TYPE_SCENARIO = "scenario";
 
 addonTable.UNKNOWN_CLASS = "MISC";
 addonTable.ALL_CLASSES = "ALL-CLASSES";
+
+addonTable.EPIC_BG_ZONE_IDS = {
+	[30] = true, -- Alterac Valley
+	[628] = true, -- Isle of Conquest
+	[1191] = true, -- Ashran
+	[1280] = true, -- Southshore vs. Tarren Mill
+	[2118] = true, -- Battle for Wintergrasp
+	[2197] = true, -- Korrak's Revenge
+};
