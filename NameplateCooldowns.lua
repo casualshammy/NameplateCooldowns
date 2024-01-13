@@ -16,13 +16,16 @@ local buildTimestamp = "@project-version@";
 --@end-non-debug@]===]
 
 -- Libraries
-local L, LRD, SML, LBG_ShowOverlayGlow, LBG_HideOverlayGlow;
+local L, LRD, SML, LBG_ShowOverlayGlow, LBG_HideOverlayGlow, LHT;
 do
 	L = LibStub("AceLocale-3.0"):GetLocale("NameplateCooldowns");
 	LRD = LibStub("LibRedDropdown-1.0");
 	LBG_ShowOverlayGlow, LBG_HideOverlayGlow = NAuras_LibButtonGlow.ShowOverlayGlow, NAuras_LibButtonGlow.HideOverlayGlow;
+
 	SML = LibStub("LibSharedMedia-3.0");
 	SML:Register("font", "NC_TeenBold", "Interface\\AddOns\\NameplateCooldowns\\media\\teen_bold.ttf", 255);
+
+	LHT = LibStub("LibHealerTracker-1.0");
 end
 
 -- Consts
@@ -776,7 +779,7 @@ do
 				end
 			end
 			-- reductions
-			if (Reductions[spellID] ~= nil and eventType == "SPELL_CAST_SUCCESS") then
+			if (eventType == "SPELL_CAST_SUCCESS" and Reductions[spellID] ~= nil) then
 				if (SpellsPerPlayerGUID[srcGUID]) then
 					for _, sp in pairs(Reductions[spellID].spells) do
 						if (SpellsPerPlayerGUID[srcGUID][sp] ~= nil) then
@@ -791,13 +794,27 @@ do
 					end
 				end
 			-- // pvptier 1/2 used, correcting cd of PvP trinket
-			elseif (spellID == SPELL_PVPADAPTATION and db.SpellCDs[SPELL_PVPTRINKET] ~= nil and db.SpellCDs[SPELL_PVPTRINKET].enabled and eventType == "SPELL_AURA_APPLIED") then
+			elseif (eventType == "SPELL_AURA_APPLIED" and spellID == SPELL_PVPADAPTATION and db.SpellCDs[SPELL_PVPTRINKET] ~= nil and db.SpellCDs[SPELL_PVPTRINKET].enabled) then
 				if (SpellsPerPlayerGUID[srcGUID]) then
 					SpellsPerPlayerGUID[srcGUID][SPELL_PVPTRINKET] = { ["spellID"] = SPELL_PVPTRINKET, ["expires"] = cTime + 60, ["texture"] = SpellTextureByID[SPELL_PVPTRINKET], ["started"] = cTime };
 					for frame, unitGUID in pairs(NameplatesVisible) do
 						if (unitGUID == srcGUID) then
 							UpdateOnlyOneNameplate(frame, unitGUID);
 							break;
+						end
+					end
+				end
+			-- caster is a healer, reducing cd of pvp trinket
+			elseif (eventType == "SPELL_CAST_SUCCESS" and spellID == SPELL_PVPTRINKET and db.SpellCDs[SPELL_PVPTRINKET] ~= nil and db.SpellCDs[SPELL_PVPTRINKET].enabled and LHT.IsPlayerHealer(srcGUID)) then
+				if (SpellsPerPlayerGUID[srcGUID]) then
+					local existingEntry = SpellsPerPlayerGUID[srcGUID][SPELL_PVPTRINKET];
+					if (existingEntry) then
+						existingEntry.expires = existingEntry.expires - 30;
+						for frame, unitGUID in pairs(NameplatesVisible) do
+							if (unitGUID == srcGUID) then
+								UpdateOnlyOneNameplate(frame, unitGUID);
+								break;
+							end
 						end
 					end
 				end
@@ -916,5 +933,20 @@ do
 		CTimerAfter(2, UpdateZoneType);
 	end
 	CTimerAfter(2, UpdateZoneType);
+
+	LHT.Subscribe(function(_guid, _)
+		if (SpellsPerPlayerGUID[_guid]) then
+			local existingEntry = SpellsPerPlayerGUID[_guid][SPELL_PVPTRINKET];
+			if (existingEntry) then
+				existingEntry.expires = existingEntry.expires - 30;
+				for frame, unitGUID in pairs(NameplatesVisible) do
+					if (unitGUID == _guid) then
+						UpdateOnlyOneNameplate(frame, unitGUID);
+						break;
+					end
+				end
+			end
+		end
+	end);
 
 end

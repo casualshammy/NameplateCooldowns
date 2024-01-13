@@ -11,5 +11,6 @@
 <Include	file="libs\AceDBOptions-3.0\AceDBOptions-3.0.xml"/>
 <Include	file="libs\AceLocale-3.0\AceLocale-3.0.xml"/>
 <Script		file="libs\LibButtonGlow.lua"/>
+<Script		file="libs\LibHealerTracker.lua"/>
 </Ui>
 
