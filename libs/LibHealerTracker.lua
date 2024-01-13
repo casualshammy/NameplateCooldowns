@@ -1,6 +1,8 @@
 -- luacheck: no max line length
 -- luacheck: globals LibStub GetSpecializationInfoByID CreateFrame GetNumBattlefieldScores GetBattlefieldScore CombatLogGetCurrentEventInfo
 
+-- (c) Gaxy-Kazzak, 2024
+
 local LIB_NAME = "LibHealerTracker-1.0";
 local lib = LibStub:NewLibrary(LIB_NAME, 1);
 if (not lib) then return; end -- No upgrade needed
