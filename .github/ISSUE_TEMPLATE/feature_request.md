@@ -2,13 +2,13 @@
 name: Feature request
 about: Suggest an idea for this project
 title: ''
-labels: enhancement
-assignees: ''
+labels: 'type: feature'
+assignees: 'casualshammy'
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+**WoW version**
+Retail, Classic, WotLK...
 
-**Describe the solution you'd like**
+**Describe the feature you'd like to be implemented**
 A clear and concise description of what you want to happen.
