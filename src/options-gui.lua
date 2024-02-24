@@ -30,7 +30,7 @@ local _G, UIParent, table_insert, C_Timer_After, GetSpellInfo, table_sort = _G, 
 local string_format, math_ceil = string.format, math.ceil;
 
 local function GUICategory_Filters(index)
-    local checkBoxEnableOnlyForTarget;
+    local checkBoxEnableOnlyForTarget, buttonInstances, filterByTimeArea, sliderFilterByTimeLess, sliderFilterByTimeMore;
 
     -- // checkBoxEnableOnlyForTarget
     do
@@ -72,7 +72,7 @@ local function GUICategory_Filters(index)
 		};
 
         local dropdownInstances = LRD.CreateDropdownMenu();
-        local buttonInstances = LRD.CreateButton();
+        buttonInstances = LRD.CreateButton();
         buttonInstances:SetParent(GUIFrame.outline);
         buttonInstances:SetText(L["filters.instance-types"]);
 
@@ -120,6 +120,120 @@ local function GUICategory_Filters(index)
 
     end
 
+    -- // filterByTimeArea
+    do
+        filterByTimeArea = CreateFrame("Frame", nil, GUIFrame, BackdropTemplateMixin and "BackdropTemplate");
+        filterByTimeArea:SetBackdrop({
+            bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
+            edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+            tile = 1,
+            tileSize = 16,
+            edgeSize = 16,
+            insets = { left = 4, right = 4, top = 4, bottom = 4 }
+        });
+        filterByTimeArea:SetBackdropColor(0.1, 0.1, 0.2, 1);
+        filterByTimeArea:SetBackdropBorderColor(0.8, 0.8, 0.9, 0.4);
+        filterByTimeArea:SetPoint("TOPLEFT", buttonInstances, "BOTTOMLEFT",  0, -10);
+        filterByTimeArea:SetPoint("TOPRIGHT", buttonInstances, "BOTTOMRIGHT",  0, -10);
+        filterByTimeArea:SetWidth(360);
+        filterByTimeArea:SetHeight(100);
+        table_insert(GUIFrame.Categories[index], filterByTimeArea);
+    end
+
+    do
+        local minValue, maxValue = 0, 10*3600;
+        sliderFilterByTimeLess = LRD.CreateSlider();
+        sliderFilterByTimeLess:SetParent(filterByTimeArea);
+        sliderFilterByTimeLess:SetHeight(100);
+        sliderFilterByTimeLess:SetPoint("TOPRIGHT", filterByTimeArea, "TOP", -10, -15);
+        sliderFilterByTimeLess:SetPoint("BOTTOMLEFT", filterByTimeArea, "BOTTOMLEFT", 10, 10);
+        sliderFilterByTimeLess:GetTextObject():SetText("Min cooldown duration time, in seconds");
+        sliderFilterByTimeLess:GetBaseSliderObject():SetValueStep(1);
+        sliderFilterByTimeLess:GetBaseSliderObject():SetMinMaxValues(minValue, maxValue);
+        sliderFilterByTimeLess:GetBaseSliderObject():SetValue(addonTable.db.MinCdDuration);
+        sliderFilterByTimeLess:GetBaseSliderObject():SetScript("OnValueChanged", function(_, value)
+            local valueNum = math_ceil(value);
+            sliderFilterByTimeLess:GetEditboxObject():SetText(tostring(valueNum));
+            addonTable.db.MinCdDuration = valueNum;
+            addonTable.OnDbChanged();
+        end);
+        sliderFilterByTimeLess:GetEditboxObject():SetText(tostring(addonTable.db.MinCdDuration));
+        sliderFilterByTimeLess:GetEditboxObject():SetScript("OnEnterPressed", function()
+            local text = sliderFilterByTimeLess:GetEditboxObject():GetText();
+            if (text ~= "") then
+                local v = tonumber(text);
+                if (v == nil) then
+                    sliderFilterByTimeLess:GetEditboxObject():SetText(tostring(addonTable.db.MinCdDuration));
+                    addonTable.Print(L["Value must be a number"]);
+                else
+                    if (v > maxValue) then
+                        v = maxValue;
+                    end
+                    if (v < minValue) then
+                        v = minValue;
+                    end
+                    sliderFilterByTimeLess:GetBaseSliderObject():SetValue(v);
+                end
+                sliderFilterByTimeLess:GetEditboxObject():ClearFocus();
+            end
+        end);
+        sliderFilterByTimeLess:GetLowTextObject():SetText(tostring(minValue));
+        sliderFilterByTimeLess:GetHighTextObject():SetText(tostring(maxValue));
+        table.insert(GUIFrame.Categories[index], sliderFilterByTimeLess);
+        table_insert(GUIFrame.OnDBChangedHandlers, function()
+            sliderFilterByTimeLess:GetBaseSliderObject():SetValue(addonTable.db.MinCdDuration);
+            sliderFilterByTimeLess:GetEditboxObject():SetText(tostring(addonTable.db.MinCdDuration));
+        end);
+    end
+
+    do
+        local minValue, maxValue = 0, 10*3600;
+        sliderFilterByTimeMore = LRD.CreateSlider();
+        sliderFilterByTimeMore:SetParent(filterByTimeArea);
+        sliderFilterByTimeMore:SetHeight(100);
+        sliderFilterByTimeMore:SetPoint("TOPLEFT", filterByTimeArea, "TOP", 10, -15);
+        sliderFilterByTimeMore:SetPoint("BOTTOMRIGHT", filterByTimeArea, "BOTTOMRIGHT", -10, 10);
+        sliderFilterByTimeMore:GetTextObject():SetText("Max cooldown duration time, in seconds");
+        sliderFilterByTimeMore:GetBaseSliderObject():SetValueStep(1);
+        sliderFilterByTimeMore:GetBaseSliderObject():SetMinMaxValues(minValue, maxValue);
+        sliderFilterByTimeMore:GetBaseSliderObject():SetValue(addonTable.db.MaxCdDuration);
+        sliderFilterByTimeMore:GetBaseSliderObject():SetScript("OnValueChanged", function(_, value)
+            local valueNum = math_ceil(value);
+            sliderFilterByTimeMore:GetEditboxObject():SetText(tostring(valueNum));
+            addonTable.db.MaxCdDuration = valueNum;
+            addonTable.OnDbChanged();
+        end);
+        sliderFilterByTimeMore:GetEditboxObject():SetText(tostring(addonTable.db.MaxCdDuration));
+        sliderFilterByTimeMore:GetEditboxObject():SetScript("OnEnterPressed", function()
+            local text = sliderFilterByTimeMore:GetEditboxObject():GetText();
+            if (text ~= "") then
+                local v = tonumber(text);
+                if (v == nil) then
+                    sliderFilterByTimeMore:GetEditboxObject():SetText(tostring(addonTable.db.MaxCdDuration));
+                    addonTable.Print(L["Value must be a number"]);
+                else
+                    if (v > maxValue) then
+                        v = maxValue;
+                    end
+                    if (v < minValue) then
+                        v = minValue;
+                    end
+                    sliderFilterByTimeMore:GetBaseSliderObject():SetValue(v);
+                end
+                sliderFilterByTimeMore:GetEditboxObject():ClearFocus();
+            end
+        end);
+        sliderFilterByTimeMore:GetLowTextObject():SetText(tostring(minValue));
+        sliderFilterByTimeMore:GetHighTextObject():SetText(tostring(maxValue));
+        table.insert(GUIFrame.Categories[index], sliderFilterByTimeMore);
+        table_insert(GUIFrame.OnDBChangedHandlers, function()
+            sliderFilterByTimeMore:GetBaseSliderObject():SetValue(addonTable.db.MaxCdDuration);
+            sliderFilterByTimeMore:GetEditboxObject():SetText(tostring(addonTable.db.MaxCdDuration));
+        end);
+    end
+
+
+
 end
 
 local function GUICategory_Borders(index)
@@ -137,25 +251,11 @@ local function GUICategory_Borders(index)
         checkBoxBorderTrinkets:SetPoint("TOPLEFT", GUIFrame.outline, "TOPRIGHT", 15, -15);
         checkBoxBorderTrinkets:SetChecked(addonTable.db.ShowBorderTrinkets);
         checkBoxBorderTrinkets:SetColor(unpack(addonTable.db.BorderTrinketsColor));
-        checkBoxBorderTrinkets.ColorButton:SetScript("OnClick", function()
-            ColorPickerFrame:Hide();
-            local function callback(restore)
-                local r, g, b;
-                if (restore) then
-                    r, g, b = unpack(restore);
-                else
-                    r, g, b = ColorPickerFrame:GetColorRGB();
-                end
-                addonTable.db.BorderTrinketsColor = {r, g, b};
-                checkBoxBorderTrinkets:SetColor(unpack(addonTable.db.BorderTrinketsColor));
-                addonTable.OnDbChanged();
-            end
-            ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = callback, callback, callback;
-            ColorPickerFrame:SetColorRGB(unpack(addonTable.db.BorderTrinketsColor));
-            ColorPickerFrame.hasOpacity = false;
-            ColorPickerFrame.previousValues = { unpack(addonTable.db.BorderTrinketsColor) };
-            ColorPickerFrame:Show();
-        end);
+
+        checkBoxBorderTrinkets.ColorButton.func = function(_, _r, _g, _b, _)
+            addonTable.db.BorderTrinketsColor = {_r, _g, _b};
+            addonTable.OnDbChanged();
+        end
         table.insert(GUIFrame.Categories[index], checkBoxBorderTrinkets);
         table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxBorderTrinkets:SetChecked(addonTable.db.ShowBorderTrinkets); checkBoxBorderTrinkets:SetColor(unpack(addonTable.db.BorderTrinketsColor)); end);
     end
@@ -172,25 +272,12 @@ local function GUICategory_Borders(index)
         checkBoxBorderInterrupts:SetPoint("TOPLEFT", checkBoxBorderTrinkets, "BOTTOMLEFT", 0, -5);
         checkBoxBorderInterrupts:SetChecked(addonTable.db.ShowBorderInterrupts);
         checkBoxBorderInterrupts:SetColor(unpack(addonTable.db.BorderInterruptsColor));
-        checkBoxBorderInterrupts.ColorButton:SetScript("OnClick", function()
-            ColorPickerFrame:Hide();
-            local function callback(restore)
-                local r, g, b;
-                if (restore) then
-                    r, g, b = unpack(restore);
-                else
-                    r, g, b = ColorPickerFrame:GetColorRGB();
-                end
-                addonTable.db.BorderInterruptsColor = {r, g, b};
-                checkBoxBorderInterrupts:SetColor(unpack(addonTable.db.BorderInterruptsColor));
-                addonTable.OnDbChanged();
-            end
-            ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = callback, callback, callback;
-            ColorPickerFrame:SetColorRGB(unpack(addonTable.db.BorderInterruptsColor));
-            ColorPickerFrame.hasOpacity = false;
-            ColorPickerFrame.previousValues = { unpack(addonTable.db.BorderInterruptsColor) };
-            ColorPickerFrame:Show();
-        end);
+
+        checkBoxBorderInterrupts.ColorButton.func = function(_, _r, _g, _b, _)
+            addonTable.db.BorderInterruptsColor = {_r, _g, _b};
+            addonTable.OnDbChanged();
+        end
+
         table.insert(GUIFrame.Categories[index], checkBoxBorderInterrupts);
         table_insert(GUIFrame.OnDBChangedHandlers, function() checkBoxBorderInterrupts:SetChecked(addonTable.db.ShowBorderInterrupts); checkBoxBorderInterrupts:SetColor(unpack(addonTable.db.BorderInterruptsColor)); end);
     end
@@ -689,7 +776,6 @@ local function GUICategory_General(index)
         table_insert(GUIFrame.OnDBChangedHandlers, function()
             sliderIconSize:GetBaseSliderObject():SetValue(addonTable.db.IconSize);
             sliderIconSize:GetEditboxObject():SetText(tostring(addonTable.db.IconSize));
-            print(addonTable.db.IconSize)
         end);
     end
 

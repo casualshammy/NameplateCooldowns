@@ -162,6 +162,8 @@ do
 				ShowCooldownTooltip = false,
 				InverseLogic = false,
 				ShowCooldownAnimation = false,
+				MinCdDuration = 0;
+				MaxCdDuration = 10*3600
 			},
 		};
 		aceDB = LibStub("AceDB-3.0"):New("NameplateCooldownsAceDB", aceDBDefaults);
@@ -602,6 +604,22 @@ do
 		end
 	end
 
+	local function UpdateOnlyOneNameplate_FilterSpell(_dbInfo, _remain, _isActiveCD)
+		if (not _dbInfo or not _dbInfo.enabled) then
+			return false;
+		end
+
+		if (not db.ShowInactiveCD and not _isActiveCD) then
+			return false;
+		end
+
+		if (_remain > 0 and (_remain < db.MinCdDuration or _remain > db.MaxCdDuration)) then
+			return false;
+		end
+
+		return true;
+	end
+
 	function UpdateOnlyOneNameplate(frame, unitGUID)
 		if (unitGUID == LocalPlayerGUID) then return; end
 		local counter = 1;
@@ -616,13 +634,13 @@ do
 						isActiveCD = not isActiveCD;
 					end
 					local dbInfo = db.SpellCDs[spellID];
-					if (dbInfo and dbInfo.enabled and (db.ShowInactiveCD or isActiveCD)) then
+					local remain = spellInfo.expires - currentTime;
+					if (UpdateOnlyOneNameplate_FilterSpell(dbInfo, remain, isActiveCD)) then
 						if (counter > frame.NCIconsCount) then
 							AllocateIcon(frame);
 						end
 						local icon = frame.NCIcons[counter];
 						UpdateOnlyOneNameplate_SetTexture(icon, spellInfo.texture, isActiveCD);
-						local remain = spellInfo.expires - currentTime;
 						UpdateNameplate_SetGlow(icon, dbInfo.glow, remain, isActiveCD);
 						local cooldown = AllCooldowns[spellID];
 						Nameplate_SetCooldown(icon, remain, spellInfo.started, cooldown, isActiveCD);
