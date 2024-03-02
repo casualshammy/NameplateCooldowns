@@ -389,7 +389,8 @@ addonTable.CDs = {
 		[167105] = 45,				-- Colossus Smash https://www.wowhead.com/spell=167105
 		[118038] = 90,				-- Die by the Sword https://www.wowhead.com/spell=118038
 		[5246] = 90,				-- Intimidating Shout https://www.wowhead.com/spell=5246
-		[6544] = 45,				-- Heroic Leap https://www.wowhead.com/spell=6544
+		[6544] = 30,				-- Heroic Leap https://www.wowhead.com/spell=6544
+		[52174] = 30,				-- Heroic Leap https://www.wowhead.com/spell=52174
 		[107574] = 90,				-- Avatar https://www.wowhead.com/spell=107574
 		[401150] = 90,				-- Avatar https://www.wowhead.com/spell=401150
 		[871] = 150,				-- Shield Wall https://www.wowhead.com/spell=871
