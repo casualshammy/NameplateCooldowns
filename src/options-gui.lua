@@ -659,26 +659,13 @@ local function GUICategory_Text(index)
         colorPickerTimerTextMore:SetParent(GUIFrame);
         colorPickerTimerTextMore:SetPoint("TOPLEFT", 160, -250);
         colorPickerTimerTextMore:SetText(L["options:text:color"]);
-        colorPickerTimerTextMore.colorSwatch:SetVertexColor(unpack(addonTable.db.TimerTextColor));
-        colorPickerTimerTextMore:SetScript("OnClick", function()
-            ColorPickerFrame:Hide();
-            local function callback(restore)
-                local r, g, b;
-                if (restore) then
-                    r, g, b = unpack(restore);
-                else
-                    r, g, b = ColorPickerFrame:GetColorRGB();
-                end
-                addonTable.db.TimerTextColor = {r, g, b};
-                colorPickerTimerTextMore.colorSwatch:SetVertexColor(unpack(addonTable.db.TimerTextColor));
-                addonTable.OnDbChanged();
-            end
-            ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = callback, callback, callback;
-            ColorPickerFrame:SetColorRGB(unpack(addonTable.db.TimerTextColor));
-            ColorPickerFrame.hasOpacity = false;
-            ColorPickerFrame.previousValues = { unpack(addonTable.db.TimerTextColor) };
-            ColorPickerFrame:Show();
-        end);
+        colorPickerTimerTextMore:SetColor(unpack(addonTable.db.TimerTextColor));
+
+        colorPickerTimerTextMore.func = function(_, _r, _g, _b, _)
+            addonTable.db.TimerTextColor = {_r, _g, _b};
+            addonTable.OnDbChanged();
+        end
+
         table_insert(GUIFrame.Categories[index], colorPickerTimerTextMore);
         table_insert(GUIFrame.OnDBChangedHandlers, function() colorPickerTimerTextMore.colorSwatch:SetVertexColor(unpack(addonTable.db.TimerTextColor)); end);
     end
