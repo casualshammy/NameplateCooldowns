@@ -193,6 +193,7 @@ addonTable.CDs = {
 		[209749] = 30,							-- Faerie Swarm https://www.wowhead.com/spell=209749
 		[202246] = 25,							-- Overrun https://www.wowhead.com/spell=202246
 		[354654] = 60,							-- Grove Protection https://www.wowhead.com/spell=354654
+		[132158] = 48,		-- Nature's Swiftness https://www.wowhead.com/spell=132158
 	},
 	["MONK"] = {
 		-- // reviewed 2023/01/20
@@ -295,6 +296,7 @@ addonTable.CDs = {
 		[213610] = 45,		-- Holy Ward https://www.wowhead.com/spell=213610
 		[228260] = 120,		-- Void Eruption https://www.wowhead.com/spell=228260
 		[391109] = 60,		-- Dark Ascension https://www.wowhead.com/spell=391109
+		[586] = 25,				-- Fade https://www.wowhead.com/spell=586
 	},
 	["ROGUE"] = {
 		-- // reviewed 2023/01/30
@@ -378,6 +380,7 @@ addonTable.CDs = {
 		[204366] = 45,		-- Thundercharge https://www.wowhead.com/spell=204366
 		[355580] = 57,		-- Static Field Totem https://www.wowhead.com/spell=355580
 		[210918] = 60,		-- Ethereal Form https://www.wowhead.com/spell=210918
+		[409293] = 120,  	-- Burrow https://www.wowhead.com/spell=409293
 	},
 	["WARRIOR"] = {
 		-- // reviewed 2023/03/09
