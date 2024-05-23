@@ -1,5 +1,5 @@
-## Interface: 30403
-## Title: NameplateCooldowns [WotLK]
+## Interface: 40400
+## Title: NameplateCooldowns [Cata]
 ## Notes: Shows the cooldowns of enemy players above their nameplates
 ## SavedVariables: NameplateCooldownsAceDB
 ## Version: @project-version@

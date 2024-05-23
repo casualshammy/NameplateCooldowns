@@ -109,77 +109,58 @@ addonTable.CDs = {
 		[11958] = 384,		-- Cold Snap https://www.wowhead.com/wotlk/ru/spell=11958
 	},
 	["DEATHKNIGHT"] = {
-		-- // reviewed 2022/10/22
-		[47476]		= 100,			-- Strangulate https://www.wowhead.com/wotlk/ru/spell=47476
-		[48743]		= 120,			-- Death Pact https://www.wowhead.com/wotlk/ru/spell=48743
-		[48792]		= 120,			-- Icebound Fortitude https://www.wowhead.com/wotlk/ru/spell=48792
-		[47568]		= 5*60,			-- Empower Rune Weapon https://www.wowhead.com/wotlk/ru/spell=47568
-		[47528]		= 10,			-- Mind Freeze https://www.wowhead.com/wotlk/ru/spell=47528
-		[42650]		= 6*60,			-- Army of the Dead https://www.wowhead.com/wotlk/ru/spell=42650
-		[48707]		= 45,			-- Anti-Magic Shell https://www.wowhead.com/wotlk/ru/spell=48707
-		[46584]		= 90,			-- Raise Dead https://www.wowhead.com/wotlk/ru/spell=46584
-		[49576]		= 20,			-- Death Grip https://www.wowhead.com/wotlk/ru/spell=49576
-		[61999]		= 10*60,		-- Raise Ally https://www.wowhead.com/wotlk/ru/spell=61999
-		[49016]		= 3*60,			-- Unholy Frenzy https://www.wowhead.com/wotlk/ru/spell=49016
-		[55233]		= 50,			-- Vampiric Blood https://www.wowhead.com/wotlk/ru/spell=55233
-		[49028]		= 90,			-- Dancing Rune Weapon https://www.wowhead.com/wotlk/ru/spell=49028
-		[49005]		= 3*60,			-- Mark of Blood https://www.wowhead.com/wotlk/ru/spell=49005
-		[48982]		= 30,			-- Rune Tap https://www.wowhead.com/wotlk/ru/spell=48982
-		[49039]		= 120,			-- Lichborne https://www.wowhead.com/wotlk/ru/spell=49039
-		[51271]		= 50,			-- Unbreakable Armor https://www.wowhead.com/wotlk/ru/spell=51271
-		[49206]		= 3*60,			-- Summon Gargoyle https://www.wowhead.com/wotlk/ru/spell=49206
-		[49222]		= 50,			-- Bone Shield https://www.wowhead.com/wotlk/ru/spell=49222
-		[51052]		= 120,			-- Anti-Magic Zone https://www.wowhead.com/wotlk/ru/spell=51052
-		[47481]		= 60,			-- Gnaw https://www.wowhead.com/wotlk/ru/spell=47481
+		-- // reviewed 2024/05/23
+		[77606]	= 60,		-- https://www.wowhead.com/wotlk/ru/spell=77606
+		[45529]	= 30,		-- https://www.wowhead.com/wotlk/ru/spell=45529
+		[48743]	= 120,	-- https://www.wowhead.com/wotlk/ru/spell=48743
+		[47476]	= 60,		-- https://www.wowhead.com/wotlk/ru/spell=47476
+		[48792]	= 180,	-- https://www.wowhead.com/wotlk/ru/spell=48792
+		[47528]	= 10,		-- https://www.wowhead.com/wotlk/ru/spell=47528
+		[48707]	= 45,		-- https://www.wowhead.com/wotlk/ru/spell=48707
+		[49576]	= 20,		-- https://www.wowhead.com/wotlk/ru/spell=49576
+		[42650]	= 600,	-- https://www.wowhead.com/wotlk/ru/spell=42650
+		[46584]	= 120,	-- https://www.wowhead.com/wotlk/ru/spell=46584
+		[49222]	= 60,		-- https://www.wowhead.com/wotlk/ru/spell=49222
+		[49028]	= 90,		-- https://www.wowhead.com/wotlk/ru/spell=49028
+		[55233]	= 60,		-- https://www.wowhead.com/wotlk/ru/spell=55233
+		[49039]	= 120,	-- https://www.wowhead.com/wotlk/ru/spell=49039
+		[49203]	= 60,		-- https://www.wowhead.com/wotlk/ru/spell=49203
+		[51271]	= 60,		-- https://www.wowhead.com/wotlk/ru/spell=51271
+		[49016]	= 180,	-- https://www.wowhead.com/wotlk/ru/spell=49016
+		[49206]	= 180,	-- https://www.wowhead.com/wotlk/ru/spell=49206
+		[51052]	= 120,	-- https://www.wowhead.com/wotlk/ru/spell=51052
+		[47568]	= 300,	-- https://www.wowhead.com/wotlk/ru/spell=47568
+		[61999]	= 600,	-- https://www.wowhead.com/wotlk/ru/spell=61999
+		[48982]	= 30,		-- https://www.wowhead.com/wotlk/ru/spell=48982
+		[47481]	= 60,		-- https://www.wowhead.com/wotlk/ru/spell=47481
 	},
 	["DRUID"] = {
-		-- // reviewed 2022/10/27
-		[22570] = 10,							-- Maim https://www.wowhead.com/wotlk/ru/spell=22570
-		[29166] = 132,							-- Innervate https://www.wowhead.com/wotlk/ru/spell=29166
-		[22812] = 48,							-- Barkskin https://www.wowhead.com/wotlk/ru/spell=22812
-		[22842] = 3*60,							-- Frenzied Regeneration https://www.wowhead.com/wotlk/ru/spell=22842
-		[5229] = 60,							-- Enrage https://www.wowhead.com/wotlk/ru/spell=5229
-		[5217] = 27,							-- Tiger's Fury 1 https://www.wowhead.com/wotlk/ru/spell=5217
-		[6793] = 27,							-- Tiger's Fury 2 https://www.wowhead.com/wotlk/ru/spell=6793
-		[9845] = 27,							-- Tiger's Fury 3 https://www.wowhead.com/wotlk/ru/spell=9845
-		[9846] = 27,							-- Tiger's Fury 4 https://www.wowhead.com/wotlk/ru/spell=9846
-		[50212] = 27,							-- Tiger's Fury 5 https://www.wowhead.com/wotlk/ru/spell=50212
-		[50213] = 27,							-- Tiger's Fury 6 https://www.wowhead.com/wotlk/ru/spell=50213
-		[49376] = 30,							-- Feral Charge - Cat https://www.wowhead.com/wotlk/ru/spell=49376
-		[5211] = 30,							-- Bash https://www.wowhead.com/wotlk/ru/spell=5211
-		[6798] = 30,							-- Bash https://www.wowhead.com/wotlk/ru/spell=6798
-		[8983] = 30,							-- Bash https://www.wowhead.com/wotlk/ru/spell=8983
-		[16979] = 15,							-- Feral Charge - Bear https://www.wowhead.com/wotlk/ru/spell=16979
-		[1850] = 144,							-- Dash 1 https://www.wowhead.com/wotlk/ru/spell=1850
-		[9821] = 144,							-- Dash 2 https://www.wowhead.com/wotlk/ru/spell=9821
-		[33357] = 144,							-- Dash 3 https://www.wowhead.com/wotlk/ru/spell=33357
-		[20484] = 5*60,							-- Rebirth 1 https://www.wowhead.com/wotlk/ru/spell=20484
-		[20739] = 5*60,							-- Rebirth 2 https://www.wowhead.com/wotlk/ru/spell=20739
-		[20742] = 5*60,							-- Rebirth 3 https://www.wowhead.com/wotlk/ru/spell=20742
-		[20747] = 5*60,							-- Rebirth 4 https://www.wowhead.com/wotlk/ru/spell=20747
-		[20748] = 5*60,							-- Rebirth 5 https://www.wowhead.com/wotlk/ru/spell=20748
-		[26994] = 5*60,							-- Rebirth 6 https://www.wowhead.com/wotlk/ru/spell=26994
-		[48477] = 5*60,							-- Rebirth 7 https://www.wowhead.com/wotlk/ru/spell=48477
-		[740] = 192,							-- Tranquility 1 https://www.wowhead.com/wotlk/ru/spell=740
-		[8918] = 192,							-- Tranquility 2 https://www.wowhead.com/wotlk/ru/spell=8918
-		[9862] = 192,							-- Tranquility 3 https://www.wowhead.com/wotlk/ru/spell=9862
-		[9863] = 192,							-- Tranquility 4 https://www.wowhead.com/wotlk/ru/spell=9863
-		[26983] = 192,							-- Tranquility 5 https://www.wowhead.com/wotlk/ru/spell=26983
-		[48446] = 192,							-- Tranquility 6 https://www.wowhead.com/wotlk/ru/spell=48446
-		[48447] = 192,							-- Tranquility 7 https://www.wowhead.com/wotlk/ru/spell=48447
-		[48505] = 60,							-- Starfall 1 https://www.wowhead.com/wotlk/ru/spell=48505
-		[53199] = 60,							-- Starfall 2 https://www.wowhead.com/wotlk/ru/spell=53199
-		[53200] = 60,							-- Starfall 3 https://www.wowhead.com/wotlk/ru/spell=53200
-		[53201] = 60,							-- Starfall 4 https://www.wowhead.com/wotlk/ru/spell=53201
-		[33831] = 180,							-- Force of Nature https://www.wowhead.com/wotlk/ru/spell=33831
-		[50516] = 20,							-- Typhoon 1 https://www.wowhead.com/wotlk/ru/spell=50516
-		[53223] = 20,							-- Typhoon 2 https://www.wowhead.com/wotlk/ru/spell=53223
-		[53225] = 20,							-- Typhoon 3 https://www.wowhead.com/wotlk/ru/spell=53225
-		[53226] = 20,							-- Typhoon 4 https://www.wowhead.com/wotlk/ru/spell=53226
-		[61384] = 20,							-- Typhoon 5 https://www.wowhead.com/wotlk/ru/spell=61384
-		[50334] = 180,							-- Berserk https://www.wowhead.com/wotlk/ru/spell=50334
-		[61336] = 180,							-- Survival Instincts https://www.wowhead.com/wotlk/ru/spell=61336
-		[17116] = 156,							-- Nature's Swiftness https://www.wowhead.com/wotlk/ru/spell=17116
+		-- // reviewed 2024/05/23
+		[29166]	= 132,	-- https://www.wowhead.com/wotlk/ru/spell=29166
+		[22812]	= 60,		-- https://www.wowhead.com/wotlk/ru/spell=22812
+		[16689]	= 60,		-- https://www.wowhead.com/wotlk/ru/spell=16689
+		[77764]	= 120,	-- https://www.wowhead.com/wotlk/ru/spell=77764
+		[16979]	= 14,		-- https://www.wowhead.com/wotlk/ru/spell=16979
+		[80965]	= 10,		-- https://www.wowhead.com/wotlk/ru/spell=80965
+		[5217]	= 27,		-- https://www.wowhead.com/wotlk/ru/spell=5217
+		[49376]	= 28,		-- https://www.wowhead.com/wotlk/ru/spell=49376
+		[80964]	= 10,		-- https://www.wowhead.com/wotlk/ru/spell=80964
+		[22842]	= 180,	-- https://www.wowhead.com/wotlk/ru/spell=22842
+		[1850]	= 144,	-- https://www.wowhead.com/wotlk/ru/spell=1850
+		[77761]	= 120,	-- https://www.wowhead.com/wotlk/ru/spell=77761
+		[5211]	= 50,		-- https://www.wowhead.com/wotlk/ru/spell=5211
+		[5229]	= 60,		-- https://www.wowhead.com/wotlk/ru/spell=5229
+		[20484]	= 300,	-- https://www.wowhead.com/wotlk/ru/spell=20484
+		[740]	= 180,		-- https://www.wowhead.com/wotlk/ru/spell=740
+		[48505]	= 60,		-- https://www.wowhead.com/wotlk/ru/spell=48505
+		[50516]	= 17,		-- https://www.wowhead.com/wotlk/ru/spell=50516
+		[78675]	= 60,		-- https://www.wowhead.com/wotlk/ru/spell=78675
+		[33831]	= 180,	-- https://www.wowhead.com/wotlk/ru/spell=33831
+		[50334]	= 180,	-- https://www.wowhead.com/wotlk/ru/spell=50334
+		[61336]	= 180,	-- https://www.wowhead.com/wotlk/ru/spell=61336
+		[33891]	= 180,	-- https://www.wowhead.com/wotlk/ru/spell=33891
+		[17116]	= 156,	-- https://www.wowhead.com/wotlk/ru/spell=17116
+		[22570] = 10,		-- https://www.wowhead.com/wotlk/ru/spell=22570
 	},
 	["PALADIN"] = {
 		-- // reviewed 2022/10/28
