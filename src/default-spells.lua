@@ -153,76 +153,53 @@ addonTable.CDs = {
 		[22570] = 10,		-- https://www.wowhead.com/wotlk/ru/spell=22570
 	},
 	["PALADIN"] = {
-		-- // reviewed 2022/10/28
-		[54428] = 60,					-- Divine Plea https://www.wowhead.com/wotlk/spell=54428
-		[2812] = 30,					-- Holy Wrath 1 https://www.wowhead.com/wotlk/spell=2812
-		[10318] = 30,					-- Holy Wrath 2 https://www.wowhead.com/wotlk/spell=10318
-		[27139] = 30,					-- Holy Wrath 3 https://www.wowhead.com/wotlk/spell=27139
-		[48816] = 30,					-- Holy Wrath 4 https://www.wowhead.com/wotlk/spell=48816
-		[48817] = 30,					-- Holy Wrath 5 https://www.wowhead.com/wotlk/spell=48817
-		[633] = 11*60,					-- Lay on Hands 1 https://www.wowhead.com/wotlk/spell=633
-		[2800] = 11*60,					-- Lay on Hands 2 https://www.wowhead.com/wotlk/spell=2800
-		[10310] = 11*60,				-- Lay on Hands 3 https://www.wowhead.com/wotlk/spell=10310
-		[27154] = 11*60,				-- Lay on Hands 4 https://www.wowhead.com/wotlk/spell=27154
-		[48788] = 11*60,				-- Lay on Hands 5 https://www.wowhead.com/wotlk/spell=48788
-		[6940] = 2*60,					-- Hand of Sacrifice https://www.wowhead.com/wotlk/spell=6940
-		[498] = 2*60,					-- Divine Protection https://www.wowhead.com/wotlk/spell=498
-		[642] = 4*60,					-- Divine Shield https://www.wowhead.com/wotlk/spell=642
-		[853] = 30,						-- Hammer of Justice 1 https://www.wowhead.com/wotlk/spell=853
-		[5588] = 30,					-- Hammer of Justice 2 https://www.wowhead.com/wotlk/spell=5588
-		[5589] = 30,					-- Hammer of Justice 3 https://www.wowhead.com/wotlk/spell=5589
-		[10308] = 30,					-- Hammer of Justice 4 https://www.wowhead.com/wotlk/spell=10308
-		[1044] = 25,					-- Hand of Freedom https://www.wowhead.com/wotlk/spell=1044
-		[1022] = 3*60,					-- Hand of Protection 1 https://www.wowhead.com/wotlk/spell=1022
-		[5599] = 3*60,					-- Hand of Protection 2 https://www.wowhead.com/wotlk/spell=5599
-		[10278] = 3*60,					-- Hand of Protection 3 https://www.wowhead.com/wotlk/spell=10278
-		[31884] = 3*60,					-- Avenging Wrath https://www.wowhead.com/wotlk/spell=31884
-		[31821] = 2*60,					-- Aura Mastery https://www.wowhead.com/wotlk/spell=31821
-		[31842] = 3*60,					-- Divine Illumination https://www.wowhead.com/wotlk/spell=31842
-		[20216] = 105,					-- Divine Favor https://www.wowhead.com/wotlk/spell=20216
-		[64205] = 120,					-- Divine Sacrifice https://www.wowhead.com/wotlk/spell=64205
-		[20066] = 60,					-- Repentance https://www.wowhead.com/wotlk/spell=20066
-		[20473] = 5,					-- Holy Shock 1 https://www.wowhead.com/wotlk/spell=20473
-		[20929] = 5,					-- Holy Shock 2 https://www.wowhead.com/wotlk/spell=20929
-		[20930] = 5,					-- Holy Shock 3 https://www.wowhead.com/wotlk/spell=20930
-		[27174] = 5,					-- Holy Shock 4 https://www.wowhead.com/wotlk/spell=27174
-		[33072] = 5,					-- Holy Shock 5 https://www.wowhead.com/wotlk/spell=33072
-		[48824] = 5,					-- Holy Shock 6 https://www.wowhead.com/wotlk/spell=48824
-		[48825] = 5,					-- Holy Shock 7 https://www.wowhead.com/wotlk/spell=48825
+		-- // reviewed 2024/05/25
+		[85673] = 15, -- https://www.wowhead.com/wotlk/ru/spell=85673
+		[2812] = 15, -- https://www.wowhead.com/wotlk/ru/spell=2812
+		[54428] = 120, -- https://www.wowhead.com/wotlk/ru/spell=54428
+		[26573] = 30, -- https://www.wowhead.com/wotlk/ru/spell=26573
+		[633] = 180, -- https://www.wowhead.com/wotlk/ru/spell=633
+		[86150] = 180, -- https://www.wowhead.com/wotlk/ru/spell=86150
+		[498] = 30, -- https://www.wowhead.com/wotlk/ru/spell=498
+		[6940] = 66, -- https://www.wowhead.com/wotlk/ru/spell=6940
+		[642] = 300, -- https://www.wowhead.com/wotlk/ru/spell=642
+		[1022] = 180, -- https://www.wowhead.com/wotlk/ru/spell=1022
+		[1044] = 20, -- https://www.wowhead.com/wotlk/ru/spell=1044
+		[853] = 30, -- https://www.wowhead.com/wotlk/ru/spell=853
+		[96231] = 10, -- https://www.wowhead.com/wotlk/ru/spell=96231
+		[31884] = 120, -- https://www.wowhead.com/wotlk/ru/spell=31884
+		[31842] = 165, -- https://www.wowhead.com/wotlk/ru/spell=31842
+		[31821] = 120, -- https://www.wowhead.com/wotlk/ru/spell=31821
+		[70940] = 180, -- https://www.wowhead.com/wotlk/ru/spell=70940
+		[31850] = 180, -- https://www.wowhead.com/wotlk/ru/spell=31850
+		[20925] = 30, -- https://www.wowhead.com/wotlk/ru/spell=20925
+		[85696] = 120, -- https://www.wowhead.com/wotlk/ru/spell=85696
+		[20066] = 60, -- https://www.wowhead.com/wotlk/ru/spell=20066
+		[64205] = 120, -- https://www.wowhead.com/wotlk/ru/spell=64205
+		[20473] = 5, -- https://www.wowhead.com/wotlk/ru/spell=20473
 	},
 	["PRIEST"] = {
-		-- // reviewed 2022/10/29
-		[6346] = 2*60,		-- Fear Ward https://www.wowhead.com/wotlk/spell=6346
-		[64901] = 6*60,		-- Hymn of Hope https://www.wowhead.com/wotlk/spell=64901
-		[64843] = 8*60,		-- Divine Hymn https://www.wowhead.com/wotlk/spell=64843
-		[34433] = 3*60,		-- Shadowfiend https://www.wowhead.com/wotlk/spell=34433
-		[586] = 15,			-- Fade https://www.wowhead.com/wotlk/spell=586
-		[8122] = 26,		-- Psychic Scream 1 https://www.wowhead.com/wotlk/spell=8122
-		[8124] = 26,		-- Psychic Scream 2 https://www.wowhead.com/wotlk/spell=8124
-		[10888] = 26,		-- Psychic Scream 3 https://www.wowhead.com/wotlk/spell=10888
-		[10890] = 26,		-- Psychic Scream 4 https://www.wowhead.com/wotlk/spell=10890
-		[10060] = 96,		-- Power Infusion https://www.wowhead.com/wotlk/spell=10060
-		[33206] = 144,		-- Pain Suppression https://www.wowhead.com/wotlk/spell=33206
-		[14751] = 144,		-- Inner Focus https://www.wowhead.com/wotlk/spell=14751
-		[47788] = 3*60,		-- Guardian Spirit https://www.wowhead.com/wotlk/spell=47788
-		[724] = 3*60,		-- Lightwell 1 https://www.wowhead.com/wotlk/spell=724
-		[27870] = 3*60,		-- Lightwell 2 https://www.wowhead.com/wotlk/spell=27870
-		[27871] = 3*60,		-- Lightwell 3 https://www.wowhead.com/wotlk/spell=27871
-		[28275] = 3*60,		-- Lightwell 4 https://www.wowhead.com/wotlk/spell=28275
-		[48086] = 3*60,		-- Lightwell 5 https://www.wowhead.com/wotlk/spell=48086
-		[48087] = 3*60,		-- Lightwell 6 https://www.wowhead.com/wotlk/spell=48087
-		[47585] = 75,		-- Dispersion https://www.wowhead.com/wotlk/spell=47585
-		[64044] = 120,		-- Psychic Horror https://www.wowhead.com/wotlk/spell=64044
-		[15487] = 45,		-- Silence https://www.wowhead.com/wotlk/spell=15487
-		[19236] = 120,		-- Desperate Prayer 1 https://www.wowhead.com/wotlk/spell=19236
-		[19238] = 120,		-- Desperate Prayer 1 https://www.wowhead.com/wotlk/spell=19238
-		[19240] = 120,		-- Desperate Prayer 1 https://www.wowhead.com/wotlk/spell=19240
-		[19241] = 120,		-- Desperate Prayer 1 https://www.wowhead.com/wotlk/spell=19241
-		[19242] = 120,		-- Desperate Prayer 1 https://www.wowhead.com/wotlk/spell=19242
-		[19243] = 120,		-- Desperate Prayer 1 https://www.wowhead.com/wotlk/spell=19243
-		[25437] = 120,		-- Desperate Prayer 1 https://www.wowhead.com/wotlk/spell=25437
-		[48172] = 120,		-- Desperate Prayer 1 https://www.wowhead.com/wotlk/spell=48172
-		[48173] = 120,		-- Desperate Prayer 1 https://www.wowhead.com/wotlk/spell=48173
+		-- // reviewed 2024/05/25
+		[6346] = 120, -- https://www.wowhead.com/wotlk/ru/spell=6346
+		[73325] = 90, -- https://www.wowhead.com/wotlk/ru/spell=73325
+		[64901] = 360, -- https://www.wowhead.com/wotlk/ru/spell=64901
+		[88625] = 20, -- https://www.wowhead.com/wotlk/ru/spell=88625
+		[64843] = 180, -- https://www.wowhead.com/wotlk/ru/spell=64843
+		[32379] = 10, -- https://www.wowhead.com/wotlk/ru/spell=32379
+		[34433] = 240, -- https://www.wowhead.com/wotlk/ru/spell=34433
+		[586] = 15, -- https://www.wowhead.com/wotlk/ru/spell=586
+		[8122] = 25, -- https://www.wowhead.com/wotlk/ru/spell=8122
+		[10060] = 120, -- https://www.wowhead.com/wotlk/ru/spell=10060
+		[62618] = 180, -- https://www.wowhead.com/wotlk/ru/spell=62618
+		[89485] = 45, -- https://www.wowhead.com/wotlk/ru/spell=89485
+		[33206] = 180, -- https://www.wowhead.com/wotlk/ru/spell=33206
+		[14751] = 30, -- https://www.wowhead.com/wotlk/ru/spell=14751
+		[19236] = 120, -- https://www.wowhead.com/wotlk/ru/spell=19236
+		[47788] = 150, -- https://www.wowhead.com/wotlk/ru/spell=47788
+		[47585] = 75, -- https://www.wowhead.com/wotlk/ru/spell=47585
+		[15487] = 45, -- https://www.wowhead.com/wotlk/ru/spell=15487
+		[64044] = 90, -- https://www.wowhead.com/wotlk/ru/spell=64044
+		[724] = 180, -- https://www.wowhead.com/wotlk/ru/spell=724
 	},
 	["ROGUE"] = {
 		-- // reviewed 2022/11/20
@@ -316,6 +293,7 @@ addonTable.Interrupts = {
 	[34490] = true,		-- Silencing Shot https://www.wowhead.com/wotlk/spell=34490
 	[47476] = true,		-- Strangulate
 	[16979] = true,		-- Feral Charge - Bear
+	[96231] = true,		-- Rebuke
 };
 
 addonTable.Trinkets = {
