@@ -52,27 +52,26 @@ addonTable.CDs = {
 		[19503] = 30, 	-- https://www.wowhead.com/cata/ru/spell=19503
 	},
 	["WARLOCK"] = {
-		-- // reviewed 2022/10/18
-		[48020] = 26,		-- Demonic Circle: Teleport https://www.wowhead.com/cata/ru/spell=48020
-		[6789] = 120,		-- Death Coil 1 https://www.wowhead.com/cata/ru/spell=6789
-		[17925] = 120,		-- Death Coil 2 https://www.wowhead.com/cata/ru/spell=17925
-		[17926] = 120,		-- Death Coil 3 https://www.wowhead.com/cata/ru/spell=17926
-		[27223] = 120,		-- Death Coil 4 https://www.wowhead.com/cata/ru/spell=27223
-		[47859] = 120,		-- Death Coil 5 https://www.wowhead.com/cata/ru/spell=47859
-		[47860] = 120,		-- Death Coil 6 https://www.wowhead.com/cata/ru/spell=47860
-		[5484] = 32,		-- Howl of Terror 1 https://www.wowhead.com/cata/ru/spell=5484
-		[17928] = 32,		-- Howl of Terror 2 https://www.wowhead.com/cata/ru/spell=17928
-		[30283] = 20,		-- Shadowfury 1 https://www.wowhead.com/cata/ru/spell=30283
-		[30413] = 20,		-- Shadowfury 2 https://www.wowhead.com/cata/ru/spell=30413
-		[30414] = 20,		-- Shadowfury 3 https://www.wowhead.com/cata/ru/spell=30414
-		[47846] = 20,		-- Shadowfury 4 https://www.wowhead.com/cata/ru/spell=47846
-		[47847] = 20,		-- Shadowfury 5 https://www.wowhead.com/cata/ru/spell=47847
-		[19647] = 24,		-- Spell Lock https://www.wowhead.com/cata/ru/spell=19647
-		[1122] = 600,		-- Summon Infernal https://www.wowhead.com/cata/ru/spell=1122
-		[54785] = 45,		-- Demon Charge https://www.wowhead.com/cata/ru/spell=54785
-		[47193] = 60,		-- Demonic Empowerment https://www.wowhead.com/cata/ru/spell=47193
-		[59672] = 3*60,		-- Metamorphosis https://www.wowhead.com/cata/ru/spell=59672
-		[18708] = 2*60,		-- Fel Domination https://www.wowhead.com/cata/ru/spell=18708
+		-- // reviewed 2024/05/29
+		[6789] = 90, -- https://www.wowhead.com/cata/ru/spell=6789
+		[5484] = 32, -- https://www.wowhead.com/cata/ru/spell=5484
+		[77801] = 120, -- https://www.wowhead.com/cata/ru/spell=77801
+		[74434] = 30, -- https://www.wowhead.com/cata/ru/spell=74434
+		[18540] = 600, -- https://www.wowhead.com/cata/ru/spell=18540
+		[79268] = 30, -- https://www.wowhead.com/cata/ru/spell=79268
+		[1122] = 600, -- https://www.wowhead.com/cata/ru/spell=1122
+		[6229] = 30, -- https://www.wowhead.com/cata/ru/spell=6229
+		[48020] = 21, -- https://www.wowhead.com/cata/ru/spell=48020
+		[88448] = 180, -- https://www.wowhead.com/cata/ru/spell=88448
+		[54786] = 45, -- https://www.wowhead.com/cata/ru/spell=54786
+		[91711] = 30, -- https://www.wowhead.com/cata/ru/spell=91711
+		[47193] = 40, -- https://www.wowhead.com/cata/ru/spell=47193
+		[50796] = 10, -- https://www.wowhead.com/cata/ru/spell=50796
+		[30283] = 20, -- https://www.wowhead.com/cata/ru/spell=30283
+		[19647] = 24, -- https://www.wowhead.com/cata/ru/spell=19647
+		[54785] = 45, -- https://www.wowhead.com/cata/ru/spell=54785
+		[59672] = 180, -- https://www.wowhead.com/cata/ru/spell=59672
+		[18708] = 180, -- https://www.wowhead.com/cata/ru/spell=18708
 	},
 	["MAGE"] = {
 		-- // reviewed 2024/05/25
@@ -248,33 +247,34 @@ addonTable.CDs = {
 		[16188] = 96, -- https://www.wowhead.com/cata/ru/spell=16188
 	},
 	["WARRIOR"] = {
-		-- // reviewed 2021/02/12
-		[64382] = 5*60,				-- Shattering Throw https://www.wowhead.com/cata/ru/spell=64382
-		[1719] = 201,				-- Recklessness https://www.wowhead.com/cata/ru/spell=1719
-		[871] = 120,				-- Shield Wall https://www.wowhead.com/cata/ru/spell=871
-		[57755] = 60,				-- Heroic Throw https://www.wowhead.com/cata/ru/spell=57755
-		[55694] = 3*60,				-- Enraged Regeneration https://www.wowhead.com/cata/ru/spell=55694
-		[2565] = 40,				-- Shield Block https://www.wowhead.com/cata/ru/spell=2565
-		[3411] = 30,				-- Intervene https://www.wowhead.com/cata/ru/spell=3411
-		[20230] = 4*60,				-- Retaliation https://www.wowhead.com/cata/ru/spell=20230
-		[18499] = 20,				-- Berserker Rage https://www.wowhead.com/cata/ru/spell=18499
-		[2687] = 40,				-- Bloodrage https://www.wowhead.com/cata/ru/spell=2687
-		[23920] = 9,				-- Spell Reflection https://www.wowhead.com/cata/ru/spell=23920
-		[6552] = 10,				-- Pummel https://www.wowhead.com/cata/ru/spell=6552
-		[100] = 15,					-- Charge https://www.wowhead.com/cata/ru/spell=100
-		[11578] = 15,				-- Charge https://www.wowhead.com/cata/ru/spell=11578
-		[20252] = 20,				-- Intercept https://www.wowhead.com/cata/ru/spell=20252
-		[676] = 40,					-- Disarm https://www.wowhead.com/cata/ru/spell=676
-		[72] = 12,					-- Shield Bash https://www.wowhead.com/cata/ru/spell=72
-		[1161] = 120,				-- Challenging Shout https://www.wowhead.com/cata/ru/spell=1161
-		[5246] = 105,				-- Intimidating Shout https://www.wowhead.com/cata/ru/spell=5246
-		[46924] = 75,				-- Bladestorm https://www.wowhead.com/cata/ru/spell=46924
-		[46968] = 17,				-- Shockwave https://www.wowhead.com/cata/ru/spell=46968
-		[12292] = 120,				-- Death Wish https://www.wowhead.com/cata/ru/spell=12292
-		[60970] = 45,				-- Heroic Fury https://www.wowhead.com/cata/ru/spell=60970
-		[12975] = 120,				-- Last Stand https://www.wowhead.com/cata/ru/spell=12975
-		[12809] = 30,				-- Concussion Blow https://www.wowhead.com/cata/ru/spell=12809
-		[6544] = 45,				-- Heroic Leap https://www.wowhead.com/cata/ru/spell=6544
+		-- // reviewed 2024/05/29
+		[86346] = 20, -- https://www.wowhead.com/cata/ru/spell=86346
+		[64382] = 300, -- https://www.wowhead.com/cata/ru/spell=64382
+		[20230] = 300, -- https://www.wowhead.com/cata/ru/spell=20230
+		[100] = 12, -- https://www.wowhead.com/cata/ru/spell=100
+		[97462] = 180, -- https://www.wowhead.com/cata/ru/spell=97462
+		[6544] = 50, -- https://www.wowhead.com/cata/ru/spell=6544
+		[1719] = 240, -- https://www.wowhead.com/cata/ru/spell=1719
+		[6552] = 10, -- https://www.wowhead.com/cata/ru/spell=6552
+		[55694] = 180, -- https://www.wowhead.com/cata/ru/spell=55694
+		[18499] = 24, -- https://www.wowhead.com/cata/ru/spell=18499
+		[20252] = 20, -- https://www.wowhead.com/cata/ru/spell=20252
+		[5246] = 105, -- https://www.wowhead.com/cata/ru/spell=5246
+		[2565] = 30, -- https://www.wowhead.com/cata/ru/spell=2565
+		[23920] = 20, -- https://www.wowhead.com/cata/ru/spell=23920
+		[3411] = 30, -- https://www.wowhead.com/cata/ru/spell=3411
+		[871] = 120, -- https://www.wowhead.com/cata/ru/spell=871
+		[676] = 60, -- https://www.wowhead.com/cata/ru/spell=676
+		[85730] = 120, -- https://www.wowhead.com/cata/ru/spell=85730
+		[46924] = 75, -- https://www.wowhead.com/cata/ru/spell=46924
+		[85388] = 45, -- https://www.wowhead.com/cata/ru/spell=85388
+		[12292] = 144, -- https://www.wowhead.com/cata/ru/spell=12292
+		[60970] = 30, -- https://www.wowhead.com/cata/ru/spell=60970
+		[46968] = 17, -- https://www.wowhead.com/cata/ru/spell=46968
+		[12975] = 180, -- https://www.wowhead.com/cata/ru/spell=12975
+		[12809] = 30, -- https://www.wowhead.com/cata/ru/spell=12809
+		[57755] = 30, -- https://www.wowhead.com/cata/ru/spell=57755
+		[1161] = 180, -- https://www.wowhead.com/cata/ru/spell=1161
 	},
 };
 
