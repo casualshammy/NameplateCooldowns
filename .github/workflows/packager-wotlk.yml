@@ -1,4 +1,4 @@
-name: Package-WotLK
+name: Package-Cata
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - '**'
 
 jobs:
-  release-wotlk:
+  release-cata:
     runs-on: ubuntu-latest
     env:
       CF_API_KEY: ${{ secrets.CF_API_KEY }}
@@ -19,4 +19,4 @@ jobs:
       - name: Package and release
         uses: BigWigsMods/packager@v2
         with:
-            args: -g wrath
+            args: -g cata
