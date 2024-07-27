@@ -1,6 +1,6 @@
 -- luacheck: no max line length
 -- luacheck: globals GetBuildInfo LibStub NAuras_LibButtonGlow UIParent bit GetTime C_Timer C_NamePlate UnitGUID InterfaceOptionsFrameCancel wipe
--- luacheck: globals GetSpellLink SLASH_NAMEPLATECOOLDOWNS1 SlashCmdList UNKNOWN IsInGroup LE_PARTY_CATEGORY_INSTANCE IsInRaid C_ChatInfo CreateFrame
+-- luacheck: globals C_Spell SLASH_NAMEPLATECOOLDOWNS1 SlashCmdList UNKNOWN IsInGroup LE_PARTY_CATEGORY_INSTANCE IsInRaid C_ChatInfo CreateFrame
 -- luacheck: globals unpack InCombatLockdown ColorPickerFrame BackdropTemplateMixin UIDropDownMenu_SetWidth UIDropDownMenu_AddButton GameFontNormal
 -- luacheck: globals InterfaceOptionsFrame_OpenToCategory GetSpellInfo GameFontHighlightSmall hooksecurefunc ALL GameTooltip FillLocalizedClassList
 -- luacheck: globals OTHER PlaySound SOUNDKIT COMBATLOG_OBJECT_REACTION_HOSTILE CombatLogGetCurrentEventInfo IsInInstance strsplit UnitName GetRealmName
@@ -60,7 +60,7 @@ local FeignDeathGUIDs = {};
 local pairs, string_gsub, string_find, bit_band, GetTime, math_ceil, table_sort, string_format, C_Timer_NewTimer, math_max, C_NamePlate_GetNamePlateForUnit, UnitGUID =
 	  pairs, string.gsub,	string.find, bit.band, GetTime, math.ceil, table.sort, string.format, C_Timer.NewTimer, math.max, C_NamePlate.GetNamePlateForUnit, UnitGUID;
 local wipe, IsInGroup, unpack, tinsert, UnitReaction, UnitAura = wipe, IsInGroup, unpack, table.insert, UnitReaction, UnitAura;
-local GetInstanceInfo, CTimerAfter = GetInstanceInfo, C_Timer.After;
+local GetInstanceInfo, CTimerAfter, GetSpellLink = GetInstanceInfo, C_Timer.After, C_Spell.GetSpellLink;
 
 local OnStartup, InitializeDB;
 local AllocateIcon, ReallocateAllIcons, UpdateOnlyOneNameplate, HideCDIcon, ShowCDIcon;
