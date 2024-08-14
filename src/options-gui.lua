@@ -4,7 +4,7 @@
 -- luacheck: globals unpack InCombatLockdown ColorPickerFrame BackdropTemplateMixin UIDropDownMenu_SetWidth UIDropDownMenu_AddButton GameFontNormal
 -- luacheck: globals GameFontHighlightSmall hooksecurefunc ALL GameTooltip LocalizedClassList
 -- luacheck: globals OTHER PlaySound SOUNDKIT COMBATLOG_OBJECT_REACTION_HOSTILE CombatLogGetCurrentEventInfo IsInInstance strsplit UnitName GetRealmName
--- luacheck: globals UnitReaction UnitAura C_Spell
+-- luacheck: globals UnitReaction C_Spell
 
 local _, addonTable = ...;
 
