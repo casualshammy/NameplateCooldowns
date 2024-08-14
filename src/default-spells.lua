@@ -1,5 +1,5 @@
 -- luacheck: no max line length
--- luacheck: globals GetBuildInfo LibStub GetSpellInfo
+-- luacheck: globals GetBuildInfo LibStub
 
 local _, addonTable = ...;
 

@@ -2,9 +2,9 @@
 -- luacheck: globals GetBuildInfo LibStub NAuras_LibButtonGlow UIParent bit GetTime C_Timer C_NamePlate UnitGUID wipe
 -- luacheck: globals SLASH_NAMEPLATECOOLDOWNS1 SlashCmdList UNKNOWN IsInGroup LE_PARTY_CATEGORY_INSTANCE IsInRaid C_ChatInfo CreateFrame
 -- luacheck: globals unpack InCombatLockdown ColorPickerFrame BackdropTemplateMixin UIDropDownMenu_SetWidth UIDropDownMenu_AddButton GameFontNormal
--- luacheck: globals GetSpellInfo GameFontHighlightSmall hooksecurefunc ALL GameTooltip FillLocalizedClassList
+-- luacheck: globals GameFontHighlightSmall hooksecurefunc ALL GameTooltip LocalizedClassList
 -- luacheck: globals OTHER PlaySound SOUNDKIT COMBATLOG_OBJECT_REACTION_HOSTILE CombatLogGetCurrentEventInfo IsInInstance strsplit UnitName GetRealmName
--- luacheck: globals UnitReaction UnitAura
+-- luacheck: globals UnitReaction UnitAura C_Spell
 
 local _, addonTable = ...;
 
@@ -26,7 +26,7 @@ end
 local AllSpellIDsAndIconsByName = { };
 local GUIFrame;
 
-local _G, UIParent, table_insert, C_Timer_After, GetSpellInfo, table_sort = _G, UIParent, table.insert, C_Timer.After, GetSpellInfo, table.sort;
+local _G, UIParent, table_insert, C_Timer_After, GetSpellInfo, table_sort = _G, UIParent, table.insert, C_Timer.After, C_Spell.GetSpellInfo, table.sort;
 local string_format, math_ceil = string.format, math.ceil;
 
 local function GUICategory_Filters(index)
@@ -1140,9 +1140,11 @@ local function GUICategory_Other(index)
             local scanAllSpells = coroutine.create(function()
                 local misses = 0;
                 local id = 0;
-                while (misses < 400) do
+                while (misses < 1000) do
                     id = id + 1;
-                    local name, _, icon = GetSpellInfo(id);
+                    local spellInfo = GetSpellInfo(id);
+				    local name = spellInfo ~= nil and spellInfo.name or nil;
+				    local icon = spellInfo ~= nil and spellInfo.iconID or nil;
                     if (icon == 136243) then -- 136243 is the a gear icon
                         misses = 0;
                     elseif (name and name ~= "") then
@@ -1402,9 +1404,8 @@ local function GUICategory_Other(index)
     -- // dropdownClassSelector
     do
         local classTokens = { };
-        local classes = { };
+        local classes = LocalizedClassList();
         classTokens[#classTokens+1] = addonTable.ALL_CLASSES;
-        FillLocalizedClassList(classes);
         for token in pairs(classes) do
             classTokens[#classTokens+1] = token;
         end

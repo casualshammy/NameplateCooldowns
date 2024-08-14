@@ -1,9 +1,9 @@
 -- luacheck: no max line length
--- luacheck: globals GetSpellTexture GetSpellInfo DEFAULT_CHAT_FRAME StaticPopupDialogs StaticPopup_Show OKAY YES NO CreateFrame debugprofilestop
+-- luacheck: globals DEFAULT_CHAT_FRAME StaticPopupDialogs StaticPopup_Show OKAY YES NO CreateFrame debugprofilestop C_Spell
 
 local _, addonTable = ...;
 local string_format, GetSpellTexture, GetSpellInfo, select, tostring, type, pairs, setmetatable, getmetatable, debugprofilestop =
-    string.format, GetSpellTexture, GetSpellInfo, select, tostring, type, pairs, setmetatable, getmetatable, debugprofilestop;
+    string.format, C_Spell.GetSpellTexture, C_Spell.GetSpellInfo, select, tostring, type, pairs, setmetatable, getmetatable, debugprofilestop;
 
 function addonTable.Print(...)
     local text = "";
@@ -91,9 +91,11 @@ addonTable.SpellTextureByID = setmetatable({
 
 addonTable.SpellNameByID = setmetatable({}, {
 	__index = function(t, key)
-		local spellName = GetSpellInfo(key);
-		t[key] = spellName;
-		return spellName;
+		local spellInfo = GetSpellInfo(key);
+		local name = spellInfo ~= nil and spellInfo.name or nil;
+
+		t[key] = name;
+		return name;
 	end
 });
 
