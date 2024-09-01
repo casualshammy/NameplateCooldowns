@@ -340,6 +340,15 @@ do
 		frame.NCFrame:SetHeight(math_max(maxHeight, 1));
 	end
 
+	local function GetNameplateAddonFrame(_nameplate)
+		-- local frame = _nameplate.TPFrame;
+		-- if (frame ~= nil) then
+		-- 	return frame;
+		-- end
+
+		return _nameplate;
+	end
+
 	function AllocateIcon(frame)
 		if (not frame.NCFrame) then
 			frame.NCFrame = CreateFrame("frame", nil, frame);
@@ -347,7 +356,8 @@ do
 			frame.NCFrame:SetIgnoreParentScale(db.IgnoreNameplateScale);
 			frame.NCFrame:SetWidth(db.IconSize);
 			frame.NCFrame:SetHeight(db.IconSize);
-			frame.NCFrame:SetPoint(db.CDFrameAnchor, frame, db.CDFrameAnchorToParent, db.IconXOffset, db.IconYOffset);
+			local anchorFrame = GetNameplateAddonFrame(frame);
+			frame.NCFrame:SetPoint(db.CDFrameAnchor, anchorFrame, db.CDFrameAnchorToParent, db.IconXOffset, db.IconYOffset);
 			frame.NCFrame:Show();
 		end
 		local icon = CreateFrame("frame", nil, frame.NCFrame);
@@ -390,7 +400,8 @@ do
 				frame.NCFrame:SetIgnoreParentAlpha(db.FullOpacityAlways);
 				frame.NCFrame:SetIgnoreParentScale(db.IgnoreNameplateScale);
 				frame.NCFrame:ClearAllPoints();
-				frame.NCFrame:SetPoint(db.CDFrameAnchor, frame, db.CDFrameAnchorToParent, db.IconXOffset, db.IconYOffset);
+				local anchorFrame = GetNameplateAddonFrame(frame);
+				frame.NCFrame:SetPoint(db.CDFrameAnchor, anchorFrame, db.CDFrameAnchorToParent, db.IconXOffset, db.IconYOffset);
 				local counter = 0;
 				for iconIndex, icon in pairs(frame.NCIcons) do
 					icon:SetWidth(db.IconSize);

@@ -5,6 +5,7 @@
 ## Version: @project-version@
 ## X-Curse-Project-ID: 66866
 ## X-Wago-ID: 0mNwjlGo
+## IconTexture: Interface\AddOns\NameplateCooldowns\media\icon
 
 embeds.xml
 src\constants.lua
