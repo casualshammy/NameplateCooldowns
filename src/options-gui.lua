@@ -538,7 +538,10 @@ local function GUICategory_Text(index)
         dropdownTimerTextAnchor.text:SetPoint("LEFT", 20, 15);
         dropdownTimerTextAnchor.text:SetText(L["options:text:anchor-point"]);
         table_insert(GUIFrame.Categories[index], dropdownTimerTextAnchor);
-        table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownTimerTextAnchor:GetName() .. "Text"]:SetText(L[addonTable.db.TimerTextAnchor]); end);
+        table_insert(GUIFrame.OnDBChangedHandlers, function()
+            local text = textAnchorsLocalization[addonTable.db.TimerTextAnchor];
+            _G[dropdownTimerTextAnchor:GetName() .. "Text"]:SetText(text);
+        end);
     end
 
     -- // dropdownTimerTextAnchorIcon
@@ -566,7 +569,10 @@ local function GUICategory_Text(index)
         dropdownTimerTextAnchorIcon.text:SetPoint("LEFT", 20, 15);
         dropdownTimerTextAnchorIcon.text:SetText(L["options:text:anchor-to-icon"]);
         table_insert(GUIFrame.Categories[index], dropdownTimerTextAnchorIcon);
-        table_insert(GUIFrame.OnDBChangedHandlers, function() _G[dropdownTimerTextAnchorIcon:GetName() .. "Text"]:SetText(L[addonTable.db.TimerTextAnchorIcon]); end);
+        table_insert(GUIFrame.OnDBChangedHandlers, function()
+            local text = textAnchorsLocalization[addonTable.db.TimerTextAnchorIcon];
+            _G[dropdownTimerTextAnchorIcon:GetName() .. "Text"]:SetText(text);
+        end);
     end
 
     -- // sliderTimerTextXOffset
