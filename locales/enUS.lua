@@ -114,4 +114,6 @@ L["options:general:inverse-logic"] = "Inverse logic"
 L["options:general:inverse-logic:tooltip"] = "Display icon if player IS ABLE to cast certain spell"
 L["options:general:show-cooldown-animation"] = "Enable cooldown animation"
 L["options:general:show-cooldown-animation:tooltip"] = "Enables spin animation on cooldown icons"
+L["options:spells:click-to-select-spell:test-mode"] = "You can't edit spells in test mode"
+L["options:building-cache"] = "Loading spells info (%s%%)...\nSome functions may be unavailable"
 --@end-debug@
