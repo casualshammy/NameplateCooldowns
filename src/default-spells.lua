@@ -555,11 +555,6 @@ do
 
 	local BIG_REDUCTION = 4*1000*1000;
 
-	local allRogueSpells = {};
-	for spellId in pairs(addonTable.CDs["ROGUE"]) do
-		allRogueSpells[#allRogueSpells+1] = spellId;
-	end
-
 	addonTable.Reductions = {
 		[342245] = { -- // Alter Time https://www.wowhead.com/spell=342245
 			["reduction"] = BIG_REDUCTION,
@@ -667,22 +662,6 @@ do
 			["spells"] = {
 				2050,	-- Holy Word: Serenity https://www.wowhead.com/spell=2050
 				88625,	-- Holy Word: Chastise https://www.wowhead.com/spell=88625
-			},
-		},
-		[1856] = {	-- Vanish https://www.wowhead.com/spell=1856
-			["reduction"] = 15,
-			["spells"] = allRogueSpells,
-		},
-		[143914] = {	-- Readiness https://www.wowhead.com/spell=143914
-			["reduction"] = BIG_REDUCTION,
-			["spells"] = {
-				13750,
-				51690,
-				121471,
-				31224,
-				5277,
-				212182,
-				359053,
 			},
 		},
 	};
