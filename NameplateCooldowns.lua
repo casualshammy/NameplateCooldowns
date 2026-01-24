@@ -7,6 +7,15 @@
 -- luacheck: globals UnitReaction GetInstanceInfo C_UnitAuras
 
 local _, addonTable = ...;
+
+local apiVersion = select(4, GetBuildInfo());
+if (apiVersion >= 120000) then
+	addonTable.Print([[This addon cannot be adapted to the API changes that came with the pre-patch for the Midnight expansion for World of Warcraft.
+Therefore, development has been discontinued.
+Please uninstall this addon to avoid unnecessary errors.]]);
+  return;
+end
+
 local Interrupts = addonTable.Interrupts;
 local Trinkets = addonTable.Trinkets;
 local Reductions = addonTable.Reductions;

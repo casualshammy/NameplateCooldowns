@@ -1,3 +1,9 @@
+## ⚠️ Important Notice ⚠️
+
+This addon cannot be adapted to the API changes that came with the pre-patch for the Midnight expansion for World of Warcraft.  
+Therefore, development has been discontinued.  
+Thank you to everyone who used this addon. Special thanks to those who participated in development by suggesting ideas and reporting bugs. I hope my addon made your game a little more interesting and convenient.
+
 ### About
 This AddOn will show you selected cooldowns of an enemies above their nameplates. NameplateCooldowns does not contain a single piece of code from Icicle, but was inspired by it. 
 Compatible with Tidy Plates, PlateBuffs.
